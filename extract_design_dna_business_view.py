@@ -39,7 +39,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional, Sequence, Tuple
 
 
-BUSINESS_SCHEMA_VERSION = "design_dna_business_view_v1.0"
+BUSINESS_SCHEMA_VERSION = "design_dna_business_view_v1.1"
 SUPPORTED_SOURCE_SCHEMA = "design_dna_extraction_v3.1"
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "result"
@@ -1089,6 +1089,8 @@ def extract_business_view(
 
     result: Dict[str, Any] = {
         "schema_version": BUSINESS_SCHEMA_VERSION,
+        # 模型信息由调用方在生成业务视图后写入；独立运行脚本时明确保留空值。
+        "model_id": data.get("model_id"),
         "object": object_view,
         "design_summary": summary,
         "style": style_view,

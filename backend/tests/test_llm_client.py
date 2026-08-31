@@ -1,9 +1,15 @@
 """统一大模型客户端测试。"""
 
 import unittest
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
-from app.services.llm.client import create_chat_model, invoke_model, stream_model
+from app.services.llm.client import (
+    _normalize_anthropic_stream_event,
+    create_chat_model,
+    invoke_model,
+    stream_model,
+)
 from app.services.llm.settings import LLMSettings
 
 
@@ -14,7 +20,7 @@ class LLMClientTestCase(unittest.TestCase):
             llm_url="https://gateway.example.com",
         )
 
-    @patch("app.services.llm.client.langchain_init_chat_model")
+    @patch("app.services.llm.client.GatewayCompatibleChatAnthropic")
     def test_anthropic_model_uses_anthropic_provider_options(self, factory: Mock) -> None:
         create_chat_model(
             "claude-opus-5-20260820",
@@ -24,9 +30,8 @@ class LLMClientTestCase(unittest.TestCase):
 
         factory.assert_called_once_with(
             model="claude-opus-5-20260820",
-            model_provider="anthropic",
             base_url="https://gateway.example.com",
-            anthropic_api_key="test-key",
+            api_key="test-key",
             temperature=0,
         )
 
@@ -59,6 +64,21 @@ class LLMClientTestCase(unittest.TestCase):
                 settings=self.settings,
                 base_url="https://untrusted.example.com",
             )
+
+    def test_anthropic_dict_context_event_is_normalized(self) -> None:
+        event = Mock()
+        event.context_management = {"applied_edits": []}
+        event.model_copy.return_value = SimpleNamespace(
+            context_management=event.context_management
+        )
+        event.model_copy.side_effect = lambda *, update: SimpleNamespace(**update)
+
+        normalized = _normalize_anthropic_stream_event(event)
+
+        self.assertEqual(
+            normalized.context_management.model_dump(),
+            {"applied_edits": []},
+        )
 
     @patch("app.services.llm.client.create_chat_model")
     def test_invoke_and_stream_use_the_unified_factory(self, factory: Mock) -> None:

@@ -30,7 +30,9 @@ ENV/
 # Build and packaging artifacts
 build/
 dist/
+node_modules/
 *.egg-info/
 
-# Locally generated extraction results
+# Local uploads and generated extraction results
+data/uploads/
 data/result/

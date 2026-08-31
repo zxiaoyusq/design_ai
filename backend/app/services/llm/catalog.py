@@ -23,6 +23,8 @@ class ModelDefinition:
     id: str
     name: str
     model_provider: ModelProvider
+    # 仅记录供应商明确公布且调用协议必须传入的最大输出值。
+    max_output_tokens: int | None = None
 
 
 _MODELS = (
@@ -30,11 +32,13 @@ _MODELS = (
         id="claude-opus-5-20260820",
         name="Claude Opus 5",
         model_provider=ModelProvider.ANTHROPIC,
+        max_output_tokens=128_000,
     ),
     ModelDefinition(
         id="claude-fable-5-20260820",
         name="Claude Fable 5",
         model_provider=ModelProvider.ANTHROPIC,
+        max_output_tokens=128_000,
     ),
     ModelDefinition(
         id="gpt-5.6-terra-20260820",

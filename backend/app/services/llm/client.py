@@ -4,6 +4,7 @@ from collections.abc import Iterator, Mapping, Sequence
 from typing import Any, TypeAlias
 
 from langchain.chat_models import init_chat_model as langchain_init_chat_model
+from langchain_anthropic import ChatAnthropic
 from langchain_core.language_models.chat_models import BaseChatModel
 from langchain_core.messages import BaseMessage
 
@@ -24,6 +25,41 @@ _RESERVED_MODEL_OPTIONS = frozenset(
         "base_url",
     }
 )
+
+
+class _DumpableMapping(dict[str, Any]):
+    """兼容部分 Anthropic 网关在流事件中直接返回字典的情况。"""
+
+    def model_dump(self, *_args: Any, **_kwargs: Any) -> dict[str, Any]:
+        return dict(self)
+
+
+def _normalize_anthropic_stream_event(event: Any) -> Any:
+    """把网关的字典型上下文扩展转换为 LangChain 期望的对象。"""
+
+    context_management = getattr(event, "context_management", None)
+    if isinstance(context_management, dict) and hasattr(event, "model_copy"):
+        return event.model_copy(
+            update={"context_management": _DumpableMapping(context_management)}
+        )
+    return event
+
+
+class GatewayCompatibleChatAnthropic(ChatAnthropic):
+    """修正 Anthropic 流事件扩展字段与官方 SDK 类型不一致的问题。"""
+
+    def _make_message_chunk_from_anthropic_event(
+        self,
+        event: Any,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+        event = _normalize_anthropic_stream_event(event)
+        return super()._make_message_chunk_from_anthropic_event(
+            event,
+            *args,
+            **kwargs,
+        )
 
 
 def create_chat_model(
@@ -49,8 +85,12 @@ def create_chat_model(
 
     # LangChain 的 Anthropic 与 OpenAI 集成使用不同的密钥参数名。
     if model.model_provider is ModelProvider.ANTHROPIC:
-        connection_options["base_url"] = llm_settings.base_url
-        connection_options["anthropic_api_key"] = llm_settings.api_key
+        return GatewayCompatibleChatAnthropic(
+            model=model.id,
+            base_url=llm_settings.base_url,
+            api_key=llm_settings.api_key,
+            **model_options,
+        )
     elif model.model_provider is ModelProvider.OPENAI:
         # 当前网关的 OpenAI 兼容接口位于 `/v1`；已配置时不重复追加。
         connection_options["base_url"] = _openai_base_url(llm_settings.base_url)
