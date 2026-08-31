@@ -1,0 +1,443 @@
+{
+  "schema_version": "design_dna_extraction_v3.1",
+  "knowledge_base_version": "2.0",
+  "target_object": {
+    "object_id": "main_object_01",
+    "category": "车辆",
+    "subcategory": "微型车/泡泡车",
+    "selection_basis": "画面中面积最大、视觉焦点最强、位于画面中心的物品，为一辆红色复古微型车；驾驶员、背景绿植与路面均不作为主物品DNA",
+    "selection_confidence": 0.95,
+    "bbox_norm": [0.10, 0.12, 0.92, 0.88],
+    "view": "left",
+    "visible_regions": ["车身侧面", "车顶气泡座舱", "前轮", "后轮", "车身侧面镀铬装饰条", "轮毂盖徽标区域", "车头圆灯区域"],
+    "ignored_content": ["背景绿色植被", "驾驶员", "路面", "运动模糊背景", "环境倒影"]
+  },
+  "image_quality": {
+    "overall_quality": 0.78,
+    "object_visible_ratio": 0.85,
+    "occlusion_level": 0.20,
+    "blur_level": 0.15,
+    "exposure_risk": 0.10,
+    "perspective_distortion": 0.20,
+    "background_interference": 0.60,
+    "lighting_bias": 0.20,
+    "color_reliability": 0.80,
+    "material_reliability": 0.75,
+    "notes": ["背景因车辆运动产生动态模糊", "车辆主体清晰度较好", "侧视图展示主要外观特征", "车顶透明座舱可见驾驶员", "自然日光下红色车身色彩可信度较高"]
+  },
+  "module_applicability": {
+    "applicable_modules": [
+      {"module_id": "ID形态", "module_name": "ID形态", "reason": "车辆外轮廓与体量是核心识别维度"},
+      {"module_id": "颜色", "module_name": "颜色", "reason": "车身涂装与配色关系可直接观察"},
+      {"module_id": "材质工艺", "module_name": "材质工艺", "reason": "车身漆面、镀铬装饰与透明座舱材质可见"},
+      {"module_id": "纹理图案", "module_name": "纹理图案", "reason": "车身表面纹理与图案表达可评估"},
+      {"module_id": "设计细节", "module_name": "设计细节", "reason": "镀铬装饰条、轮毂盖与品牌标识可见"},
+      {"module_id": "DNA-M01", "module_name": "整机比例与体量", "reason": "车辆长宽比、体量紧凑度与视觉重心可推断"},
+      {"module_id": "DNA-M02", "module_name": "轮廓、曲面与边界语言", "reason": "车身曲面连续性、边缘锐度与边界表达可观察"},
+      {"module_id": "DNA-M03", "module_name": "构图与视觉秩序", "reason": "车辆视觉焦点、对称性与留白可分析"},
+      {"module_id": "DNA-M06", "module_name": "色彩系统深化", "reason": "主色、辅色、面积占比与色彩关系可评估"},
+      {"module_id": "DNA-M07", "module_name": "CMF分区与材质关系", "reason": "车身不同区域材质、光泽与边界可观察"},
+      {"module_id": "DNA-M08", "module_name": "纹理与图案语法", "reason": "车身表面纹理规则度与覆盖面积可评估"},
+      {"module_id": "DNA-M09", "module_name": "设计细节与微构件", "reason": "装饰线、透明座舱、品牌标识件可见"},
+      {"module_id": "DNA-M11", "module_name": "光影与光学表现", "reason": "车身高光、反射与透明座舱光学表现可观察"},
+      {"module_id": "DNA-M13", "module_name": "风格感知语义坐标", "reason": "基于视觉特征可推断感知坐标"},
+      {"module_id": "DNA-M14", "module_name": "意向、文化与场景语义", "reason": "复古、城市出行等语义可推断"}
+    ],
+    "excluded_modules": [
+      {"module_id": "相机架构", "module_name": "相机架构", "reason": "category_not_applicable", "explanation": "车辆无手机相机模组结构，位置布局、排列方式、模组形态等字段不适用"},
+      {"module_id": "DNA-M04", "module_name": "相机系统精细DNA", "reason": "category_not_applicable", "explanation": "该模块专门描述手机相机岛、镜头环等结构，不适用于车辆"},
+      {"module_id": "DNA-M05", "module_name": "正面与侧面ID", "reason": "category_not_applicable", "explanation": "该模块描述手机屏幕、边框、前摄等手机专属正面与侧面特征"},
+      {"module_id": "DNA-M10", "module_name": "品牌编码与系列基因", "reason": "insufficient_reference_context", "explanation": "可观察品牌标识位置与工艺，但家族相似度、代际连续度等需要品牌参考库与竞品集合"},
+      {"module_id": "DNA-M12", "module_name": "功能表达与人因感知", "reason": "category_not_applicable", "explanation": "该模块针对手持设备的握持、便携、按键可达等感知，不适用于车辆"},
+      {"module_id": "DNA-M15", "module_name": "方案关系、创新度与趋势属性", "reason": "insufficient_reference_context", "explanation": "需要同系列、上一代及竞品样本集合，单张图无法可靠计算"}
+    ],
+    "rule_adaptations": [
+      {
+        "source_rule": "颜色特殊规则：以背板主体材质作为主要材质标签",
+        "status": "adapted",
+        "adapted_rule": "以车身最大可见区域（侧围/顶盖）材质作为主要材质标签",
+        "reason": "原规则使用手机背板概念，车辆需映射为车身侧围与顶盖主体"
+      },
+      {
+        "source_rule": "手机专属区域名（中框、背板、相机岛、电池盖）",
+        "status": "adapted",
+        "adapted_rule": "映射为车辆对应区域：车身侧围、车顶座舱、轮拱、车头面板等",
+        "reason": "知识库以手机为例命名区域，非手机品类需显式适配"
+      }
+    ]
+  },
+  "style_result": {
+    "classification_status": "confirmed",
+    "primary_style": {
+      "level_1": "6.潮流表达",
+      "level_2": "Neo-Retro / （摩登复古）",
+      "match_score": 82,
+      "confidence": 0.85,
+      "hard_rule_passed": true,
+      "rule_coverage": {
+        "applicable_rule_count": 8,
+        "passed_rule_count": 6,
+        "unknown_rule_count": 2,
+        "not_applicable_rule_count": 0
+      },
+      "color_requirement": {
+        "status": "pass",
+        "evidence_refs": ["EV-001"]
+      },
+      "core_feature_hits": ["复古滤镜色", "圆润经典轮廓", "复古金属细节", "怀旧汽车形态"],
+      "auxiliary_feature_hits": ["一体化气泡座舱", "车身侧面镀铬装饰条", "经典轮毂盖"],
+      "missing_required_items": [],
+      "exclusion_hits": [],
+      "conflict_arbitration": "车辆虽具有透明气泡座舱带来的未来感，但整体形态、红色车漆与镀铬装饰明显指向复古微型车美学，故优先判定Neo-Retro；未来感仅作为造型趣味而非主导风格",
+      "evidence_refs": ["EV-001", "EV-002", "EV-003", "EV-004"]
+    },
+    "secondary_styles": [],
+    "candidate_ranking": [
+      {
+        "rank": 1,
+        "level_1": "6.潮流表达",
+        "level_2": "SaturatedBold",
+        "match_score": 55,
+        "confidence": 0.60,
+        "hard_rule_passed": false,
+        "main_support": ["车身红色饱和度较高", "简洁圆润的图形化轮廓具有较强的视觉冲击力"],
+        "main_conflicts": ["整体风格为复古而非当代时尚", "缺少高饱和潮流配色的年轻感语境"]
+      },
+      {
+        "rank": 2,
+        "level_1": "6.潮流表达",
+        "level_2": "FreshJoy",
+        "match_score": 45,
+        "confidence": 0.50,
+        "hard_rule_passed": false,
+        "main_support": ["小巧可爱的泡泡造型带来愉悦感", "圆润轮廓亲和友好"],
+        "main_conflicts": ["红色不属于高明度果冻色", "复古风格与清新年轻的语境不符"]
+      }
+    ]
+  },
+  "design_elements": {
+    "original_md_dimensions": [
+      {
+        "dimension": "ID形态",
+        "elements": [
+          {"field_id": null, "field_name": "轮廓特征", "source_path": "工作表：设计元素 > 一、ID形态 > 轮廓特征", "schema_source": "md_original", "value": "柔和曲线", "raw_visual_description": "车身侧面由连续圆润曲面构成，无明显直线或锐利折角，车顶与侧围过渡流畅", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.92, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "体量特征", "source_path": "工作表：设计元素 > 一、ID形态 > 体量特征", "schema_source": "md_original", "value": ["紧凑感", "一体块状"], "raw_visual_description": "车辆整体尺寸小巧，车身饱满且各部分融合为一个整体块面", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "形态表达", "source_path": "工作表：设计元素 > 一、ID形态 > 形态表达", "schema_source": "md_original", "value": ["一体化", "对称结构"], "raw_visual_description": "车身与座舱罩形成一体化视觉，左右轮廓近似对称", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "结构可见度", "source_path": "工作表：设计元素 > 一、ID形态 > 结构可见度", "schema_source": "md_original", "value": "Hidden Structure", "raw_visual_description": "车身表面完整，机械结构基本隐藏，仅必要的门缝与装饰线可见", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-003"]}
+        ]
+      },
+      {
+        "dimension": "颜色",
+        "elements": [
+          {"field_id": null, "field_name": "主色调", "source_path": "工作表：设计元素 > 三、颜色 > 主色调", "schema_source": "md_original", "value": "红色系", "raw_visual_description": "车身主体为大面积红色涂装，约占可见车身面积的70%以上", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "明度", "source_path": "工作表：设计元素 > 三、颜色 > 明度", "schema_source": "md_original", "value": "中间调", "raw_visual_description": "红色车身处于中等明度范围，在日光下既不明亮轻快也不过于深沉", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "饱和度", "source_path": "工作表：设计元素 > 三、颜色 > 饱和度", "schema_source": "md_original", "value": "中饱和", "raw_visual_description": "红色具有一定彩度，视觉醒目但不达到荧光或高冲击程度", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "配色关系", "source_path": "工作表：设计元素 > 三、颜色 > 配色关系", "schema_source": "md_original", "value": "单色", "raw_visual_description": "车身以红色为主，整体呈单一色调，仅通过镀铬装饰、轮胎和透明座舱形成少量材质对比", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": null, "field_name": "色彩效果", "source_path": "工作表：设计元素 > 三、颜色 > 色彩效果", "schema_source": "md_original", "value": "普通色", "raw_visual_description": "车身为常规实色漆面，无珠光、全息或干涉等随角变色效果", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "dimension": "材质工艺",
+        "elements": [
+          {"field_id": null, "field_name": "材质类型", "source_path": "工作表：设计元素 > 四、材质工艺 > 材质类型", "schema_source": "md_original", "value": ["金属", "玻璃"], "raw_visual_description": "车身主体呈现金属漆面质感，车顶座舱为透明玻璃/树脂材质", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": null, "field_name": "表面工艺", "source_path": "工作表：设计元素 > 四、材质工艺 > 表面工艺", "schema_source": "md_original", "value": ["抛光", "喷漆"], "raw_visual_description": "车身红色漆面均匀，镀铬装饰条具有高反光抛光质感", "value_type": "multi_label", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": null, "field_name": "光泽表现", "source_path": "工作表：设计元素 > 四、材质工艺 > 光泽表现", "schema_source": "md_original", "value": "高光", "raw_visual_description": "红色车身表面可见明显高光反射，镀铬装饰条反射更强烈", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "特殊效果", "source_path": "工作表：设计元素 > 四、材质工艺 > 特殊效果", "schema_source": "md_original", "value": "none", "raw_visual_description": "未观察到珠光、闪粉、全息、干涉或结构色等特殊视觉效果", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "dimension": "纹理图案",
+        "elements": [
+          {"field_id": null, "field_name": "纹理类型", "source_path": "工作表：设计元素 > 五、纹理图案 > 纹理类型", "schema_source": "md_original", "value": "无纹理", "raw_visual_description": "车身表面光滑均匀，无明显纹理图案", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]},
+          {"field_id": null, "field_name": "图案表达", "source_path": "工作表：设计元素 > 五、纹理图案 > 图案表达", "schema_source": "md_original", "value": "纯色", "raw_visual_description": "车身以纯色涂装为主，无几何图案、条纹或艺术图案", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "dimension": "设计细节",
+        "elements": [
+          {"field_id": null, "field_name": "装饰腰线", "source_path": "工作表：设计元素 > 六、设计细节", "schema_source": "md_original", "value": "有", "raw_visual_description": "车身侧面有一条水平的镀铬装饰腰线，从前轮上方延伸至车尾", "value_type": "enum", "region": "车身侧面中部", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-003"]},
+          {"field_id": null, "field_name": "金属高光边", "source_path": "工作表：设计元素 > 六、设计细节", "schema_source": "md_original", "value": "有", "raw_visual_description": "车身侧面装饰条、车窗下沿及轮毂盖边缘呈现金属高光泽", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-003", "EV-004"]},
+          {"field_id": null, "field_name": "铭牌元素", "source_path": "工作表：设计元素 > 六、设计细节", "schema_source": "md_original", "value": "有", "raw_visual_description": "轮毂盖中心可见小型圆形徽标/标识件", "value_type": "enum", "region": "轮毂盖", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-004"]}
+        ]
+      }
+    ],
+    "extended_dna_modules": [
+      {
+        "module_id": "DNA-M01",
+        "module_name": "整机比例与体量",
+        "elements": [
+          {"field_id": "GEO-01", "field_name": "整机长宽比", "source_path": "AI扩展 > DNA-M01", "schema_source": "md_extension", "value": {"ratio": 1.35, "label": "短胖"}, "raw_visual_description": "车辆侧面长度与高度比例接近1.35，呈现短而高的泡泡车比例", "value_type": "object", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]},
+          {"field_id": "GEO-02", "field_name": "宽窄倾向", "source_path": "AI扩展 > DNA-M01", "schema_source": "md_extension", "value": "宽", "raw_visual_description": "车身侧面饱满，视觉宽度感突出，整体呈横向鼓胀形态", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "GEO-05", "field_name": "体量紧凑度", "source_path": "AI扩展 > DNA-M01", "schema_source": "md_extension", "value": "紧凑", "raw_visual_description": "车身各元素间距小，座舱、车身与轮拱紧凑集成", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "GEO-06", "field_name": "视觉重心", "source_path": "AI扩展 > DNA-M01", "schema_source": "md_extension", "value": "中部", "raw_visual_description": "车身中部红色体量最大，透明座舱位于上方但视觉重量较轻，整体重心居中", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001"]},
+          {"field_id": "GEO-09", "field_name": "主要层级数量", "source_path": "AI扩展 > DNA-M01", "schema_source": "md_extension", "value": 3, "raw_visual_description": "可辨识三个主要层级：底部底盘/轮拱、中部车身主体、顶部透明座舱", "value_type": "integer", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]},
+          {"field_id": "GEO-10", "field_name": "轮廓完整性", "source_path": "AI扩展 > DNA-M01", "schema_source": "md_extension", "value": "一体", "raw_visual_description": "车身外轮廓保持完整连续，无大面积独立模块打断整体感", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M02",
+        "module_name": "轮廓、曲面与边界语言",
+        "elements": [
+          {"field_id": "FORM-01", "field_name": "主导线性", "source_path": "AI扩展 > DNA-M02", "schema_source": "md_extension", "value": "曲线", "raw_visual_description": "车身外轮廓与主要结构线均为曲线，无硬朗直线主导", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-001"]},
+          {"field_id": "FORM-02", "field_name": "曲线占比", "source_path": "AI扩展 > DNA-M02", "schema_source": "md_extension", "value": 0.85, "raw_visual_description": "可见轮廓线中曲线长度占比约85%", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "FORM-03", "field_name": "边缘锐度", "source_path": "AI扩展 > DNA-M02", "schema_source": "md_extension", "value": "柔圆", "raw_visual_description": "车身所有转折处均为大圆角过渡，无锐利边缘", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]},
+          {"field_id": "FORM-07", "field_name": "曲面连续性", "source_path": "AI扩展 > DNA-M02", "schema_source": "md_extension", "value": "高连续一体", "raw_visual_description": "车顶、侧围与轮拱之间曲面过渡自然，视觉上无明显折线或断点", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "FORM-10", "field_name": "边界表达", "source_path": "AI扩展 > DNA-M02", "schema_source": "md_extension", "value": "包围", "raw_visual_description": "透明座舱被红色车身从下方和侧面包围，形成清晰的包裹边界", "value_type": "enum", "region": "车顶座舱边界", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "FORM-11", "field_name": "表面张力", "source_path": "AI扩展 > DNA-M02", "schema_source": "md_extension", "value": "膨胀", "raw_visual_description": "车身表面呈现饱满鼓胀感，如同被充气般的圆润体量", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M03",
+        "module_name": "构图与视觉秩序",
+        "elements": [
+          {"field_id": "CMP-01", "field_name": "主构图轴", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": "水平", "raw_visual_description": "车身侧面水平展开，装饰腰线、底盘线均呈水平走向", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-02", "field_name": "对称类型", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": "近似对称", "raw_visual_description": "车身左右轮廓在侧视图中呈现前后对称趋势，实际因功能布局存在轻微差异", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-04", "field_name": "视觉焦点数量", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": 2, "raw_visual_description": "第一焦点为大面积红色车身，第二焦点为透明气泡座舱", "value_type": "integer", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-05", "field_name": "第一视觉焦点", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": "颜色", "raw_visual_description": "高饱和红色车身面积最大，最先吸引注意力", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-09", "field_name": "留白比例", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": {"ratio": 0.45, "label": "中"}, "raw_visual_description": "车辆占据画面中央，周围绿色背景留白约占画面45%", "value_type": "object", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-10", "field_name": "信息密度", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": "中", "raw_visual_description": "车身有装饰线、座舱、轮毂等若干元素，但无密集图案或复杂结构", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-12", "field_name": "方向性", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": "横向", "raw_visual_description": "车辆水平行驶姿态，车身长轴沿画面水平方向", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMP-13", "field_name": "主要对比来源", "source_path": "AI扩展 > DNA-M03", "schema_source": "md_extension", "value": ["颜色", "材质", "光泽"], "raw_visual_description": "红色车身与绿色背景形成色相对比，金属/玻璃与漆面形成材质光泽对比", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M06",
+        "module_name": "色彩系统深化",
+        "elements": [
+          {"field_id": "CLR-01", "field_name": "主色数值", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": {"label": "红色", "ncs_approx": "S 2070-R", "note": "近似值，无标准光源/色卡校准"}, "raw_visual_description": "车身主体为日光下的红色实色漆", "value_type": "object", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-02", "field_name": "辅色数值", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": {"label": "银色/镀铬色", "region": "装饰条与轮毂盖"}, "raw_visual_description": "车身侧面装饰线与轮毂盖呈现银白色金属光泽", "value_type": "object", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-003", "EV-004"]},
+          {"field_id": "CLR-04", "field_name": "主色面积占比", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": 0.70, "raw_visual_description": "红色车身约占车辆可见面积的70%", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-07", "field_name": "有效颜色数量", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": 3, "raw_visual_description": "可辨识三种有效颜色：红色车身、银色/镀铬装饰、黑色轮胎", "value_type": "integer", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-08", "field_name": "色温倾向", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": "暖", "raw_visual_description": "红色车身与日光共同呈现暖调色彩倾向", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-11", "field_name": "配色和谐关系", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": "单色", "raw_visual_description": "红色为主，银色和黑色仅作为小面积材质点缀", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-14", "field_name": "渐变类型", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": "无", "raw_visual_description": "车身红色为均匀实色，无明显渐变", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-17", "field_name": "近无彩判定", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": false, "raw_visual_description": "车身红色具有明显的色相和彩度，不属于近无彩色", "value_type": "boolean", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-001"]},
+          {"field_id": "CLR-18", "field_name": "颜色可靠度", "source_path": "AI扩展 > DNA-M06", "schema_source": "md_extension", "value": 0.80, "raw_visual_description": "自然日光、车身主体清晰，红色色相可信度较高", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M07",
+        "module_name": "CMF分区与材质关系",
+        "elements": [
+          {"field_id": "CMF-01", "field_name": "区域材质映射", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": {"车身侧围": "喷漆金属", "车顶座舱": "透明玻璃/树脂", "装饰条": "镀铬金属", "轮胎": "橡胶", "轮毂盖": "金属"}, "raw_visual_description": "不同区域呈现不同材质特征：车身为红色漆面金属，座舱透明，装饰条高反光金属", "value_type": "object", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001", "EV-002", "EV-003"]},
+          {"field_id": "CMF-02", "field_name": "主要材质数量", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": 3, "raw_visual_description": "可辨识三种主要材质：漆面金属、透明玻璃/树脂、镀铬金属", "value_type": "integer", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMF-03", "field_name": "主体材质占比", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": 0.70, "raw_visual_description": "红色漆面金属车身约占车辆可见面积的70%", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMF-04", "field_name": "材质对比关系", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": ["金属非金属", "透明不透明"], "raw_visual_description": "金属车身与透明座舱形成透明不透明对比，金属装饰与漆面形成同材质光泽对比", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "CMF-06", "field_name": "表面粗糙度感知", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": 0.20, "raw_visual_description": "车身表面光滑，高光清晰，粗糙度感知低", "value_type": "continuous", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMF-07", "field_name": "光泽度感知", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": 0.70, "raw_visual_description": "车身红色漆面可见明显高光，镀铬装饰接近镜面光泽", "value_type": "continuous", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "CMF-08", "field_name": "反射类型", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": ["漫反射", "镜面"], "raw_visual_description": "红色漆面以漫反射为主，镀铬装饰条呈现镜面反射", "value_type": "multi_label", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "CMF-09", "field_name": "透明度", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": "局部透明", "raw_visual_description": "车顶气泡座舱为透明材质，可透视内部驾驶员", "value_type": "enum", "region": "车顶座舱", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-002"]},
+          {"field_id": "CMF-11", "field_name": "触感联想", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": ["冰冷", "丝滑"], "raw_visual_description": "光滑漆面与金属装饰带来冰冷、丝滑的视觉触感推断", "value_type": "multi_label", "region": "车身侧面", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "CMF-12", "field_name": "材质连续性", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": "连续", "raw_visual_description": "红色漆面跨越车身侧围与轮拱等区域保持连续", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "CMF-13", "field_name": "材质边界处理", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": "嵌入", "raw_visual_description": "透明座舱嵌入红色车身顶部，边界清晰但过渡平滑", "value_type": "enum", "region": "车顶座舱边界", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "CMF-14", "field_name": "表面均匀性", "source_path": "AI扩展 > DNA-M07", "schema_source": "md_extension", "value": "均匀", "raw_visual_description": "车身红色漆面颜色与光泽均匀一致，无显著斑驳或渐变", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M08",
+        "module_name": "纹理与图案语法",
+        "elements": [
+          {"field_id": "TEX-01", "field_name": "纹理家族", "source_path": "AI扩展 > DNA-M08", "schema_source": "md_extension", "value": "无", "raw_visual_description": "车身表面无可见纹理图案，为纯色光滑漆面", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-001"]},
+          {"field_id": "TEX-03", "field_name": "纹理尺度", "source_path": "AI扩展 > DNA-M08", "schema_source": "md_extension", "value": "无", "raw_visual_description": "无纹理单元可测量", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-001"]},
+          {"field_id": "TEX-04", "field_name": "纹理密度", "source_path": "AI扩展 > DNA-M08", "schema_source": "md_extension", "value": "无", "raw_visual_description": "无纹理重复单元", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-001"]},
+          {"field_id": "TEX-08", "field_name": "立体深度", "source_path": "AI扩展 > DNA-M08", "schema_source": "md_extension", "value": "平面", "raw_visual_description": "车身表面为平面涂装，无浮雕或立体纹理", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "TEX-10", "field_name": "覆盖面积", "source_path": "AI扩展 > DNA-M08", "schema_source": "md_extension", "value": 0.0, "raw_visual_description": "无纹理或图案覆盖", "value_type": "continuous", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M09",
+        "module_name": "设计细节与微构件",
+        "elements": [
+          {"field_id": "DET-05", "field_name": "接缝与天线线", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "弱可见", "raw_visual_description": "车门与车身的接缝隐约可见，腰线附近有一条细缝", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-003"]},
+          {"field_id": "DET-08", "field_name": "装饰线", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "直线", "raw_visual_description": "车身侧面有一条水平直线镀铬装饰线", "value_type": "enum", "region": "车身侧面中部", "applicability": "applicable", "observability": "observed", "confidence": 0.88, "evidence_refs": ["EV-003"]},
+          {"field_id": "DET-09", "field_name": "装饰环", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "细环", "raw_visual_description": "轮毂盖边缘有细窄的金属环装饰", "value_type": "enum", "region": "轮毂盖", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-004"]},
+          {"field_id": "DET-10", "field_name": "铭牌与标识件", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "金属嵌件", "raw_visual_description": "轮毂盖中心有小型圆形金属徽标嵌件", "value_type": "enum", "region": "轮毂盖", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-004"]},
+          {"field_id": "DET-11", "field_name": "透明窗口与开口", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "大窗", "raw_visual_description": "车顶整体式透明气泡座舱形成大面积透明窗口", "value_type": "enum", "region": "车顶座舱", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-002"]},
+          {"field_id": "DET-12", "field_name": "主动光元素", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "无", "raw_visual_description": "未观察到发光的灯带、指示灯或发光标识", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "DET-13", "field_name": "微细节密度", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "低", "raw_visual_description": "车身细节数量较少，仅有腰线、轮毂盖徽标和座舱边界等少量元素", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "DET-14", "field_name": "细节一致性", "source_path": "AI扩展 > DNA-M09", "schema_source": "md_extension", "value": "统一", "raw_visual_description": "装饰线、轮毂盖和座舱边界均呈现圆润语言，材质与工艺风格统一", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-003", "EV-004"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M11",
+        "module_name": "光影与光学表现",
+        "elements": [
+          {"field_id": "OPT-01", "field_name": "高光宽度", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "中", "raw_visual_description": "车身红色漆面上的高光带宽度适中", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.78, "evidence_refs": ["EV-001"]},
+          {"field_id": "OPT-03", "field_name": "反射清晰度", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "半清晰", "raw_visual_description": "车身漆面反射环境但不成清晰镜像，镀铬装饰接近镜像", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "OPT-06", "field_name": "随角变色", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "无", "raw_visual_description": "车身颜色在不同可见区域保持稳定，无随角度变化的光学效果", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001"]},
+          {"field_id": "OPT-07", "field_name": "透光性", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "局部透光", "raw_visual_description": "车顶透明座舱允许光线透过，可看见内部驾驶员", "value_type": "enum", "region": "车顶座舱", "applicability": "applicable", "observability": "observed", "confidence": 0.90, "evidence_refs": ["EV-002"]},
+          {"field_id": "OPT-08", "field_name": "主动发光", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "无", "raw_visual_description": "未观察到主动发光的灯光元素", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.85, "evidence_refs": ["EV-001"]},
+          {"field_id": "OPT-09", "field_name": "边缘光效", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "轮廓高光", "raw_visual_description": "车身曲面边缘可见连续的轮廓高光", "value_type": "enum", "region": "车身侧面", "applicability": "applicable", "observability": "observed", "confidence": 0.80, "evidence_refs": ["EV-001"]},
+          {"field_id": "OPT-11", "field_name": "视觉纵深", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": "多层", "raw_visual_description": "车身外壳、座舱玻璃与内部空间形成多层深度关系", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "OPT-14", "field_name": "光照混淆风险", "source_path": "AI扩展 > DNA-M11", "schema_source": "md_extension", "value": 0.30, "raw_visual_description": "自然日光较为均匀，背景绿色可能轻微影响红色车身色温判断", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "observed", "confidence": 0.75, "evidence_refs": ["EV-001"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M13",
+        "module_name": "风格感知语义坐标",
+        "elements": [
+          {"field_id": "SEM-01", "field_name": "极简—装饰", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 30, "raw_visual_description": "车身简洁但存在镀铬装饰条等少量细节，整体偏向极简一侧", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "SEM-02", "field_name": "硬朗—柔和", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 75, "raw_visual_description": "全身圆润曲线，无明显锐利边缘，柔和感强", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.85, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-03", "field_name": "轻盈—厚重", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 40, "raw_visual_description": "车辆小巧但车身饱满鼓胀，视觉重量中等偏轻", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-04", "field_name": "安静—动感", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 40, "raw_visual_description": "背景运动模糊暗示动态，但车辆本身形态稳定圆润", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-005"]},
+          {"field_id": "SEM-05", "field_name": "理性—感性", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 60, "raw_visual_description": "圆润可爱形态与复古红色引发情感联想，偏感性", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-06", "field_name": "自然—科技", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 30, "raw_visual_description": "气泡座舱带有一定航空科技感，但整体复古自然", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-07", "field_name": "经典—未来", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 25, "raw_visual_description": "复古微型车形态明显指向经典而非未来", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "SEM-08", "field_name": "克制—张扬", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 50, "raw_visual_description": "红色车身醒目但造型简洁，表达适中", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "SEM-09", "field_name": "亲和—权威", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 20, "raw_visual_description": "小巧圆润形态非常友好亲和，无权威压迫感", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-10", "field_name": "日常—奢华", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 30, "raw_visual_description": "微型代步车定位日常，但镀铬装饰增添些许精致感", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "SEM-11", "field_name": "玩趣—成熟", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 35, "raw_visual_description": "泡泡车造型带来玩趣感，但复古风格也包含成熟怀旧", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-12", "field_name": "秩序—有机", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 60, "raw_visual_description": "车身曲面呈有机流动感，非严格几何秩序", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.78, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "SEM-13", "field_name": "熟悉—新奇", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 30, "raw_visual_description": "复古泡泡车形态具有较高的文化熟悉度", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "SEM-14", "field_name": "精致—力量", "source_path": "AI扩展 > DNA-M13", "schema_source": "md_extension", "value": 30, "raw_visual_description": "小型圆润车身偏向精致可爱，非力量感", "value_type": "continuous", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.80, "evidence_refs": ["EV-001", "EV-002"]}
+        ]
+      },
+      {
+        "module_id": "DNA-M14",
+        "module_name": "意向、文化与场景语义",
+        "elements": [
+          {"field_id": "IMG-01", "field_name": "主风格标签", "source_path": "AI扩展 > DNA-M14", "schema_source": "md_extension", "value": "Neo-Retro", "raw_visual_description": "复古泡泡车造型、红色车漆与镀铬装饰共同指向摩登复古风格", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.85, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "IMG-03", "field_name": "情绪关键词", "source_path": "AI扩展 > DNA-M14", "schema_source": "md_extension", "value": [{"keyword": "怀旧", "intensity": 0.8}, {"keyword": "愉悦", "intensity": 0.75}, {"keyword": "轻松", "intensity": 0.7}], "raw_visual_description": "复古造型引发怀旧情绪，小巧圆润带来愉悦与轻松感", "value_type": "object", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "IMG-04", "field_name": "生活方式场景", "source_path": "AI扩展 > DNA-M14", "schema_source": "md_extension", "value": ["都市", "旅行", "时尚"], "raw_visual_description": "微型车适合城市通勤与短途旅行，复古风格具时尚表达属性", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "IMG-05", "field_name": "典型参照物", "source_path": "AI扩展 > DNA-M14", "schema_source": "md_extension", "value": ["复古微型车", "泡泡车", "BMW Isetta"], "raw_visual_description": "整体造型与历史上经典泡泡微型车高度相似", "value_type": "multi_label", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.78, "evidence_refs": ["EV-001", "EV-002"]},
+          {"field_id": "IMG-08", "field_name": "时代母题", "source_path": "AI扩展 > DNA-M14", "schema_source": "md_extension", "value": "复古", "raw_visual_description": "设计语言明显借鉴20世纪中期微型车风格", "value_type": "enum", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-003"]},
+          {"field_id": "IMG-12", "field_name": "叙事主题", "source_path": "AI扩展 > DNA-M14", "schema_source": "md_extension", "value": "复古泡泡车的愉悦都市出行", "raw_visual_description": "小巧复古车辆穿梭于绿意环境，传递轻松的城市出行意象", "value_type": "text", "region": "whole_object", "applicability": "applicable", "observability": "inferred", "confidence": 0.75, "evidence_refs": ["EV-001", "EV-002", "EV-005"]}
+        ]
+      }
+    ]
+  },
+  "uncertain_fields": [
+    {
+      "field_id": "CMF-01",
+      "field_name": "车身真实基材",
+      "source_path": "AI扩展 > DNA-M07",
+      "reason_type": "definition_gap",
+      "reason": "漆面下真实基材（钢/铝/玻璃钢/复合材料）无法从单张外观图可靠判定",
+      "observability": "unknown",
+      "best_estimate": "喷漆金属薄板",
+      "confidence": 0.55,
+      "candidate_values": [
+        {"value": "钢质薄板", "probability": 0.45, "supporting_evidence_refs": ["EV-001"], "contradicting_evidence_refs": []},
+        {"value": "玻璃钢/复合材料", "probability": 0.30, "supporting_evidence_refs": ["EV-001"], "contradicting_evidence_refs": []},
+        {"value": "铝质薄板", "probability": 0.25, "supporting_evidence_refs": ["EV-001"], "contradicting_evidence_refs": []}
+      ],
+      "recommended_additional_view_or_info": "补充车身结构剖面、官方材质说明或敲击/重量信息"
+    },
+    {
+      "field_id": "DET-02",
+      "field_name": "车门开启方式与铰链细节",
+      "source_path": "AI扩展 > DNA-M09",
+      "reason_type": "not_observable",
+      "reason": "当前侧视图无法看到车门铰链、把手和具体开启机构",
+      "observability": "not_observable",
+      "best_estimate": null,
+      "confidence": 0.40,
+      "candidate_values": [],
+      "recommended_additional_view_or_info": "补充车头正面/开启状态视图以确认车门开启方式"
+    },
+    {
+      "field_id": "OPT-06",
+      "field_name": "车头灯光细节",
+      "source_path": "AI扩展 > DNA-M11",
+      "reason_type": "low_visibility",
+      "reason": "车头圆灯区域仅在画面边缘可见，无法确认是否为分体式大灯、灯罩材质及是否有灯带",
+      "observability": "unknown",
+      "best_estimate": "独立圆形卤素/LED大灯",
+      "confidence": 0.60,
+      "candidate_values": [
+        {"value": "独立圆形卤素大灯", "probability": 0.50, "supporting_evidence_refs": ["EV-005"], "contradicting_evidence_refs": []},
+        {"value": "独立圆形LED大灯", "probability": 0.35, "supporting_evidence_refs": ["EV-005"], "contradicting_evidence_refs": []},
+        {"value": "集成式前灯面板", "probability": 0.15, "supporting_evidence_refs": ["EV-005"], "contradicting_evidence_refs": []}
+      ],
+      "recommended_additional_view_or_info": "补充车头正面特写或灯光点亮状态"
+    },
+    {
+      "field_id": "GEO-03",
+      "field_name": "真实视觉厚度/车轮数量",
+      "source_path": "AI扩展 > DNA-M01",
+      "reason_type": "perspective",
+      "reason": "侧视图无法准确判断车身厚度、底盘高度以及后轮是否为单轮或双轮布局",
+      "observability": "not_observable",
+      "best_estimate": null,
+      "confidence": 0.45,
+      "candidate_values": [],
+      "recommended_additional_view_or_info": "补充正前/正后视图或车顶视角以确认厚度和轮距布局"
+    }
+  ],
+  "novel_dna_elements": [
+    {
+      "temp_id": "NEW-001",
+      "novelty_type": "new_field",
+      "proposed_module_id": null,
+      "proposed_module_name": "车辆外部形态",
+      "proposed_field_name": "座舱罩形态",
+      "definition": "车辆乘员舱顶部透明覆盖物的形态类型，决定车辆视觉识别和风格归类",
+      "observed_value": "整体式透明气泡穹顶",
+      "recommended_value_type": "enum",
+      "recommended_value_space_or_measurement": ["无顶/敞篷", "分体式挡风玻璃", "整体式气泡穹顶", "平顶透明舱", "硬顶", "软顶"],
+      "applicable_categories": ["vehicle", "microcar", "concept_vehicle"],
+      "region": "车顶/座舱",
+      "distinct_from_existing_fields": "现有ID形态字段仅描述手机轮廓，未覆盖车辆座舱透明覆盖物这一核心识别特征",
+      "design_relevance": "座舱罩形态是微型车与复古未来风格的关键识别符号，影响车辆的情感感知与空气动力意象",
+      "confidence": 0.85,
+      "evidence_refs": ["EV-001", "EV-002"],
+      "suggested_priority": "P1"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "EV-001",
+      "bbox_norm": [0.10, 0.12, 0.92, 0.88],
+      "region": "whole_object",
+      "view": "left",
+      "description": "红色复古微型车整体侧视图，车身呈饱满圆润形态，车顶为透明气泡座舱，车身侧面有一条镀铬装饰线，前后轮可见，背景为绿色运动模糊",
+      "visual_cues": ["红色车身", "圆润轮廓", "气泡座舱", "镀铬装饰线", "小巧体量"],
+      "supports": ["主物品定位", "红色系主色调", "柔和曲线", "紧凑体量", "Neo-Retro风格", "一体化形态", "静态平衡构图"]
+    },
+    {
+      "evidence_id": "EV-002",
+      "bbox_norm": [0.35, 0.12, 0.80, 0.42],
+      "region": "车顶气泡座舱",
+      "view": "left",
+      "description": "车顶整体式透明气泡座舱，呈半球形隆起，可透视内部驾驶员，座舱边缘与红色车身平滑相接",
+      "visual_cues": ["透明材质", "半球形穹顶", "内部透视", "平滑边界"],
+      "supports": ["透明座舱罩形态（NEW-001）", "局部透明材质", "多层视觉纵深", "包围式边界", "柔和曲线"]
+    },
+    {
+      "evidence_id": "EV-003",
+      "bbox_norm": [0.25, 0.45, 0.85, 0.58],
+      "region": "车身侧面中部",
+      "view": "left",
+      "description": "车身侧面中部有一条水平贯穿的镀铬装饰腰线，腰线下方隐约可见车门接缝，装饰条呈现高反光金属光泽",
+      "visual_cues": ["水平装饰线", "镀铬金属", "车门接缝", "高光反射"],
+      "supports": ["装饰腰线", "金属高光边", "水平构图轴", "弱可见接缝", "复古金属细节"]
+    },
+    {
+      "evidence_id": "EV-004",
+      "bbox_norm": [0.55, 0.62, 0.72, 0.82],
+      "region": "后轮轮毂盖",
+      "view": "left",
+      "description": "后轮轮毂盖为银色金属材质，中心有小型圆形徽标嵌件，轮毂盖边缘有细窄金属环",
+      "visual_cues": ["银色轮毂盖", "中心徽标", "金属环装饰"],
+      "supports": ["铭牌元素", "装饰环", "金属高光边", "辅色银色", "复古轮毂"]
+    },
+    {
+      "evidence_id": "EV-005",
+      "bbox_norm": [0.10, 0.45, 0.28, 0.72],
+      "region": "车头前部",
+      "view": "left",
+      "description": "车头前部呈圆润突出形态，可见独立圆形前灯区域，车灯边缘与车身曲面融合",
+      "visual_cues": ["圆润车头", "圆形前灯", "曲面融合"],
+      "supports": ["柔和曲线", "复古汽车形态", "车头灯光细节候选"]
+    }
+  ],
+  "quality_summary": {
+    "visible_coverage": 0.82,
+    "mean_confidence": 0.80,
+    "style_confidence": 0.85,
+    "low_confidence_field_count": 0,
+    "missing_critical_fields": ["车头正面细节", "车门开启机构", "真实基材", "后轮/底盘布局"],
+    "warnings": ["背景运动模糊可能干扰动态感知判断", "车辆为非手机品类，部分手机专属字段已排除", "单张侧视图无法覆盖正面与顶部细节"],
+    "concise_summary": "主物品为一辆红色复古泡泡微型车，以饱满圆润的车身、一体化透明气泡座舱和镀铬装饰线为最核心DNA；风格判定为Neo-Retro（摩登复古），整体呈现友好、怀旧且轻松的都市出行意象。"
+  }
+}

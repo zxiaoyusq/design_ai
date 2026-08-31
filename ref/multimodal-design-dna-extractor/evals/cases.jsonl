@@ -1,0 +1,10 @@
+{"id":"T01-smartphone-rear","should_trigger":true,"request":"提取这张手机图的设计DNA、风格、证据和置信度","image_scenario":"单台手机背面，主体完整，背景简单","must":["只输出一个target_object","启用相机相关模块","检查风格必要项和排除项","输出证据框"],"must_not":["推断正面开孔","伪造真实材质成分","输出第二个物品"]}
+{"id":"T02-apparel-front","should_trigger":true,"request":"分析这件衣服的设计DNA，并发现规则库里没有的字段","image_scenario":"模特穿着一件正面完整可见的连衣裙","must":["排除相机架构和DNA-M04/M05","允许使用服装轮廓和垂坠","提出服装专属新DNA候选","人物肤色不进入服装颜色"],"must_not":["把口袋类比为相机岛","把人物体型作为服装DNA","断言真实面料成分"]}
+{"id":"T03-chair","should_trigger":true,"request":"从图片提取椅子的风格和设计元素","image_scenario":"单把椅子，三分之四视角，木材与织物组合","must":["启用比例、轮廓、构图、CMF、纹理","排除相机和手机正面字段","材质写为视觉推断","可发现支撑结构或连接方式新字段"],"must_not":["分析房间背景风格","断言木材具体树种"]}
+{"id":"T04-multiple-products","should_trigger":true,"request":"提取主产品的DNA","image_scenario":"桌面上有三件不同产品，中间产品最大最清晰","must":["只选择中心主产品","说明选择依据","ignored_content记录其他产品"],"must_not":["合并三件产品颜色和材质","输出三个target_object"]}
+{"id":"T05-low-quality","should_trigger":true,"request":"识别这张模糊图片里的设计DNA","image_scenario":"主体可辨但模糊、遮挡和偏色严重","must":["降低image_quality和颜色/材质可靠度","大量关键项进入uncertain_fields","风格使用provisional或unclassified"],"must_not":["给出高精度色号","把模糊区域强制分类"]}
+{"id":"T06-no-image","should_trigger":false,"request":"请帮我提取设计DNA","image_scenario":"没有图片","must":["要求提供可读取图片或说明输入缺失"],"must_not":["根据文字凭空生成DNA JSON"]}
+{"id":"T07-image-generation","should_trigger":false,"request":"生成一张未来科技风格手机图片","image_scenario":"无待分析图片","must":["不激活提取流程"],"must_not":["把生成任务伪装成DNA提取"]}
+{"id":"T08-multi-image-comparison","should_trigger":false,"request":"比较这四张产品图的DNA差异并排序","image_scenario":"四张不同产品图","must":["指出本Skill是单图单主体边界，交给多图比较工作流"],"must_not":["静默把四图合并成一个结果"]}
+{"id":"T09-new-enum","should_trigger":true,"request":"提取鞋子的DNA并标出规则库缺失项","image_scenario":"鞋子有现有纹理字段无法覆盖的新型模块化外底分区","must":["先检索现有字段去重","根据差异选择new_field/new_enum_value/new_relation_rule","提供可参数化定义"],"must_not":["仅因造型独特就创建模糊的新字段"]}
+{"id":"T10-material-claim","should_trigger":true,"request":"判断这只包是什么材质并提取DNA","image_scenario":"皮革外观包袋，单张室内照片","must":["输出视觉材质候选和置信度","真实材质成分保持未知","低证据进入uncertain_fields"],"must_not":["断言真皮等级或具体皮种"]}

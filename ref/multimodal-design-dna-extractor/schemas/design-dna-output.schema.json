@@ -1,0 +1,1215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.internal/schemas/design-dna-output-v3.1.json",
+  "title": "Multimodal Design DNA Extraction Output",
+  "description": "Single-primary-object design DNA extraction result.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "knowledge_base_version",
+    "target_object",
+    "image_quality",
+    "module_applicability",
+    "style_result",
+    "design_elements",
+    "uncertain_fields",
+    "novel_dna_elements",
+    "evidence",
+    "quality_summary"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "design_dna_extraction_v3.1"
+    },
+    "knowledge_base_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_object": {
+      "$ref": "#/$defs/targetObject"
+    },
+    "image_quality": {
+      "$ref": "#/$defs/imageQuality"
+    },
+    "module_applicability": {
+      "$ref": "#/$defs/moduleApplicability"
+    },
+    "style_result": {
+      "$ref": "#/$defs/styleResult"
+    },
+    "design_elements": {
+      "$ref": "#/$defs/designElements"
+    },
+    "uncertain_fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/uncertainField"
+      }
+    },
+    "novel_dna_elements": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/novelDna"
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence"
+      },
+      "minItems": 1
+    },
+    "quality_summary": {
+      "$ref": "#/$defs/qualitySummary"
+    }
+  },
+  "$defs": {
+    "targetObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "object_id",
+        "category",
+        "subcategory",
+        "selection_basis",
+        "selection_confidence",
+        "bbox_norm",
+        "view",
+        "visible_regions",
+        "ignored_content"
+      ],
+      "properties": {
+        "object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subcategory": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "selection_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selection_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "bbox_norm": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          ],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "view": {
+          "enum": [
+            "front",
+            "rear",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "three_quarter",
+            "detail",
+            "unknown"
+          ]
+        },
+        "visible_regions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "ignored_content": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "imageQuality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "overall_quality",
+        "object_visible_ratio",
+        "occlusion_level",
+        "blur_level",
+        "exposure_risk",
+        "perspective_distortion",
+        "background_interference",
+        "lighting_bias",
+        "color_reliability",
+        "material_reliability",
+        "notes"
+      ],
+      "properties": {
+        "overall_quality": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "object_visible_ratio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "occlusion_level": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "blur_level": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "exposure_risk": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "perspective_distortion": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "background_interference": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "lighting_bias": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "color_reliability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "material_reliability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "moduleRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module_id",
+        "module_name",
+        "reason"
+      ],
+      "properties": {
+        "module_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "module_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "excludedModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module_id",
+        "module_name",
+        "reason",
+        "explanation"
+      ],
+      "properties": {
+        "module_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "module_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "enum": [
+            "category_not_applicable",
+            "insufficient_reference_context",
+            "other"
+          ]
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ruleAdaptation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_rule",
+        "status",
+        "adapted_rule",
+        "reason"
+      ],
+      "properties": {
+        "source_rule": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "adapted",
+            "not_applicable"
+          ]
+        },
+        "adapted_rule": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "adapted"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "adapted_rule": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "not_applicable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "adapted_rule": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "moduleApplicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicable_modules",
+        "excluded_modules",
+        "rule_adaptations"
+      ],
+      "properties": {
+        "applicable_modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/moduleRef"
+          }
+        },
+        "excluded_modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/excludedModule"
+          }
+        },
+        "rule_adaptations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ruleAdaptation"
+          }
+        }
+      }
+    },
+    "ruleCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicable_rule_count",
+        "passed_rule_count",
+        "unknown_rule_count",
+        "not_applicable_rule_count"
+      ],
+      "properties": {
+        "applicable_rule_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "passed_rule_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unknown_rule_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "not_applicable_rule_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "colorRequirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "evidence_refs"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not_applicable"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "styleAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level_1",
+        "level_2",
+        "match_score",
+        "confidence",
+        "hard_rule_passed",
+        "rule_coverage",
+        "color_requirement",
+        "core_feature_hits",
+        "auxiliary_feature_hits",
+        "missing_required_items",
+        "exclusion_hits",
+        "conflict_arbitration",
+        "evidence_refs"
+      ],
+      "properties": {
+        "level_1": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level_2": {
+          "type": "string",
+          "minLength": 1
+        },
+        "match_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "hard_rule_passed": {
+          "type": "boolean"
+        },
+        "rule_coverage": {
+          "$ref": "#/$defs/ruleCoverage"
+        },
+        "color_requirement": {
+          "$ref": "#/$defs/colorRequirement"
+        },
+        "core_feature_hits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "auxiliary_feature_hits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "missing_required_items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "exclusion_hits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "conflict_arbitration": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "styleCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank",
+        "level_1",
+        "level_2",
+        "match_score",
+        "confidence",
+        "hard_rule_passed",
+        "main_support",
+        "main_conflicts"
+      ],
+      "properties": {
+        "rank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "level_1": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level_2": {
+          "type": "string",
+          "minLength": 1
+        },
+        "match_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "hard_rule_passed": {
+          "type": "boolean"
+        },
+        "main_support": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "main_conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "styleResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification_status",
+        "primary_style",
+        "secondary_styles",
+        "candidate_ranking"
+      ],
+      "properties": {
+        "classification_status": {
+          "enum": [
+            "confirmed",
+            "provisional",
+            "unclassified"
+          ]
+        },
+        "primary_style": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/styleAssessment"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "secondary_styles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/styleAssessment"
+          },
+          "maxItems": 2
+        },
+        "candidate_ranking": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/styleCandidate"
+          }
+        }
+      }
+    },
+    "element": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_id",
+        "field_name",
+        "source_path",
+        "schema_source",
+        "value",
+        "raw_visual_description",
+        "value_type",
+        "region",
+        "applicability",
+        "observability",
+        "confidence",
+        "evidence_refs"
+      ],
+      "properties": {
+        "field_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "field_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_source": {
+          "enum": [
+            "md_original",
+            "md_extension"
+          ]
+        },
+        "value": {},
+        "raw_visual_description": {
+          "type": "string"
+        },
+        "value_type": {
+          "enum": [
+            "enum",
+            "continuous",
+            "integer",
+            "boolean",
+            "multi_label",
+            "object",
+            "text"
+          ]
+        },
+        "region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "applicability": {
+          "const": "applicable"
+        },
+        "observability": {
+          "enum": [
+            "observed",
+            "inferred",
+            "not_observable",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "observability": {
+                "const": "observed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "observability": {
+                "const": "inferred"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "observability": {
+                "const": "not_observable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value": {
+                "const": "none"
+              }
+            },
+            "required": [
+              "value"
+            ]
+          },
+          "then": {
+            "properties": {
+              "observability": {
+                "const": "observed"
+              },
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "originalDimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dimension",
+        "elements"
+      ],
+      "properties": {
+        "dimension": {
+          "enum": [
+            "ID形态",
+            "相机架构",
+            "颜色",
+            "材质工艺",
+            "纹理图案",
+            "设计细节"
+          ]
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/element"
+          }
+        }
+      }
+    },
+    "extendedModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "module_id",
+        "module_name",
+        "elements"
+      ],
+      "properties": {
+        "module_id": {
+          "type": "string",
+          "pattern": "^DNA-M(0[1-9]|1[0-5])$"
+        },
+        "module_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "elements": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/element"
+          }
+        }
+      }
+    },
+    "designElements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_md_dimensions",
+        "extended_dna_modules"
+      ],
+      "properties": {
+        "original_md_dimensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/originalDimension"
+          }
+        },
+        "extended_dna_modules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/extendedModule"
+          }
+        }
+      }
+    },
+    "candidateValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "probability",
+        "supporting_evidence_refs",
+        "contradicting_evidence_refs"
+      ],
+      "properties": {
+        "value": {},
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "supporting_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
+          "uniqueItems": true
+        },
+        "contradicting_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "uncertainField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "field_id",
+        "field_name",
+        "source_path",
+        "reason_type",
+        "reason",
+        "observability",
+        "best_estimate",
+        "confidence",
+        "candidate_values",
+        "recommended_additional_view_or_info"
+      ],
+      "properties": {
+        "field_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "field_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason_type": {
+          "enum": [
+            "low_confidence",
+            "low_visibility",
+            "occlusion",
+            "blur",
+            "lighting",
+            "reflection",
+            "perspective",
+            "multiple_candidates",
+            "not_observable",
+            "definition_gap",
+            "other"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observability": {
+          "enum": [
+            "observed",
+            "inferred",
+            "not_observable",
+            "unknown"
+          ]
+        },
+        "best_estimate": {},
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "candidate_values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidateValue"
+          },
+          "maxItems": 3
+        },
+        "recommended_additional_view_or_info": {
+          "type": "string"
+        }
+      }
+    },
+    "novelDna": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "temp_id",
+        "novelty_type",
+        "proposed_module_id",
+        "proposed_module_name",
+        "proposed_field_name",
+        "definition",
+        "observed_value",
+        "recommended_value_type",
+        "recommended_value_space_or_measurement",
+        "applicable_categories",
+        "region",
+        "distinct_from_existing_fields",
+        "design_relevance",
+        "confidence",
+        "evidence_refs",
+        "suggested_priority"
+      ],
+      "properties": {
+        "temp_id": {
+          "type": "string",
+          "pattern": "^NEW-[A-Za-z0-9_-]+$"
+        },
+        "novelty_type": {
+          "enum": [
+            "new_module",
+            "new_field",
+            "new_enum_value",
+            "new_relation_rule"
+          ]
+        },
+        "proposed_module_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "proposed_module_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "proposed_field_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_value": {},
+        "recommended_value_type": {
+          "enum": [
+            "enum",
+            "continuous",
+            "integer",
+            "boolean",
+            "multi_label",
+            "object",
+            "text"
+          ]
+        },
+        "recommended_value_space_or_measurement": {},
+        "applicable_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "distinct_from_existing_fields": {
+          "type": "string",
+          "minLength": 1
+        },
+        "design_relevance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidence_refs": {
+          "allOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^EV-[A-Za-z0-9_-]+$"
+              },
+              "uniqueItems": true
+            },
+            {
+              "minItems": 1
+            }
+          ]
+        },
+        "suggested_priority": {
+          "enum": [
+            "P0",
+            "P1",
+            "observe_more"
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence_id",
+        "bbox_norm",
+        "region",
+        "view",
+        "description",
+        "visual_cues",
+        "supports"
+      ],
+      "properties": {
+        "evidence_id": {
+          "type": "string",
+          "pattern": "^EV-[A-Za-z0-9_-]+$"
+        },
+        "bbox_norm": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          ],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "view": {
+          "enum": [
+            "front",
+            "rear",
+            "left",
+            "right",
+            "top",
+            "bottom",
+            "three_quarter",
+            "detail",
+            "unknown"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "visual_cues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "supports": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      }
+    },
+    "qualitySummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "visible_coverage",
+        "mean_confidence",
+        "style_confidence",
+        "low_confidence_field_count",
+        "missing_critical_fields",
+        "warnings",
+        "concise_summary"
+      ],
+      "properties": {
+        "visible_coverage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "mean_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "style_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "low_confidence_field_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "missing_critical_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "concise_summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
