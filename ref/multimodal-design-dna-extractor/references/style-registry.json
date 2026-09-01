@@ -1,0 +1,413 @@
+{
+  "knowledge_base_version": "3.0",
+  "parents": [
+    {
+      "parent_style_id": "restrained_craft",
+      "display_name": "克制与精工"
+    },
+    {
+      "parent_style_id": "material_ornament",
+      "display_name": "材质与华饰"
+    },
+    {
+      "parent_style_id": "technology_future",
+      "display_name": "科技与未来"
+    },
+    {
+      "parent_style_id": "motion_utility",
+      "display_name": "动势与机能"
+    },
+    {
+      "parent_style_id": "nature_organic",
+      "display_name": "自然与有机"
+    },
+    {
+      "parent_style_id": "color_graphic_culture",
+      "display_name": "色彩/图形与文化"
+    }
+  ],
+  "styles": [
+    {
+      "style_id": "PureMinimalism",
+      "parent_style_id": "restrained_craft",
+      "display_name_en": "Pure Minimalism",
+      "display_name_zh": "纯粹极简",
+      "aliases": [],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-01"],
+      "decisive_field_ids": ["CMP-09","FORM-08","TEX-01","TEX-10","PRT-13"],
+      "auxiliary_field_ids": ["CLR-17","CLR-19","CLR-20","CMP-10","CMF-07","CMF-14","DET-13"]
+    },
+    {
+      "style_id": "NordicCalm",
+      "parent_style_id": "restrained_craft",
+      "display_name_en": "Warm Calm",
+      "display_name_zh": "温润静雅",
+      "aliases": ["Nordic Calm", "静雅北欧"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-01"],
+      "decisive_field_ids": ["CLR-01","CLR-09","CLR-10","CMF-01","CMF-08","FORM-03"],
+      "auxiliary_field_ids": ["CLR-08","CMF-07","CMF-14","FORM-02","CMP-09"]
+    },
+    {
+      "style_id": "RefinedMinimalism",
+      "parent_style_id": "restrained_craft",
+      "display_name_en": "Refined Restraint",
+      "display_name_zh": "精致克制",
+      "aliases": ["Refined Minimalism", "现代简致", "静奢简雅"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-01", "CG-02"],
+      "decisive_field_ids": ["FORM-05","FORM-08","FORM-13","CMF-13","PRT-13","DEV-03","DEV-05","DET-09"],
+      "auxiliary_field_ids": ["CMP-09","CMF-07","FORM-09","DET-13","GEO-07"]
+    },
+    {
+      "style_id": "PrecisionMinimalism",
+      "parent_style_id": "restrained_craft",
+      "display_name_en": "Precision Order",
+      "display_name_zh": "精密秩序",
+      "aliases": ["精工极简"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-02", "CG-03"],
+      "decisive_field_ids": ["CMF-01","CMF-05","CMF-08","FORM-10","CMP-02","CMP-07"],
+      "auxiliary_field_ids": ["CMF-03","CMF-07","FORM-08","FORM-09","DET-13","OPT-03"]
+    },
+    {
+      "style_id": "SoftContemporary",
+      "parent_style_id": "restrained_craft",
+      "display_name_en": "Soft Pastel",
+      "display_name_zh": "柔和粉彩",
+      "aliases": ["柔感当代", "SoftPastel"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-01"],
+      "decisive_field_ids": ["CLR-01","CLR-04","CLR-09","CLR-10","FORM-03"],
+      "auxiliary_field_ids": ["CLR-20","FORM-01","FORM-02","FORM-06","CMP-09","CMF-07","CMF-14"]
+    },
+    {
+      "style_id": "ModernPrestige",
+      "parent_style_id": "material_ornament",
+      "display_name_en": "Warm Metal Luxury",
+      "display_name_zh": "暖金精奢",
+      "aliases": ["现代轻奢"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-02"],
+      "decisive_field_ids": ["CLR-01","CLR-04","CLR-13","CMF-01","CMF-05","CMF-08"],
+      "auxiliary_field_ids": ["CMF-03","CMF-07","CMF-13","FORM-09","OPT-01","OPT-02"]
+    },
+    {
+      "style_id": "QuietElegantLuxury",
+      "parent_style_id": "material_ornament",
+      "display_name_en": "Quiet Elegant Luxury",
+      "display_name_zh": "静奢简雅",
+      "aliases": [],
+      "status": "deprecated",
+      "replaced_by": "RefinedMinimalism",
+      "confusion_groups": ["CG-02"]
+    },
+    {
+      "style_id": "ClassicPrestige",
+      "parent_style_id": "material_ornament",
+      "display_name_en": "Classic Pattern",
+      "display_name_zh": "经典纹样",
+      "aliases": ["经典尊享"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-07", "CG-08"],
+      "decisive_field_ids": ["TEX-01","TEX-04","TEX-06","TEX-07","TEX-10","TEX-12","DET-16"],
+      "auxiliary_field_ids": ["TEX-03","TEX-08","TEX-09","TEX-11","TEX-13","DET-09","DET-10","CMF-01"]
+    },
+    {
+      "style_id": "DecorativeLuxury",
+      "parent_style_id": "material_ornament",
+      "display_name_en": "Ornate Pattern",
+      "display_name_zh": "华饰繁纹",
+      "aliases": ["繁奢装饰"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-07"],
+      "decisive_field_ids": ["TEX-04","TEX-10","TEX-12","CMF-05","DET-16"],
+      "auxiliary_field_ids": ["TEX-03","TEX-08","TEX-09","TEX-11","DET-09","DET-10","DET-13","CMP-06"]
+    },
+    {
+      "style_id": "MaturePremium",
+      "parent_style_id": "material_ornament",
+      "display_name_en": "Deep Materiality",
+      "display_name_zh": "深色醇厚",
+      "aliases": ["成熟醇厚"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-02", "CG-08"],
+      "decisive_field_ids": ["CLR-01","CLR-09","CLR-13","CMF-01","CMF-05","CMF-08","CMF-10"],
+      "auxiliary_field_ids": ["CMF-03","CMF-06","CMF-07","OPT-01","OPT-02","OPT-10","DET-09"]
+    },
+    {
+      "style_id": "PureFuture",
+      "parent_style_id": "technology_future",
+      "display_name_en": "Fluid Monolith",
+      "display_name_zh": "流体单体",
+      "aliases": ["纯净未来", "FluidMonolith"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-04"],
+      "decisive_field_ids": ["FORM-01","FORM-06","FORM-10","FORM-13","CMF-09","OPT-07"],
+      "auxiliary_field_ids": ["FORM-02","FORM-07","FORM-08","FORM-14","CMF-12","OPT-01","OPT-02","CLR-17"]
+    },
+    {
+      "style_id": "MechanicalTech",
+      "parent_style_id": "technology_future",
+      "display_name_en": "Exposed Mechanics",
+      "display_name_zh": "外露机械",
+      "aliases": ["机械科技"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-03"],
+      "decisive_field_ids": ["PRT-02","PRT-03","PRT-04","GEO-09","DET-07","PRT-13"],
+      "auxiliary_field_ids": ["PRT-01","PRT-07","PRT-10","DET-06","DET-13","CMF-08"]
+    },
+    {
+      "style_id": "CyberNeon",
+      "parent_style_id": "technology_future",
+      "display_name_en": "Neon Interface",
+      "display_name_zh": "霓虹界面",
+      "aliases": ["Cyber Neon", "赛博霓虹", "NeonInterface"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-04"],
+      "decisive_field_ids": ["OPT-08","OPT-09","IDG-05","DET-16"],
+      "auxiliary_field_ids": ["CLR-03","CLR-10","CLR-12","CMP-07","CMP-08","OPT-04","OPT-12"]
+    },
+    {
+      "style_id": "ArcaneFuture",
+      "parent_style_id": "technology_future",
+      "display_name_en": "Techno-Mysticism",
+      "display_name_zh": "科技秘仪",
+      "aliases": ["神秘未来"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-04"],
+      "decisive_field_ids": ["IDG-05","DET-16","CMP-01","PRT-08","OPT-08","OPT-07","CMF-10"],
+      "auxiliary_field_ids": ["CMP-08","OPT-10","CLR-12","OPT-12","IDG-06"]
+    },
+    {
+      "style_id": "ParametricTech",
+      "parent_style_id": "technology_future",
+      "display_name_en": "Algorithmic Relief",
+      "display_name_zh": "算法浮雕",
+      "aliases": ["参数化科技", "AlgorithmicRelief"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-03"],
+      "decisive_field_ids": ["PRT-08","PRT-09","TEX-04","TEX-06","TEX-07","FORM-14"],
+      "auxiliary_field_ids": ["TEX-03","TEX-08","TEX-09","TEX-14","CMP-11","FORM-02"]
+    },
+    {
+      "style_id": "TechComposition",
+      "parent_style_id": "technology_future",
+      "display_name_en": "Technical Graphics",
+      "display_name_zh": "技术图形",
+      "aliases": ["Tech Composition", "科技构成", "TechnicalGraphics"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-03"],
+      "decisive_field_ids": ["IDG-05","DET-16","CMP-07"],
+      "auxiliary_field_ids": ["IDG-01","IDG-02","IDG-03","IDG-06","CMP-08","CMP-11","CMP-13","DET-08"]
+    },
+    {
+      "style_id": "KineticEnergy",
+      "parent_style_id": "motion_utility",
+      "display_name_en": "Kinetic Energy",
+      "display_name_zh": "动感能量",
+      "aliases": [],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-05"],
+      "decisive_field_ids": ["GEO-13","CMP-12","DET-16","PRT-13"],
+      "auxiliary_field_ids": ["FORM-02","FORM-07","FORM-14","CMP-11","CMP-15","GEO-12","TEX-05","TEX-14"]
+    },
+    {
+      "style_id": "ArmorPower",
+      "parent_style_id": "motion_utility",
+      "display_name_en": "Armored Massing",
+      "display_name_zh": "装甲体量",
+      "aliases": ["重甲力量", "ArmoredMassing"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-03"],
+      "decisive_field_ids": ["FORM-11","GEO-09","PRT-02","CMF-10"],
+      "auxiliary_field_ids": ["GEO-03","GEO-08","GEO-12","FORM-03","FORM-08","PRT-10","OPT-10"]
+    },
+    {
+      "style_id": "FunctionalAesthetics",
+      "parent_style_id": "motion_utility",
+      "display_name_en": "Rugged Utility",
+      "display_name_zh": "强韧机能",
+      "aliases": ["Functional Aesthetics", "功能美学", "RuggedUtility"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-03"],
+      "decisive_field_ids": ["PRT-13","DEV-09","FORM-11","DET-07"],
+      "auxiliary_field_ids": ["PRT-01","PRT-05","DET-01","DET-02","DET-03","DET-04","DET-06","DET-16","FORM-08"]
+    },
+    {
+      "style_id": "NaturalTextures",
+      "parent_style_id": "nature_organic",
+      "display_name_en": "Natural Surface",
+      "display_name_zh": "自然表面",
+      "aliases": ["Natural Textures", "自然肌理", "NaturalSurface"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-06"],
+      "decisive_field_ids": ["TEX-01","TEX-04","TEX-06","TEX-10"],
+      "auxiliary_field_ids": ["TEX-03","TEX-09","TEX-11","TEX-13","CMF-01","CMF-06","CMF-14"]
+    },
+    {
+      "style_id": "BiomorphicForm",
+      "parent_style_id": "nature_organic",
+      "display_name_en": "Biomorphic Form",
+      "display_name_zh": "仿生形态",
+      "aliases": [],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-06"],
+      "decisive_field_ids": ["FORM-12","PRT-03","PRT-08"],
+      "auxiliary_field_ids": ["FORM-01","FORM-02","FORM-06","FORM-07","FORM-14","PRT-02","PRT-07","PRT-11","CMP-12"]
+    },
+    {
+      "style_id": "MysticOrganic",
+      "parent_style_id": "nature_organic",
+      "display_name_en": "Dark Organic",
+      "display_name_zh": "幽暗有机",
+      "aliases": ["秘境自然"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-04", "CG-06"],
+      "decisive_field_ids": ["FORM-12","PRT-02","TEX-01","TEX-04","TEX-10","OPT-07","OPT-08","CMF-09","CMF-10"],
+      "auxiliary_field_ids": ["OPT-10","OPT-12","CLR-12","TEX-03","FORM-14"]
+    },
+    {
+      "style_id": "RefinedWilderness",
+      "parent_style_id": "nature_organic",
+      "display_name_en": "Raw Refinement",
+      "display_name_zh": "粗粝精工",
+      "aliases": ["精致荒野", "RawRefinement"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-06"],
+      "decisive_field_ids": ["CMF-01","CMF-13","TEX-01","TEX-04","FORM-03","FORM-08"],
+      "auxiliary_field_ids": ["CMF-04","CMF-06","CMF-07","CMF-14","TEX-03","TEX-09","FORM-09"]
+    },
+    {
+      "style_id": "FreshJoy",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Fresh Joy",
+      "display_name_zh": "清新愉悦",
+      "aliases": [],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-01"],
+      "decisive_field_ids": ["CLR-01","CLR-04","CLR-09","CLR-10","CLR-13"],
+      "auxiliary_field_ids": ["CLR-20","FORM-01","FORM-02","FORM-03","FORM-06","CMF-07","CMF-08","CMP-09","CMP-10"]
+    },
+    {
+      "style_id": "SaturatedBold",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Saturated Bold",
+      "display_name_zh": "个性鲜彩",
+      "aliases": [],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-05"],
+      "decisive_field_ids": ["CLR-01","CLR-04","CLR-09","CLR-10","CLR-13"],
+      "auxiliary_field_ids": ["CLR-02","CLR-03","CLR-05","CLR-06","CLR-12","CLR-20","CMP-13"]
+    },
+    {
+      "style_id": "DreamyAir",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Dreamy Air",
+      "display_name_zh": "柔雾幻彩",
+      "aliases": [],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-04"],
+      "decisive_field_ids": ["CLR-14","CMF-05","CMF-09","OPT-07"],
+      "auxiliary_field_ids": ["CLR-15","CLR-16","CMF-07","CMF-08","OPT-01","OPT-02","OPT-03","OPT-12"]
+    },
+    {
+      "style_id": "Y2KDigital",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Iridescent Optics",
+      "display_name_zh": "虹彩光学",
+      "aliases": ["千禧幻彩", "IridescentOptics"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-04"],
+      "decisive_field_ids": ["CMF-05","CMF-08","OPT-03","CLR-14"],
+      "auxiliary_field_ids": ["CLR-16","OPT-01","OPT-02","OPT-04","OPT-12","CLR-12"]
+    },
+    {
+      "style_id": "FashionGraphic",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Geometric Color Blocking",
+      "display_name_zh": "几何色块",
+      "aliases": ["时尚构成", "GeometricColorBlocking"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-05", "CG-07"],
+      "decisive_field_ids": ["CLR-13","TEX-12","DET-16","CMP-07"],
+      "auxiliary_field_ids": ["CLR-02","CLR-03","CLR-05","CLR-06","CLR-07","CLR-11","CLR-12","CLR-20","CMP-01","CMP-08","CMP-11","CMP-13","TEX-11"]
+    },
+    {
+      "style_id": "NeoRetro",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Retro Recomposition",
+      "display_name_zh": "复古重组",
+      "aliases": ["Neo-Retro", "Neo Retro", "Modern Retro", "摩登复古"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-08"],
+      "decisive_field_ids": ["CMF-01","CMF-05","CLR-01","CLR-13","DET-09","DET-10","IDG-04","IDG-05","PRT-13","FORM-04"],
+      "auxiliary_field_ids": ["CLR-02","CLR-08","CMF-04","DET-01","DET-02","DET-04","DET-13","DET-14","IDG-06"]
+    },
+    {
+      "style_id": "FolkOrnament",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Craft Ornament",
+      "display_name_zh": "工艺纹饰",
+      "aliases": ["Folk Ornament", "民艺纹饰", "CraftOrnament"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-07"],
+      "decisive_field_ids": ["TEX-01","TEX-04","TEX-07","TEX-08","TEX-10","CMF-05"],
+      "auxiliary_field_ids": ["PRT-01","TEX-03","TEX-06","TEX-09","TEX-11","TEX-13","DET-08","DET-13","DET-16"]
+    },
+    {
+      "style_id": "ExpressiveMotifs",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Statement Graphic",
+      "display_name_zh": "主张图形",
+      "aliases": ["Expressive Motifs", "个性潮纹", "StatementGraphic"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-07"],
+      "decisive_field_ids": ["IDG-05","TEX-10","DET-16","CLR-13"],
+      "auxiliary_field_ids": ["IDG-01","IDG-02","IDG-03","IDG-06","TEX-11","CMP-04","CMP-05","CMP-13","DET-08"]
+    },
+    {
+      "style_id": "TribeIdentity",
+      "parent_style_id": "color_graphic_culture",
+      "display_name_en": "Recognized Identity",
+      "display_name_zh": "可识别身份标识",
+      "aliases": ["圈层认同", "RecognizedIdentity"],
+      "status": "active",
+      "replaced_by": null,
+      "confusion_groups": ["CG-07"],
+      "decisive_field_ids": ["IDG-05"],
+      "auxiliary_field_ids": ["IDG-01","IDG-02","IDG-03","IDG-04","IDG-06","IDG-07","IDG-08","IDG-09","CLR-13"]
+    }
+  ]
+}

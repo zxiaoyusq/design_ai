@@ -1,6 +1,6 @@
 # 设计 DNA 提取执行协议
 
-> 本文件是 `multimodal-design-dna-extractor` Skill 的详细执行协议。宿主应同时提供一张图片，并按 `SKILL.md` 加载完整知识库与输出 Schema。
+> 本协议适用于 `schema_version="design_dna_extraction_v4.0"` 与 `knowledge_base_version="3.0"`。宿主应同时提供一张图片、完整知识库与输出 Schema。
 
 ---
 
@@ -21,7 +21,7 @@
 </DESIGN_DNA_KNOWLEDGE_BASE>
 ```
 
-知识库是已有风格、标签、字段定义、必要项、排除项、冲突仲裁、色彩规则和 DNA 模块的主要判定依据。通用设计知识只能用于：
+知识库是已有风格、标签、字段定义、必要项、异混淆特征、排除项、冲突仲裁、色彩规则和 DNA 模块的主要判定依据。通用设计知识只能用于：
 
 - 理解图片中的可见设计事实；
 - 解释知识库字段；
@@ -52,16 +52,23 @@
 
 ### 2. 先识别品类，再决定字段是否适用
 
-先判断主物品的 `category` 和 `subcategory`，然后建立模块适用性。
+先判断主物品的 `category` 和 `subcategory`，再把有可见对象依据的 profile 写入 `module_applicability.active_profiles`。必须包含 `core`；当前单图不得激活 multi-face、reference 或 trend profile，M15 固定以 `profile_not_applicable` 排除。
 
-对每个知识库模块或字段，区分四种情况：
+字段状态使用三条独立轴，禁止以其中一轴代替另一轴：
 
-- `applicable`：该维度对当前物品品类有明确设计意义；
-- `not_applicable`：该维度与当前物品品类无关；
-- `not_observable`：该维度对当前品类有意义，但当前图片或视角看不到；
-- `unknown`：相关区域可见，但受清晰度、遮挡、光照、透视或定义歧义影响，无法可靠判断。
+- `applicability_status="applicable|not_applicable"`：只回答字段是否属于当前品类；
+- `observability="observed|not_observable|unknown"`：只回答必要视觉输入是否可见；
+- `computation_status="computed|not_computable|not_requested"`：回答计算状态；direct 固定无需计算，其余字段只能已计算或不可计算。
 
-只在 `design_elements` 中输出 `applicable` 的模块与字段。
+字段注册表中的 `evidence_mode` 决定三轴解释：
+
+- `direct`：使用 `observability`，`computation_status="not_requested"`；
+- `derived|inferred`：必要视觉输入可见并完成计算时为 `observed + computed`，输入不足时为 `not_computable`；
+- `reference_computed`：core 字段缺参考集时为 `not_computable`；未激活 profile 的字段不进入结果，带来源版本的计算交给扩展工作流。
+
+字段的 profile 必须命中 `active_profiles`；确认值还必须满足注册表 `required_views`。不满足视角的 direct 字段只能 `not_observable`，非直接字段只能 `not_computable`。
+
+只在 `design_elements` 中输出 `applicability_status="applicable"` 的模块与字段。
 
 `not_applicable` 的模块不得硬套、不得生成字段值，只需在 `excluded_modules` 中简要记录模块及排除原因。例如：
 
@@ -78,12 +85,7 @@
 
 ### 3. 先观察，再推断
 
-所有结论必须区分：
-
-- `observed`：图片中可直接观察；
-- `inferred`：基于多个观察事实作出的设计语义、触感、人因、价值感或场景推断；
-- `not_observable`：当前图像不可见；
-- `unknown`：可见但无法可靠判定。
+所有结论必须按注册表 `evidence_mode` 执行：直接字段写可见事实；派生或推断字段只有在证据链完整时才能标为 `computed`；参考计算字段缺参考集时标为 `not_computable`。
 
 不得把推断写成事实。以下字段默认属于 `inferred`，除非知识库另有明确规定：
 
@@ -97,16 +99,17 @@
 
 ### 4. 严格区分“不存在”和“无法判断”
 
-- 确认不存在某元素：`value="none"`，`observability="observed"`；
+- 确认不存在某元素：使用字段值域内的“无”或空列表，`observability="observed"`；
 - 当前视角看不到：`observability="not_observable"`；
 - 区域可见但信息不足：`observability="unknown"`；
-- 与该品类无关：`applicability="not_applicable"`，且不进入提取字段。
+- 需要参考集、时间序列或标定数据但未提供：`computation_status="not_computable"`；
+- 与该品类无关：`applicability_status="not_applicable"`，且不进入提取字段。
 
-不得混用 `none`、`unknown`、`not_observable` 和 `not_applicable`。
+不得混用“无”、三轴状态和品类不适用，也不得跨类型写通用 `none`。
 
 ## 三、分析流程
 
-必须按以下顺序完成。设计 DNA 结果本体只能是 JSON，不得包含思考过程；文件型宿主还需按 `SKILL.md` 的落盘流程保存结果并生成业务视图。
+必须按以下顺序完成。设计 DNA 结果本体只能是 JSON，不得包含思考过程。文件保存与业务视图转换由宿主应用负责。
 
 ### 步骤 A：主物品定位与图像质量评估
 
@@ -123,70 +126,31 @@
 
 ### 步骤 B：模块适用性判断
 
-依据物品类别，从知识库原始六个设计维度及 DNA-M01～DNA-M15 中选择适用模块。
+依据品类适配规则与字段注册表，从 DNA-M01～DNA-M15 中选择适用模块和 profile。不能只根据模块名称判断；例如色彩、轮廓和纹理通常跨品类适用，成像设备字段只适用于相应 profile。
 
-适用性判断不能只根据模块名称，还要根据字段定义。例如“构图与视觉秩序”“色彩系统”“纹理语法”通常跨品类适用；“相机系统精细 DNA”通常仅适用于带相机模组的产品。
+### 步骤 C：先提取已有设计 DNA
 
-### 步骤 C：一级与二级风格判定
+字段身份与机器元数据以字段注册表为准，enum/multi_label 值域以知识库规范表为准：
 
-使用知识库中的一级风格和二级风格原名进行判断，不得自行改名。
-
-风格判定必须依次执行：
-
-1. 提取与该风格有关的颜色、形态、构图、装饰、材质、纹理、光泽和细节证据；
-2. 检查“入围门槛”和颜色必要项；
-3. 统计核心视觉特征与辅助特征命中情况；
-4. 检查排除规则。排除项命中时必须执行一票否决；
-5. 执行冲突仲裁和优先判定；
-6. 再使用 DNA-M13 语义坐标做排序辅助，不得用语义坐标绕过硬规则。
-
-判定要求：
-
-- `primary_style` 最多一个；
-- `secondary_styles` 为 0～2 个，必须有独立证据，并且同样通过其适用的必要项和排除项；仅部分相似但未通过硬规则的风格只能进入 `candidate_ranking`；
-- 不得为了满足格式而强行分类；
-- 若没有任何二级风格满足适用的必要条件，输出 `classification_status="unclassified"`；
-- 若最佳候选基本符合，但受图像缺失或低置信度影响，输出 `classification_status="provisional"`；
-- 只有硬规则通过、排除项未命中且证据充分时，才输出 `classification_status="confirmed"`。
-
-每个风格结果都必须给出：
-
-- 一级风格；
-- 二级风格；
-- 0～100 匹配分；
-- 0～1 置信度；
-- 适用规则数、通过数和未知数；
-- 颜色必要项结果；
-- 核心特征命中；
-- 辅助特征命中；
-- 缺失的必要项；
-- 排除项命中；
-- 冲突仲裁说明；
-- 证据引用。
-
-若某条风格规则含当前品类不适用的专属条款，将该条款记为 `not_applicable`，并从风格规则分母中排除，不能将其视为已通过。
-
-### 步骤 D：已有设计 DNA 字段提取
-
-并行输出两层结构：
-
-1. `original_md_dimensions`：知识库原始设计元素，包括 ID 形态、相机架构、颜色、材质工艺、纹理图案、设计细节；
-2. `extended_dna_modules`：知识库 DNA-M01～DNA-M15 中与当前物品相关的字段。
+1. `extended_dna_modules` 保存适用的规范字段；
+2. `original_md_dimensions` 是宿主兼容槽；当前模型固定输出 `[]`，不得独立推断、重复提取或重复计分。
 
 对每个字段输出统一记录：
 
 ```json
 {
-  "field_id": "知识库有 ID 时填写，否则为 null",
+  "field_id": "字段注册表 ID；仅旧兼容项可为 null",
   "field_name": "知识库中的字段或标签名称",
   "source_path": "知识库章节路径",
   "schema_source": "md_original 或 md_extension",
   "value": "标准化结果",
   "raw_visual_description": "仅描述图片中可见事实，不写抽象判断",
-  "value_type": "enum|continuous|integer|boolean|multi_label|object|text",
+  "value_type": "enum|float|integer|boolean|list|multi_label|object|text",
+  "evidence_mode": "direct|derived|inferred|reference_computed",
   "region": "whole_object 或具体部位",
-  "applicability": "applicable",
-  "observability": "observed|inferred|not_observable|unknown",
+  "applicability_status": "applicable",
+  "observability": "observed|not_observable|unknown",
+  "computation_status": "computed|not_computable|not_requested",
   "confidence": 0.0,
   "evidence_refs": ["EV-001"]
 }
@@ -194,15 +158,52 @@
 
 要求：
 
-- 优先使用知识库规定的枚举值、字段 ID、定义和数值范围；
-- 同时保留离散标签和可估计的连续值；
-- 多标签字段可以输出多个值；
+- 严格使用字段注册表规定的字段 ID、定义、值类型、枚举和数值范围；
+- 只在字段值类型允许时输出列表或连续值；
+- `list` 只用于结构化条目或混合对象，纯字符串标签集合使用 `multi_label`；派生字段必须具备注册表声明的全部可用源字段，跨区域汇总统一写 `region="whole_object"`。
 - 不得输出与当前物品无关的字段；
 - 对当前品类有意义但当前视角看不到的重要字段，放入 `uncertain_fields`，不需要把整个知识库所有不可见字段逐项罗列；
 - 同义标签不得重复计数；
 - 知识库底部重复出现的相同规则只执行一次。
 
-### 步骤 E：颜色、材质和光学效果专项约束
+本步骤不得先指定风格再反向寻找证据。DNA-M13 只记录语义候选，不参与本步骤的风格召回或硬规则判断。
+
+### 步骤 D：候选召回、硬规则与混淆仲裁
+
+只能用步骤 C 已提取的可观察 DNA 和对应证据召回候选。一级分组仅用于导航，不作为排他条件；风格以稳定 `style_id` 和 `parent_style_id` 标识，同时保留 `level_1`、`level_2` 兼容显示字段。
+
+依次执行：
+
+1. 用决定性锚点召回候选，不能只靠抽象语义或单个宽泛线索；
+2. 检查入围硬门槛、颜色角色和品类适用条款；
+3. 要求至少 1 个决定性锚点和 1 个独立辅助证据，同一区域、同一物理现象只计一次；
+4. 检查排除规则，硬排除命中即否决；
+5. 按知识库混淆组或“异混淆特征”核对共享表象、决定性差异和降级条件；
+6. 输出候选排序、主风格和最多两个次要风格。
+
+判定要求：
+
+- `confirmed`：主风格硬规则通过、无缺失必要项和排除命中、证据充分；涉及易混候选时必须完成有证据的仲裁；
+- `provisional`：存在最佳候选，但决定性差异不可观察、不可计算或证据置信度不足；
+- `unclassified`：没有风格通过硬门槛，此时 `primary_style=null` 且 `secondary_styles=[]`；
+- 次要风格必须通过自己的硬规则、无排除命中并具有独立证据；未通过者只能留在 `candidate_ranking`；
+- 品类专属条款为 `not_applicable` 时从规则分母排除，不得当作通过；
+- `rule_coverage.applicable_rule_count = passed_rule_count + unknown_rule_count + failed_rule_count`；`not_applicable_rule_count` 不进入分母。
+
+“异混淆特征”是候选间的对照规则，不新增结果字段。共享表象不能同时作为双方的独立入围证据；分界不可观察或仍可解释为功能结构、背景或拍摄效果时，相关风格不得 `confirmed`。
+
+每个风格评估必须包含稳定 ID、中英文标签、兼容显示标签、规则覆盖、颜色要求、硬规则结果、锚点与辅助命中、缺失项、排除项、仲裁说明及证据引用；每条锚点/辅助命中须显式写规范 `field_id`。
+
+### 步骤 E：硬判之后再使用语义坐标
+
+完成步骤 D 后才可使用 DNA-M13：
+
+- 只能对已通过硬门槛的候选做排序辅助或解释；
+- 不能补足决定性锚点，不能抵消缺失项或排除项；
+- 语义轴使用 `evidence_mode="inferred"` 和 `computation_status="computed"`，至少引用两条观察证据；
+- 没有可靠硬判结果时，语义相似不得把 `unclassified` 提升为 `provisional` 或 `confirmed`。
+
+### 步骤 F：颜色、材质和光学效果专项约束
 
 颜色：
 
@@ -219,7 +220,7 @@
 - “看起来像金属、玻璃、皮革”等是视觉材质推断，不等于真实材料成分；
 - 低证据时输出候选分布，不强制单选。
 
-### 步骤 F：不确定字段处理
+### 步骤 G：不确定字段处理
 
 以下任一情况必须加入 `uncertain_fields`：
 
@@ -227,13 +228,14 @@
 - 存在两个及以上合理候选；
 - 受遮挡、模糊、透视、环境光、反射或分辨率影响；
 - 字段对当前品类适用，但当前视图不可见；
+- 字段对当前品类适用，但缺少必要参考集、时间序列、标定数据或外部知识而不可计算；
 - 知识库定义边界不足以唯一归类。
 
 每个不确定字段必须包含：
 
 - 最佳估计；
 - 不确定原因；
-- `observability`；
+- 三轴状态与 `evidence_mode`；
 - 0～1 置信度；
 - 1～3 个候选值及概率；
 - 支持和反对各候选的可见证据；
@@ -241,7 +243,7 @@
 
 候选概率之和应约等于 1。若完全无法判断，候选值可以为空，不得编造。
 
-### 步骤 G：发现知识库未覆盖的新 DNA
+### 步骤 H：发现知识库未覆盖的新 DNA
 
 在完成已有字段映射后，再进行开放式 DNA 发现。寻找图片中可观察、设计相关、可复用、可参数化，但无法被知识库现有字段充分表达的元素。
 
@@ -268,6 +270,7 @@
 - 临时 ID，如 `NEW-001`；
 - 新颖类型；
 - 建议所属模块；
+- `new_enum_value` 对应的规范 `existing_field_id`，其他类型为 `null`；
 - 建议字段名；
 - 精确定义；
 - 当前图片中的观测值；
@@ -296,8 +299,7 @@
   "region": "具体部位或 whole_object",
   "view": "front|rear|left|right|top|bottom|three_quarter|detail|unknown",
   "description": "只描述可见事实",
-  "visual_cues": ["尺寸关系", "轮廓", "颜色", "高光", "纹理"],
-  "supports": ["字段 ID、字段路径或风格名称"]
+  "visual_cues": ["尺寸关系", "轮廓", "颜色", "高光", "纹理"]
 }
 ```
 
@@ -306,9 +308,10 @@
 - `bbox_norm` 为证据所在区域，不是随意填充；
 - 全局比例、整体风格等无法局部框选的属性，可以使用主物品整体框；
 - 每个 `observed` 字段至少有一个证据引用；
-- 每个 `inferred` 语义结论至少引用两个观察型字段或证据；
+- 每个 `evidence_mode="inferred"` 且已计算的语义结论至少引用两个观察型字段或证据；
 - 证据描述只写“看到了什么”，不要在证据描述中重复结论；
-- 同一证据可支持多个字段，但不能用一个模糊证据支持所有结论。
+- 结论侧 `evidence_refs` 是唯一证据关联；证据对象不反向维护关联列表。
+- 同一证据可被多个结论引用，但不能用一个模糊证据支持所有结论。
 
 ## 五、置信度校准
 
@@ -322,255 +325,121 @@
 
 风格置信度必须综合：硬规则、颜色可靠度、核心特征覆盖率、排除项、图像质量和规则适用性，不得只依据整体“感觉像”。
 
-## 六、输出要求
+## 六、输出与权威结构
 
-生成一个严格合法的 JSON 对象作为结果文件内容：
+完整结果必须满足：
 
-- 结果文件中不写 Markdown；
-- 结果文件中不写解释性前言、结尾或保存路径；
-- 不输出分析过程；
-- 不添加注释；
-- 不使用尾逗号；
-- 所有键均保留；
-- 没有内容的数组输出 `[]`；
-- 不适用或不可得的单值使用 `null`；
-- 文字内容使用中文，知识库中的英文风格名、字段 ID 和标准枚举原样保留。
+- `schema_version="design_dna_extraction_v4.0"`；
+- `knowledge_base_version="3.0"`；
+- 顶层和嵌套结构通过 `schemas/design-dna-output.schema.json`；
+- 结果只包含 JSON，不含 Markdown 围栏、分析过程、注释、路径或尾逗号；
+- 空集合使用 `[]`，单值不可得使用 `null`；
+- 稳定 ID、英文标签和标准枚举保持原样。
 
-其中 `overall_quality`、`object_visible_ratio`、`color_reliability`、`material_reliability` 均为 0～1，数值越高越好；其余以 `risk`、`level`、`interference` 命名的图像问题字段均为 0～1，数值越高表示问题越严重。
+Schema 是结构、必填字段和枚举的唯一权威来源。本文不复制完整顶层模板，以免与 Schema 漂移。提取器只生成结果；文件保存、命名、防覆盖、业务视图和路径回执由宿主应用负责，不属于结果 JSON。
 
-输出结构如下：
+`overall_quality`、`object_visible_ratio`、`color_reliability`、`material_reliability` 均为 0～1，越高越好；以 `risk|level|interference` 命名的图像问题字段越高表示问题越严重。
+
+### confirmed 风格与规范字段片段
+
+以下片段展示必填字段的最小完整写法；其他顶层字段仍须按 Schema 输出。示例中的 `EV-001` 必须存在于顶层 `evidence`。
 
 ```json
 {
-  "schema_version": "design_dna_extraction_v3.1",
-  "knowledge_base_version": "从输入 Markdown 读取，无法确定则为 null",
-  "target_object": {
-    "object_id": "main_object_01",
-    "category": "主品类",
-    "subcategory": "子品类或 null",
-    "selection_basis": "为什么选择该物品作为主物品",
-    "selection_confidence": 0.0,
-    "bbox_norm": [0.0, 0.0, 1.0, 1.0],
-    "view": "front|rear|left|right|top|bottom|three_quarter|detail|unknown",
-    "visible_regions": [],
-    "ignored_content": []
-  },
-  "image_quality": {
-    "overall_quality": 0.0,
-    "object_visible_ratio": 0.0,
-    "occlusion_level": 0.0,
-    "blur_level": 0.0,
-    "exposure_risk": 0.0,
-    "perspective_distortion": 0.0,
-    "background_interference": 0.0,
-    "lighting_bias": 0.0,
-    "color_reliability": 0.0,
-    "material_reliability": 0.0,
-    "notes": []
-  },
-  "module_applicability": {
-    "applicable_modules": [
-      {
-        "module_id": "模块 ID 或原始维度名",
-        "module_name": "模块名称",
-        "reason": "适用原因"
-      }
-    ],
-    "excluded_modules": [
-      {
-        "module_id": "模块 ID 或原始维度名",
-        "module_name": "模块名称",
-        "reason": "category_not_applicable",
-        "explanation": "不适用于当前品类的原因"
-      }
-    ],
-    "rule_adaptations": [
-      {
-        "source_rule": "知识库原规则或规则路径",
-        "status": "adapted|not_applicable",
-        "adapted_rule": "适配后的规则；未适配时为 null",
-        "reason": "为什么需要适配或排除"
-      }
-    ]
-  },
+  "schema_version": "design_dna_extraction_v4.0",
+  "knowledge_base_version": "3.0",
   "style_result": {
-    "classification_status": "confirmed|provisional|unclassified",
+    "classification_status": "confirmed",
     "primary_style": {
-      "level_1": "知识库一级风格原名或 null",
-      "level_2": "知识库二级风格原名或 null",
-      "match_score": 0.0,
-      "confidence": 0.0,
-      "hard_rule_passed": false,
+      "style_id": "PureMinimalism",
+      "parent_style_id": "restrained_craft",
+      "label_en": "Pure Minimalism",
+      "label_zh": "纯粹极简",
+      "aliases": [],
+      "level_1": "克制与精工",
+      "level_2": "纯粹极简",
+      "match_score": 88,
+      "confidence": 0.87,
+      "hard_rule_passed": true,
       "rule_coverage": {
-        "applicable_rule_count": 0,
-        "passed_rule_count": 0,
+        "applicable_rule_count": 2,
+        "passed_rule_count": 2,
+        "failed_rule_count": 0,
         "unknown_rule_count": 0,
         "not_applicable_rule_count": 0
       },
       "color_requirement": {
-        "status": "pass|fail|unknown|not_applicable",
+        "status": "not_applicable",
         "evidence_refs": []
       },
-      "core_feature_hits": [],
-      "auxiliary_feature_hits": [],
+      "core_feature_hits": ["CMP-09、CMP-10：大面积留白与低信息密度"],
+      "auxiliary_feature_hits": ["FORM-08、DET-13：必要功能部件未形成装饰焦点"],
       "missing_required_items": [],
       "exclusion_hits": [],
-      "conflict_arbitration": "",
-      "evidence_refs": []
+      "conflict_arbitration": "已与温润静雅比较；未见其材质与形态锚点。",
+      "evidence_refs": ["EV-001"]
     },
-    "secondary_styles": [
-      {
-        "level_1": "",
-        "level_2": "",
-        "match_score": 0.0,
-        "confidence": 0.0,
-        "hard_rule_passed": false,
-        "core_feature_hits": [],
-        "exclusion_hits": [],
-        "evidence_refs": []
-      }
-    ],
-    "candidate_ranking": [
-      {
-        "rank": 1,
-        "level_1": "",
-        "level_2": "",
-        "match_score": 0.0,
-        "confidence": 0.0,
-        "hard_rule_passed": false,
-        "main_support": [],
-        "main_conflicts": []
-      }
-    ]
+    "secondary_styles": [],
+    "candidate_ranking": []
   },
   "design_elements": {
-    "original_md_dimensions": [
-      {
-        "dimension": "ID形态|相机架构|颜色|材质工艺|纹理图案|设计细节",
-        "elements": [
-          {
-            "field_id": null,
-            "field_name": "",
-            "source_path": "",
-            "schema_source": "md_original",
-            "value": null,
-            "raw_visual_description": "",
-            "value_type": "enum|continuous|integer|boolean|multi_label|object|text",
-            "region": "",
-            "applicability": "applicable",
-            "observability": "observed|inferred|not_observable|unknown",
-            "confidence": 0.0,
-            "evidence_refs": []
-          }
-        ]
-      }
-    ],
+    "original_md_dimensions": [],
     "extended_dna_modules": [
       {
-        "module_id": "DNA-Mxx",
-        "module_name": "",
+        "module_id": "DNA-M01",
+        "module_name": "比例、体量、姿态与接地",
         "elements": [
           {
-            "field_id": "知识库字段 ID",
-            "field_name": "",
-            "source_path": "",
+            "field_id": "GEO-10",
+            "field_name": "轮廓完整性",
+            "source_path": "DNA-M01/GEO-10",
             "schema_source": "md_extension",
-            "value": null,
-            "raw_visual_description": "",
-            "value_type": "enum|continuous|integer|boolean|multi_label|object|text",
-            "region": "",
-            "applicability": "applicable",
-            "observability": "observed|inferred|not_observable|unknown",
-            "confidence": 0.0,
-            "evidence_refs": []
+            "value": "完整",
+            "raw_visual_description": "主体外轮廓连续且未被遮挡。",
+            "value_type": "enum",
+            "evidence_mode": "direct",
+            "region": "whole_object",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.94,
+            "evidence_refs": ["EV-001"]
           }
         ]
       }
     ]
-  },
-  "uncertain_fields": [
-    {
-      "field_id": "知识库字段 ID 或 null",
-      "field_name": "",
-      "source_path": "",
-      "reason_type": "low_visibility|occlusion|blur|lighting|reflection|perspective|multiple_candidates|not_observable|definition_gap",
-      "reason": "",
-      "observability": "observed|inferred|not_observable|unknown",
-      "best_estimate": null,
-      "confidence": 0.0,
-      "candidate_values": [
-        {
-          "value": null,
-          "probability": 0.0,
-          "supporting_evidence_refs": [],
-          "contradicting_evidence_refs": []
-        }
-      ],
-      "recommended_additional_view_or_info": ""
-    }
-  ],
-  "novel_dna_elements": [
-    {
-      "temp_id": "NEW-001",
-      "novelty_type": "new_module|new_field|new_enum_value|new_relation_rule",
-      "proposed_module_id": null,
-      "proposed_module_name": "",
-      "proposed_field_name": "",
-      "definition": "",
-      "observed_value": null,
-      "recommended_value_type": "enum|continuous|integer|boolean|multi_label|object|text",
-      "recommended_value_space_or_measurement": [],
-      "applicable_categories": [],
-      "region": "",
-      "distinct_from_existing_fields": "说明为什么不能由已有字段充分表达",
-      "design_relevance": "说明其对造型识别、审美、生成或检索的价值",
-      "confidence": 0.0,
-      "evidence_refs": [],
-      "suggested_priority": "P0|P1|observe_more"
-    }
-  ],
-  "evidence": [
-    {
-      "evidence_id": "EV-001",
-      "bbox_norm": [0.0, 0.0, 1.0, 1.0],
-      "region": "",
-      "view": "front|rear|left|right|top|bottom|three_quarter|detail|unknown",
-      "description": "",
-      "visual_cues": [],
-      "supports": []
-    }
-  ],
-  "quality_summary": {
-    "visible_coverage": 0.0,
-    "mean_confidence": 0.0,
-    "style_confidence": 0.0,
-    "low_confidence_field_count": 0,
-    "missing_critical_fields": [],
-    "warnings": [],
-    "concise_summary": "用 1～3 句总结主物品最核心、证据最充分的设计 DNA，不加入无证据推断"
   }
 }
 ```
 
+### unclassified 约束
+
+没有风格通过硬门槛时必须使用：
+
+```json
+{
+  "classification_status": "unclassified",
+  "primary_style": null,
+  "secondary_styles": [],
+  "candidate_ranking": []
+}
+```
+
+`candidate_ranking` 可以保留未通过的候选及冲突，但不能把它们写入主风格或次要风格。
+
 ## 七、输出前自检
 
-输出 JSON 前必须检查：
+输出前检查：
 
-1. 是否只分析了一个主物品；
-2. 是否隔离了背景、支架、人物和其他物品；
-3. 是否先判断品类，再排除了不适用模块；
-4. 是否使用了知识库中的一级、二级风格原名；
-5. 是否检查了风格必要项、颜色必要项、排除项和冲突仲裁；
-6. 是否没有把 `not_applicable` 当成规则通过；
-7. 是否区分 `none`、`unknown`、`not_observable` 和 `not_applicable`；
-8. 是否为所有关键结论提供了证据和置信度；
-9. 是否把置信度低于 0.75 的结论加入了 `uncertain_fields`；
-10. 是否只把真正未被知识库覆盖的元素放入 `novel_dna_elements`；
-11. 是否避免把摄影光线、背景、污损和偶然状态识别成新 DNA；
-12. 是否输出了严格可解析、无注释、无尾逗号的 JSON。
-13. 在文件型宿主中，是否已用 `scripts/save_result.py` 写入 `data/result/`，并运行工程根目录的业务视图脚本。
-
-
-## 八、权威结构说明
-
-若本文中的示例结构与 `schemas/design-dna-output.schema.json` 存在差异，以 JSON Schema 为权威；但本文中的证据、适用性、风格硬规则和新 DNA 治理要求仍必须执行。
+1. 只分析一个主物品，并隔离背景、人物、道具和其他物品；
+2. 先定品类和 `applicability_status`，再提取规范 DNA；
+3. `observability` 只使用其三个合法枚举；
+4. `evidence_mode` 与 `computation_status` 符合字段注册表；
+5. 确认不存在使用字段值域内的“无”或空列表，不借用状态表达；
+6. 先 DNA 后风格，DNA-M13 只在硬判后参与排序；
+7. 风格 ID、父级 ID、标签、别名、规则计数和仲裁字段齐全；
+8. `applicable_rule_count` 等于通过、失败和未知规则数之和；
+9. 所有关键结论仅通过结论侧 `evidence_refs` 引用有效证据；
+10. 低置信度、不可见或不可计算字段进入 `uncertain_fields`；
+11. 新 DNA 确有主体证据且不与已有字段同义；
+12. 版本固定为 v4.0 / 3.0，最终 JSON 通过权威 Schema。

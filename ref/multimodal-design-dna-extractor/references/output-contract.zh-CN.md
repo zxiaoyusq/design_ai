@@ -1,6 +1,6 @@
 # 输出协议与字段语义
 
-完整结果文件必须是一个合法 JSON 对象，并通过 `schemas/design-dna-output.schema.json`。保存路径和对话回执不属于结果 JSON。
+本协议适用于 `schema_version="design_dna_extraction_v4.0"` 与 `knowledge_base_version="3.0"`。完整结果必须是合法 JSON，并通过 `schemas/design-dna-output.schema.json`；结构冲突时以该 Schema 为权威。
 
 ## 1. 顶层结构
 
@@ -18,99 +18,90 @@
 - `evidence`
 - `quality_summary`
 
-禁止添加未定义的顶层字段。没有内容的数组使用 `[]`，单值不可得使用 `null`。
+禁止添加未定义的顶层字段。空集合使用 `[]`，单值不可得使用 `null`。
+
+`module_applicability.active_profiles` 必须包含 `core`，只列当前对象确实支持的单视图 profile；当前不得激活 `profile:multi_face_device`、`profile:reference_analysis` 或 `profile:trend_analysis`。M15 必须进入 `excluded_modules`，原因为 `profile_not_applicable`。
 
 ## 2. 单主体约束
 
-`target_object` 是单个对象，不是数组。`bbox_norm` 为 `[x_min,y_min,x_max,y_max]`，取值范围 0–1，且必须满足 `x_min < x_max`、`y_min < y_max`。
+`target_object` 是单个对象。`bbox_norm=[x_min,y_min,x_max,y_max]` 的值域为 0–1，且满足 `x_min < x_max`、`y_min < y_max`。背景、人物、道具及其他物品不得混入主体 DNA。
 
-## 3. 适用性与可观察性
+## 3. 三轴状态与证据模式
 
-字段层面使用：
+每个规范字段由三条状态轴和一项固定证据模式共同表达，禁止互相代用：
 
-- `applicability="applicable"`：字段适用于当前品类；只有这种字段能进入 `design_elements`。
-- `observability="observed"`：图片中可直接观察。
-- `observability="inferred"`：基于多个观察事实推断。
-- `observability="not_observable"`：当前视角不可见。
-- `observability="unknown"`：相关区域可见，但无法可靠判定。
+- `applicability_status="applicable|not_applicable"`：字段是否适用于当前品类；进入 `design_elements` 的字段只能是 `applicable`。
+- `evidence_mode="direct|derived|inferred|reference_computed"`：字段定义规定的取值方法，不随单次结果改变。
+- `observability="observed|not_observable|unknown"`：必要视觉输入是否可见，只允许这三个枚举。
+- `computation_status="computed|not_computable|not_requested"`：计算状态，不表达可见性或品类适用性。
 
-`none` 不是可观察性状态。确认不存在某元素时：
+使用规则：
 
-```json
-{
-  "value": "none",
-  "observability": "observed"
-}
-```
+- `direct`：`computation_status="not_requested"`；可直接确认时为 `observed`，否则为 `not_observable` 或 `unknown`。
+- `derived|inferred`：必要视觉输入可见且完成计算时为 `observed + computed`；输入不足时为 `not_computable`。
+- `reference_computed`：core 字段在当前单图缺参考集时为 `not_computable`；未激活 profile 中的字段不进入结果，由扩展工作流处理。
+- `not_applicable` 字段不进入 `design_elements`，只在模块适用性中记录。
+- `not_requested` 仅表示直接字段无需计算；已进入结果的非直接字段不得用它代替 `not_computable`。
 
-不适用品类的字段不进入 `design_elements`，只在 `module_applicability.excluded_modules` 中记录。
+“不存在”是字段值，不是状态：enum 使用注册值域中的“无”，list 使用 `[]`；未声明缺省取值的其他类型不输出“无”结论。确认不存在时仍写 `observability="observed"`，不得跨类型写通用字符串 `none`。
 
-## 4. 证据要求
+直接字段为 `not_observable|unknown`，或非直接字段为 `not_computable` 时，`value` 使用 `null`。这些情况及置信度低于 0.75 的已有字段应进入 `uncertain_fields`。
 
-- 所有 `evidence_refs` 必须引用 `evidence` 数组中真实存在的 `evidence_id`。
-- `observed` 字段至少引用 1 条证据。
-- `inferred` 字段至少引用 2 条观察证据或由 2 个观察型字段形成的证据链。
+## 4. 字段值与证据
+
+- 使用字段注册表中的稳定 `field_id`、`value_type`、`evidence_mode`、profile 与必要视角；enum/multi_label 值域取知识库规范表。真别名不得重复提取，兼容 derived 只作零权重投影。
+- 推荐类型为 `enum|float|integer|boolean|list|multi_label|object|text`；`list` 可含结构化条目，`multi_label` 只含字符串标签，无值状态允许 `null`。
+- 所有 `evidence_refs` 必须引用 `evidence` 中存在的 ID。
+- `direct + observed` 至少引用 1 条证据；`derived + computed` 至少引用 1 条输入证据；`inferred + computed` 至少引用 2 条独立观察证据。
+- core 中的 `reference_computed` 字段缺参考上下文时是 `not_computable`，不能写成 `not_applicable`；仅属未激活 profile 的模块才是不适用。
 - 证据描述只写可见事实，不写“高级、科技、时尚”等抽象结论。
-- 证据框应位于主物品包围框内部；整体比例与整体风格可引用主物品整体框。
+- 证据框应位于主体框内；整体比例或整体风格可引用主体整体框。
+- `original_md_dimensions` 是宿主兼容槽，当前模型输出必须为 `[]`，不得独立生成旧六维值。
 
-## 5. 置信度
+## 5. 风格结果
 
-置信度范围为 0–1，表示结论正确的概率，不是显眼程度：
+风格判断必须在可观察 DNA 提取之后；DNA-M13 只能在硬门槛和混淆仲裁完成后参与排序。
 
-- `0.90–1.00`：直接、清晰、定义唯一；
-- `0.75–0.89`：证据较强，有轻微干扰；
-- `0.55–0.74`：合理但存在明显竞争候选；
-- `0.30–0.54`：弱推测，只能作为候选；
-- `<0.30`：使用 `unknown` 或 `not_observable`，不要给确定值。
+- `confirmed`：主风格硬规则通过，颜色要求通过或不适用，无缺失、失败、未知及排除项，并完成必要的混淆仲裁。
+- `provisional`：存在最佳候选，但决定性分界不可观察、不可计算或证据不足。
+- `unclassified`：没有风格通过硬门槛；必须同时满足 `primary_style=null`、`secondary_styles=[]`。
 
-任何置信度低于 0.75 的已有 DNA 字段必须在 `uncertain_fields` 中有对应记录。
+风格使用活动记录中的稳定 `style_id` 与 `parent_style_id`，并保留 `label_en`、`label_zh`、`aliases`、`level_1`、`level_2`。未知或已废弃 ID 不得作为结果。
 
-## 6. 不确定字段
+`primary_style` 最多一个；`secondary_styles` 最多两个，且每项都须独立通过硬规则。未通过但外观相似的风格只能进入 `candidate_ranking`。候选排名从 1 连续递增，风格不得重复。
 
-`uncertain_fields` 不只是“低置信度列表”，还用于：
+规则计数必须满足：
 
-- 多候选；
-- 遮挡、模糊、反射、透视或光照干扰；
-- 字段适用但不可见；
-- 知识库定义存在空隙。
+`applicable_rule_count = passed_rule_count + failed_rule_count + unknown_rule_count`
 
-候选值存在时，概率之和应约为 1。没有可靠候选时使用空数组，不得为了满足格式伪造候选。
+`not_applicable_rule_count` 不进入适用规则分母；`confirmed` 的 `failed_rule_count` 与 `unknown_rule_count` 必须为 0。
 
-## 7. 风格结果
+“异混淆特征”是判定规则，不新增结果字段。相关候选的共享表象、分界证据和裁决写入 `conflict_arbitration`；`core_feature_hits` 与 `auxiliary_feature_hits` 每项须写规范 `field_id`，且分别属于 style-registry 的决定/辅助 allowlist，对应证据须纳入风格 `evidence_refs`；分界不可确认时不得输出 `confirmed`。
 
-- `classification_status="confirmed"`：主风格硬规则通过、颜色必要项通过、无排除命中、证据充分。
-- `classification_status="provisional"`：最佳候选合理，但存在关键未知或图像质量限制。
-- `classification_status="unclassified"`：没有风格通过适用的必要条件。
+## 6. 不确定字段与置信度
 
-`primary_style` 最多一个；`secondary_styles` 最多两个。`candidate_ranking` 可保留未通过硬规则但相似的候选，必须写明冲突。
+置信度表示结论正确概率，而非显眼程度：
 
-## 8. 新 DNA
+- `0.90–1.00`：证据直接且定义唯一；
+- `0.75–0.89`：证据较强，存在轻微干扰；
+- `0.55–0.74`：候选竞争明显；
+- `<0.55`：只作候选或无值处理。
 
-`novel_dna_elements` 只容纳当前知识库不能充分表达的内容。每项必须：
+`uncertain_fields` 同时容纳低置信度、多候选、遮挡或质量干扰、直接字段不可见，以及非直接字段不可计算等情况。候选概率之和应约为 1；无可靠候选时使用空数组，不得伪造。
 
-- 有主物品内部视觉证据；
-- 与已有字段说明差异；
-- 给出可参数化的值类型或值域；
-- 指明适用品类和设计价值；
-- 标记 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`。
+## 7. 新 DNA
 
-## 9. 颜色与材质
+`novel_dna_elements` 只容纳知识库不能充分表达、位于主体上且可复用、可参数化的内容。每项须有证据、与已有字段的差异、值类型或值域、适用品类及设计价值，并标记为 `new_module|new_field|new_enum_value|new_relation_rule`。`new_enum_value` 仅用于既有 enum 字段，必须引用规范 `existing_field_id`、保持 enum 类型且提出值域外新值；其他类型该字段为 `null`。没有可靠候选时输出 `[]`。
 
-没有标准光源、色卡或可信元数据时，不得伪造高精度 NCS、CIELAB、OKLCH。材质结论是“视觉材质推断”，不能等同于真实材料成分。
+## 8. 颜色、材质与语义
 
-## 10. 语法约束
+- 无标准光源、色卡或可信元数据时，不伪造高精度 NCS、CIELAB 或 OKLCH。
+- 材质只输出视觉材质候选，不等同于真实成分或具体工艺。
+- 单张静态图不能证明随角变色、真实尺寸、重量、触感或内部结构。
+- 推断语义使用 `evidence_mode="inferred"`，不能补足风格锚点或抵消排除项。
 
-- 结果文件只包含 JSON；
-- 不使用 Markdown 代码围栏；
-- 不输出注释、尾逗号、NaN 或 Infinity；
-- 中文描述使用简体中文；
-- 知识库英文风格名、字段 ID 和标准枚举保持原样。
+## 9. JSON 与宿主职责
 
-## 11. 工程落盘约束
-
-- 使用 `scripts/save_result.py` 在校验通过后写入 `data/result/`；
-- 完整结果文件名为 `YYYYMMDD_HHMMSS_<图片名>_design_dna.json`；
-- 时间戳使用 `Asia/Shanghai`，图片名去除扩展名并安全化；
-- 同名文件不得覆盖，使用递增序号；
-- 业务视图由工程根目录的 `extract_design_dna_business_view.py` 生成，并写入同目录的 `<完整结果名>_business_view.json`；
-- 对话回执可以报告路径，但不得把路径添加为 Schema 外字段。
+- 提取结果只包含 JSON，不使用 Markdown 围栏、注释、尾逗号、NaN 或 Infinity。
+- 中文描述使用简体中文；稳定 ID、英文标签和标准枚举保持原样。
+- 提取器只负责生成符合协议的结果。文件保存、命名、防覆盖、业务视图转换及路径回执由宿主应用负责，不属于结果 Schema。

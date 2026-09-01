@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate and save a design DNA result using the project naming convention."""
+"""Host-side helper that validates and saves a design DNA result."""
 from __future__ import annotations
 
 import argparse
@@ -22,6 +22,8 @@ PROJECT_ROOT = SKILL_ROOT.parents[1]
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "result"
 DEFAULT_SCHEMA = SKILL_ROOT / "schemas" / "design-dna-output.schema.json"
 DEFAULT_KNOWLEDGE_BASE = SKILL_ROOT / "references" / "design-dna-knowledge-base.zh-CN.md"
+DEFAULT_STYLE_REGISTRY = SKILL_ROOT / "references" / "style-registry.json"
+DEFAULT_FIELD_REGISTRY = SKILL_ROOT / "references" / "field-registry.json"
 DEFAULT_TIMEZONE = "Asia/Shanghai"
 TIMESTAMP_PATTERN = re.compile(r"^\d{8}_\d{6}$")
 
@@ -56,7 +58,14 @@ def _validate_result(data: dict[str, Any]) -> list[str]:
         errors.append(f"schema {path}: {error.message}")
 
     knowledge_base = DEFAULT_KNOWLEDGE_BASE.read_text(encoding="utf-8")
-    semantic_errors, warnings = validate_semantics(data, knowledge_base)
+    style_registry = json.loads(DEFAULT_STYLE_REGISTRY.read_text(encoding="utf-8"))
+    field_registry = json.loads(DEFAULT_FIELD_REGISTRY.read_text(encoding="utf-8"))
+    semantic_errors, warnings = validate_semantics(
+        data,
+        knowledge_base,
+        style_registry,
+        field_registry,
+    )
     errors.extend(semantic_errors)
     if errors:
         details = "\n".join(f"- {item}" for item in errors)

@@ -147,8 +147,6 @@ async function changeResultView(view: 'business' | 'detail') {
       <a class="brand" href="#top" aria-label="形鉴首页">
         <span class="brand-mark"><span></span></span>
         <span class="brand-copy">
-          <strong>形鉴</strong>
-          <small>DESIGN DNA LAB</small>
         </span>
       </a>
       <nav>
@@ -161,16 +159,11 @@ async function changeResultView(view: 'business' | 'detail') {
     <main id="top">
       <section class="hero">
         <div class="hero-badge"><BulbOutlined /> AI AESTHETIC INTELLIGENCE</div>
-        <h1>让每一张图片，<br /><em>显露设计的基因。</em></h1>
+        <h1>用户审美洞察与趋势捕捉，<br /><em>DNA 元素提取</em></h1>
         <p>
           通过多模态 Agent 识别主物品，将风格、形态、构图、色彩与 CMF
           转化为可追溯、可计算的设计 DNA。
         </p>
-        <div class="hero-traits">
-          <span><ApiOutlined /> DeepAgents 编排</span>
-          <span><SafetyCertificateOutlined /> Schema 确定性校验</span>
-          <span><DatabaseOutlined /> 文件结果可追溯</span>
-        </div>
       </section>
 
       <section class="flow-strip" aria-label="提取流程">
@@ -226,7 +219,7 @@ async function changeResultView(view: 'business' | 'detail') {
 
     <footer>
       <span>形鉴 · AI 审美洞察平台</span>
-      <span>Design DNA Schema v3.1</span>
+      <span>Design DNA Schema v4.0</span>
     </footer>
   </div>
 </template>

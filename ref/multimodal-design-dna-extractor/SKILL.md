@@ -1,191 +1,102 @@
 ---
 name: multimodal-design-dna-extractor
-description: 从单张图片中只选择一个主物品，依据内置设计 DNA 知识库提取一级/二级风格、适用品类的设计元素与扩展 DNA，并输出可定位证据、置信度、不确定字段及知识库外新 DNA 候选。Use for multimodal aesthetic analysis, design tagging, retrieval, scoring, or knowledge-base growth. Do not use for multi-object comparison, image generation, or exact physical/material claims from pixels.
+description: 从单张图片中只选择一个主物品，依据内置设计 DNA 知识库提取可追溯的风格、规范 DNA 字段、不确定项及知识库外新候选。Use for multimodal aesthetic analysis, design tagging, retrieval, scoring, or knowledge-base growth. Do not use for multi-object comparison, image generation, or exact physical/material claims from pixels.
 metadata:
   author: "AI审美洞察项目"
-  version: "1.1.0"
+  version: "2.0.0"
   language: "zh-CN"
-  schema-version: "design_dna_extraction_v3.1"
-  knowledge-base-version: "2.0"
+  schema-version: "design_dna_extraction_v4.0"
+  knowledge-base-version: "3.0"
 ---
 
 # Multimodal Design DNA Extractor
 
 ## 任务边界
 
-使用本 Skill 处理以下任务：
+本 Skill 从恰好一张图片中选择一个主物品，提取风格、适用品类的规范 DNA、证据、置信度和不确定项，并发现知识库外新 DNA 候选。
 
-- 从一张图片中识别并只分析一个主物品；
-- 判断一级风格、二级风格及候选风格；
-- 按物品品类动态启用适用的设计元素和 DNA 字段；
-- 输出字段值、可见证据、区域、可观察性和置信度；
-- 管理低置信度、不可见、定义边界不足的字段；
-- 发现知识库尚未覆盖的新模块、新字段、新枚举值或新关系规则。
-
-不要使用本 Skill 完成：
-
-- 多物品比较、系列对比或多图聚合；
-- 图片生成、图片编辑或审美评分文案；
-- 从单张图片断言真实尺寸、真实材料成分、真实重量、真实触感、真实耐久性；
-- 不依赖图片的纯文本设计咨询。
-
-## 必需输入
-
-运行条件：宿主必须具备单图视觉能力，并能读取 UTF-8 Markdown 与 JSON。本工程使用 Python 3.9+ 和 `jsonschema>=4.21,<5` 完成确定性校验与落盘。
-
-1. **恰好一张图片**。图片中可以存在多个物体，但最终只选择一个主物品。
-2. 可选文本备注：品类先验、业务场景、需要重点关注的区域。
-3. 本 Skill 自带知识库：`references/design-dna-knowledge-base.zh-CN.md`。
-
-图片缺失或不可读取时，不执行 DNA 提取，直接说明缺少有效图片。不要根据文件名或用户描述虚构视觉结论。
+不要用于多物品比较、多图聚合、图片生成、纯文本设计咨询，也不要从像素断言真实尺寸、成分、重量、触感或耐久性。图片缺失或不可读时停止，不依据文件名或备注虚构结论。
 
 ## 执行前加载
 
-每次激活本 Skill 后：
-
-1. 读取 `references/extraction-protocol.zh-CN.md`，执行完整提取流程。
-2. 读取 `references/output-contract.zh-CN.md`，遵循状态、证据、置信度及 JSON 约束。
-3. 读取 `schemas/design-dna-output.schema.json`，把它作为最终输出结构的权威定义。
-4. 读取 `references/design-dna-knowledge-base.zh-CN.md`：
-   - 上下文允许时加载完整知识库；
-   - 上下文受限时，先读取 `references/knowledge-index.zh-CN.md`，再从完整知识库读取全局判定规则、全部候选风格的完整记录、当前品类适用模块和所有冲突风格；
-   - 不得只检索支持某个风格的片段而忽略排除项和冲突规则。
-5. 只有在需要跨品类适配时读取 `references/category-adaptation.zh-CN.md`。
-6. 只有在发现知识库外元素时读取 `references/novel-dna-governance.zh-CN.md`。
+1. 读取 `references/extraction-protocol.zh-CN.md` 与 `references/output-contract.zh-CN.md`。
+2. 读取 `schemas/design-dna-output.schema.json`，它是输出结构的权威定义。
+3. 读取完整 `references/style-registry.json`；用 `references/knowledge-index.zh-CN.md` 定位 `references/field-registry.json` 和知识库中当前品类相关的字段。风格判定必须读取全局规则、全部候选及其同混淆组风格，不得只读取支持某一候选的片段。
+4. 跨品类时读取 `references/category-adaptation.zh-CN.md`；出现知识库外元素时再读取 `references/novel-dna-governance.zh-CN.md`。
 
 ## 核心工作流
 
-### 1. 主物品锁定
+### 1. 锁定主体与评估图像
 
-按视觉焦点、面积、完整度、中心性和展示意图选择一个主物品，输出其归一化包围框。背景、人物、支架、包装、UI、水印、倒影和其他物品不得混入主物品 DNA。
+按视觉焦点、面积、完整度和展示意图选择一个主物品，输出归一化包围框。背景、人物、支架、包装、UI、水印、倒影及其他物品不得进入主体 DNA。
 
-### 2. 图像质量与视角评估
+记录视角、可见区域、遮挡、模糊、曝光、透视、白平衡与反射干扰；颜色可靠度、材质可靠度和拍摄光线属于图像质量，不属于产品 DNA。
 
-识别视角、可见区域、遮挡、模糊、曝光、透视、复杂背景、白平衡和反射干扰。分别估计颜色可靠度与材质可靠度。
+### 2. 判断适用性并先提取可观察 DNA
 
-### 3. 品类与模块适用性
+先确定品类和 profile，将实际启用项写入 `module_applicability.active_profiles`，再逐字段判断适用性。当前单图只允许 `core` 与可见对象支持的单视图品类 profile，不激活 multi-face、参考或趋势 profile。相同字段 ID 在不同品类中不得改义。
 
-先判断 `category`、`subcategory`，再逐模块、逐字段确定：
+- `applicability_status`：`applicable` 或 `not_applicable`，只表示品类适用性；
+- `observability`：`observed`、`not_observable` 或 `unknown`，只描述直接证据可见性；
+- `evidence_mode`：`direct`、`derived`、`inferred` 或 `reference_computed`，说明结论来源；
+- `computation_status`：直接字段固定 `not_requested`；其余字段只能为 `computed` 或 `not_computable`，缺依赖时不得猜测；
+- 确认不存在：使用字段值域中的“无”、空列表等类型内取值，并保持 `observability="observed"`；不得跨类型写通用 `none`。
 
-- `applicable`：适用于当前品类；
-- `not_applicable`：与当前品类无关；
-- `not_observable`：该字段有意义，但当前视角看不到；
-- `unknown`：相关区域可见，但无法可靠判定；
-- `none`：字段适用且已确认不存在该元素，表现为 `value="none"` 与 `observability="observed"`。
+先提取规范 DNA，再依据决定性锚点召回候选风格。原 MD 六维兼容视图由宿主派生；当前提取结果固定输出空数组。
 
-`design_elements` 只允许包含 `applicable` 字段。不适用模块只进入 `excluded_modules`。例如服装不得输出相机架构或手机正面字段。
+### 3. 风格硬判与混淆仲裁
 
-### 4. 风格判定
+一级标签只作导航，二级 `style_id` 承担判定。一个风格只有同时满足以下条件才可确认：
 
-使用知识库中的一级、二级风格原名，按以下顺序判断：
+1. 硬门槛通过；
+2. 至少一个决定性锚点；
+3. 至少一个来自不同区域或不同视觉机制的辅助证据；
+4. 未命中硬排除。
 
-1. 入围门槛与颜色必要项；
-2. 核心视觉特征；
-3. 辅助特征；
-4. 排除规则，一票否决；
-5. 冲突仲裁与优先判定；
-6. DNA-M13 语义坐标只用于排序辅助，不能绕过硬规则。
+同一区域或同一物理现象只计一次。颜色是否为必要项以具体风格记录为准，不设全局强制颜色门槛。
+颜色角色为 `required` 时必须通过并引用证据，不能写 `not_applicable`；每条核心或辅助命中必须显式引用本次已确认、且位于该风格注册 allowlist 的规范 `field_id`，辅助命中至少使用一个不同字段。
 
-主风格最多一个，次风格最多两个。证据不足时输出 `provisional` 或 `unclassified`，不得为了填满字段强行分类。
+对候选逐项核对 `异混淆特征` 和混淆组：共享表象不能作为双方的独立决定证据；决定性差异不可见时只能输出 `provisional` 或 `unclassified`。主风格最多一个，次风格最多两个。DNA-M13 语义坐标只能在硬判完成后排序，不能绕过门槛、排除或仲裁。
 
-### 5. 已有 DNA 提取
+### 4. 不确定项与新 DNA
 
-同时输出：
+置信度低于 0.75、存在多个合理候选、视角不足或定义不足时写入 `uncertain_fields`，并与对应设计元素的字段、区域、状态和置信度一致；列出支持、反对证据和建议补充视角。无法判断时保持空候选。
 
-- 原始 MD 六个维度中适用的元素；
-- DNA-M01 至 DNA-M15 中适用且可观察/可推断的字段。
+完成既有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`。候选必须可观察、可复用、可参数化，并与已有字段去重；背景、拍摄光线、损伤、污渍和偶然状态不是新 DNA。
 
-每个字段必须包含标准化值、可见描述、区域、可观察性、置信度和证据引用。观察型字段至少一个证据；推断型字段至少两个观察证据或观察字段支撑。
+### 5. 证据与输出
 
-### 6. 不确定字段
+证据必须位于主体框内并描述“看到了什么”。观察字段至少引用一条证据；已计算的推断字段至少引用两条独立观察证据。真实材质、工艺、品牌归属、文化来源、随角变化、趋势和创新度只能按知识库规定输出视觉候选或上下文计算结果。
 
-以下情况进入 `uncertain_fields`：
+最终只返回一个符合 Schema 的 JSON 对象，不附加 Markdown、解释、路径或思考过程。输出前检查：单主体、字段适用性、风格硬门槛与混淆仲裁、状态组合、证据闭环、低置信度登记、新 DNA 去重及版本一致性。
 
-- 置信度低于 0.75；
-- 存在两个以上合理候选；
-- 遮挡、模糊、反射、光照、透视或视角不足；
-- 字段适用但不可见；
-- 知识库定义不足以唯一归类。
-
-给出最佳估计、候选概率、支持/反对证据及建议补充视角。无法判断时保持空候选，不得编造。
-
-### 7. 新 DNA 发现
-
-完成已有字段映射后，再查找知识库无法充分表达、但可观察、可复用、可参数化且对设计有意义的元素。只允许输出：
-
-- `new_module`
-- `new_field`
-- `new_enum_value`
-- `new_relation_rule`
-
-新 DNA 必须与现有字段做去重和差异说明。背景、拍摄光线、损伤、污渍、遮挡和偶然状态不是新 DNA。
-
-### 8. 证据闭环
-
-证据必须定位到主物品内部的具体区域或整个主物品，描述“看到了什么”，不要在证据文字中重复抽象结论。所有引用的证据 ID 必须真实存在。
-
-### 9. 输出、自检与落盘
-
-完整结果必须是符合 `schemas/design-dna-output.schema.json` 的单个 JSON 对象。结果文件中不得混入 Markdown、解释、思考过程、代码围栏或保存路径。
-
-输出前必须确认：
-
-- 只分析一个主物品；
-- 没有把背景或其他物品混入结果；
-- 没有输出不适用品类的 DNA 字段；
-- 风格已检查必要项、排除项和冲突规则；
-- `none`、`unknown`、`not_observable`、`not_applicable` 未混用；
-- 低置信度字段已进入 `uncertain_fields`；
-- 新 DNA 不是已有字段同义词；
-- JSON 可解析，证据引用闭合。
-
-在本工程中，完成自检后必须执行以下落盘流程：
-
-1. 从工程根目录使用 `base` Conda 环境运行 `scripts/save_result.py`，通过 `--image` 传入原始图片路径或文件名，并通过输入文件或标准输入提供完整结果 JSON。
-2. 保存脚本会再次执行 Schema 与语义校验；校验失败时不得写入，也不得声称保存成功。
-3. 完整结果固定写入 `data/result/`，文件名为 `YYYYMMDD_HHMMSS_<图片名>_design_dna.json`。时间戳使用 `Asia/Shanghai`，图片名不含扩展名并经过文件名安全化。
-4. 若目标文件已存在，保留原文件，并使用 `_02`、`_03` 等序号生成新文件。
-5. 完整结果保存成功后，若工程根目录存在 `extract_design_dna_business_view.py`，运行它处理刚生成的完整结果。业务视图写入同一目录，文件名为 `<完整结果文件名去扩展名>_business_view.json`。
-
-示例：
-
-```bash
-conda run -n base python ref/multimodal-design-dna-extractor/scripts/save_result.py \
-  --image "/path/to/product.jpg" result.json
-
-conda run -n base python extract_design_dna_business_view.py \
-  "data/result/20260830_153012_product_design_dna.json"
-```
-
-落盘成功后的对话回执只需报告完整结果与业务视图的路径和校验状态，不要把文件路径添加进结果 JSON。用户明确要求在对话中查看完整 JSON 时，再单独返回与文件内容一致的 JSON 对象。
+本 Skill 不负责保存结果或生成业务视图；宿主应用在模型返回后统一校验、保存和转换。
 
 ## 确定性校验
 
-宿主 Agent 可以在生成后运行：
+宿主可在 Skill 目录运行：
 
 ```bash
 python scripts/validate_output.py result.json
 ```
 
-在本工程中优先直接使用 `scripts/save_result.py`，它会在写入前调用同等的 Schema 与语义校验。
-
-需要把本 Skill 转换为传统“系统提示词 + 知识库”调用时运行：
+传统宿主需要合并上下文时运行：
 
 ```bash
 python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 ```
 
-校验失败时，只修复报告指出的结构或语义问题，不要改变有证据支持的视觉事实。
+校验失败时只修复结构或语义错误，不改变有证据支持的视觉事实。
 
 ## 支持文件
 
-- 完整提取协议：`references/extraction-protocol.zh-CN.md`
-- 输出语义与状态协议：`references/output-contract.zh-CN.md`
-- 完整知识库：`references/design-dna-knowledge-base.zh-CN.md`
-- 知识库索引：`references/knowledge-index.zh-CN.md`
-- 跨品类适配：`references/category-adaptation.zh-CN.md`
+- 提取协议：`references/extraction-protocol.zh-CN.md`
+- 输出合同：`references/output-contract.zh-CN.md`
+- 知识库：`references/design-dna-knowledge-base.zh-CN.md`
+- 机器注册表：`references/style-registry.json`、`references/field-registry.json`
+- 稳定索引：`references/knowledge-index.zh-CN.md`
+- 品类 profile：`references/category-adaptation.zh-CN.md`
 - 新 DNA 治理：`references/novel-dna-governance.zh-CN.md`
 - JSON Schema：`schemas/design-dna-output.schema.json`
 - 结果校验器：`scripts/validate_output.py`
-- 结果校验与落盘器：`scripts/save_result.py`
-- 评测规范：`evals/rubric.zh-CN.md`
+- 评测：`evals/rubric.zh-CN.md`、`evals/cases.jsonl`

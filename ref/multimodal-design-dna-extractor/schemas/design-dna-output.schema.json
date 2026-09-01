@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.internal/schemas/design-dna-output-v3.1.json",
+  "$id": "https://example.internal/schemas/design-dna-output-v4.0.json",
   "title": "Multimodal Design DNA Extraction Output",
   "description": "Single-primary-object design DNA extraction result.",
   "type": "object",
@@ -20,13 +20,10 @@
   ],
   "properties": {
     "schema_version": {
-      "const": "design_dna_extraction_v3.1"
+      "const": "design_dna_extraction_v4.0"
     },
     "knowledge_base_version": {
-      "type": [
-        "string",
-        "null"
-      ]
+      "const": "3.0"
     },
     "target_object": {
       "$ref": "#/$defs/targetObject"
@@ -281,7 +278,7 @@
         "reason": {
           "enum": [
             "category_not_applicable",
-            "insufficient_reference_context",
+            "profile_not_applicable",
             "other"
           ]
         },
@@ -362,11 +359,31 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "active_profiles",
         "applicable_modules",
         "excluded_modules",
         "rule_adaptations"
       ],
       "properties": {
+        "active_profiles": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "core",
+              "profile:device_controls",
+              "profile:imaging_device",
+              "profile:screen_device",
+              "profile:handled_object",
+              "profile:portable_object",
+              "profile:contact_surface"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "contains": {
+            "const": "core"
+          }
+        },
         "applicable_modules": {
           "type": "array",
           "items": {
@@ -377,6 +394,21 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/excludedModule"
+          },
+          "contains": {
+            "type": "object",
+            "properties": {
+              "module_id": {
+                "const": "DNA-M15"
+              },
+              "reason": {
+                "const": "profile_not_applicable"
+              }
+            },
+            "required": [
+              "module_id",
+              "reason"
+            ]
           }
         },
         "rule_adaptations": {
@@ -387,12 +419,58 @@
         }
       }
     },
+    "parentStyleId": {
+      "enum": [
+        "restrained_craft",
+        "material_ornament",
+        "technology_future",
+        "motion_utility",
+        "nature_organic",
+        "color_graphic_culture"
+      ]
+    },
+    "styleId": {
+      "enum": [
+        "PureMinimalism",
+        "NordicCalm",
+        "RefinedMinimalism",
+        "PrecisionMinimalism",
+        "SoftContemporary",
+        "ModernPrestige",
+        "ClassicPrestige",
+        "DecorativeLuxury",
+        "MaturePremium",
+        "PureFuture",
+        "MechanicalTech",
+        "CyberNeon",
+        "ArcaneFuture",
+        "ParametricTech",
+        "TechComposition",
+        "KineticEnergy",
+        "ArmorPower",
+        "FunctionalAesthetics",
+        "NaturalTextures",
+        "BiomorphicForm",
+        "MysticOrganic",
+        "RefinedWilderness",
+        "FreshJoy",
+        "SaturatedBold",
+        "DreamyAir",
+        "Y2KDigital",
+        "FashionGraphic",
+        "NeoRetro",
+        "FolkOrnament",
+        "ExpressiveMotifs",
+        "TribeIdentity"
+      ]
+    },
     "ruleCoverage": {
       "type": "object",
       "additionalProperties": false,
       "required": [
         "applicable_rule_count",
         "passed_rule_count",
+        "failed_rule_count",
         "unknown_rule_count",
         "not_applicable_rule_count"
       ],
@@ -402,6 +480,10 @@
           "minimum": 0
         },
         "passed_rule_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed_rule_count": {
           "type": "integer",
           "minimum": 0
         },
@@ -445,6 +527,11 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
+        "style_id",
+        "parent_style_id",
+        "label_en",
+        "label_zh",
+        "aliases",
         "level_1",
         "level_2",
         "match_score",
@@ -460,6 +547,28 @@
         "evidence_refs"
       ],
       "properties": {
+        "style_id": {
+          "$ref": "#/$defs/styleId"
+        },
+        "parent_style_id": {
+          "$ref": "#/$defs/parentStyleId"
+        },
+        "label_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label_zh": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
         "level_1": {
           "type": "string",
           "minLength": 1
@@ -533,6 +642,11 @@
       "additionalProperties": false,
       "required": [
         "rank",
+        "style_id",
+        "parent_style_id",
+        "label_en",
+        "label_zh",
+        "aliases",
         "level_1",
         "level_2",
         "match_score",
@@ -545,6 +659,28 @@
         "rank": {
           "type": "integer",
           "minimum": 1
+        },
+        "style_id": {
+          "$ref": "#/$defs/styleId"
+        },
+        "parent_style_id": {
+          "$ref": "#/$defs/parentStyleId"
+        },
+        "label_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label_zh": {
+          "type": "string",
+          "minLength": 1
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
         },
         "level_1": {
           "type": "string",
@@ -583,6 +719,29 @@
         }
       }
     },
+    "secondaryStyleAssessment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/styleAssessment"
+        },
+        {
+          "properties": {
+            "hard_rule_passed": {
+              "const": true
+            },
+            "missing_required_items": {
+              "maxItems": 0
+            },
+            "exclusion_hits": {
+              "maxItems": 0
+            },
+            "evidence_refs": {
+              "minItems": 1
+            }
+          }
+        }
+      ]
+    },
     "styleResult": {
       "type": "object",
       "additionalProperties": false,
@@ -613,7 +772,7 @@
         "secondary_styles": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/styleAssessment"
+            "$ref": "#/$defs/secondaryStyleAssessment"
           },
           "maxItems": 2
         },
@@ -623,7 +782,115 @@
             "$ref": "#/$defs/styleCandidate"
           }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "classification_status": {
+                "const": "unclassified"
+              }
+            },
+            "required": [
+              "classification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "primary_style": {
+                "type": "null"
+              },
+              "secondary_styles": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification_status": {
+                "enum": [
+                  "confirmed",
+                  "provisional"
+                ]
+              }
+            },
+            "required": [
+              "classification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "primary_style": {
+                "$ref": "#/$defs/styleAssessment"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification_status": {
+                "const": "confirmed"
+              }
+            },
+            "required": [
+              "classification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "primary_style": {
+                "allOf": [
+                  {
+                    "$ref": "#/$defs/styleAssessment"
+                  },
+                  {
+                    "properties": {
+                      "hard_rule_passed": {
+                        "const": true
+                      },
+                      "missing_required_items": {
+                        "maxItems": 0
+                      },
+                      "exclusion_hits": {
+                        "maxItems": 0
+                      },
+                      "conflict_arbitration": {
+                        "minLength": 1
+                      },
+                      "evidence_refs": {
+                        "minItems": 1
+                      },
+                      "color_requirement": {
+                        "properties": {
+                          "status": {
+                            "enum": [
+                              "pass",
+                              "not_applicable"
+                            ]
+                          }
+                        }
+                      },
+                      "rule_coverage": {
+                        "properties": {
+                          "failed_rule_count": {
+                            "const": 0
+                          },
+                          "unknown_rule_count": {
+                            "const": 0
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
     },
     "element": {
       "type": "object",
@@ -636,9 +903,11 @@
         "value",
         "raw_visual_description",
         "value_type",
+        "evidence_mode",
         "region",
-        "applicability",
+        "applicability_status",
         "observability",
+        "computation_status",
         "confidence",
         "evidence_refs"
       ],
@@ -670,27 +939,42 @@
         "value_type": {
           "enum": [
             "enum",
-            "continuous",
+            "float",
             "integer",
             "boolean",
-            "multi_label",
+            "list",
             "object",
-            "text"
+            "text",
+            "multi_label"
+          ]
+        },
+        "evidence_mode": {
+          "enum": [
+            "direct",
+            "derived",
+            "inferred",
+            "reference_computed"
           ]
         },
         "region": {
           "type": "string",
           "minLength": 1
         },
-        "applicability": {
+        "applicability_status": {
           "const": "applicable"
         },
         "observability": {
           "enum": [
             "observed",
-            "inferred",
             "not_observable",
             "unknown"
+          ]
+        },
+        "computation_status": {
+          "enum": [
+            "computed",
+            "not_computable",
+            "not_requested"
           ]
         },
         "confidence": {
@@ -711,13 +995,90 @@
         {
           "if": {
             "properties": {
-              "observability": {
-                "const": "observed"
+              "schema_source": {
+                "const": "md_extension"
               }
-            }
+            },
+            "required": [
+              "schema_source"
+            ]
           },
           "then": {
             "properties": {
+              "field_id": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*-[0-9]{2,3}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "const": "direct"
+              }
+            },
+            "required": [
+              "evidence_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "computation_status": {
+                "const": "not_requested"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "enum": [
+                  "derived",
+                  "inferred",
+                  "reference_computed"
+                ]
+              }
+            },
+            "required": [
+              "evidence_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "computation_status": {
+                "enum": [
+                  "computed",
+                  "not_computable"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "const": "direct"
+              },
+              "observability": {
+                "const": "observed"
+              }
+            },
+            "required": [
+              "evidence_mode",
+              "observability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              },
               "evidence_refs": {
                 "minItems": 1
               }
@@ -727,26 +1088,20 @@
         {
           "if": {
             "properties": {
+              "evidence_mode": {
+                "const": "direct"
+              },
               "observability": {
-                "const": "inferred"
+                "enum": [
+                  "not_observable",
+                  "unknown"
+                ]
               }
-            }
-          },
-          "then": {
-            "properties": {
-              "evidence_refs": {
-                "minItems": 2
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "observability": {
-                "const": "not_observable"
-              }
-            }
+            },
+            "required": [
+              "evidence_mode",
+              "observability"
+            ]
           },
           "then": {
             "properties": {
@@ -759,12 +1114,20 @@
         {
           "if": {
             "properties": {
-              "value": {
-                "const": "none"
+              "evidence_mode": {
+                "enum": [
+                  "derived",
+                  "inferred",
+                  "reference_computed"
+                ]
+              },
+              "computation_status": {
+                "const": "computed"
               }
             },
             "required": [
-              "value"
+              "evidence_mode",
+              "computation_status"
             ]
           },
           "then": {
@@ -772,8 +1135,251 @@
               "observability": {
                 "const": "observed"
               },
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "enum": [
+                  "derived",
+                  "inferred",
+                  "reference_computed"
+                ]
+              },
+              "computation_status": {
+                "enum": [
+                  "not_computable",
+                  "not_requested"
+                ]
+              }
+            },
+            "required": [
+              "evidence_mode",
+              "computation_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "const": "derived"
+              },
+              "computation_status": {
+                "const": "computed"
+              }
+            },
+            "required": [
+              "evidence_mode",
+              "computation_status"
+            ]
+          },
+          "then": {
+            "properties": {
               "evidence_refs": {
                 "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "const": "inferred"
+              },
+              "computation_status": {
+                "const": "computed"
+              }
+            },
+            "required": [
+              "evidence_mode",
+              "computation_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence_refs": {
+                "minItems": 2
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "enum": [
+                  "enum",
+                  "text"
+                ]
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "enum": [
+                  "float",
+                  "continuous"
+                ]
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "integer"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "boolean"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "list"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "multi_label"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "array",
+                  "null"
+                ],
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "value_type": {
+                "const": "object"
+              }
+            },
+            "required": [
+              "value_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": [
+                  "object",
+                  "null"
+                ]
               }
             }
           }
@@ -843,7 +1449,8 @@
           "type": "array",
           "items": {
             "$ref": "#/$defs/originalDimension"
-          }
+          },
+          "maxItems": 0
         },
         "extended_dna_modules": {
           "type": "array",
@@ -894,9 +1501,13 @@
         "field_id",
         "field_name",
         "source_path",
+        "region",
         "reason_type",
         "reason",
+        "evidence_mode",
+        "applicability_status",
         "observability",
+        "computation_status",
         "best_estimate",
         "confidence",
         "candidate_values",
@@ -904,16 +1515,18 @@
       ],
       "properties": {
         "field_id": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]*-[0-9]{2,3}$"
         },
         "field_name": {
           "type": "string",
           "minLength": 1
         },
         "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "region": {
           "type": "string",
           "minLength": 1
         },
@@ -928,6 +1541,8 @@
             "perspective",
             "multiple_candidates",
             "not_observable",
+            "missing_reference",
+            "not_computable",
             "definition_gap",
             "other"
           ]
@@ -936,12 +1551,29 @@
           "type": "string",
           "minLength": 1
         },
+        "evidence_mode": {
+          "enum": [
+            "direct",
+            "derived",
+            "inferred",
+            "reference_computed"
+          ]
+        },
+        "applicability_status": {
+          "const": "applicable"
+        },
         "observability": {
           "enum": [
             "observed",
-            "inferred",
             "not_observable",
             "unknown"
+          ]
+        },
+        "computation_status": {
+          "enum": [
+            "computed",
+            "not_computable",
+            "not_requested"
           ]
         },
         "best_estimate": {},
@@ -960,7 +1592,159 @@
         "recommended_additional_view_or_info": {
           "type": "string"
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "const": "direct"
+              }
+            },
+            "required": [
+              "evidence_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "computation_status": {
+                "const": "not_requested"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "enum": [
+                  "derived",
+                  "inferred",
+                  "reference_computed"
+                ]
+              }
+            },
+            "required": [
+              "evidence_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "computation_status": {
+                "enum": [
+                  "computed",
+                  "not_computable"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "const": "direct"
+              },
+              "observability": {
+                "enum": [
+                  "not_observable",
+                  "unknown"
+                ]
+              }
+            },
+            "required": [
+              "evidence_mode",
+              "observability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "best_estimate": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "evidence_mode": {
+                "enum": [
+                  "derived",
+                  "inferred",
+                  "reference_computed"
+                ]
+              },
+              "computation_status": {
+                "const": "computed"
+              }
+            },
+            "required": [
+              "evidence_mode",
+              "computation_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "observability": {
+                "const": "observed"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "computation_status": {
+                "enum": [
+                  "not_computable",
+                  "not_requested"
+                ]
+              },
+              "evidence_mode": {
+                "enum": [
+                  "derived",
+                  "inferred",
+                  "reference_computed"
+                ]
+              }
+            },
+            "required": [
+              "computation_status",
+              "evidence_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "best_estimate": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "computation_status": {
+                "const": "not_computable"
+              }
+            },
+            "required": [
+              "computation_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_type": {
+                "enum": [
+                  "missing_reference",
+                  "not_computable"
+                ]
+              }
+            }
+          }
+        }
+      ]
     },
     "novelDna": {
       "type": "object",
@@ -969,6 +1753,7 @@
         "temp_id",
         "novelty_type",
         "proposed_module_id",
+        "existing_field_id",
         "proposed_module_name",
         "proposed_field_name",
         "definition",
@@ -1002,6 +1787,12 @@
             "null"
           ]
         },
+        "existing_field_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
         "proposed_module_name": {
           "type": "string",
           "minLength": 1
@@ -1018,10 +1809,12 @@
         "recommended_value_type": {
           "enum": [
             "enum",
+            "float",
             "continuous",
             "integer",
             "boolean",
             "multi_label",
+            "list",
             "object",
             "text"
           ]
@@ -1074,7 +1867,164 @@
             "observe_more"
           ]
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "novelty_type": {
+                "const": "new_enum_value"
+              }
+            },
+            "required": [
+              "novelty_type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "existing_field_id": {
+                "type": "string",
+                "pattern": "^[A-Z][A-Z0-9_]*-[0-9]{2,3}$"
+              },
+              "recommended_value_type": {
+                "const": "enum"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "existing_field_id": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "enum": [
+                  "enum",
+                  "text"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "enum": [
+                  "float",
+                  "continuous"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "const": "integer"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "integer"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "const": "boolean"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "const": "list"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "const": "multi_label"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "recommended_value_type": {
+                "const": "object"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "observed_value": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
     },
     "evidence": {
       "type": "object",
@@ -1085,8 +2035,7 @@
         "region",
         "view",
         "description",
-        "visual_cues",
-        "supports"
+        "visual_cues"
       ],
       "properties": {
         "evidence_id": {
@@ -1142,14 +2091,6 @@
           "minLength": 1
         },
         "visual_cues": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "supports": {
           "type": "array",
           "items": {
             "type": "string"

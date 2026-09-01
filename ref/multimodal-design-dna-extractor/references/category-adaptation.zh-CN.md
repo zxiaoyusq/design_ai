@@ -1,94 +1,81 @@
-# 跨品类 DNA 适配规则
+# 跨品类 DNA Profile
 
-本知识库起源于消费电子与手机设计，但 Skill 必须按“字段语义”而不是“模块名称”做跨品类适配。不可把手机部件强行类比到其他物品。
+规范字段语义全局固定；品类只决定“哪些字段启用”，不改变字段名称、值域或判定方式。字段定义以 design-dna-knowledge-base.zh-CN.md 与 field-registry.json 为准。
 
-## 通用原则
+## 1. 适配原则
 
-1. 先识别品类，再逐字段判断是否有设计意义。
-2. 通用的比例、轮廓、构图、色彩、CMF、纹理、细节、光学与感知语义可跨品类使用。
-3. 手机专属字段保持 `not_applicable`，不计入风格规则分母，也不视为满足或违反。
-4. 对原规则做语义适配时，必须写入 `rule_adaptations`；不得静默替换。
-5. 若某品类存在稳定但知识库未覆盖的设计维度，先进入 `novel_dna_elements`，经人审和多样本验证后再升级为正式字段。
+1. 先识别单一主物品与 object_type，再激活 profile，最后逐字段生成 applicable_field_ids。
+2. 适用性、可观察性、可计算性分轴记录：不适用写 not_applicable；direct 字段缺视角写 not_observable；计算字段缺依赖写 not_computable。
+3. 同一 field_id 在所有品类中必须同义。不得把口袋当相机岛、把家具把手当镜头环，或以改名方式复用设备字段。
+4. 通用形态、构图、色彩、视觉 CMF、纹理、组件和标识字段可跨品类；专属字段只在对应 profile 激活。
+5. 材质、工艺、人因、文化和品牌结论遵循字段自身 evidence_mode，不因品类常识升级为直接事实。
+6. 新维度先进入 novel_dna_elements；经多样本、人审、冲突检查后再分配稳定 ID。
 
-## 模块适用性参考
+## 2. Profile 激活
 
-| 模块 | 通常适用 | 条件适用 / 不适用 |
+| profile | 激活条件 | 主要字段 |
 | --- | --- | --- |
-| 原始 ID 形态 | 多数实体物品 | 对纯平面图形需重新定义主体轮廓 |
-| 原始相机架构 | 手机、相机、带显著成像模组的设备 | 衣服、家具、鞋包等不适用 |
-| 颜色 | 全品类 | 受光照与透明材质影响时降低可靠度 |
-| 材质工艺 | 全品类 | 只能做视觉推断，不能断言真实成分 |
-| 纹理图案 | 全品类 | 无纹理时允许 `none` |
-| 设计细节 | 全品类 | 使用品类真实部件名，不做错误类比 |
-| DNA-M01 比例体量 | 多数 3D 物品 | 其中相机面积等手机专属字段逐项排除 |
-| DNA-M02 轮廓边界 | 全品类 | 服装可映射到廓形/边缘，但手机转接字段不适用 |
-| DNA-M03 构图秩序 | 全品类 | 分析物品本体元素，不分析摄影构图 |
-| DNA-M04 相机系统 | 带相机模组的产品 | 其他品类不适用 |
-| DNA-M05 正面侧面 ID | 手机、平板、部分屏幕设备 | 服装、家具、鞋包等不适用 |
-| DNA-M06 色彩系统 | 全品类 | 面积比例基于主物品本体区域 |
-| DNA-M07 CMF 分区 | 全品类 | 区域名按真实部件重命名并记录适配 |
-| DNA-M08 纹理语法 | 全品类 | 织物、木纹、皮纹等可正常提取 |
-| DNA-M09 微构件 | 全品类 | 使用扣件、缝线、拉链、支脚等真实部件 |
-| DNA-M10 品牌基因 | Logo 可见或有品牌参考库 | 无参考库时 BRD-10 至 BRD-12 通常不可计算 |
-| DNA-M11 光学表现 | 多数品类 | 分离物体表面与拍摄光线 |
-| DNA-M12 人因感知 | 人机交互物品 | 全部属于视觉推断，通常低于形态字段置信度 |
-| DNA-M13 语义坐标 | 全品类 | 必须由观察型字段支撑 |
-| DNA-M14 场景语义 | 全品类 | 属于推断，不等同于真实用户研究 |
-| DNA-M15 关系趋势 | 需要参考集与时间序列 | 单图独立分析通常 `not_observable` 或不启用 |
+| core | 所有可辨认主物品 | GEO、FORM、CMP、PRT、CLR、CMF、TEX 及适用的 DET、IDG、OPT、SEM、IMG |
+| profile:device_controls | 存在可见按键、旋钮、端口或操作件 | DEV-09、DET-01～04、HUM-08 |
+| profile:imaging_device | 物品本体含明确镜头或成像模组 | DEV-01～05 |
+| profile:screen_device | 物品本体含主要显示面 | DEV-06～08 |
+| profile:multi_face_device | 保留给复合多视图扩展；当前单图 Skill 不激活 | DEV-10 |
+| profile:handled_object | 设计包含明确手持或握持界面 | HUM-01、HUM-02 |
+| profile:portable_object | 物品通常由人携带，且图像支持体量判断 | HUM-03 |
+| profile:contact_surface | 可见稳定接触面、底座、支脚或轮组 | HUM-07 |
+| profile:reference_analysis | 保留扩展；当前单图 Skill 不激活 | REL-01～05、REL-08 |
+| profile:trend_analysis | 保留扩展；当前单图 Skill 不激活 | REL-06、REL-07 |
 
-## 常见品类的新增候选维度
+profile 只控制字段适用性，不自动提供证据。结果必须把启用项写入 `module_applicability.active_profiles`；当前单图不激活 multi-face、reference 或 trend profile，core 中的参考计算字段若被输出，必须写 `not_computable`。
 
-以下只是新 DNA 发现提示，不得在没有视觉证据时强行输出。
+## 3. 常见品类路由
 
-### 服装
+| object_type | 默认 profile | 重点 | 条件字段 |
+| --- | --- | --- | --- |
+| smartphone / tablet | core、profile:device_controls、profile:imaging_device、profile:screen_device、profile:handled_object、profile:portable_object | 多面体量、成像/屏幕、边框与控件 | DEV-10 仅多视图 |
+| camera / wearable_device | core、profile:device_controls、profile:imaging_device、profile:handled_object、profile:portable_object | 镜头层级、握持面、操作节奏 | profile:screen_device 仅有主显示面时 |
+| apparel | core | 廓形、裁片关系、色彩、纹理、文字图形 | HUM 默认不启用；真实面料与工艺不从图像断言 |
+| footwear | core、profile:portable_object、profile:contact_surface | 鞋体分区、开口、底部体量、接地姿态 | profile:handled_object 不启用 |
+| bag / accessory | core、profile:portable_object、profile:handled_object | 包体、开合、背负组件、五金和图案 | profile:device_controls 仅真实操作件 |
+| furniture / homeware | core、profile:contact_surface | 支撑、连接、负空间、表面分区 | profile:portable_object 仅明确便携物品 |
+| vehicle / mobility_equipment | core、profile:device_controls、profile:contact_surface | 姿态、接地、开口、灯组、体量与动势 | profile:imaging_device 仅真实成像件 |
+| graphic / packaging | core | 平面构图、色彩、纹理、文字图标 | 3D 厚度、接地和人因通常不适用 |
 
-- 廓形：H、A、X、O、T、茧型、直筒等；
-- 合体度、衣长、肩线、领型、袖型、门襟、下摆；
-- 裁片、褶裥、省道、结构缝、明线、包边；
-- 垂坠、挺括、透明层次、叠穿关系；
-- 图案与版型/裁片的对位关系。
+类别无法可靠确认时，只启用 core 中直接可见字段，并把 profile_confidence 降低；不得通过强行选品类换取更多字段。
 
-### 鞋履
+## 4. 品类专属候选
 
-- 鞋楦与鞋头形态、鞋帮高度、开口形态；
-- 鞋面分片、系带/闭合系统、支撑结构；
-- 中底厚度、外底分区、底纹方向、翘度；
-- 鞋面—中底—外底的体量和 CMF 关系。
+以下维度用于发现缺口，不属于当前 183 个规范字段，不能写进 canonical_dna_fields。
 
-### 箱包与配饰
+| candidate namespace | 候选维度 |
+| --- | --- |
+| NEW:apparel:* | 廓形型、合体度、肩线、领袖结构、裁片/褶裥、省道、垂坠感 |
+| NEW:footwear:* | 鞋楦、鞋头、鞋帮、闭合系统、中底/外底分区、翘度、底纹 |
+| NEW:bag:* | 开合、提携/背负系统、隔层、软硬支撑、肩带/链条关系 |
+| NEW:furniture:* | 支撑与腿型、悬挑、连接方式、软包体量、坐靠关系 |
+| NEW:mobility:* | 轴长/悬垂、舱体比例、前脸/灯组、轮拱、空气动力开口 |
+| NEW:graphic:* | 版式网格、阅读路径、字图比例、印刷层次候选 |
 
-- 包体廓形、开合方式、提携/背负系统；
-- 隔层与外袋表达、五金语言、边油与缝线；
-- 软硬度、塌陷/支撑感、容量体量感；
-- 肩带、链条、挂件与主体的关系。
+候选必须记录 `proposed_field_name`、`definition`、`recommended_value_type`、`applicable_categories`、`evidence_refs`、`distinct_from_existing_fields` 与 `confidence`；`new_enum_value` 还必须引用规范 `existing_field_id`。与现有字段可表达的内容不得重复立项。
 
-### 家具与家居
+## 5. 路由约束
 
-- 支撑结构、腿/底座类型、悬挑关系；
-- 构件连接、榫接/紧固件可见性；
-- 软包体量、坐靠关系、人体尺度感；
-- 木、金属、玻璃、织物等材料的分区和边界。
+以下是 profile 路由示意；结果 Schema 直接保留 `active_profiles`，其余字段清单是宿主中间状态：
 
-### 交通工具与大型设备
+~~~yaml
+category_profile:
+  object_type: footwear
+  profile_confidence: 0.94
+  active_profiles: [core, profile:portable_object, profile:contact_surface]
+  applicable_field_ids: [GEO-01, GEO-03, GEO-13, GEO-14, PRT-11]
+  not_applicable_field_ids: [DEV-01, DEV-06]
+  not_observable_field_ids: [GEO-03, CLR-04]
+  not_computable_field_ids: [CLR-19]
+~~~
 
-- 姿态、轴长/悬垂、舱体比例、视觉重心；
-- 前脸/侧面特征线、开口、灯组、轮拱；
-- 空气动力与防护结构；
-- 功能模块与品牌签名之间的关系。
-
-## 适配示例
-
-知识库原规则：“以背板主体材质作为主要材质。”
-
-服装适配：
-
-```json
-{
-  "source_rule": "以背板主体材质作为主要材质",
-  "status": "adapted",
-  "adapted_rule": "以服装最大且最具主体性的可见面料区域作为主要视觉材质",
-  "reason": "当前品类为服装，不存在背板"
-}
-```
-
-不要把衣服口袋解释为相机岛，也不要把家具把手解释为镜头环。
+- applicable_field_ids 必须来自 field-registry.json。
+- not_applicable 不进入覆盖率分母，也不能满足或违反风格规则。
+- not_observable 仅表示适用的 direct 字段当前不可见，可降低覆盖率，但不能用常识补全。
+- not_computable 表示适用的派生、推断或参考计算字段缺输入；补齐依赖后可重新计算。
+- 品类专属术语只写入 region、component_name 或 novel_dna_elements；不重定义规范字段。
+- profile 发生人工修订时，保留修订前值、原因、操作者与时间。

@@ -47,7 +47,40 @@ class DnaExtractionTestCase(unittest.TestCase):
 
         self.assertEqual(
             data["style_result"]["primary_style"]["level_2"],
-            "Nordic Calm / （静雅北欧）",
+            "Warm Calm / 温润静雅",
+        )
+        self.assertEqual(
+            data["style_result"]["primary_style"]["style_id"],
+            "NordicCalm",
+        )
+        self.assertEqual(
+            data["style_result"]["primary_style"]["parent_style_id"],
+            "restrained_craft",
+        )
+
+    def test_migrates_deprecated_style_alias(self) -> None:
+        data = {
+            "style_result": {
+                "primary_style": {
+                    "level_1": "奢华品质",
+                    "level_2": "Quiet Elegant Luxury / （静奢简雅）",
+                },
+                "secondary_styles": [],
+                "candidate_ranking": [],
+            }
+        }
+
+        _canonicalize_style_names(data)
+
+        primary = data["style_result"]["primary_style"]
+        self.assertEqual(primary["style_id"], "RefinedMinimalism")
+        self.assertEqual(primary["parent_style_id"], "restrained_craft")
+        self.assertEqual(primary["level_2"], "Refined Restraint / 精致克制")
+        self.assertEqual(primary["label_en"], "Refined Restraint")
+        self.assertEqual(primary["label_zh"], "精致克制")
+        self.assertEqual(
+            primary["aliases"],
+            ["Refined Minimalism", "现代简致", "静奢简雅"],
         )
 
 

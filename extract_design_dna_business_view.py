@@ -3,7 +3,7 @@
 """
 将 multimodal-design-dna-extractor Skill 的完整结果 JSON，转换为适合设计业务人员展示的精简 JSON。
 
-兼容输入：design_dna_extraction_v3.1
+兼容输入：design_dna_extraction_v3.1、design_dna_extraction_v4.0
 依赖：仅 Python 标准库，Python 3.9+
 
 单文件用法：
@@ -40,7 +40,10 @@ from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional,
 
 
 BUSINESS_SCHEMA_VERSION = "design_dna_business_view_v1.1"
-SUPPORTED_SOURCE_SCHEMA = "design_dna_extraction_v3.1"
+SUPPORTED_SOURCE_SCHEMAS = {
+    "design_dna_extraction_v3.1",
+    "design_dna_extraction_v4.0",
+}
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "result"
 BUSINESS_VIEW_SUFFIX = "_business_view.json"
@@ -130,7 +133,7 @@ ORIGINAL_DIMENSION_GROUPS = {
     "设计细节": "设计细节",
 }
 
-MODULE_GROUPS = {
+LEGACY_MODULE_GROUPS = {
     "DNA-M01": "形态与体量",
     "DNA-M02": "形态与体量",
     "DNA-M03": "构图与秩序",
@@ -148,14 +151,23 @@ MODULE_GROUPS = {
     "DNA-M15": "方案关系与趋势",
 }
 
+# v4 重定义了 M04 与 M10；保留 v3 映射，避免旧结果被新版语义误分组。
+V4_MODULE_GROUPS = {
+    **LEGACY_MODULE_GROUPS,
+    "DNA-M04": "组件与负空间",
+    "DNA-M10": "标识与文字",
+}
+
 GROUP_ORDER = [
     "形态与体量",
     "构图与秩序",
+    "组件与负空间",
     "色彩",
     "CMF",
     "纹理与图案",
     "设计细节",
     "品类专属",
+    "标识与文字",
     "品牌与系列",
     "光影与光学",
     "功能与人因",
@@ -167,11 +179,13 @@ GROUP_ORDER = [
 GROUP_CAPS = {
     "形态与体量": 3,
     "构图与秩序": 3,
+    "组件与负空间": 3,
     "色彩": 3,
     "CMF": 3,
     "纹理与图案": 2,
     "设计细节": 2,
     "品类专属": 4,
+    "标识与文字": 2,
     "品牌与系列": 1,
     "光影与光学": 1,
     "功能与人因": 1,
@@ -183,11 +197,13 @@ GROUP_CAPS = {
 GROUP_BASE_WEIGHTS = {
     "形态与体量": 13.0,
     "构图与秩序": 13.0,
+    "组件与负空间": 12.0,
     "色彩": 12.0,
     "CMF": 11.0,
     "纹理与图案": 8.0,
     "设计细节": 10.0,
     "品类专属": 15.0,
+    "标识与文字": 6.0,
     "品牌与系列": 5.0,
     "光影与光学": 5.0,
     "功能与人因": 2.0,
@@ -199,6 +215,7 @@ GROUP_BASE_WEIGHTS = {
 CORE_GROUPS = [
     "形态与体量",
     "构图与秩序",
+    "组件与负空间",
     "色彩",
     "CMF",
     "品类专属",
@@ -217,10 +234,12 @@ CORE_SEMANTIC_AXES = {
 
 HIGH_VALUE_FIELD_IDS = {
     # 形态与构图
-    "GEO-02", "GEO-03", "GEO-05", "GEO-06", "GEO-10", "GEO-11", "GEO-12",
+    "GEO-01", "GEO-02", "GEO-03", "GEO-05", "GEO-06", "GEO-10", "GEO-11", "GEO-12", "GEO-13", "GEO-14",
     "FORM-01", "FORM-03", "FORM-04", "FORM-07", "FORM-10", "FORM-11",
     "CMP-01", "CMP-02", "CMP-03", "CMP-04", "CMP-05", "CMP-06", "CMP-09", "CMP-10", "CMP-13", "CMP-15",
+    "PRT-02", "PRT-03", "PRT-04", "PRT-06", "PRT-08", "PRT-09", "PRT-11", "PRT-13",
     # 手机品类专属
+    "DEV-01", "DEV-02", "DEV-03", "DEV-04", "DEV-05", "DEV-06", "DEV-07", "DEV-08", "DEV-09", "DEV-10",
     "CAM-03", "CAM-04", "CAM-05", "CAM-06", "CAM-07", "CAM-10", "CAM-11", "CAM-13", "CAM-16", "CAM-17",
     "FRN-03", "FRN-05", "FRN-06", "FRN-08", "FRN-09", "FRN-12",
     # 色彩、CMF、纹理、细节
@@ -230,11 +249,13 @@ HIGH_VALUE_FIELD_IDS = {
     "DET-01", "DET-02", "DET-05", "DET-08", "DET-09", "DET-10", "DET-11", "DET-12", "DET-13", "DET-14", "DET-15",
     # 可直接观察的品牌/光学字段
     "BRD-01", "BRD-03", "BRD-04", "BRD-05", "BRD-06", "BRD-09",
-    "OPT-06", "OPT-07", "OPT-08", "OPT-09", "OPT-10", "OPT-11", "OPT-13",
+    "IDG-01", "IDG-03", "IDG-04", "IDG-05", "IDG-06", "IDG-07", "IDG-08",
+    "OPT-03", "OPT-06", "OPT-07", "OPT-08", "OPT-09", "OPT-10", "OPT-11", "OPT-13",
 }
 
 COMPARISON_DEPENDENT_FIELD_IDS = {
     "BRD-07", "BRD-08", "BRD-10", "BRD-11", "BRD-12",
+    "IDG-09", "IMG-09",
     "REL-01", "REL-02", "REL-03", "REL-05", "REL-06", "REL-07", "REL-08", "REL-09", "REL-10",
 }
 
@@ -335,14 +356,23 @@ def _normalize_level_1(value: Any) -> Any:
     return re.sub(r"^\s*\d+\s*[\.、]\s*", "", value).strip()
 
 
-def _normalize_level_2(value: Any) -> Any:
-    """将 `English / （中文）` 转为更适合业务展示的 `中文（English）`。"""
+def _normalize_level_2(value: Any, label_zh: Any = None, label_en: Any = None) -> Any:
+    """优先使用结构化标签，并兼容 v3/v4 的中英文拼接格式。"""
     if not isinstance(value, str):
         return value
     raw = value.strip()
+    chinese = label_zh.strip() if isinstance(label_zh, str) else ""
+    english = label_en.strip() if isinstance(label_en, str) else ""
+    if chinese:
+        return f"{chinese}（{english}）" if english and english != chinese else chinese
+
     chinese_match = re.search(r"[（(]\s*([^（）()]+?)\s*[）)]", raw)
-    english = raw.split("/", 1)[0].strip() if "/" in raw else ""
-    chinese = chinese_match.group(1).strip() if chinese_match else ""
+    if "/" in raw:
+        parsed_english, suffix = (part.strip() for part in raw.split("/", 1))
+        english = english or parsed_english
+        chinese = chinese_match.group(1).strip() if chinese_match else suffix.strip("（）() ")
+    else:
+        chinese = chinese_match.group(1).strip() if chinese_match else ""
     if chinese and english and chinese != english:
         return f"{chinese}（{english}）"
     return chinese or raw
@@ -352,7 +382,7 @@ def _value_is_missing(value: Any) -> bool:
     if value is None:
         return True
     if isinstance(value, str):
-        return value.strip().lower() in {"", "unknown", "not_observable", "null", "n/a", "na", "—", "-"}
+        return value.strip().lower() in {"", "unknown", "not_observable", "not_computable", "null", "n/a", "na", "—", "-"}
     if isinstance(value, (list, dict)):
         return len(value) == 0
     return False
@@ -524,7 +554,11 @@ def _extract_style_keywords(data: Mapping[str, Any], primary: Optional[Mapping[s
                 continue
             value = element.get("value")
             if isinstance(value, list):
-                keywords.extend(value)
+                for entry in value:
+                    if isinstance(entry, dict) and isinstance(entry.get("label"), str):
+                        keywords.append(entry["label"])
+                    else:
+                        keywords.append(entry)
             elif value is not None:
                 keywords.append(value)
 
@@ -539,8 +573,14 @@ def _style_item_view(
 ) -> Dict[str, Any]:
     confidence = _clamp(item.get("confidence"))
     result: Dict[str, Any] = {
+        "style_id": item.get("style_id"),
+        "parent_style_id": item.get("parent_style_id"),
         "level_1": _normalize_level_1(item.get("level_1")),
-        "level_2": _normalize_level_2(item.get("level_2")),
+        "level_2": _normalize_level_2(
+            item.get("level_2"),
+            item.get("label_zh"),
+            item.get("label_en"),
+        ),
         "match_score": _round_score(item.get("match_score"), 1),
         "confidence": _confidence_label(confidence, config),
         "confidence_score": _round_score(confidence),
@@ -610,6 +650,11 @@ def _extract_style_view(
 def _flatten_elements(data: Mapping[str, Any]) -> List[Dict[str, Any]]:
     elements_root = data.get("design_elements", {}) or {}
     flattened: List[Dict[str, Any]] = []
+    module_groups = (
+        LEGACY_MODULE_GROUPS
+        if data.get("schema_version") == "design_dna_extraction_v3.1"
+        else V4_MODULE_GROUPS
+    )
 
     for dimension in elements_root.get("original_md_dimensions", []) or []:
         if not isinstance(dimension, dict):
@@ -633,7 +678,7 @@ def _flatten_elements(data: Mapping[str, Any]) -> List[Dict[str, Any]]:
             continue
         module_id = str(module.get("module_id") or "")
         module_name = str(module.get("module_name") or module_id or "其他")
-        group = MODULE_GROUPS.get(module_id, "其他")
+        group = module_groups.get(module_id, "其他")
         for element in module.get("elements", []) or []:
             if isinstance(element, dict):
                 flattened.append(
@@ -655,9 +700,17 @@ def _is_business_eligible(record: Mapping[str, Any], config: BusinessViewConfig)
     field_name = str(element.get("field_name") or "")
     value = element.get("value")
     observability = element.get("observability")
+    evidence_mode = element.get("evidence_mode")
+    computation_status = element.get("computation_status")
     confidence = _clamp(element.get("confidence"))
 
+    # v4 将推断来源与可观察性拆轴；旧 v3 的 observability=inferred 仍兼容读取。
     if observability not in {"observed", "inferred"}:
+        return False
+    if evidence_mode in {"derived", "inferred", "reference_computed"} and computation_status not in {
+        None,
+        "computed",
+    }:
         return False
     if _value_is_missing(value):
         return False
@@ -668,6 +721,8 @@ def _is_business_eligible(record: Mapping[str, Any], config: BusinessViewConfig)
     if any(keyword in field_name for keyword in TECHNICAL_NAME_KEYWORDS):
         return False
     if module_id == "DNA-M13":
+        return False
+    if str(element.get("source_path") or "").startswith("legacy_alias/"):
         return False
 
     # 默认不展示需要外部参考集或较强主观推断的模块。
@@ -682,7 +737,7 @@ def _is_business_eligible(record: Mapping[str, Any], config: BusinessViewConfig)
 
     # 光学模块仅保留真正成为设计特征的字段，避免把棚拍高光当 DNA。
     if module_id == "DNA-M11" and not config.include_contextual_modules:
-        if field_id not in {"OPT-06", "OPT-07", "OPT-08", "OPT-09", "OPT-10", "OPT-11", "OPT-13"}:
+        if field_id not in {"OPT-03", "OPT-06", "OPT-07", "OPT-08", "OPT-09", "OPT-10", "OPT-11", "OPT-13"}:
             return False
         if _value_is_none(value):
             return False
@@ -691,7 +746,10 @@ def _is_business_eligible(record: Mapping[str, Any], config: BusinessViewConfig)
 
     # 品牌模块默认只保留可直接观察的显性设计编码。
     if module_id == "DNA-M10" and not config.include_contextual_modules:
-        if field_id not in {"BRD-01", "BRD-03", "BRD-04", "BRD-05", "BRD-06", "BRD-09"}:
+        if field_id not in {
+            "BRD-01", "BRD-03", "BRD-04", "BRD-05", "BRD-06", "BRD-09",
+            "IDG-01", "IDG-03", "IDG-04", "IDG-05", "IDG-06", "IDG-07", "IDG-08",
+        }:
             return False
         if confidence < 0.75:
             return False
@@ -732,12 +790,14 @@ def _element_relevance_score(record: Mapping[str, Any], category_bucket: str) ->
 
 
 def _design_role(group: str, field_name: str, category_bucket: str) -> str:
-    if any(token in field_name for token in ("签名", "标识", "品牌", "铭牌")):
-        return "签名元素"
+    if any(token in field_name for token in ("签名", "标识", "铭牌")):
+        return "可见标识"
     if group == "形态与体量":
         return "基础造型"
     if group == "构图与秩序":
         return "视觉秩序"
+    if group == "组件与负空间":
+        return "结构关系"
     if group == "色彩":
         return "整体基调" if any(token in field_name for token in ("主色", "主体颜色", "色温")) else "色彩关系"
     if group == "CMF":
@@ -750,6 +810,8 @@ def _design_role(group: str, field_name: str, category_bucket: str) -> str:
         if category_bucket == "smartphone" and any(token in field_name for token in ("相机", "镜头", "模组")):
             return "主导识别"
         return "品类结构"
+    if group == "标识与文字":
+        return "文字图标"
     if group == "品牌与系列":
         return "品牌识别"
     if group == "光影与光学":
@@ -880,7 +942,7 @@ def _extract_key_dna(
         region = element.get("region")
         if isinstance(region, str) and region and region != "whole_object":
             item["region"] = region
-        if element.get("observability") == "inferred":
+        if element.get("evidence_mode") == "inferred" or element.get("observability") == "inferred":
             item["inference_note"] = "该字段为视觉推断"
         if config.include_source_trace:
             item.update(
@@ -890,6 +952,8 @@ def _extract_key_dna(
                     "source_container_id": record.get("source_container_id"),
                     "source_container_name": record.get("source_container_name"),
                     "observability": element.get("observability"),
+                    "evidence_mode": element.get("evidence_mode"),
+                    "computation_status": element.get("computation_status"),
                     "evidence_refs": element.get("evidence_refs", []) or [],
                     "selection_score": _round_score(record.get("_score"), 1),
                 }
@@ -911,6 +975,11 @@ def _extract_semantic_profile(data: Mapping[str, Any], config: BusinessViewConfi
             if field_id not in CORE_SEMANTIC_AXES:
                 continue
             if element.get("observability") not in {"observed", "inferred"}:
+                continue
+            if element.get("evidence_mode") == "inferred" and element.get("computation_status") not in {
+                None,
+                "computed",
+            }:
                 continue
             if _value_is_missing(element.get("value")):
                 continue
@@ -1066,9 +1135,10 @@ def extract_business_view(
     data = _unwrap_result(dict(full_result))
 
     source_schema = data.get("schema_version")
-    if source_schema and source_schema != SUPPORTED_SOURCE_SCHEMA:
+    if source_schema and source_schema not in SUPPORTED_SOURCE_SCHEMAS:
         print(
-            f"警告：输入 schema_version={source_schema!r}，脚本按 {SUPPORTED_SOURCE_SCHEMA!r} 的字段结构兼容处理。",
+            "警告：输入 schema_version="
+            f"{source_schema!r}，脚本按 {sorted(SUPPORTED_SOURCE_SCHEMAS)!r} 的字段结构兼容处理。",
             file=sys.stderr,
         )
 

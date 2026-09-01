@@ -1,90 +1,49 @@
-# Multimodal Design DNA Extractor Skill
+# Multimodal Design DNA Extractor
 
-这是一个面向多模态 Agent 的通用设计 DNA 提取 Skill。它将原先的一段长提示词拆分为可版本化、可验证、可评测的能力包，适合接入审美洞察、素材入库、相似检索、方案契合度评分和知识库增量维护流程。
+面向单图、单主体的设计 DNA 提取 Skill，用于审美标签、检索索引、方案匹配和知识库增量维护。它先提取可观察 DNA，再执行风格硬门槛和混淆仲裁，避免先猜标签再寻找证据。
 
-## 为什么需要 Skill
+## 能力边界
 
-该任务同时包含单主体选择、跨品类适用性、规则型风格分类、开放式字段提取、证据定位、置信度校准、不确定性管理和知识库外新元素发现。单次 Prompt 可以完成演示，但难以稳定复用、回归测试和版本管理，因此建议沉淀为 Skill。
+- 每次只处理一张图片并选择一个主物品。
+- 输出稳定风格 ID、规范 DNA、定位证据、置信度、不确定项和新 DNA 候选。
+- 一级风格仅作导航；二级风格由决定性锚点、独立辅助证据、硬排除和混淆边界共同判定。
+- 风格锚点与辅助命中受机器 allowlist 约束；字段 profile、必要视角、派生依赖、枚举与标签值域均可确定性校验。
+- 单图只描述视觉材质候选，不断言真实成分、工艺或随角变化。
+- 结果显式记录 `active_profiles`；单图不激活 multi-face/reference/trend，M15 固定以 `profile_not_applicable` 排除。
 
-## 目录
+## 目录职责
 
-```text
-multimodal-design-dna-extractor/
-├── SKILL.md
-├── README.md
-├── manifest.json
-├── references/
-│   ├── extraction-protocol.zh-CN.md
-│   ├── output-contract.zh-CN.md
-│   ├── design-dna-knowledge-base.zh-CN.md
-│   ├── knowledge-index.zh-CN.md
-│   ├── category-adaptation.zh-CN.md
-│   └── novel-dna-governance.zh-CN.md
-├── schemas/
-│   └── design-dna-output.schema.json
-├── scripts/
-│   ├── validate_output.py
-│   ├── save_result.py
-│   ├── build_prompt_bundle.py
-│   └── validate_skill_package.py
-├── assets/
-│   └── user-request-template.zh-CN.md
-├── examples/
-│   ├── smartphone-rear.example.json
-│   └── apparel.example.json
-├── evals/
-│   ├── cases.jsonl
-│   └── rubric.zh-CN.md
-└── adapters/
-    ├── generic-agent.zh-CN.md
-    ├── openai-chatgpt-codex.zh-CN.md
-    └── claude.zh-CN.md
-```
+- `SKILL.md`：任务边界和核心决策流程。
+- `references/design-dna-knowledge-base.zh-CN.md`：风格与规范 DNA 字典。
+- `references/style-registry.json`、`field-registry.json`：稳定风格与字段机器表。
+- `references/extraction-protocol.zh-CN.md`：完整执行协议。
+- `references/output-contract.zh-CN.md`：状态、证据和置信度约束。
+- `references/category-adaptation.zh-CN.md`：通用核心与品类 profile。
+- `schemas/design-dna-output.schema.json`：权威输出结构。
+- `scripts/validate_output.py`：Schema 与语义校验。
+- `evals/`：边界、冲突与回归评测。
 
-## 最小使用方式
+## 使用
 
-1. 将整个目录安装或挂载到支持 Agent Skills 的宿主。
-2. 向 Agent 提供一张图片，并提出“提取主物品设计 DNA”类请求。
-3. Agent 激活 `SKILL.md`，读取知识库与输出 Schema。
-4. 结果生成后，在工程根目录执行校验与落盘：
+将整个目录安装或挂载到支持 Agent Skills 的视觉宿主，并向 Agent 提供恰好一张图片。Agent 最终只返回符合 Schema 的 JSON；保存和业务视图转换由宿主应用负责。
+
+本地校验：
 
 ```bash
-conda run -n base python ref/multimodal-design-dna-extractor/scripts/save_result.py \
-  --image /path/to/product.jpg result.json
+python scripts/validate_output.py result.json
+python scripts/validate_skill_package.py
 ```
 
-完整结果会写入 `data/result/YYYYMMDD_HHMMSS_<图片名>_design_dna.json`。随后运行：
-
-```bash
-conda run -n base python extract_design_dna_business_view.py \
-  data/result/YYYYMMDD_HHMMSS_<图片名>_design_dna.json
-```
-
-业务视图会写入同一目录的 `YYYYMMDD_HHMMSS_<图片名>_design_dna_business_view.json`。
-
-## 传统 API 接入
-
-对于不原生支持 Skill 的多模态 Agent，可先生成合并后的系统上下文：
+不原生支持 Skill 的宿主可生成完整上下文；生成物同时包含知识库与权威 Schema：
 
 ```bash
 python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 ```
 
-然后把 `prompt_bundle.txt` 作为系统提示词/上下文，把图片作为单独的视觉输入，把 `assets/user-request-template.zh-CN.md` 作为用户任务模板。
-
-## 推荐模型参数
-
-- 温度：`0.0–0.2`
-- 结构化输出：JSON Schema 或 JSON object
-- 图片：单张，尽量保留主体细节
-- 生成后：Schema 校验 + 语义校验 + 失败重试
-
 ## 版本
 
-- Skill：`1.1.0`
-- 输出 Schema：`design_dna_extraction_v3.1`
-- 设计 DNA 知识库：`2.0`
+- Skill：`2.0.0`
+- 输出 Schema：`design_dna_extraction_v4.0`
+- 设计 DNA 知识库：`3.0`
 
-## 数据与权利说明
-
-本包中的设计规则与知识库来自用户提供内容及针对该项目的扩展，默认用于项目内部。未额外授予第三方再分发许可。
+知识库在本 Skill 内独立维护。

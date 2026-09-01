@@ -1,11 +1,11 @@
 {
   "name": "multimodal-design-dna-extractor",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "entry": "SKILL.md",
   "language": "zh-CN",
   "standard": "Agent Skills",
-  "schema_version": "design_dna_extraction_v3.1",
-  "knowledge_base_version": "2.0",
+  "schema_version": "design_dna_extraction_v4.0",
+  "knowledge_base_version": "3.0",
   "requires": {
     "vision_input": true,
     "images_per_run": 1,

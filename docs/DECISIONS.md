@@ -1,5 +1,21 @@
 # 架构决策
 
+## 2026-09-01：Design DNA 使用稳定 ID、规范字段与证据优先判定
+
+- 一级风格只作导航；二级风格使用不可变 `style_id`，显示名、别名和迁移关系独立维护，允许改名、合并与拆分而不破坏历史结果。
+- 风格确认必须满足硬门槛、决定性锚点、独立辅助证据且未命中硬排除；易混风格通过集中混淆组仲裁，语义坐标只在硬判后排序。
+- 扩展 DNA 是唯一规范字段体系；原 MD 六维仅由宿主兼容适配器派生，模型输出空兼容槽，不再重复提取或计分。
+- 同一字段 ID 跨品类不得改义。通用核心字段由品类 profile 选择性启用，品类专属字段保持独立 ID。
+- 状态拆为 `applicability_status`、`observability`、`computation_status` 三轴，`evidence_mode` 固定字段取值方式；不得以“不适用”代替不可见或不可计算。
+- 当前单图 Skill 不激活 multi-face、参考或趋势 profile；M15 为 `profile_not_applicable`，core 内参考计算字段缺参考库时才是 `not_computable`。
+- 当前结果显式保存 `active_profiles`；字段必须命中已激活 profile 并满足必要视角，非直接字段只有必要视觉输入可见时才能标为 `computed`。
+- 单图只输出视觉材质和工艺候选，不把真实成分、工艺或随角变化写成图像事实。
+- 风格锚点和辅助命中必须显式引用本次已观察或已计算的规范字段；颜色为 required 的风格不得以 `not_applicable` 绕过门槛。
+- 每个活动风格在机器注册表分别维护决定字段与辅助字段 allowlist；真别名只做同义读取，兼容推导固定 `decision_use=none, weight=0`。
+- 纯字符串标签集合统一使用 `multi_label`，结构化/混合集合使用 `list`；`computed derived` 必须闭合全部注册源字段及其证据，派生字段不承担硬门槛。
+- Skill 只产生 JSON，应用层继续统一执行确定性校验、保存和业务视图转换。
+- 业务视图按源 Schema 分别解释 M04/M10，避免把 v4 组件拓扑当品类字段、把通用文字图标当品牌识别。
+
 ## 2026-08-31：统一管理模型目录与调用入口
 
 - 所有可用模型及其 `model_provider` 统一维护在 `app/services/llm/catalog.py`。

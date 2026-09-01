@@ -1,440 +1,192 @@
 {
-  "schema_version": "design_dna_extraction_v3.1",
-  "knowledge_base_version": "2.0",
+  "schema_version": "design_dna_extraction_v4.0",
+  "knowledge_base_version": "3.0",
   "target_object": {
     "object_id": "main_object_01",
     "category": "apparel",
     "subcategory": "midi_dress",
     "selection_basis": "画面中心的连衣裙完整度最高、面积最大，是明确展示主体。",
     "selection_confidence": 0.98,
-    "bbox_norm": [
-      0.24,
-      0.04,
-      0.76,
-      0.96
-    ],
+    "bbox_norm": [0.24, 0.04, 0.76, 0.96],
     "view": "front",
-    "visible_regions": [
-      "bodice",
-      "neckline",
-      "sleeves",
-      "waist",
-      "skirt",
-      "hem"
-    ],
-    "ignored_content": [
-      "model_skin",
-      "background",
-      "floor_shadow"
-    ]
+    "visible_regions": ["bodice", "neckline", "sleeves", "waist", "skirt", "hem"],
+    "ignored_content": ["model_skin", "background", "floor_shadow"]
   },
   "image_quality": {
-    "overall_quality": 0.87,
+    "overall_quality": 0.88,
     "object_visible_ratio": 0.93,
-    "occlusion_level": 0.06,
+    "occlusion_level": 0.08,
     "blur_level": 0.05,
-    "exposure_risk": 0.1,
-    "perspective_distortion": 0.07,
-    "background_interference": 0.08,
-    "lighting_bias": 0.16,
-    "color_reliability": 0.82,
-    "material_reliability": 0.67,
-    "notes": [
-      "人体姿态对裙摆垂坠有轻微影响"
-    ]
+    "exposure_risk": 0.07,
+    "perspective_distortion": 0.06,
+    "background_interference": 0.04,
+    "lighting_bias": 0.12,
+    "color_reliability": 0.89,
+    "material_reliability": 0.66,
+    "notes": ["正面轮廓和配色清晰", "人体姿态可能影响裙摆垂落", "真实面料成分不可由单图确认"]
   },
   "module_applicability": {
+    "active_profiles": [
+      "core"
+    ],
     "applicable_modules": [
-      {
-        "module_id": "ID形态",
-        "module_name": "ID形态",
-        "reason": "服装整体廓形和轮廓可见"
-      },
-      {
-        "module_id": "颜色",
-        "module_name": "颜色",
-        "reason": "主体面料颜色区域清晰"
-      },
-      {
-        "module_id": "材质工艺",
-        "module_name": "材质工艺",
-        "reason": "可观察表面光泽和垂坠线索"
-      },
-      {
-        "module_id": "纹理图案",
-        "module_name": "纹理图案",
-        "reason": "面料表面可检查是否存在显性纹样"
-      },
-      {
-        "module_id": "设计细节",
-        "module_name": "设计细节",
-        "reason": "领口、袖口和腰部分割可见"
-      },
-      {
-        "module_id": "DNA-M02",
-        "module_name": "轮廓、曲面与边界语言",
-        "reason": "可分析裙装轮廓与边缘语言"
-      },
-      {
-        "module_id": "DNA-M03",
-        "module_name": "构图与视觉秩序",
-        "reason": "服装本体的中轴、对称和层级可见"
-      },
-      {
-        "module_id": "DNA-M06",
-        "module_name": "色彩系统深化",
-        "reason": "可估计主色和面积占比"
-      },
-      {
-        "module_id": "DNA-M07",
-        "module_name": "CMF 分区与材质关系",
-        "reason": "可做视觉面料与光泽推断"
-      },
-      {
-        "module_id": "DNA-M08",
-        "module_name": "纹理与图案语法",
-        "reason": "可判断显性纹理是否存在"
-      },
-      {
-        "module_id": "DNA-M13",
-        "module_name": "风格感知语义坐标",
-        "reason": "可由轮廓、色彩和细节形成证据链"
-      },
-      {
-        "module_id": "DNA-M14",
-        "module_name": "意向、文化与场景语义",
-        "reason": "可在明确标注为推断的前提下输出情绪语义"
-      }
+      {"module_id": "DNA-M02", "module_name": "轮廓、曲面与边界", "reason": "连衣裙正面廓形和边缘连续可见。"},
+      {"module_id": "DNA-M03", "module_name": "构图、层级与动势", "reason": "中轴、近似对称及版面秩序可见。"},
+      {"module_id": "DNA-M06", "module_name": "OKLCH 色彩系统", "reason": "服装主体颜色区域清晰且可估算面积。"},
+      {"module_id": "DNA-M07", "module_name": "视觉材质与表面关系", "reason": "可观察表观材质候选和光泽。"},
+      {"module_id": "DNA-M08", "module_name": "纹理与图案语法", "reason": "可确认可见面料是否存在显性纹样。"},
+      {"module_id": "DNA-M13", "module_name": "感知语义坐标", "reason": "可在风格硬判后由轮廓、色彩和表面证据计算。"},
+      {"module_id": "DNA-M14", "module_name": "意向、文化与场景推断", "reason": "可基于多条观察证据输出有限情绪语义。"}
     ],
     "excluded_modules": [
       {
-        "module_id": "相机架构",
-        "module_name": "相机架构",
-        "reason": "category_not_applicable",
-        "explanation": "服装没有相机模组"
-      },
-      {
-        "module_id": "DNA-M04",
-        "module_name": "相机系统精细 DNA",
-        "reason": "category_not_applicable",
-        "explanation": "服装没有相机系统"
-      },
-      {
         "module_id": "DNA-M05",
-        "module_name": "正面与侧面 ID",
+        "module_name": "成像与屏幕设备 Profile",
         "reason": "category_not_applicable",
-        "explanation": "该模块定义为手机/屏幕设备正面与侧面字段，不适用于服装"
+        "explanation": "服装不包含成像模组或主要显示面。"
       },
       {
         "module_id": "DNA-M15",
-        "module_name": "方案关系、创新度与趋势属性",
-        "reason": "insufficient_reference_context",
-        "explanation": "没有品牌历史、竞品集或时间序列参考"
+        "module_name": "参考集计算关系",
+        "reason": "profile_not_applicable",
+        "explanation": "当前是单图提取，未激活 profile:reference_analysis 或 profile:trend_analysis。"
       }
     ],
-    "rule_adaptations": [
-      {
-        "source_rule": "以背板主体材质作为主要材质",
-        "status": "adapted",
-        "adapted_rule": "以连衣裙最大且最具主体性的可见面料区域作为主要视觉材质",
-        "reason": "当前品类为服装，不存在背板"
-      },
-      {
-        "source_rule": "手机专属部件条款",
-        "status": "not_applicable",
-        "adapted_rule": null,
-        "reason": "相机岛、中框和镜头环等条款与服装品类无关"
-      }
-    ]
+    "rule_adaptations": []
   },
   "style_result": {
-    "classification_status": "provisional",
+    "classification_status": "confirmed",
     "primary_style": {
-      "level_1": "1.极简品质",
-      "level_2": "SoftContemporary / （柔感当代）",
-      "match_score": 82,
-      "confidence": 0.78,
+      "style_id": "SoftContemporary",
+      "parent_style_id": "restrained_craft",
+      "label_en": "Soft Pastel",
+      "label_zh": "柔和粉彩",
+      "aliases": ["柔感当代", "SoftPastel"],
+      "level_1": "克制与精工",
+      "level_2": "Soft Pastel / 柔和粉彩",
+      "match_score": 86,
+      "confidence": 0.88,
       "hard_rule_passed": true,
       "rule_coverage": {
-        "applicable_rule_count": 7,
+        "applicable_rule_count": 6,
         "passed_rule_count": 6,
-        "unknown_rule_count": 1,
-        "not_applicable_rule_count": 3
+        "failed_rule_count": 0,
+        "unknown_rule_count": 0,
+        "not_applicable_rule_count": 0
       },
-      "color_requirement": {
-        "status": "pass",
-        "evidence_refs": [
-          "EV-003"
-        ]
-      },
-      "core_feature_hits": [
-        "粉彩色相",
-        "柔化几何",
-        "现代比例关系"
-      ],
-      "auxiliary_feature_hits": [
-        "低饱和配色",
-        "圆润轮廓",
-        "平衡留白"
-      ],
+      "color_requirement": {"status": "pass", "evidence_refs": ["EV-003"]},
+      "core_feature_hits": ["CLR-01、CLR-04：高明度低彩度浅薰衣草粉蜡主色清晰且近单色"],
+      "auxiliary_feature_hits": ["FORM-01：A 字轮廓连续柔和", "CMF-07：面料表观哑光且留白平衡"],
       "missing_required_items": [],
       "exclusion_hits": [],
-      "conflict_arbitration": "高明度低饱和浅薰衣草色与柔和单色廓形符合柔感当代；没有渐变、珠光或空气感光学效果，因此不优先 DreamyAir。材质受单图影响，结果标记为 provisional。",
-      "evidence_refs": [
-        "EV-001",
-        "EV-002",
-        "EV-003"
-      ]
+      "conflict_arbitration": "CG-01 共享表象为浅色、安静和低装饰；分界证据是浅薰衣草粉蜡主色与近单色结构，裁决为 SoftContemporary。温润静雅缺少米白、浅木或家居感低饱和色，清新愉悦要求更明快的中彩色；画面无空气渐变、珠光或虹彩，也不转 DreamyAir。",
+      "evidence_refs": ["EV-001", "EV-003", "EV-004"]
     },
     "secondary_styles": [],
     "candidate_ranking": [
       {
         "rank": 1,
-        "level_1": "1.极简品质",
-        "level_2": "SoftContemporary / （柔感当代）",
-        "match_score": 82,
-        "confidence": 0.78,
+        "style_id": "SoftContemporary",
+        "parent_style_id": "restrained_craft",
+        "label_en": "Soft Pastel",
+        "label_zh": "柔和粉彩",
+        "aliases": ["柔感当代", "SoftPastel"],
+        "level_1": "克制与精工",
+        "level_2": "Soft Pastel / 柔和粉彩",
+        "match_score": 86,
+        "confidence": 0.88,
         "hard_rule_passed": true,
-        "main_support": [
-          "浅薰衣草粉彩主色",
-          "柔和轮廓",
-          "近单色"
-        ],
-        "main_conflicts": [
-          "材质与真实垂坠信息有限"
-        ]
+        "main_support": ["浅薰衣草粉蜡主色", "近单色柔和 A 字轮廓", "哑光低刺激表面"],
+        "main_conflicts": []
       },
       {
         "rank": 2,
-        "level_1": "6.潮流表达",
-        "level_2": "DreamyAir / （柔雾幻彩）",
+        "style_id": "DreamyAir",
+        "parent_style_id": "color_graphic_culture",
+        "label_en": "Dreamy Air",
+        "label_zh": "柔雾幻彩",
+        "aliases": [],
+        "level_1": "色彩/图形与文化",
+        "level_2": "Dreamy Air / 柔雾幻彩",
         "match_score": 52,
         "confidence": 0.76,
         "hard_rule_passed": false,
-        "main_support": [
-          "柔和浅色调"
-        ],
-        "main_conflicts": [
-          "没有可见渐变、珠光、虹彩或空气感光学效果"
-        ]
+        "main_support": ["柔和浅色调", "弱高光"],
+        "main_conflicts": ["没有柔雾渐变、珠光、虹彩或半透明雾层"]
       },
       {
         "rank": 3,
-        "level_1": "1.极简品质",
-        "level_2": "Nordic Calm / （静雅北欧）",
+        "style_id": "NordicCalm",
+        "parent_style_id": "restrained_craft",
+        "label_en": "Warm Calm",
+        "label_zh": "温润静雅",
+        "aliases": ["Nordic Calm", "静雅北欧"],
+        "level_1": "克制与精工",
+        "level_2": "Warm Calm / 温润静雅",
         "match_score": 44,
         "confidence": 0.8,
         "hard_rule_passed": false,
-        "main_support": [
-          "低饱和、安静"
-        ],
-        "main_conflicts": [
-          "浅薰衣草粉彩按冲突规则优先 SoftContemporary"
-        ]
+        "main_support": ["低彩度", "安静哑光"],
+        "main_conflicts": ["明显浅薰衣草粉蜡主色按 CG-01 优先 SoftContemporary"]
       }
     ]
   },
   "design_elements": {
-    "original_md_dimensions": [
-      {
-        "dimension": "ID形态",
-        "elements": [
-          {
-            "field_id": null,
-            "field_name": "主体廓形",
-            "source_path": "工作表：设计元素/一、ID形态（跨品类适配）",
-            "schema_source": "md_original",
-            "value": "柔和 A 字廓形",
-            "raw_visual_description": "上身相对收束，裙摆从腰部向下逐渐外扩，外轮廓连续柔和。",
-            "value_type": "text",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.9,
-            "evidence_refs": [
-              "EV-001"
-            ]
-          }
-        ]
-      },
-      {
-        "dimension": "颜色",
-        "elements": [
-          {
-            "field_id": null,
-            "field_name": "主体颜色",
-            "source_path": "工作表：设计元素/三、颜色",
-            "schema_source": "md_original",
-            "value": "高明度低饱和浅薰衣草色",
-            "raw_visual_description": "连衣裙主体为均匀浅紫色，整体彩度较低、明度较高。",
-            "value_type": "text",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.89,
-            "evidence_refs": [
-              "EV-003"
-            ]
-          }
-        ]
-      },
-      {
-        "dimension": "材质工艺",
-        "elements": [
-          {
-            "field_id": null,
-            "field_name": "主体面料视觉材质",
-            "source_path": "工作表：设计元素/四、材质工艺（跨品类适配）",
-            "schema_source": "md_original",
-            "value": "轻薄哑光梭织面料候选",
-            "raw_visual_description": "表面没有清晰镜面高光，裙摆形成连续纵向褶线并有轻度垂落。",
-            "value_type": "text",
-            "region": "skirt",
-            "applicability": "applicable",
-            "observability": "inferred",
-            "confidence": 0.66,
-            "evidence_refs": [
-              "EV-004",
-              "EV-005"
-            ]
-          }
-        ]
-      },
-      {
-        "dimension": "纹理图案",
-        "elements": [
-          {
-            "field_id": null,
-            "field_name": "显性纹理图案",
-            "source_path": "工作表：设计元素/五、纹理图案",
-            "schema_source": "md_original",
-            "value": "none",
-            "raw_visual_description": "可见面料区域没有印花、重复图案或高对比纹理。",
-            "value_type": "enum",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.86,
-            "evidence_refs": [
-              "EV-003"
-            ]
-          }
-        ]
-      },
-      {
-        "dimension": "设计细节",
-        "elements": [
-          {
-            "field_id": null,
-            "field_name": "可见结构细节",
-            "source_path": "工作表：设计元素/六、设计细节（跨品类适配）",
-            "schema_source": "md_original",
-            "value": [
-              "圆领",
-              "短袖",
-              "腰部分割线"
-            ],
-            "raw_visual_description": "领口为连续圆弧，袖长止于上臂，腰部有一条横向结构分割。",
-            "value_type": "multi_label",
-            "region": "bodice",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.88,
-            "evidence_refs": [
-              "EV-002"
-            ]
-          }
-        ]
-      }
-    ],
+    "original_md_dimensions": [],
     "extended_dna_modules": [
       {
         "module_id": "DNA-M02",
-        "module_name": "轮廓、曲面与边界语言",
+        "module_name": "轮廓、曲面与边界",
         "elements": [
           {
-            "field_id": "FORM-01",
-            "field_name": "主导线性",
-            "source_path": "AI扩展/DNA-M02/FORM-01（服装适配）",
-            "schema_source": "md_extension",
-            "value": "曲线",
-            "raw_visual_description": "肩线、领口、侧缝和裙摆边缘均以连续缓曲线为主。",
-            "value_type": "enum",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.86,
-            "evidence_refs": [
-              "EV-001",
-              "EV-002"
-            ]
+            "field_id": "FORM-01", "field_name": "主导线性", "source_path": "DNA-M02/FORM-01", "schema_source": "md_extension",
+            "value": "曲线", "raw_visual_description": "肩线、领口、侧缝和裙摆边缘均以连续缓曲线为主。", "value_type": "enum", "evidence_mode": "direct", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.86, "evidence_refs": ["EV-001", "EV-002"]
           }
         ]
       },
       {
         "module_id": "DNA-M03",
-        "module_name": "构图与视觉秩序",
+        "module_name": "构图、层级与动势",
         "elements": [
           {
-            "field_id": "CMP-02",
-            "field_name": "对称类型",
-            "source_path": "AI扩展/DNA-M03/CMP-02",
-            "schema_source": "md_extension",
-            "value": "近似双边对称",
-            "raw_visual_description": "领口、袖型、腰线和裙摆围绕人体中轴近似对称。",
-            "value_type": "enum",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.87,
-            "evidence_refs": [
-              "EV-001",
-              "EV-002"
-            ]
+            "field_id": "CMP-02", "field_name": "对称类型", "source_path": "DNA-M03/CMP-02", "schema_source": "md_extension",
+            "value": "近似", "raw_visual_description": "领口、袖型、腰线和裙摆围绕人体中轴近似双边对称。", "value_type": "enum", "evidence_mode": "direct", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.87, "evidence_refs": ["EV-001", "EV-002"]
           }
         ]
       },
       {
         "module_id": "DNA-M06",
-        "module_name": "色彩系统深化",
+        "module_name": "OKLCH 色彩系统",
         "elements": [
           {
-            "field_id": "CLR-04",
-            "field_name": "主色面积占比",
-            "source_path": "AI扩展/DNA-M06/CLR-04",
-            "schema_source": "md_extension",
-            "value": 0.96,
-            "raw_visual_description": "除极小阴影和边缘差异外，服装主体几乎全部为同一浅薰衣草色。",
-            "value_type": "continuous",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.84,
-            "evidence_refs": [
-              "EV-003"
-            ]
+            "field_id": "CLR-01", "field_name": "主色", "source_path": "DNA-M06/CLR-01", "schema_source": "md_extension",
+            "value": {"oklch": {"l": 0.84, "c": 0.08, "h": 300}, "hex_approx": "#D8C2E3", "region": "whole_object"},
+            "raw_visual_description": "服装主体呈高明度、低彩度的浅薰衣草紫，数值仅为未校准近似。", "value_type": "object", "evidence_mode": "direct", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.86, "evidence_refs": ["EV-003"]
+          },
+          {
+            "field_id": "CLR-04", "field_name": "主色面积占比", "source_path": "DNA-M06/CLR-04", "schema_source": "md_extension",
+            "value": 0.96, "raw_visual_description": "除极小阴影和边缘差异外，服装主体几乎全部为同一浅薰衣草色。", "value_type": "float", "evidence_mode": "direct", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.84, "evidence_refs": ["EV-003"]
           }
         ]
       },
       {
         "module_id": "DNA-M07",
-        "module_name": "CMF 分区与材质关系",
+        "module_name": "视觉材质与表面关系",
         "elements": [
           {
-            "field_id": "CMF-07",
-            "field_name": "光泽度感知",
-            "source_path": "AI扩展/DNA-M07/CMF-07",
-            "schema_source": "md_extension",
-            "value": 0.18,
-            "raw_visual_description": "面料没有锐利反射，高光过渡宽且弱。",
-            "value_type": "continuous",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.78,
-            "evidence_refs": [
-              "EV-004"
-            ]
+            "field_id": "CMF-01", "field_name": "区域视觉材质候选", "source_path": "DNA-M07/CMF-01", "schema_source": "md_extension",
+            "value": {"region": "skirt", "candidates": [{"label": "轻薄哑光梭织感", "probability": 0.6}, {"label": "低弹针织感", "probability": 0.25}, {"label": "哑光仿真丝感", "probability": 0.15}]},
+            "raw_visual_description": "表面无锐利高光，裙摆形成连续纵向褶线并有轻度垂落。", "value_type": "object", "evidence_mode": "direct", "region": "skirt",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.66, "evidence_refs": ["EV-004", "EV-005"]
+          },
+          {
+            "field_id": "CMF-07", "field_name": "表观光泽", "source_path": "DNA-M07/CMF-07", "schema_source": "md_extension",
+            "value": 0.18, "raw_visual_description": "面料没有锐利反射，高光过渡宽且弱。", "value_type": "float", "evidence_mode": "direct", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.78, "evidence_refs": ["EV-004"]
           }
         ]
       },
@@ -443,72 +195,31 @@
         "module_name": "纹理与图案语法",
         "elements": [
           {
-            "field_id": "TEX-01",
-            "field_name": "纹理家族",
-            "source_path": "AI扩展/DNA-M08/TEX-01",
-            "schema_source": "md_extension",
-            "value": "无",
-            "raw_visual_description": "没有可辨印花、编织纹、几何纹或自然纹理。",
-            "value_type": "enum",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "observed",
-            "confidence": 0.85,
-            "evidence_refs": [
-              "EV-003"
-            ]
+            "field_id": "TEX-01", "field_name": "纹理家族", "source_path": "DNA-M08/TEX-01", "schema_source": "md_extension",
+            "value": "无", "raw_visual_description": "可见面料区域没有印花、重复图案或高对比纹理。", "value_type": "enum", "evidence_mode": "direct", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.85, "evidence_refs": ["EV-003"]
           }
         ]
       },
       {
         "module_id": "DNA-M13",
-        "module_name": "风格感知语义坐标",
+        "module_name": "感知语义坐标",
         "elements": [
           {
-            "field_id": "SEM-02",
-            "field_name": "硬朗—柔和",
-            "source_path": "AI扩展/DNA-M13/SEM-02",
-            "schema_source": "md_extension",
-            "value": 82,
-            "raw_visual_description": "外轮廓圆润、色彩柔和且没有尖锐切角或高对比硬结构。",
-            "value_type": "continuous",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "inferred",
-            "confidence": 0.82,
-            "evidence_refs": [
-              "EV-001",
-              "EV-002",
-              "EV-003"
-            ]
+            "field_id": "SEM-02", "field_name": "硬朗—柔和", "source_path": "DNA-M13/SEM-02", "schema_source": "md_extension",
+            "value": 75, "raw_visual_description": "连续缓曲轮廓、浅薰衣草粉蜡色和弱高光共同支持偏柔和端。", "value_type": "integer", "evidence_mode": "inferred", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "computed", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-003", "EV-004"]
           }
         ]
       },
       {
         "module_id": "DNA-M14",
-        "module_name": "意向、文化与场景语义",
+        "module_name": "意向、文化与场景推断",
         "elements": [
           {
-            "field_id": "IMG-03",
-            "field_name": "情绪关键词",
-            "source_path": "AI扩展/DNA-M14/IMG-03",
-            "schema_source": "md_extension",
-            "value": [
-              "温和",
-              "轻盈",
-              "安静"
-            ],
-            "raw_visual_description": "浅色近单色、低信息密度和柔和 A 字轮廓共同形成低刺激视觉。",
-            "value_type": "multi_label",
-            "region": "whole_object",
-            "applicability": "applicable",
-            "observability": "inferred",
-            "confidence": 0.78,
-            "evidence_refs": [
-              "EV-001",
-              "EV-003",
-              "EV-004"
-            ]
+            "field_id": "IMG-03", "field_name": "情绪关键词", "source_path": "DNA-M14/IMG-03", "schema_source": "md_extension",
+            "value": [{"label": "温和", "strength": 75}, {"label": "轻盈", "strength": 75}, {"label": "安静", "strength": 75}], "raw_visual_description": "浅色近单色、低信息密度和柔和 A 字轮廓共同形成低刺激视觉。", "value_type": "list", "evidence_mode": "inferred", "region": "whole_object",
+            "applicability_status": "applicable", "observability": "observed", "computation_status": "computed", "confidence": 0.78, "evidence_refs": ["EV-001", "EV-003", "EV-004"]
           }
         ]
       }
@@ -516,44 +227,22 @@
   },
   "uncertain_fields": [
     {
-      "field_id": null,
-      "field_name": "主体面料视觉材质",
-      "source_path": "工作表：设计元素/四、材质工艺（跨品类适配）",
+      "field_id": "CMF-01",
+      "field_name": "区域视觉材质候选",
+      "source_path": "DNA-M07/CMF-01",
+      "region": "skirt",
       "reason_type": "multiple_candidates",
-      "reason": "单张正面图无法可靠区分具体纤维和织造方式，人体姿态也影响垂坠判断。",
-      "observability": "inferred",
-      "best_estimate": "轻薄哑光梭织面料候选",
+      "reason": "单张正面图只能区分表观面料候选，人体姿态也会影响褶线和垂落。",
+      "evidence_mode": "direct",
+      "applicability_status": "applicable",
+      "observability": "observed",
+      "computation_status": "not_requested",
+      "best_estimate": {"region": "skirt", "candidate": "轻薄哑光梭织感"},
       "confidence": 0.66,
       "candidate_values": [
-        {
-          "value": "轻薄哑光梭织面料",
-          "probability": 0.6,
-          "supporting_evidence_refs": [
-            "EV-004",
-            "EV-005"
-          ],
-          "contradicting_evidence_refs": []
-        },
-        {
-          "value": "低弹针织面料",
-          "probability": 0.25,
-          "supporting_evidence_refs": [
-            "EV-005"
-          ],
-          "contradicting_evidence_refs": [
-            "EV-004"
-          ]
-        },
-        {
-          "value": "混纺仿真丝哑光面料",
-          "probability": 0.15,
-          "supporting_evidence_refs": [
-            "EV-004"
-          ],
-          "contradicting_evidence_refs": [
-            "EV-005"
-          ]
-        }
+        {"value": "轻薄哑光梭织感", "probability": 0.6, "supporting_evidence_refs": ["EV-004", "EV-005"], "contradicting_evidence_refs": []},
+        {"value": "低弹针织感", "probability": 0.25, "supporting_evidence_refs": ["EV-005"], "contradicting_evidence_refs": ["EV-004"]},
+        {"value": "哑光仿真丝感", "probability": 0.15, "supporting_evidence_refs": ["EV-004"], "contradicting_evidence_refs": ["EV-005"]}
       ],
       "recommended_additional_view_or_info": "补充面料近景、侧光动态视频、成分或工艺资料。"
     }
@@ -562,181 +251,72 @@
     {
       "temp_id": "NEW-001",
       "novelty_type": "new_module",
-      "proposed_module_id": "APP-M01",
+      "proposed_module_id": null,
+      "existing_field_id": null,
       "proposed_module_name": "服装版型与结构",
       "proposed_field_name": "服装版型与结构模块",
       "definition": "描述服装廓形、领型、袖型、腰线、衣长、裁片和闭合方式等决定品类识别与穿着形态的结构字段集合。",
-      "observed_value": {
-        "silhouette": "A-line",
-        "neckline": "round_neck",
-        "sleeve": "short_sleeve",
-        "waistline": "natural_waist",
-        "length": "midi"
-      },
+      "observed_value": {"silhouette": "A-line", "neckline": "round_neck", "sleeve": "short_sleeve", "waistline": "natural_waist", "length": "midi"},
       "recommended_value_type": "object",
-      "recommended_value_space_or_measurement": {
-        "suggested_fields": [
-          "silhouette",
-          "fit",
-          "neckline",
-          "sleeve_type",
-          "waistline_position",
-          "garment_length",
-          "paneling",
-          "closure"
-        ]
-      },
-      "applicable_categories": [
-        "apparel",
-        "dress",
-        "top",
-        "coat",
-        "skirt"
-      ],
+      "recommended_value_space_or_measurement": {"suggested_fields": ["silhouette", "fit", "neckline", "sleeve_type", "waistline_position", "garment_length", "paneling", "closure"]},
+      "applicable_categories": ["apparel", "dress", "top", "coat", "skirt"],
       "region": "whole_object",
-      "distinct_from_existing_fields": "现有 ID 形态和轮廓字段只能表达直曲、比例与边界，不能系统表达服装特有的领、袖、腰线、衣长和裁片结构。",
-      "design_relevance": "这些字段直接影响服装品类识别、版型检索、生成控制、风格判断和用户审美偏好聚类。",
+      "distinct_from_existing_fields": "现有通用轮廓、组件和边界字段不能系统表达服装特有的领、袖、腰线、衣长和裁片结构。",
+      "design_relevance": "这些字段影响服装品类识别、版型检索、生成控制和审美偏好聚类。",
       "confidence": 0.88,
-      "evidence_refs": [
-        "EV-001",
-        "EV-002"
-      ],
+      "evidence_refs": ["EV-001", "EV-002"],
       "suggested_priority": "P1"
     }
   ],
   "evidence": [
     {
       "evidence_id": "EV-001",
-      "bbox_norm": [
-        0.24,
-        0.04,
-        0.76,
-        0.96
-      ],
+      "bbox_norm": [0.24, 0.04, 0.76, 0.96],
       "region": "whole_object",
       "view": "front",
       "description": "连衣裙上身相对收束，裙摆从自然腰线向下逐渐外扩，左右轮廓近似对称。",
-      "visual_cues": [
-        "A字廓形",
-        "腰线",
-        "裙长",
-        "双边对称"
-      ],
-      "supports": [
-        "主体廓形",
-        "FORM-01",
-        "CMP-02",
-        "SoftContemporary / （柔感当代）",
-        "NEW-001"
-      ]
+      "visual_cues": ["A 字廓形", "腰线", "中长裙摆", "双边对称"]
     },
     {
       "evidence_id": "EV-002",
-      "bbox_norm": [
-        0.31,
-        0.05,
-        0.69,
-        0.48
-      ],
+      "bbox_norm": [0.31, 0.05, 0.69, 0.48],
       "region": "bodice",
       "view": "front",
-      "description": "领口呈圆弧，左右为短袖，腰部有横向分割线。",
-      "visual_cues": [
-        "圆领",
-        "短袖",
-        "腰部分割",
-        "柔和边界"
-      ],
-      "supports": [
-        "可见结构细节",
-        "FORM-01",
-        "CMP-02",
-        "NEW-001"
-      ]
+      "description": "领口呈圆弧，左右为短袖，腰部有一条横向结构分割。",
+      "visual_cues": ["圆领", "短袖", "腰部分割", "柔和边界"]
     },
     {
       "evidence_id": "EV-003",
-      "bbox_norm": [
-        0.27,
-        0.06,
-        0.73,
-        0.94
-      ],
+      "bbox_norm": [0.27, 0.06, 0.73, 0.94],
       "region": "whole_object_color",
       "view": "front",
       "description": "主体面料为均匀浅紫色，明度高、彩度低，未见独立印花或高对比拼色。",
-      "visual_cues": [
-        "浅薰衣草色",
-        "近单色",
-        "低饱和",
-        "无图案"
-      ],
-      "supports": [
-        "主体颜色",
-        "显性纹理图案",
-        "CLR-04",
-        "TEX-01",
-        "SoftContemporary / （柔感当代）"
-      ]
+      "visual_cues": ["浅薰衣草色", "近单色", "低彩度", "无图案"]
     },
     {
       "evidence_id": "EV-004",
-      "bbox_norm": [
-        0.32,
-        0.2,
-        0.68,
-        0.9
-      ],
+      "bbox_norm": [0.32, 0.2, 0.68, 0.9],
       "region": "fabric_surface",
       "view": "front",
       "description": "面料高光弱且过渡柔和，表面没有镜面反射。",
-      "visual_cues": [
-        "弱高光",
-        "柔和反射",
-        "哑光"
-      ],
-      "supports": [
-        "主体面料视觉材质",
-        "CMF-07",
-        "IMG-03"
-      ]
+      "visual_cues": ["弱高光", "柔和反射", "哑光"]
     },
     {
       "evidence_id": "EV-005",
-      "bbox_norm": [
-        0.28,
-        0.48,
-        0.72,
-        0.95
-      ],
+      "bbox_norm": [0.28, 0.48, 0.72, 0.95],
       "region": "skirt",
       "view": "front",
       "description": "裙摆形成数条连续纵向褶线并自然下垂，局部受站姿影响。",
-      "visual_cues": [
-        "纵向褶线",
-        "垂落",
-        "裙摆体量"
-      ],
-      "supports": [
-        "主体面料视觉材质"
-      ]
+      "visual_cues": ["纵向褶线", "垂落", "裙摆体量"]
     }
   ],
   "quality_summary": {
     "visible_coverage": 0.88,
-    "mean_confidence": 0.82,
-    "style_confidence": 0.78,
+    "mean_confidence": 0.81,
+    "style_confidence": 0.88,
     "low_confidence_field_count": 1,
-    "missing_critical_fields": [
-      "背面结构",
-      "侧面体量",
-      "面料真实成分",
-      "闭合方式"
-    ],
-    "warnings": [
-      "人物姿态可能影响垂坠判断",
-      "风格规则包含消费电子来源条款，已按品类排除或适配"
-    ],
-    "concise_summary": "主物品为高明度低饱和浅薰衣草色 A 字中长连衣裙，整体近单色、轮廓柔和、细节克制，暂定为柔感当代；服装版型与结构是当前知识库需要补充的重要新 DNA 模块。"
+    "missing_critical_fields": ["背面结构", "侧面体量"],
+    "warnings": ["人物姿态可能影响垂落判断", "面料仅输出视觉候选"],
+    "concise_summary": "主物品为浅薰衣草粉蜡近单色 A 字中长连衣裙，轮廓柔和、表面哑光且无显性图案，确认归为柔和粉彩。"
   }
 }
