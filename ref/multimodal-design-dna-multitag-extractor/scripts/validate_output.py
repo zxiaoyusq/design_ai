@@ -11,12 +11,15 @@ from itertools import combinations
 from pathlib import Path
 from typing import Any, Iterable
 
+from derive_style_presets import compute_derived_style_presets
+
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SCHEMA = ROOT / "schemas" / "design-dna-output.schema.json"
 DEFAULT_KB = ROOT / "references" / "design-dna-knowledge-base.zh-CN.md"
 DEFAULT_STYLE_REGISTRY = ROOT / "references" / "style-registry.json"
 DEFAULT_FIELD_REGISTRY = ROOT / "references" / "field-registry.json"
 DEFAULT_TAG_RELATIONS = ROOT / "references" / "tag-relations.json"
+DEFAULT_COMBINATION_PRESETS = ROOT / "references" / "style-combination-presets.json"
 
 VALUE_TYPES = {"enum", "float", "integer", "boolean", "list", "object", "text", "multi_label"}
 STYLE_STATUSES = {"active", "deprecated"}
@@ -889,6 +892,7 @@ def validate_semantics(
     style_registry: dict[str, Any],
     field_registry: dict[str, Any],
     tag_relations: dict[str, Any],
+    combination_presets: dict[str, Any] | None = None,
 ) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -913,8 +917,29 @@ def validate_semantics(
         tag_dependencies,
     ) = validate_tag_relations(tag_relations, active_styles, kb_version)
     errors.extend(relation_errors)
+    if combination_presets is None:
+        combination_presets = json.loads(
+            DEFAULT_COMBINATION_PRESETS.read_text(encoding="utf-8"),
+            parse_constant=reject_nonfinite_constant,
+        )
     color_roles = extract_style_color_roles(kb_text)
     value_spaces = extract_kb_value_spaces(kb_text)
+
+    style_result = data.get("style_result", {})
+    confirmed_style_ids = [
+        item.get("style_id")
+        for item in style_result.get("style_tags", [])
+        if isinstance(item, dict) and isinstance(item.get("style_id"), str)
+    ]
+    expected_presets = compute_derived_style_presets(
+        confirmed_style_ids,
+        combination_presets,
+    )
+    if style_result.get("derived_style_presets") != expected_presets:
+        errors.append(
+            "style_result.derived_style_presets: must equal deterministic Python derivation "
+            "from confirmed style_tags"
+        )
 
     target_object = data.get("target_object", {})
     target_bbox = target_object.get("bbox_norm")
@@ -1839,6 +1864,7 @@ def main() -> int:
     parser.add_argument("--style-registry", type=Path, default=DEFAULT_STYLE_REGISTRY)
     parser.add_argument("--field-registry", type=Path, default=DEFAULT_FIELD_REGISTRY)
     parser.add_argument("--tag-relations", type=Path, default=DEFAULT_TAG_RELATIONS)
+    parser.add_argument("--combination-presets", type=Path, default=DEFAULT_COMBINATION_PRESETS)
     parser.add_argument("--warnings-as-errors", action="store_true")
     args = parser.parse_args()
 
@@ -1847,6 +1873,7 @@ def main() -> int:
     style_registry = load_json(args.style_registry)
     field_registry = load_json(args.field_registry)
     tag_relations = load_json(args.tag_relations)
+    combination_presets = load_json(args.combination_presets)
     try:
         from jsonschema import Draft202012Validator
     except ImportError:
@@ -1871,6 +1898,7 @@ def main() -> int:
             style_registry,
             field_registry,
             tag_relations,
+            combination_presets,
         )
         errors.extend(semantic_errors)
 

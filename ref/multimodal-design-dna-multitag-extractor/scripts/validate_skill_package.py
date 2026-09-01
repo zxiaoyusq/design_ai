@@ -17,8 +17,8 @@ sys.dont_write_bytecode = True
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "1.1.0"
-EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.0"
+EXPECTED_SKILL_VERSION = "1.2.0"
+EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"
 REQUIRED = [
     "SKILL.md",
@@ -34,11 +34,15 @@ REQUIRED = [
     "references/field-registry.json",
     "references/tag-relations.json",
     "schemas/design-dna-output.schema.json",
+    "schemas/design-dna-model-output.schema.json",
+    "scripts/derive_style_presets.py",
+    "scripts/build_model_output_schema.py",
     "scripts/validate_output.py",
     "scripts/save_result.py",
     "scripts/build_prompt_bundle.py",
     "scripts/build_knowledge_index.py",
     "evals/cases.jsonl",
+    "evals/preset-derivation-cases.json",
     "evals/rubric.zh-CN.md",
     "examples/smartphone-rear.example.json",
     "examples/apparel.example.json",
@@ -133,7 +137,8 @@ def _check_versions(errors: list[str]) -> None:
 
     manifest = _load_json("manifest.json", errors)
     schema = _load_json("schemas/design-dna-output.schema.json", errors)
-    if not isinstance(manifest, dict) or not isinstance(schema, dict):
+    model_schema = _load_json("schemas/design-dna-model-output.schema.json", errors)
+    if not all(isinstance(item, dict) for item in (manifest, schema, model_schema)):
         return
     expected = {
         "name": name,
@@ -150,6 +155,8 @@ def _check_versions(errors: list[str]) -> None:
         errors.append(f"manifest schema_version must be {EXPECTED_SCHEMA_VERSION}")
     if manifest.get("knowledge_base_version") != EXPECTED_KNOWLEDGE_BASE_VERSION:
         errors.append(f"manifest knowledge_base_version must be {EXPECTED_KNOWLEDGE_BASE_VERSION}")
+    if manifest.get("model_output_schema") != "schemas/design-dna-model-output.schema.json":
+        errors.append("manifest model_output_schema must reference the model-only schema")
 
     schema_const = schema.get("properties", {}).get("schema_version", {}).get("const")
     if schema_const != manifest.get("schema_version"):
@@ -157,6 +164,13 @@ def _check_versions(errors: list[str]) -> None:
     kb_schema_const = schema.get("properties", {}).get("knowledge_base_version", {}).get("const")
     if kb_schema_const != manifest.get("knowledge_base_version"):
         errors.append(f"schema knowledge_base_version const {kb_schema_const!r} != manifest")
+    if (
+        model_schema.get("properties", {}).get("schema_version", {}).get("const")
+        != manifest.get("schema_version")
+        or model_schema.get("properties", {}).get("knowledge_base_version", {}).get("const")
+        != manifest.get("knowledge_base_version")
+    ):
+        errors.append("model output schema versions must match manifest")
     kb = (ROOT / "references/design-dna-knowledge-base.zh-CN.md").read_text(encoding="utf-8")
     version_match = re.search(r"知识库版本\*\*：\s*([^\s]+)", kb)
     kb_version = version_match.group(1) if version_match else None
@@ -171,12 +185,14 @@ def _check_versions(errors: list[str]) -> None:
 
 def _check_schema(errors: list[str]) -> None:
     schema = _load_json("schemas/design-dna-output.schema.json", errors)
-    if not isinstance(schema, dict):
+    model_schema = _load_json("schemas/design-dna-model-output.schema.json", errors)
+    if not isinstance(schema, dict) or not isinstance(model_schema, dict):
         return
     try:
         from jsonschema import Draft202012Validator
 
         Draft202012Validator.check_schema(schema)
+        Draft202012Validator.check_schema(model_schema)
     except Exception as exc:
         errors.append(f"invalid Draft 2020-12 schema: {exc}")
     legacy_slot = (
@@ -207,6 +223,7 @@ def _check_schema(errors: list[str]) -> None:
     expected_result_fields = {
         "classification_status",
         "style_tags",
+        "derived_style_presets",
         "candidate_ranking",
         "pairwise_arbitrations",
         "composition_summary",
@@ -216,6 +233,16 @@ def _check_schema(errors: list[str]) -> None:
     result_properties = style_result.get("properties", {})
     if set(result_properties) != expected_result_fields:
         errors.append("schema styleResult properties must reject legacy primary/secondary fields")
+    model_style_result = model_schema.get("$defs", {}).get("styleResult", {})
+    model_result_fields = expected_result_fields - {"derived_style_presets"}
+    if (
+        set(model_style_result.get("required", [])) != model_result_fields
+        or set(model_style_result.get("properties", {})) != model_result_fields
+        or "derivedStylePreset" in model_schema.get("$defs", {})
+    ):
+        errors.append(
+            "model output schema must equal the final style result contract minus derived_style_presets"
+        )
     if set(result_properties.get("classification_status", {}).get("enum", [])) != {
         "confirmed",
         "unclassified",
@@ -227,6 +254,8 @@ def _check_schema(errors: list[str]) -> None:
         errors.append("schema candidate_ranking must contain at least one ranked candidate")
     if result_properties.get("pairwise_arbitrations", {}).get("maxItems") != 3:
         errors.append("schema pairwise_arbitrations must cap C(3,2) at 3")
+    if result_properties.get("derived_style_presets", {}).get("maxItems") != 12:
+        errors.append("schema derived_style_presets must cap registered presets at 12")
     single_tag_rule = next(
         (
             rule
@@ -402,12 +431,94 @@ def _check_examples_and_evals(errors: list[str]) -> None:
         if pair_count != tag_count * (tag_count - 1) // 2:
             errors.append("example pairwise_arbitrations must contain exactly C(n,2) records")
 
+    final_schema = _load_json("schemas/design-dna-output.schema.json", errors)
+    model_schema = _load_json("schemas/design-dna-model-output.schema.json", errors)
+    if isinstance(final_schema, dict) and isinstance(model_schema, dict):
+        from jsonschema import Draft202012Validator
+
+        for payload in example_payloads:
+            model_payload = copy.deepcopy(payload)
+            model_payload.get("style_result", {}).pop("derived_style_presets", None)
+            if list(Draft202012Validator(model_schema).iter_errors(model_payload)):
+                errors.append("final example without derived presets must pass the model output schema")
+            if not list(Draft202012Validator(final_schema).iter_errors(model_payload)):
+                errors.append("final schema must reject model output before deterministic derivation")
+
     style_registry = _load_json("references/style-registry.json", errors)
     active_style_ids = {
         item.get("style_id")
         for item in (style_registry or {}).get("styles", [])
         if isinstance(item, dict) and item.get("status") == "active"
     }
+    combination_presets = _load_json("references/style-combination-presets.json", errors)
+    preset_cases = _load_json("evals/preset-derivation-cases.json", errors)
+    if isinstance(combination_presets, dict):
+        from derive_style_presets import compute_derived_style_presets, write_derived_style_presets
+
+        registered_preset_ids = {
+            item.get("preset_id")
+            for item in combination_presets.get("presets", [])
+            if isinstance(item, dict)
+        }
+        for payload in example_payloads:
+            style_result = payload.get("style_result", {})
+            style_ids = [
+                item.get("style_id")
+                for item in style_result.get("style_tags", [])
+                if isinstance(item, dict)
+            ]
+            expected_derived = compute_derived_style_presets(style_ids, combination_presets)
+            if style_result.get("derived_style_presets") != expected_derived:
+                errors.append("example derived_style_presets differs from deterministic derivation")
+        if not isinstance(preset_cases, list) or not preset_cases:
+            errors.append("preset derivation evals must be a non-empty array")
+        else:
+            case_ids = [item.get("id") for item in preset_cases if isinstance(item, dict)]
+            if len(case_ids) != len(preset_cases) or len(case_ids) != len(set(case_ids)):
+                errors.append("preset derivation eval IDs must be unique")
+            for case in preset_cases:
+                if not isinstance(case, dict):
+                    errors.append("preset derivation eval entries must be objects")
+                    continue
+                style_ids = case.get("style_ids")
+                expected_ids = case.get("expected_preset_ids")
+                if (
+                    not isinstance(style_ids, list)
+                    or not all(item in active_style_ids for item in style_ids)
+                    or not isinstance(expected_ids, list)
+                    or not all(item in registered_preset_ids for item in expected_ids)
+                ):
+                    errors.append(f"preset derivation eval {case.get('id')} has invalid IDs")
+                    continue
+                actual_ids = [
+                    item["preset_id"]
+                    for item in compute_derived_style_presets(style_ids, combination_presets)
+                ]
+                if actual_ids != expected_ids:
+                    errors.append(
+                        f"preset derivation eval {case.get('id')} expected {expected_ids}, got {actual_ids}"
+                    )
+
+            forged = copy.deepcopy(example_payloads[0]) if example_payloads else None
+            if isinstance(forged, dict):
+                forged["style_result"]["derived_style_presets"] = [
+                    {
+                        "preset_id": "CyberAesthetic",
+                        "label_en": "forged",
+                        "label_zh": "伪造",
+                        "matched_style_ids": ["CyberNeon"],
+                    }
+                ]
+                write_derived_style_presets(forged, combination_presets)
+                if forged["style_result"]["derived_style_presets"] != compute_derived_style_presets(
+                    [
+                        item.get("style_id")
+                        for item in forged["style_result"].get("style_tags", [])
+                        if isinstance(item, dict)
+                    ],
+                    combination_presets,
+                ):
+                    errors.append("preset derivation must overwrite forged model values")
     cases_path = ROOT / "evals/cases.jsonl"
     cases: list[dict[str, Any]] = []
     for line_number, line in enumerate(cases_path.read_text(encoding="utf-8").splitlines(), 1):
@@ -522,6 +633,26 @@ def _check_examples_and_evals(errors: list[str]) -> None:
 
     phone = _load_json("examples/smartphone-rear.example.json", errors)
     if isinstance(phone, dict):
+        forged_presets = copy.deepcopy(phone)
+        forged_presets["style_result"]["derived_style_presets"] = [
+            {
+                "preset_id": "CyberAesthetic",
+                "label_en": "Cyber Aesthetic",
+                "label_zh": "赛博风格",
+                "matched_style_ids": ["CyberNeon"],
+            }
+        ]
+        mutation_errors, _ = validate_semantics(
+            forged_presets,
+            knowledge_base,
+            style_registry,
+            field_registry,
+            tag_relations,
+            combination_presets if isinstance(combination_presets, dict) else None,
+        )
+        if not any("must equal deterministic Python derivation" in item for item in mutation_errors):
+            errors.append("validator mutation gate failed: forged derived style preset was accepted")
+
         invalid_label = copy.deepcopy(phone)
         for module in invalid_label.get("design_elements", {}).get("extended_dna_modules", []):
             for element in module.get("elements", []):
@@ -1053,10 +1184,12 @@ def _check_registries(errors: list[str]) -> None:
         item.get("style_id") for item in active if item.get("tag_kind") == "atomic"
     }
     presets = combination_presets.get("presets")
-    if combination_presets.get("purpose") != "query_only":
-        errors.append("combination presets purpose must be query_only")
-    if combination_presets.get("output_policy") != "never_emit_as_style_tag":
-        errors.append("combination presets must never emit as style_tag")
+    if combination_presets.get("purpose") != "deterministic_postprocess_and_query":
+        errors.append("combination presets purpose must be deterministic postprocess and query")
+    if combination_presets.get("output_policy") != "emit_only_in_derived_style_presets":
+        errors.append("combination presets must only emit in derived_style_presets")
+    if combination_presets.get("match_policy") != "all_clauses_and_min_distinct_styles":
+        errors.append("combination presets must use the deterministic all-clause match policy")
     if not isinstance(presets, list) or not presets:
         errors.append("combination presets must contain a non-empty presets array")
         presets = []
@@ -1066,14 +1199,39 @@ def _check_registries(errors: list[str]) -> None:
     collisions = sorted(set(preset_ids).intersection(active_id_set))
     if collisions:
         errors.append(f"combination preset IDs collide with active styles: {collisions}")
+    schema_preset_ids = (
+        schema.get("$defs", {})
+        .get("derivedStylePreset", {})
+        .get("properties", {})
+        .get("preset_id", {})
+        .get("enum", [])
+    ) if isinstance(schema, dict) else []
+    if len(preset_ids) != 12 or preset_ids != schema_preset_ids:
+        errors.append("final schema preset enum must match the 12 registry presets in order")
     for preset in presets:
         if not isinstance(preset, dict):
             errors.append("combination preset entries must be objects")
             continue
         clauses = preset.get("clauses")
+        minimum_distinct = preset.get("min_distinct_style_ids")
         if not isinstance(clauses, list) or not clauses:
             errors.append(f"combination preset {preset.get('preset_id')} has invalid clauses")
             continue
+        clause_union = {
+            style_id
+            for clause in clauses
+            if isinstance(clause, dict)
+            for style_id in clause.get("style_ids", [])
+            if isinstance(style_id, str)
+        }
+        if (
+            not isinstance(minimum_distinct, int)
+            or isinstance(minimum_distinct, bool)
+            or not 1 <= minimum_distinct <= min(3, len(clause_union))
+        ):
+            errors.append(
+                f"combination preset {preset.get('preset_id')} has invalid min_distinct_style_ids"
+            )
         for clause in clauses:
             style_members = clause.get("style_ids") if isinstance(clause, dict) else None
             min_match = clause.get("min_match") if isinstance(clause, dict) else None
@@ -1445,6 +1603,8 @@ def _check_scripts(errors: list[str]) -> None:
         errors.append("JSON validators must reject NaN/Infinity through parse_constant")
     if "parse_constant=" not in saver_source or "allow_nan=False" not in saver_source:
         errors.append("save_result must strictly read and write finite JSON numbers")
+    if "write_derived_style_presets(data, preset_registry)" not in saver_source:
+        errors.append("save_result must derive and overwrite combination presets before validation")
 
     from validate_output import reject_nonfinite_constant
     from save_result import _strict_json_loads
@@ -1471,6 +1631,8 @@ def _check_index(errors: list[str]) -> None:
     for required_id in ("PureMinimalism", "BiomorphicForm", "DNA-M01", "DNA-M15"):
         if required_id not in index:
             errors.append(f"knowledge index missing {required_id}")
+    if "CyberAesthetic" in index or "查询组合预设" in index:
+        errors.append("model-facing knowledge index must not expose host-only combination presets")
     process = subprocess.run(
         [sys.executable, str(ROOT / "scripts/build_knowledge_index.py"), "--check"],
         text=True,
@@ -1478,6 +1640,16 @@ def _check_index(errors: list[str]) -> None:
     )
     if process.returncode != 0:
         errors.append(f"knowledge index is not generated from registries\n{process.stdout}{process.stderr}")
+    model_schema_process = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/build_model_output_schema.py"), "--check"],
+        text=True,
+        capture_output=True,
+    )
+    if model_schema_process.returncode != 0:
+        errors.append(
+            "model output schema is not generated from the final schema\n"
+            f"{model_schema_process.stdout}{model_schema_process.stderr}"
+        )
 
 
 def _check_checksums(errors: list[str]) -> None:

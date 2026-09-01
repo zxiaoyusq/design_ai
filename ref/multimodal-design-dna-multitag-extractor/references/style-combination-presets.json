@@ -1,13 +1,15 @@
 {
   "knowledge_base_version": "4.1",
-  "purpose": "query_only",
-  "output_policy": "never_emit_as_style_tag",
+  "purpose": "deterministic_postprocess_and_query",
+  "output_policy": "emit_only_in_derived_style_presets",
+  "match_policy": "all_clauses_and_min_distinct_styles",
   "presets": [
     {
       "preset_id": "CyberAesthetic",
       "display_name_en": "Cyber Aesthetic",
       "display_name_zh": "赛博风格",
       "aliases": ["赛博", "Cyberpunk", "赛博朋克"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["CyberNeon", "DigitalGlitch", "TechComposition"], "min_match": 1},
         {"style_ids": ["CyberNeon", "DigitalGlitch", "TechComposition", "MechanicalTech", "ArmorPower", "LayeredTransparency", "Y2KDigital", "MaturePremium"], "min_match": 2}
@@ -19,16 +21,18 @@
       "display_name_en": "Playful Aesthetic",
       "display_name_zh": "玩趣风格",
       "aliases": ["玩趣", "Playful Style"],
+      "min_distinct_style_ids": 1,
       "clauses": [
-        {"style_ids": ["PlayfulGeometry", "CharacterMorph", "InflatedForm", "FreshJoy", "SaturatedBold", "ExpressiveMotifs"], "min_match": 1}
+        {"style_ids": ["PlayfulGeometry", "CharacterMorph", "InflatedForm"], "min_match": 1}
       ],
-      "note": "用于召回玩趣相关机制；具体成立原因仍由原子标签解释。"
+      "note": "至少有一项结构性玩趣机制；鲜彩或表达图形不能单独触发。"
     },
     {
       "preset_id": "MemphisAesthetic",
       "display_name_en": "Memphis Aesthetic",
       "display_name_zh": "孟菲斯风格",
       "aliases": ["Memphis", "孟菲斯"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["PlayfulGeometry"], "min_match": 1},
         {"style_ids": ["FashionGraphic", "SaturatedBold", "NeoRetro", "ExpressiveMotifs"], "min_match": 1}
@@ -40,6 +44,7 @@
       "display_name_en": "Kawaii Aesthetic",
       "display_name_zh": "萌系风格",
       "aliases": ["Kawaii", "可爱风", "萌系"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["CharacterMorph"], "min_match": 1},
         {"style_ids": ["SoftContemporary", "FreshJoy", "PlayfulGeometry"], "min_match": 1}
@@ -51,6 +56,7 @@
       "display_name_en": "Gummy Aesthetic",
       "display_name_zh": "果冻软体",
       "aliases": ["Gummy", "果冻感", "软糖风"],
+      "min_distinct_style_ids": 3,
       "clauses": [
         {"style_ids": ["InflatedForm", "LayeredTransparency"], "min_match": 2},
         {"style_ids": ["FreshJoy", "Y2KDigital", "DreamyAir", "SaturatedBold"], "min_match": 1}
@@ -62,6 +68,7 @@
       "display_name_en": "Retro Futurism",
       "display_name_zh": "复古未来",
       "aliases": ["Retrofuturism", "复古未来主义"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["NeoRetro"], "min_match": 1},
         {"style_ids": ["PureFuture", "Y2KDigital", "CyberNeon", "TechComposition"], "min_match": 1}
@@ -73,6 +80,7 @@
       "display_name_en": "Steampunk Aesthetic",
       "display_name_zh": "蒸汽朋克",
       "aliases": ["Steampunk", "蒸汽朋克风格"],
+      "min_distinct_style_ids": 3,
       "clauses": [
         {"style_ids": ["NeoRetro", "MechanicalTech"], "min_match": 2},
         {"style_ids": ["MaturePremium", "ClassicPrestige", "ModernPrestige"], "min_match": 1}
@@ -84,6 +92,7 @@
       "display_name_en": "Solarpunk Aesthetic",
       "display_name_zh": "太阳朋克",
       "aliases": ["Solarpunk", "生态未来"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["NaturalTextures", "BiomorphicForm"], "min_match": 1},
         {"style_ids": ["PureFuture", "FreshJoy", "TechComposition", "LayeredTransparency"], "min_match": 1}
@@ -95,6 +104,7 @@
       "display_name_en": "Neo Deco Aesthetic",
       "display_name_zh": "新装饰主义",
       "aliases": ["Neo Deco", "新装饰风格"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["ClassicPrestige", "NeoRetro", "FashionGraphic"], "min_match": 1},
         {"style_ids": ["ModernPrestige", "DecorativeLuxury", "FashionGraphic"], "min_match": 1}
@@ -106,6 +116,7 @@
       "display_name_en": "Japandi Aesthetic",
       "display_name_zh": "日式北欧融合",
       "aliases": ["Japandi", "日式北欧"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["NordicCalm", "RefinedMinimalism", "NaturalTextures"], "min_match": 2}
       ],
@@ -116,6 +127,7 @@
       "display_name_en": "Dark Romantic Aesthetic",
       "display_name_zh": "暗黑浪漫",
       "aliases": ["Dark Romantic", "浪漫哥特", "暗黑哥特"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["MaturePremium"], "min_match": 1},
         {"style_ids": ["ClassicPrestige", "DecorativeLuxury", "ArcaneFuture"], "min_match": 1}
@@ -127,6 +139,7 @@
       "display_name_en": "Maximalist Aesthetic",
       "display_name_zh": "极繁风格",
       "aliases": ["Maximalism", "极繁主义"],
+      "min_distinct_style_ids": 2,
       "clauses": [
         {"style_ids": ["DecorativeLuxury", "ExpressiveMotifs", "FolkOrnament", "ClassicPrestige"], "min_match": 1},
         {"style_ids": ["DecorativeLuxury", "ExpressiveMotifs", "FolkOrnament", "ClassicPrestige", "SaturatedBold", "FashionGraphic", "CraftedIrregularity"], "min_match": 2}

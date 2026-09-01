@@ -6,7 +6,6 @@
 - 活动扁平风格标签：38
 - 检索 facet：7
 - 显式标签对关系：54
-- 查询组合预设：12
 - 规范 DNA 字段：192
 
 ## 扁平风格标签索引
@@ -51,25 +50,6 @@
 | `SoftContemporary` | Soft Pastel | 柔和粉彩 | `atomic` | `color_optics, form_structure` | 1.0 | `CG-01` |
 | `TechComposition` | Technical Graphics | 技术图形 | `atomic` | `graphic_ornament, composition_order` | 1.0 | `CG-03` |
 | `Y2KDigital` | Iridescent Optics | 虹彩光学 | `atomic` | `color_optics, material_surface` | 1.0 | `CG-04` |
-
-## 查询组合预设
-
-预设只把已确认标签转换为检索条件，不是可输出的风格标签。
-
-| preset_id | 中文 | 子句门槛 | 可选原子标签 |
-|---|---|---|---|
-| `CyberAesthetic` | 赛博风格 | 1+2 | `ArmorPower, CyberNeon, DigitalGlitch, LayeredTransparency, MaturePremium, MechanicalTech, TechComposition, Y2KDigital` |
-| `DarkRomanticAesthetic` | 暗黑浪漫 | 1+1 | `ArcaneFuture, ClassicPrestige, DecorativeLuxury, MaturePremium` |
-| `GummyAesthetic` | 果冻软体 | 2+1 | `DreamyAir, FreshJoy, InflatedForm, LayeredTransparency, SaturatedBold, Y2KDigital` |
-| `JapandiAesthetic` | 日式北欧融合 | 2 | `NaturalTextures, NordicCalm, RefinedMinimalism` |
-| `KawaiiAesthetic` | 萌系风格 | 1+1 | `CharacterMorph, FreshJoy, PlayfulGeometry, SoftContemporary` |
-| `MaximalistAesthetic` | 极繁风格 | 1+2 | `ClassicPrestige, CraftedIrregularity, DecorativeLuxury, ExpressiveMotifs, FashionGraphic, FolkOrnament, SaturatedBold` |
-| `MemphisAesthetic` | 孟菲斯风格 | 1+1 | `ExpressiveMotifs, FashionGraphic, NeoRetro, PlayfulGeometry, SaturatedBold` |
-| `NeoDecoAesthetic` | 新装饰主义 | 1+1 | `ClassicPrestige, DecorativeLuxury, FashionGraphic, ModernPrestige, NeoRetro` |
-| `PlayfulAesthetic` | 玩趣风格 | 1 | `CharacterMorph, ExpressiveMotifs, FreshJoy, InflatedForm, PlayfulGeometry, SaturatedBold` |
-| `RetroFuture` | 复古未来 | 1+1 | `CyberNeon, NeoRetro, PureFuture, TechComposition, Y2KDigital` |
-| `SolarpunkAesthetic` | 太阳朋克 | 1+1 | `BiomorphicForm, FreshJoy, LayeredTransparency, NaturalTextures, PureFuture, TechComposition` |
-| `SteampunkAesthetic` | 蒸汽朋克 | 2+1 | `ClassicPrestige, MaturePremium, MechanicalTech, ModernPrestige, NeoRetro` |
 
 ### 迁移别名
 
@@ -152,6 +132,5 @@
 
 1. 先读取全局判定规则，再按 `style_id` 读取候选及同混淆组风格的完整记录。
 2. 返回多标签前读取 `tag-relations.json`，对每一对已确认标签执行关系仲裁。
-3. 需要解释命名组合时，原子标签确认后再读取组合预设；不得把预设写入输出或用于反向补证。
-4. 按品类 profile 读取启用字段；同一字段 ID 不得跨品类改义。
-5. 提出新 DNA 前检索规范字段、真 aliases 与零权重 compatibility_derived，避免重复。
+3. 按品类 profile 读取启用字段；同一字段 ID 不得跨品类改义。
+4. 提出新 DNA 前检索规范字段、真 aliases 与零权重 compatibility_derived，避免重复。

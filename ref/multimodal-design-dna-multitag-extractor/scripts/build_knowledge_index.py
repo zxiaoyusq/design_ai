@@ -14,7 +14,6 @@ ROOT = Path(__file__).resolve().parents[1]
 STYLE_REGISTRY = ROOT / "references/style-registry.json"
 TAG_RELATIONS = ROOT / "references/tag-relations.json"
 FIELD_REGISTRY = ROOT / "references/field-registry.json"
-COMBINATION_PRESETS = ROOT / "references/style-combination-presets.json"
 DEFAULT_OUTPUT = ROOT / "references/knowledge-index.zh-CN.md"
 
 
@@ -29,15 +28,13 @@ def _render() -> str:
     styles = _load(STYLE_REGISTRY)
     relations = _load(TAG_RELATIONS)
     fields = _load(FIELD_REGISTRY)
-    presets = _load(COMBINATION_PRESETS)
     versions = {
         styles.get("knowledge_base_version"),
         relations.get("knowledge_base_version"),
         fields.get("knowledge_base_version"),
-        presets.get("knowledge_base_version"),
     }
     if len(versions) != 1:
-        raise ValueError("style/tag-relations/field/preset registry 知识库版本不一致")
+        raise ValueError("style/tag-relations/field registry 知识库版本不一致")
 
     active = sorted(
         (item for item in styles.get("styles", []) if item.get("status") == "active"),
@@ -49,9 +46,6 @@ def _render() -> str:
     )
     facets = relations.get("facets", [])
     pair_relations = relations.get("pair_relations", [])
-    combination_presets = sorted(
-        presets.get("presets", []), key=lambda item: item["preset_id"]
-    )
 
     module_fields: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for field in fields.get("fields", []):
@@ -66,7 +60,6 @@ def _render() -> str:
         f"- 活动扁平风格标签：{len(active)}",
         f"- 检索 facet：{len(facets)}",
         f"- 显式标签对关系：{len(pair_relations)}",
-        f"- 查询组合预设：{len(combination_presets)}",
         f"- 规范 DNA 字段：{sum(len(items) for items in module_fields.values())}",
         "",
         "## 扁平风格标签索引",
@@ -81,23 +74,6 @@ def _render() -> str:
             f"| `{style['style_id']}` | {style.get('display_name_en', '')} | "
             f"{style.get('display_name_zh', '')} | `{style.get('tag_kind', '')}` | "
             f"`{facet_ids}` | {style.get('similarity_weight', '')} | `{groups}` |"
-        )
-    lines.append("")
-
-    lines.extend(["## 查询组合预设", ""])
-    lines.append("预设只把已确认标签转换为检索条件，不是可输出的风格标签。")
-    lines.append("")
-    lines.append("| preset_id | 中文 | 子句门槛 | 可选原子标签 |")
-    lines.append("|---|---|---|---|")
-    for preset in combination_presets:
-        clauses = preset.get("clauses", [])
-        members = ", ".join(
-            sorted({style_id for clause in clauses for style_id in clause.get("style_ids", [])})
-        ) or "—"
-        thresholds = "+".join(str(clause.get("min_match", "")) for clause in clauses)
-        lines.append(
-            f"| `{preset['preset_id']}` | {preset.get('display_name_zh', '')} | "
-            f"{thresholds} | `{members}` |"
         )
     lines.append("")
 
@@ -135,9 +111,8 @@ def _render() -> str:
             "",
             "1. 先读取全局判定规则，再按 `style_id` 读取候选及同混淆组风格的完整记录。",
             "2. 返回多标签前读取 `tag-relations.json`，对每一对已确认标签执行关系仲裁。",
-            "3. 需要解释命名组合时，原子标签确认后再读取组合预设；不得把预设写入输出或用于反向补证。",
-            "4. 按品类 profile 读取启用字段；同一字段 ID 不得跨品类改义。",
-            "5. 提出新 DNA 前检索规范字段、真 aliases 与零权重 compatibility_derived，避免重复。",
+            "3. 按品类 profile 读取启用字段；同一字段 ID 不得跨品类改义。",
+            "4. 提出新 DNA 前检索规范字段、真 aliases 与零权重 compatibility_derived，避免重复。",
             "",
         ]
     )

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.internal/schemas/design-dna-multitag-output-v1.1.json",
-  "title": "Multimodal Design DNA Multi-tag Extraction Output",
-  "description": "Single-primary-object design DNA extraction result with constrained flat style tags.",
+  "$id": "https://example.internal/schemas/design-dna-multitag-model-output-v1.1.json",
+  "title": "Multimodal Design DNA Multi-tag Model Output",
+  "description": "Model-authored portion of the single-object design DNA result; derived_style_presets is added later by deterministic Python rules.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -545,77 +545,147 @@
         "evidence_refs"
       ],
       "properties": {
-        "style_id": {"$ref": "#/$defs/styleId"},
-        "label_en": {"type": "string", "minLength": 1},
-        "label_zh": {"type": "string", "minLength": 1},
+        "style_id": {
+          "$ref": "#/$defs/styleId"
+        },
+        "label_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label_zh": {
+          "type": "string",
+          "minLength": 1
+        },
         "aliases": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
-        "tag_kind": {"type": "string", "minLength": 1},
+        "tag_kind": {
+          "type": "string",
+          "minLength": 1
+        },
         "facet_ids": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "minItems": 1,
           "uniqueItems": true
         },
-        "match_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "confidence": {"type": "number", "minimum": 0.75, "maximum": 1},
-        "dominance": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "match_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.75,
+          "maximum": 1
+        },
+        "dominance": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
         "regions": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "minItems": 1,
           "uniqueItems": true
         },
-        "hard_rule_passed": {"const": true},
+        "hard_rule_passed": {
+          "const": true
+        },
         "rule_coverage": {
           "allOf": [
-            {"$ref": "#/$defs/ruleCoverage"},
+            {
+              "$ref": "#/$defs/ruleCoverage"
+            },
             {
               "properties": {
-                "applicable_rule_count": {"minimum": 1},
-                "passed_rule_count": {"minimum": 1},
-                "failed_rule_count": {"const": 0},
-                "unknown_rule_count": {"const": 0}
+                "applicable_rule_count": {
+                  "minimum": 1
+                },
+                "passed_rule_count": {
+                  "minimum": 1
+                },
+                "failed_rule_count": {
+                  "const": 0
+                },
+                "unknown_rule_count": {
+                  "const": 0
+                }
               }
             }
           ]
         },
         "color_requirement": {
           "allOf": [
-            {"$ref": "#/$defs/colorRequirement"},
-            {"properties": {"status": {"enum": ["pass", "not_applicable"]}}}
+            {
+              "$ref": "#/$defs/colorRequirement"
+            },
+            {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "pass",
+                    "not_applicable"
+                  ]
+                }
+              }
+            }
           ]
         },
         "core_feature_hits": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "minItems": 1,
           "uniqueItems": true
         },
         "auxiliary_feature_hits": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "minItems": 1,
           "uniqueItems": true
         },
         "missing_required_items": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "maxItems": 0,
           "uniqueItems": true
         },
         "exclusion_hits": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "maxItems": 0,
           "uniqueItems": true
         },
         "evidence_refs": {
           "type": "array",
-          "items": {"type": "string", "pattern": "^EV-[A-Za-z0-9_-]+$"},
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
           "minItems": 2,
           "uniqueItems": true
         }
@@ -642,79 +712,163 @@
         "main_conflicts"
       ],
       "properties": {
-        "rank": {"type": "integer", "minimum": 1},
-        "style_id": {"$ref": "#/$defs/styleId"},
-        "label_en": {"type": "string", "minLength": 1},
-        "label_zh": {"type": "string", "minLength": 1},
+        "rank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "style_id": {
+          "$ref": "#/$defs/styleId"
+        },
+        "label_en": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label_zh": {
+          "type": "string",
+          "minLength": 1
+        },
         "aliases": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
-        "tag_kind": {"type": "string", "minLength": 1},
+        "tag_kind": {
+          "type": "string",
+          "minLength": 1
+        },
         "facet_ids": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "minItems": 1,
           "uniqueItems": true
         },
-        "match_score": {"type": "number", "minimum": 0, "maximum": 100},
-        "confidence": {"type": "number", "minimum": 0, "maximum": 1},
-        "dominance": {"type": "number", "minimum": 0, "maximum": 1},
+        "match_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "dominance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
         "regions": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
-        "candidate_status": {"enum": ["confirmed", "provisional", "rejected"]},
-        "hard_rule_passed": {"type": "boolean"},
+        "candidate_status": {
+          "enum": [
+            "confirmed",
+            "provisional",
+            "rejected"
+          ]
+        },
+        "hard_rule_passed": {
+          "type": "boolean"
+        },
         "main_support": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         },
         "main_conflicts": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
           "uniqueItems": true
         }
       },
       "allOf": [
         {
           "if": {
-            "properties": {"candidate_status": {"const": "confirmed"}},
-            "required": ["candidate_status"]
-          },
-          "then": {
             "properties": {
-              "dominance": {"exclusiveMinimum": 0},
-              "confidence": {"minimum": 0.75},
-              "hard_rule_passed": {"const": true}
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {"candidate_status": {"enum": ["provisional", "rejected"]}},
-            "required": ["candidate_status"]
-          },
-          "then": {
-            "properties": {
-              "dominance": {"const": 0}
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "candidate_status": {"enum": ["provisional", "rejected"]},
-              "hard_rule_passed": {"const": true}
+              "candidate_status": {
+                "const": "confirmed"
+              }
             },
-            "required": ["candidate_status", "hard_rule_passed"]
+            "required": [
+              "candidate_status"
+            ]
           },
           "then": {
             "properties": {
-              "main_conflicts": {"minItems": 1}
+              "dominance": {
+                "exclusiveMinimum": 0
+              },
+              "confidence": {
+                "minimum": 0.75
+              },
+              "hard_rule_passed": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "candidate_status": {
+                "enum": [
+                  "provisional",
+                  "rejected"
+                ]
+              }
+            },
+            "required": [
+              "candidate_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "dominance": {
+                "const": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "candidate_status": {
+                "enum": [
+                  "provisional",
+                  "rejected"
+                ]
+              },
+              "hard_rule_passed": {
+                "const": true
+              }
+            },
+            "required": [
+              "candidate_status",
+              "hard_rule_passed"
+            ]
+          },
+          "then": {
+            "properties": {
+              "main_conflicts": {
+                "minItems": 1
+              }
             }
           }
         }
@@ -733,48 +887,45 @@
         "evidence_refs"
       ],
       "properties": {
-        "style_id_a": {"$ref": "#/$defs/styleId"},
-        "style_id_b": {"$ref": "#/$defs/styleId"},
-        "relation": {"enum": ["compatible", "exclusive", "conditional"]},
-        "scope": {"enum": ["global", "same_region_same_mechanism", "cross_region_or_mechanism"]},
-        "decision": {"enum": ["coexist", "reject_a", "reject_b", "unresolved"]},
-        "reason": {"type": "string", "minLength": 1},
-        "evidence_refs": {
-          "type": "array",
-          "items": {"type": "string", "pattern": "^EV-[A-Za-z0-9_-]+$"},
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      }
-    },
-    "derivedStylePreset": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["preset_id", "label_en", "label_zh", "matched_style_ids"],
-      "properties": {
-        "preset_id": {
+        "style_id_a": {
+          "$ref": "#/$defs/styleId"
+        },
+        "style_id_b": {
+          "$ref": "#/$defs/styleId"
+        },
+        "relation": {
           "enum": [
-            "CyberAesthetic",
-            "PlayfulAesthetic",
-            "MemphisAesthetic",
-            "KawaiiAesthetic",
-            "GummyAesthetic",
-            "RetroFuture",
-            "SteampunkAesthetic",
-            "SolarpunkAesthetic",
-            "NeoDecoAesthetic",
-            "JapandiAesthetic",
-            "DarkRomanticAesthetic",
-            "MaximalistAesthetic"
+            "compatible",
+            "exclusive",
+            "conditional"
           ]
         },
-        "label_en": {"type": "string", "minLength": 1},
-        "label_zh": {"type": "string", "minLength": 1},
-        "matched_style_ids": {
+        "scope": {
+          "enum": [
+            "global",
+            "same_region_same_mechanism",
+            "cross_region_or_mechanism"
+          ]
+        },
+        "decision": {
+          "enum": [
+            "coexist",
+            "reject_a",
+            "reject_b",
+            "unresolved"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence_refs": {
           "type": "array",
-          "items": {"$ref": "#/$defs/styleId"},
+          "items": {
+            "type": "string",
+            "pattern": "^EV-[A-Za-z0-9_-]+$"
+          },
           "minItems": 1,
-          "maxItems": 3,
           "uniqueItems": true
         }
       }
@@ -785,76 +936,110 @@
       "required": [
         "classification_status",
         "style_tags",
-        "derived_style_presets",
         "candidate_ranking",
         "pairwise_arbitrations",
         "composition_summary"
       ],
       "properties": {
-        "classification_status": {"enum": ["confirmed", "unclassified"]},
+        "classification_status": {
+          "enum": [
+            "confirmed",
+            "unclassified"
+          ]
+        },
         "style_tags": {
           "type": "array",
-          "items": {"$ref": "#/$defs/styleTag"},
+          "items": {
+            "$ref": "#/$defs/styleTag"
+          },
           "maxItems": 3,
-          "uniqueItems": true
-        },
-        "derived_style_presets": {
-          "type": "array",
-          "items": {"$ref": "#/$defs/derivedStylePreset"},
-          "maxItems": 12,
           "uniqueItems": true
         },
         "candidate_ranking": {
           "type": "array",
-          "items": {"$ref": "#/$defs/styleCandidate"},
+          "items": {
+            "$ref": "#/$defs/styleCandidate"
+          },
           "minItems": 1
         },
         "pairwise_arbitrations": {
           "type": "array",
-          "items": {"$ref": "#/$defs/pairwiseArbitration"},
+          "items": {
+            "$ref": "#/$defs/pairwiseArbitration"
+          },
           "maxItems": 3,
           "uniqueItems": true
         },
-        "composition_summary": {"type": "string", "minLength": 1}
+        "composition_summary": {
+          "type": "string",
+          "minLength": 1
+        }
       },
       "allOf": [
         {
           "if": {
-            "properties": {"classification_status": {"const": "confirmed"}},
-            "required": ["classification_status"]
-          },
-          "then": {
             "properties": {
-              "style_tags": {"minItems": 1},
-              "candidate_ranking": {"minItems": 1}
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {"classification_status": {"const": "unclassified"}},
-            "required": ["classification_status"]
-          },
-          "then": {
-            "properties": {
-              "style_tags": {"maxItems": 0},
-              "pairwise_arbitrations": {"maxItems": 0}
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "style_tags": {"minItems": 1, "maxItems": 1}
+              "classification_status": {
+                "const": "confirmed"
+              }
             },
-            "required": ["style_tags"]
+            "required": [
+              "classification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "style_tags": {
+                "minItems": 1
+              },
+              "candidate_ranking": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "classification_status": {
+                "const": "unclassified"
+              }
+            },
+            "required": [
+              "classification_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "style_tags": {
+                "maxItems": 0
+              },
+              "pairwise_arbitrations": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "style_tags": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            },
+            "required": [
+              "style_tags"
+            ]
           },
           "then": {
             "properties": {
               "style_tags": {
                 "items": {
                   "properties": {
-                    "dominance": {"const": 1}
+                    "dominance": {
+                      "const": 1
+                    }
                   }
                 }
               }

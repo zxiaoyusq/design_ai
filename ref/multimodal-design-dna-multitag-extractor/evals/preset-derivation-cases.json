@@ -1,0 +1,16 @@
+[
+  {"id": "PD-01-empty", "style_ids": [], "expected_preset_ids": []},
+  {"id": "PD-02-color-not-playful", "style_ids": ["SaturatedBold", "RefinedMinimalism"], "expected_preset_ids": []},
+  {"id": "PD-03-playful-structure", "style_ids": ["PlayfulGeometry"], "expected_preset_ids": ["PlayfulAesthetic"]},
+  {"id": "PD-04-memphis", "style_ids": ["PlayfulGeometry", "SaturatedBold"], "expected_preset_ids": ["PlayfulAesthetic", "MemphisAesthetic"]},
+  {"id": "PD-05-cyber", "style_ids": ["DigitalGlitch", "MechanicalTech"], "expected_preset_ids": ["CyberAesthetic"]},
+  {"id": "PD-06-kawaii", "style_ids": ["CharacterMorph", "SoftContemporary"], "expected_preset_ids": ["PlayfulAesthetic", "KawaiiAesthetic"]},
+  {"id": "PD-07-gummy", "style_ids": ["InflatedForm", "LayeredTransparency", "FreshJoy"], "expected_preset_ids": ["PlayfulAesthetic", "GummyAesthetic"]},
+  {"id": "PD-08-retro-future", "style_ids": ["NeoRetro", "PureFuture"], "expected_preset_ids": ["RetroFuture"]},
+  {"id": "PD-09-steampunk", "style_ids": ["NeoRetro", "MechanicalTech", "MaturePremium"], "expected_preset_ids": ["SteampunkAesthetic"]},
+  {"id": "PD-10-solarpunk", "style_ids": ["NaturalTextures", "PureFuture"], "expected_preset_ids": ["SolarpunkAesthetic"]},
+  {"id": "PD-11-neo-deco", "style_ids": ["ClassicPrestige", "ModernPrestige"], "expected_preset_ids": ["NeoDecoAesthetic"]},
+  {"id": "PD-12-japandi", "style_ids": ["NordicCalm", "NaturalTextures"], "expected_preset_ids": ["JapandiAesthetic"]},
+  {"id": "PD-13-dark-romantic", "style_ids": ["MaturePremium", "ArcaneFuture"], "expected_preset_ids": ["DarkRomanticAesthetic"]},
+  {"id": "PD-14-maximalist", "style_ids": ["DecorativeLuxury", "SaturatedBold"], "expected_preset_ids": ["MaximalistAesthetic"]}
+]

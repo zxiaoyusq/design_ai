@@ -13,7 +13,7 @@
 1. 运行 `python scripts/build_prompt_bundle.py --output prompt_bundle.txt`。
 2. 把生成文件作为 system/context 输入。
 3. 提供一张图片与 `assets/user-request-template.zh-CN.md`。
-4. 用 `schemas/design-dna-output.schema.json` 约束输出。
+4. 用 `schemas/design-dna-model-output.schema.json` 约束模型输出；宿主再派生组合预设并按最终 Schema 校验。
 5. 运行 `python scripts/validate_output.py result.json`。
 
 重试时只回传具体 JSON、Schema 或语义错误路径；不要重新描述图片，以免引入无证据事实。

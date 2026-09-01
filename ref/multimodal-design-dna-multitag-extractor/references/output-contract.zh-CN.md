@@ -1,6 +1,6 @@
 # 扁平多标签输出协议
 
-适用于 `schema_version="design_dna_multitag_extraction_v1.0"` 与 `knowledge_base_version="4.1"`。完整结果必须是合法 JSON，并通过 `schemas/design-dna-output.schema.json`；结构冲突时以 Schema 为权威。
+适用于 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json`；Python 派生后的完整结果通过 `schemas/design-dna-output.schema.json`。
 
 ## 1. 顶层结构
 
@@ -43,6 +43,7 @@
 
 - `classification_status`
 - `style_tags`
+- `derived_style_presets`
 - `candidate_ranking`
 - `pairwise_arbitrations`
 - `composition_summary`
@@ -58,7 +59,7 @@
 
 `style_tags` 只包含 confirmed 标签，最多三个。每个标签必须使用活动 `style_id`，并包含 Schema 规定的中英文显示名、匹配度、置信度、主导度、作用区域、规则覆盖、颜色状态、决定与辅助命中、缺失项、排除项和证据引用。
 
-`tag_kind` 与 `facet_ids` 必须原样取自风格注册表，不由单次图片推断。facet 是可多归属的导航/检索元数据，不形成层级。当前 38 个活动标签中，37 个 atomic 的 `similarity_weight=1`；仅 MysticOrganic 为 composite/0。组合预设只用于查询，不得写入结果。输出中的 match_score 不覆盖注册表权重。
+`tag_kind` 与 `facet_ids` 必须原样取自风格注册表，不由单次图片推断。facet 是可多归属的导航/检索元数据，不形成层级。当前 38 个活动标签中，37 个 atomic 的 `similarity_weight=1`；仅 MysticOrganic 为 composite/0。输出中的 match_score 不覆盖注册表权重。
 
 TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`。可见文字与图标写入 `IDG-05`，身份显性度写入 `IDG-07`，经批准参考库确认的实体写入 `IDG-09`；身份字段不生成风格标签，也不因其显眼而绕过图形类风格的自身门槛。
 
@@ -82,11 +83,17 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 
 若有确认标签，dominance 总和应约为 1；单标签固定为 1。`style_tags` 严格按 `(-dominance,-match_score,style_id)` 排序，但不形成主/次语义。
 
-### 4.3 candidate_ranking
+### 4.3 derived_style_presets
+
+该数组不是模型输出。宿主在原子标签确认完成后，由 `scripts/derive_style_presets.py` 仅根据 confirmed `style_tags[].style_id` 和 `style-combination-presets.json` 确定性覆盖写入；无命中时为 `[]`。
+
+每项包含稳定 `preset_id`、中英文显示名及实际参与匹配的 `matched_style_ids`。预设只用于派生展示和查询，不进入 `style_tags`、不占 dominance、不参与候选排序，也不能反向补足 DNA 或风格证据。最终校验器会重算并拒绝缺失、伪造、过期或顺序不一致的派生值。
+
+### 4.4 candidate_ranking
 
 保存完整候选排序，必须覆盖全部 `style_tags`，也可包含活动标签中的暂定或未通过项；未知、废弃或 identity 迁移记录不得作为候选。`candidate_status` 只能为 `confirmed|provisional|rejected`：confirmed 候选的 dominance 大于 0 且与对应标签一致，provisional/rejected 固定为 0。非 confirmed 候选的 `hard_rule_passed` 可为 true 或 false；若为 true，表示自身门槛已通过但因标签对冲突降级，且 `main_conflicts` 必须非空。候选严格按 `(-match_score,style_id)` 排列，排名从 1 连续递增；确认标签在两处的身份、主导度、区域和硬判状态必须一致。排序不等于主/次。边界未知、门槛未闭合或关系冲突未解决的候选不得进入 `style_tags`。
 
-### 4.4 pairwise_arbitrations
+### 4.5 pairwise_arbitrations
 
 对 `style_tags` 的每个无序标签对恰好输出一条，数量为 `n×(n-1)/2`。每对必须按字典序满足 `style_id_a < style_id_b`。单标签或空标签时必须为 `[]`；返回标签对的 `decision` 必须为 `coexist`。
 
@@ -96,7 +103,7 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 
 对同区 conditional 冲突 facet，`same_region_coexistence=forbidden` 时不得共存；`independent_evidence` 时须有双方独占核心字段、独占字段证据，且仲裁引用两侧独占证据。跨区照常按关系条件判断。
 
-### 4.5 composition_summary
+### 4.6 composition_summary
 
 只总结已确认标签的空间分布、机制分工与整体组合，不得充当证据、隐式增加标签或恢复主/次结构。空标签时说明未分类及候选尚未闭合的原因。
 
@@ -125,4 +132,4 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 
 - 输出只包含 JSON，不使用 Markdown 围栏、注释、尾逗号、NaN 或 Infinity。
 - 中文描述使用简体中文；稳定 ID、英文标签和标准枚举保持原样。
-- 提取器只生成结果；文件保存、命名、防覆盖和业务视图转换由宿主负责。
+- 模型只生成模型阶段 JSON；宿主负责组合预设派生、最终校验、保存及业务视图转换。

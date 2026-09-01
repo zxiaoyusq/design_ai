@@ -1,6 +1,6 @@
 # 扁平多标签设计 DNA 提取执行协议
 
-> 适用于 `schema_version="design_dna_multitag_extraction_v1.0"` 与 `knowledge_base_version="4.1"`。宿主应同时提供一张图片、完整知识库、注册表与权威 Schema。
+> 适用于 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段只使用一张图片、完整知识库、注册表与模型输出 Schema。
 
 ## 一、任务
 
@@ -132,8 +132,6 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 
 `composition_summary` 概括已确认机制如何在主体上组合。它不创建新风格、不重复排名，也不能作为硬判证据。
 
-`style-combination-presets.json` 仅在原子标签提取完成后，把已确认标签映射为用户熟悉的组合检索入口。预设名不进入 `style_tags`，不参与硬判，也不得反向补足任何标签证据。
-
 ### 步骤 G：状态与候选排序
 
 - `confirmed`：`style_tags` 含 1～3 个已确认标签；
@@ -175,9 +173,9 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 
 完整结果必须满足：
 
-- `schema_version="design_dna_multitag_extraction_v1.0"`；
+- `schema_version="design_dna_multitag_extraction_v1.1"`；
 - `knowledge_base_version="4.1"`；
-- 顶层与嵌套结构通过 `schemas/design-dna-output.schema.json`；
+- 模型阶段通过 `schemas/design-dna-model-output.schema.json`；
 - 结果只包含 JSON，不含 Markdown、解释、注释、路径、NaN、Infinity 或尾逗号；
 - 空集合使用 `[]`，单值不可得使用 `null`；
 - 稳定 ID、英文标签和标准枚举保持原样。
@@ -199,4 +197,4 @@ Schema 是字段结构与必填项的唯一权威；本文定义语义与决策�
 11. 组合摘要没有创造结论；
 12. 低置信度、不可见或不可计算项已登记；
 13. 所有数字有限，未出现 NaN 或 Infinity；
-14. confirmed 标签的适用规则数与通过规则数均至少为 1；版本固定为 multitag v1.0 / KB 4.1，并通过 Schema。
+14. confirmed 标签的适用规则数与通过规则数均至少为 1；版本固定为 multitag v1.1 / KB 4.1，并通过模型阶段 Schema。

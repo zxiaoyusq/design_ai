@@ -571,10 +571,6 @@
 | 异混淆特征 | 共享：与 FolkOrnament 可有工艺感，与 NaturalTextures 可不均匀；分界：本类硬判重复系统中的稳定制作偏差，不推断工艺来源；工艺纹饰或自然纹理独立达标时可并存。 |
 | 典型视觉Token | controlled_variation、misregister、uneven_edge、visible_tool_mark |
 
-## 虚拟风格组合预设
-
-`style-combination-presets.json` 只把已确认的原子标签组合映射为赛博、玩趣、孟菲斯、可爱、软糖、复古未来等检索入口。预设不参与原子标签硬判，不得出现在 `style_tags`，也不得因命名联想反向补全证据。
-
 # 设计元素与 DNA 规范字段
 
 本节是设计元素的规范定义与值域表；字段身份、类型和适用性等机器元数据以 field-registry.json 为准，enum/multi_label 值域以本表为准。字段按稳定语义维护且不按品类改义；品类差异通过 applicability 与 profile 控制。

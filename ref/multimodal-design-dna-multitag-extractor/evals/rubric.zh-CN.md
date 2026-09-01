@@ -1,16 +1,16 @@
-# KB 4.1 / Multitag Schema v1.0 回归评测量表
+# KB 4.1 / Multitag Schema v1.1 回归评测量表
 
 每例按 100 分评分；先检查一票否决，再按维度计分。`cases.jsonl` 的 `expected.style_tag_ids` 是已确认同层标签集合，顺序不表达主次；`provisional_candidate_ids` 只表示应保留为暂定候选的标签。
 
 ## 评测触发解释
 
-只有 `MT-01`～`MT-05` 是本 Skill 的自然触发例，`should_trigger=true`。其余 43 例 `should_trigger=false`，用于验证普通 DNA 请求仍路由到原版 Skill；显式加载本 Skill 后仍执行其结果回归。
+只有 `MT-01`～`MT-05` 是本 Skill 的自然触发例，`should_trigger=true`。其余 75 例 `should_trigger=false`，用于验证普通 DNA 请求仍路由到原版 Skill；显式加载本 Skill 后仍执行其结果回归。
 
 ## 一票否决
 
 命中任一项，本例最高 40 分：
 
-- 输出不可解析 JSON、版本不是 `design_dna_multitag_extraction_v1.0 / 4.1`，或引用不存在的证据；
+- 输出不可解析 JSON、版本不是 `design_dna_multitag_extraction_v1.1 / 4.1`，或引用不存在的证据；
 - 任一数字为 NaN、Infinity 或其他非有限值；
 - 输出 `parent_style_id`、`level_1`、`level_2`、`primary_style` 或 `secondary_styles`；
 - `style_tags` 超过 3 个、包含非 confirmed 标签，或为凑数输出多个标签；
@@ -28,6 +28,7 @@
 - conditional 同区冲突在 `forbidden` 模式仍共存，或在 `independent_evidence` 模式缺少双方独占核心字段、独占字段证据或仲裁引用；
 - 同一区域同一物理事实被重复用作多个标签的独立决定证据；
 - `requires` 未按 `target_quantifier="any|all"` 满足仍确认源标签，或用 `implies` 绕过目标标签硬门槛；
+- 模型阶段生成组合预设，或最终 `derived_style_presets` 与 Python 根据 confirmed 标签重算的结果不一致；
 - 把拍摄条件、人物、背景、真实材料/工艺、尺寸、重量、性能或未经验证来源当作主体事实；
 - 三轴状态、字段 ID、类型、值域、视角、派生依赖或证据闭环违反注册表；
 - `evidence.region`、`design_elements[].region` 或风格标签/候选 `regions` 不属于 `target_object.visible_regions` 且不是 `whole_object`。
@@ -64,6 +65,13 @@
 - core/auxiliary 命中必须引用该标签 allowlist 中已确认的规范字段；
 - 每项至少两条证据，并至少覆盖决定字段和不同字段/区域/机制的辅助证据；
 - 单标签 dominance 为 1；多标签 dominance 总和约为 1；数组严格按 `(-dominance,-match_score,style_id)` 排列。
+
+### derived_style_presets
+
+- 模型阶段不得包含该字段；
+- 最终结果由 Python 仅根据 confirmed `style_tags[].style_id` 覆盖写入；
+- `preset_id`、显示名、参与匹配的原子标签及顺序必须与注册表重算结果完全一致；
+- 该数组不占 dominance、不进入候选排序，也不补足任何 DNA 或风格证据。
 
 ### candidate_ranking
 
@@ -128,4 +136,5 @@ CG-07 不含身份风格标签。名称、Logo、角色、联名或社群身份�
 - 多标签回归覆盖 compatible 共存、conditional 禁止、conditional 同区独立证据与 exclusive 冲突，当前 5 例；
 - 扩展风格回归覆盖 8 个新增原子标签的 positive、boundary、negative、coexistence，共 32 例；
 - 当前基准共 80 例，ID 唯一且 JSONL 每行可解析；
+- 另有 14 条 Python 组合派生用例，覆盖空结果、误触发阻断、多预设共存及全部 12 个预设；
 - 单例 `>=90` 且无否决项为通过；全套不得出现结构、关系或证据否决项。

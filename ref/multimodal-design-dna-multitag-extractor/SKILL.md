@@ -3,9 +3,9 @@ name: multimodal-design-dna-multitag-extractor
 description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格标签与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "1.1.0"
+  version: "1.2.0"
   language: "zh-CN"
-  schema-version: "design_dna_multitag_extraction_v1.0"
+  schema-version: "design_dna_multitag_extraction_v1.1"
   knowledge-base-version: "4.1"
 ---
 
@@ -19,9 +19,9 @@ metadata:
 
 ## 执行前加载
 
-1. 读取 `references/extraction-protocol.zh-CN.md` 与 `references/output-contract.zh-CN.md`。
-2. 读取 `schemas/design-dna-output.schema.json`，它是输出结构的权威定义。
-3. 读取完整 `references/style-registry.json` 与 `references/tag-relations.json`；用 `references/knowledge-index.zh-CN.md` 定位品类相关字段。判定时必须读取全局规则、全部候选及相关混淆记录。只有需要解释用户命名的组合风格或生成检索条件时，才读取 `references/style-combination-presets.json`。
+1. 模型阶段只读取 `references/extraction-protocol.zh-CN.md`；`references/output-contract.zh-CN.md` 供宿主后处理和最终校验使用。
+2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`；最终结果由宿主按 `schemas/design-dna-output.schema.json` 校验。
+3. 读取完整 `references/style-registry.json` 与 `references/tag-relations.json`；用 `references/knowledge-index.zh-CN.md` 定位品类相关字段。判定时必须读取全局规则、全部候选及相关混淆记录。模型不得读取或匹配组合预设。
 4. 跨品类时读取 `references/category-adaptation.zh-CN.md`；出现知识库外元素时再读取 `references/novel-dna-governance.zh-CN.md`。
 
 ## 核心工作流
@@ -71,7 +71,7 @@ KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `compo
 
 ### 4. 组合摘要、候选与不确定项
 
-`composition_summary` 只概括已确认标签如何分布于主体区域及如何共同构成视觉，不得创造新标签或替代规则证据。没有已确认标签时说明未分类或暂定原因。组合预设只能在原子标签提取完成后用于检索映射，绝不写入 `style_tags`，也不得反向补证。
+`composition_summary` 只概括已确认标签如何分布于主体区域及如何共同构成视觉，不得创造新标签或替代规则证据。没有已确认标签时说明未分类或暂定原因。
 
 `candidate_ranking` 是完整候选排序，严格按 `(-match_score, style_id)` 排列，必须包含全部确认标签，也可包含暂定或未通过候选；分别使用 `candidate_status="confirmed|provisional|rejected"`。只有 confirmed 项可进入 `style_tags`。确认候选的 dominance 必须大于 0 并与标签一致；provisional/rejected 固定为 0，其 `hard_rule_passed` 可真可假。若非 confirmed 候选仍通过自身门槛，表示因标签对冲突而降级，`main_conflicts` 必须非空。置信度低于 0.75、决定边界不可见或字段不可计算时写入 `uncertain_fields`。
 
@@ -81,11 +81,14 @@ KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `compo
 
 证据必须位于主体框内并只描述可见事实。证据、设计元素及风格 `regions` 只能使用 `target_object.visible_regions` 中的值或 `whole_object`。每个观察字段至少引用一条证据；已计算推断字段至少引用两条独立观察证据；每个风格标签必须引用其硬判所用的规范字段与证据。
 
-最终只返回一个符合 Schema 的 JSON 对象，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。本 Skill 不负责保存结果或生成业务视图；宿主应用统一校验、保存和转换。
+模型只返回符合 `design-dna-model-output.schema.json` 的 JSON，不得生成 `derived_style_presets`。宿主随后必须运行 `scripts/derive_style_presets.py`，或直接使用已内置该步骤的 `scripts/save_result.py`，从 confirmed `style_tags` 确定性写入组合预设，再按最终 Schema 校验。组合预设不参与图像推理、不反向补证，也不进入 `style_tags`。
+
+最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。
 
 ## 确定性校验
 
 ```bash
+python scripts/derive_style_presets.py model_result.json --output result.json
 python scripts/validate_output.py result.json
 ```
 
@@ -102,8 +105,10 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 - 执行协议：`references/extraction-protocol.zh-CN.md`
 - 输出合同：`references/output-contract.zh-CN.md`
 - 知识库：`references/design-dna-knowledge-base.zh-CN.md`
-- 风格、关系、字段与检索组合：`references/style-registry.json`、`references/tag-relations.json`、`references/field-registry.json`、`references/style-combination-presets.json`
+- 模型使用的风格、关系与字段：`references/style-registry.json`、`references/tag-relations.json`、`references/field-registry.json`
+- 宿主专用组合派生规则：`references/style-combination-presets.json`
 - 品类适配与新 DNA：`references/category-adaptation.zh-CN.md`、`references/novel-dna-governance.zh-CN.md`
-- JSON Schema：`schemas/design-dna-output.schema.json`
+- 模型/最终 JSON Schema：`schemas/design-dna-model-output.schema.json`、`schemas/design-dna-output.schema.json`
+- 组合派生器：`scripts/derive_style_presets.py`
 - 结果校验器：`scripts/validate_output.py`
 - 评测：`evals/rubric.zh-CN.md`、`evals/cases.jsonl`

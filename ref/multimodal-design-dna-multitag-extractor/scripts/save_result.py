@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Optional, Sequence
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+from derive_style_presets import write_derived_style_presets
 from validate_output import validate_semantics
 
 
@@ -25,6 +26,7 @@ DEFAULT_KNOWLEDGE_BASE = SKILL_ROOT / "references" / "design-dna-knowledge-base.
 DEFAULT_STYLE_REGISTRY = SKILL_ROOT / "references" / "style-registry.json"
 DEFAULT_FIELD_REGISTRY = SKILL_ROOT / "references" / "field-registry.json"
 DEFAULT_TAG_RELATIONS = SKILL_ROOT / "references" / "tag-relations.json"
+DEFAULT_COMBINATION_PRESETS = SKILL_ROOT / "references" / "style-combination-presets.json"
 DEFAULT_TIMEZONE = "Asia/Shanghai"
 TIMESTAMP_PATTERN = re.compile(r"^\d{8}_\d{6}$")
 
@@ -168,6 +170,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     try:
         data = _load_json_source(args.input)
+        preset_registry = _strict_json_loads(
+            DEFAULT_COMBINATION_PRESETS.read_text(encoding="utf-8")
+        )
+        write_derived_style_presets(data, preset_registry)
         warnings = _validate_result(data)
         timestamp = args.timestamp or _current_timestamp(args.timezone)
         if not TIMESTAMP_PATTERN.fullmatch(timestamp):
