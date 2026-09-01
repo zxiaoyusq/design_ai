@@ -33,6 +33,9 @@ dist/
 node_modules/
 *.egg-info/
 
+# Presentation source files
+*.pptx
+
 # Local uploads and generated extraction results
 data/uploads/
 data/result/
