@@ -37,6 +37,13 @@
 
 ## 2026-09-01
 
+- 已以现有原 Skill 为基线完整复制并独立建立 `multimodal-design-dna-multitag-extractor` 1.0.0；复制后原 `multimodal-design-dna-extractor` 目录保持不变。
+- 新 Skill 使用 Schema `design_dna_multitag_extraction_v1.0` 与知识库 4.0，输出 0～3 个已确认同层标签，取消一二级及主次风格字段，并增加候选状态、dominance、作用区域、两两关系仲裁与组合摘要。
+- 新本体含 30 个活动风格标签、7 个后台 facet、32 对显式关系和 1 条复合依赖；29 个 atomic 标签独立计权，`MysticOrganic` 仅作零权重复合解释，`TribeIdentity` 已迁移到 `IDG-05/07/09` 且不再作为风格。
+- 新 Skill 已增加可共存双标签完整样例及 48 条评测，其中 5 条为明确多标签触发例；确定性校验器可拒绝旧层级字段、废弃标签、dominance 不闭合、候选状态不一致以及缺失/重复关系仲裁。
+- 新 Skill 的规范 DNA 已增至 184 个字段；新增 `DET-17 细节语法角色`，NeoRetro 必须由两族独占证据及 `DET-17=历史造型化` 闭环，普通泡罩、圆灯、轮圈、现代 Logo 或普通控件不能替代该门槛。
+- conditional 同区关系现显式区分 `forbidden` 与 `independent_evidence`；后者只有在双方核心字段、核心证据和仲裁引用均可独立追溯时才允许共存，confirmed 标签引用的全部 core/aux 字段同时要求置信度不低于 0.75。
+- 已在无历史结论上下文下完成新 Skill 独立前向盲测：红色泡罩微型车确认 `SaturatedBold + RefinedMinimalism`，二者由色彩与克制边界细节的独立证据共存；`NeoRetro`、`KineticEnergy` 与 `BiomorphicForm` 均被拒绝，正式结果首次严格校验即通过。
 - 已将 `multimodal-design-dna-extractor` 升级至 `2.0.0`、Schema `v4.0`、知识库 `3.0`；一级标签收敛为 6 个导航族，31 个活动二级风格使用稳定 ID、显示名、别名和迁移关系。
 - 已合并重复的静奢/精致克制标签，拆分自然表面与仿生形态，并为全部风格统一硬门槛、决定锚点、独立辅助证据、硬排除及 8 组集中混淆仲裁。
 - 已将 DNA 收敛为 183 个规范字段、25 个真别名与 31 个零权重兼容推导，原六维改为宿主兼容投影；新增风格、字段注册表及稳定索引生成校验。
@@ -49,3 +56,6 @@
 - 已修复 v4 业务视图的中英标签标准化及 M04/M10 分组语义，同时保留 v3 兼容路径和回归测试。
 - 已通过终审规则下的独立前向盲测：红色泡罩微型车稳定判为 `SaturatedBold`、无次风格，且不再误触发 `KineticEnergy`、`NeoRetro` 或 `BiomorphicForm`。
 - 已调整版本控制规则，排除本地 PPTX 演示文件。
+- 已将独立 `multimodal-design-dna-multitag-extractor` 升级至 1.1.0、知识库升级至 4.1；新增玩趣构成、角色拟态、气室膨胀、透明层叠、解构拼装、数字故障、粗野原块和制作式不规整 8 个原子风格。
+- 已新增 8 个直接可观察 DNA 字段、22 对显式关系及 12 个只用于查询的命名组合预设；组合预设不进入提取结果，也不参与反向补证。
+- 扩展 Skill 现含 38 个活动标签、192 个规范字段、54 对显式关系和 80 条评测；流程、Schema、索引、Prompt bundle、示例与确定性包校验均已同步。

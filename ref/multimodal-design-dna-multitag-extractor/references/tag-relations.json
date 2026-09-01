@@ -1,0 +1,483 @@
+{
+  "knowledge_base_version": "4.1",
+  "max_confirmed_tags": 3,
+  "facets": [
+    {
+      "facet_id": "composition_order",
+      "display_name": "构成与秩序",
+      "description": "留白、信息密度、层级与精确秩序。"
+    },
+    {
+      "facet_id": "form_structure",
+      "display_name": "形态与结构",
+      "description": "轮廓、曲面、体量、连接与结构组织。"
+    },
+    {
+      "facet_id": "color_optics",
+      "display_name": "色彩与光学",
+      "description": "主色、彩度、渐变、发光与被动反射。"
+    },
+    {
+      "facet_id": "material_surface",
+      "display_name": "材质与表面",
+      "description": "视觉材质、纹理、粗糙度与表面反射。"
+    },
+    {
+      "facet_id": "graphic_ornament",
+      "display_name": "图形与装饰",
+      "description": "色块、纹样、文字、符号与装饰语法。"
+    },
+    {
+      "facet_id": "motion_function",
+      "display_name": "动势与功能",
+      "description": "运动方向、防护、握持、操作与挂载系统。"
+    },
+    {
+      "facet_id": "identity_context",
+      "display_name": "身份与语境",
+      "description": "经画面自标识或批准参考确认的身份信息；不参与视觉相似度。"
+    }
+  ],
+  "default_pair_relation": {
+    "relation": "conditional",
+    "scope": "same_region_same_mechanism",
+    "same_region_coexistence": "independent_evidence",
+    "coexistence_rule": "不同区域或不同视觉机制可共存；同一区域同一物理事实只能支持一个标签，须按硬门槛与差异锚点仲裁。"
+  },
+  "pair_relations": [
+    {
+      "relation_id": "PR-001",
+      "style_ids": ["KineticEnergy", "SaturatedBold"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "动势由姿态、速度图形或性能构件确认，鲜彩由主色确认；证据独立即可并存。"
+    },
+    {
+      "relation_id": "PR-002",
+      "style_ids": ["BiomorphicForm", "NaturalTextures"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "形态拓扑与表面纹理属于不同机制，可分别达标。"
+    },
+    {
+      "relation_id": "PR-003",
+      "style_ids": ["CyberNeon", "PureFuture"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "连续单体形态与主动光界面可分别达标。"
+    },
+    {
+      "relation_id": "PR-004",
+      "style_ids": ["FunctionalAesthetics", "MechanicalTech"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "外露连接层级与可读操作、防护或挂载系统可分别达标。"
+    },
+    {
+      "relation_id": "PR-005",
+      "style_ids": ["FashionGraphic", "KineticEnergy"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "几何版式与主体动势有独立字段和证据时可并存。"
+    },
+    {
+      "relation_id": "PR-006",
+      "style_ids": ["FashionGraphic", "SaturatedBold"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "色块版式与色彩强度属于不同机制，不得复用同一描述作为两项独立锚点。"
+    },
+    {
+      "relation_id": "PR-007",
+      "style_ids": ["MaturePremium", "NeoRetro"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "深色厚重表面与新旧语法重组分别达标时可并存。"
+    },
+    {
+      "relation_id": "PR-009",
+      "style_ids": ["BiomorphicForm", "MysticOrganic"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "仿生形态可作为幽暗有机的基础；后者还须有独立异常光学证据。"
+    },
+    {
+      "relation_id": "PR-010",
+      "style_ids": ["MysticOrganic", "NaturalTextures"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "自然表面可作为幽暗有机的基础；后者还须有独立异常光学证据。"
+    },
+    {
+      "relation_id": "PR-011",
+      "style_ids": ["NaturalTextures", "RefinedWilderness"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "自然纹理与精确边界×粗粝表面对照分别达标时可并存。"
+    },
+    {
+      "relation_id": "PR-012",
+      "style_ids": ["NaturalTextures", "NordicCalm"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "自然表面与温润低彩、柔雾机制可分别达标。"
+    },
+    {
+      "relation_id": "PR-013",
+      "style_ids": ["RefinedMinimalism", "SaturatedBold"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "克制细节增量与高饱和主色有独立证据时可并存；高饱和本身不否决精致克制。"
+    },
+    {
+      "relation_id": "PR-014",
+      "style_ids": ["ClassicPrestige", "NeoRetro"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "经典纹样与复古重组分别具备独立线索时可并存。"
+    },
+    {
+      "relation_id": "PR-015",
+      "style_ids": ["FreshJoy", "SoftContemporary"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "forbidden",
+      "conflict_facet_ids": ["color_optics"],
+      "rule": "同一主色区域按粉蜡低彩或明快中彩二选一；不同主区域可分别判断。"
+    },
+    {
+      "relation_id": "PR-016",
+      "style_ids": ["FreshJoy", "SaturatedBold"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "forbidden",
+      "conflict_facet_ids": ["color_optics"],
+      "rule": "同一主色区域按中彩或高饱和二选一；色阶边界不清时相关标签降级。"
+    },
+    {
+      "relation_id": "PR-017",
+      "style_ids": ["SaturatedBold", "SoftContemporary"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "forbidden",
+      "conflict_facet_ids": ["color_optics"],
+      "rule": "同一主色区域按粉蜡低彩或高饱和二选一。"
+    },
+    {
+      "relation_id": "PR-018",
+      "style_ids": ["DreamyAir", "Y2KDigital"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "forbidden",
+      "conflict_facet_ids": ["color_optics", "material_surface"],
+      "rule": "同一表面按低对比柔散光学或强被动虹彩仲裁；独立表面可分别达标。"
+    },
+    {
+      "relation_id": "PR-019",
+      "style_ids": ["MechanicalTech", "PrecisionMinimalism"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "forbidden",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "同一结构按封闭精密秩序或外露连接层级仲裁；不同结构区域可分别达标。"
+    },
+    {
+      "relation_id": "PR-020",
+      "style_ids": ["ModernPrestige", "PrecisionMinimalism"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "forbidden",
+      "conflict_facet_ids": ["material_surface"],
+      "rule": "同一主导金属表面按暖金属或冷金属仲裁。"
+    },
+    {
+      "relation_id": "PR-021",
+      "style_ids": ["ClassicPrestige", "DecorativeLuxury"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["graphic_ornament"],
+      "rule": "同一纹饰证据不能重复计数；规则重复与装饰密度、层级均有独立证据时可并存。"
+    },
+    {
+      "relation_id": "PR-022",
+      "style_ids": ["ClassicPrestige", "FolkOrnament"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["graphic_ornament"],
+      "rule": "同一纹饰按经典重复语法或可见工艺结构仲裁；两种机制独立时可并存。"
+    },
+    {
+      "relation_id": "PR-023",
+      "style_ids": ["DecorativeLuxury", "FolkOrnament"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["graphic_ornament"],
+      "rule": "同一纹饰证据只能支持一个核心锚点；工艺结构与多层华饰独立时可并存。"
+    },
+    {
+      "relation_id": "PR-024",
+      "style_ids": ["PureMinimalism", "RefinedMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "纯粹极简要求无可见设计增量，精致克制要求至少一项克制增量。"
+    },
+    {
+      "relation_id": "PR-025",
+      "style_ids": ["DecorativeLuxury", "PureMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "最低视觉噪声与高密度华饰主体不能同时成立。"
+    },
+    {
+      "relation_id": "PR-026",
+      "style_ids": ["ExpressiveMotifs", "PureMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "大尺度表达图形与无非必要视觉信息不能同时成立。"
+    },
+    {
+      "relation_id": "PR-027",
+      "style_ids": ["FashionGraphic", "PureMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "明确几何色块版式与近单色最低视觉噪声不能同时成立。"
+    },
+    {
+      "relation_id": "PR-028",
+      "style_ids": ["PureMinimalism", "SaturatedBold"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "近无彩静默表面与高饱和色彩主导不能同时成立。"
+    },
+    {
+      "relation_id": "PR-029",
+      "style_ids": ["CyberNeon", "PureMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "主动光界面与无主动光焦点的静默表面不能同时成立。"
+    },
+    {
+      "relation_id": "PR-030",
+      "style_ids": ["PureMinimalism", "SoftContemporary"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "近无彩静默表面与粉蜡主色表达不能同时成立。"
+    },
+    {
+      "relation_id": "PR-031",
+      "style_ids": ["FreshJoy", "PureMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "近无彩静默表面与明快中彩主色表达不能同时成立。"
+    },
+    {
+      "relation_id": "PR-032",
+      "style_ids": ["DreamyAir", "PureMinimalism"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "静默表面与柔雾光学变化不能同时成立。"
+    },
+    {
+      "relation_id": "PR-033",
+      "style_ids": ["PureMinimalism", "Y2KDigital"],
+      "relation": "exclusive",
+      "scope": "global",
+      "rule": "静默表面与强虹彩或全息光学不能同时成立。"
+    },
+    {
+      "relation_id": "PR-034",
+      "style_ids": ["FreshJoy", "PlayfulGeometry"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "明快中彩与玩趣几何分别由颜色和构成证据成立时可并存。"
+    },
+    {
+      "relation_id": "PR-035",
+      "style_ids": ["PlayfulGeometry", "SaturatedBold"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "高饱和主色不能替代玩趣构成；两类证据独立时可并存。"
+    },
+    {
+      "relation_id": "PR-036",
+      "style_ids": ["CharacterMorph", "PlayfulGeometry"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "角色拓扑与几何节奏分别通过硬门槛时可并存。"
+    },
+    {
+      "relation_id": "PR-037",
+      "style_ids": ["InflatedForm", "PlayfulGeometry"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "气室成形与玩趣构成是独立机制，不得用同一圆润轮廓重复计票。"
+    },
+    {
+      "relation_id": "PR-038",
+      "style_ids": ["InflatedForm", "LayeredTransparency"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "气室成形与透明空间层可分别成立，透明本身不能补足气室门槛。"
+    },
+    {
+      "relation_id": "PR-039",
+      "style_ids": ["LayeredTransparency", "MechanicalTech"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "透明外壳的层间深度与内部可读机械连接均有独立证据时可并存。"
+    },
+    {
+      "relation_id": "PR-040",
+      "style_ids": ["CyberNeon", "DigitalGlitch"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "主动发光界面与对象绑定的数字故障语法可分别成立。"
+    },
+    {
+      "relation_id": "PR-041",
+      "style_ids": ["DigitalGlitch", "TechComposition"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["graphic_ornament"],
+      "rule": "可读技术信息与断裂失真不能复用同一图形；各有独占系统时才可共存。"
+    },
+    {
+      "relation_id": "PR-042",
+      "style_ids": ["CharacterMorph", "ExpressiveMotifs"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["graphic_ornament"],
+      "rule": "主体部件构成角色拓扑与表面角色图形须分别有独占证据；印刷角色不能触发角色拟态。"
+    },
+    {
+      "relation_id": "PR-043",
+      "style_ids": ["BiomorphicForm", "CharacterMorph"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "角色身体关系与生长、分枝或器官拓扑须由不同形态证据成立。"
+    },
+    {
+      "relation_id": "PR-044",
+      "style_ids": ["BiomorphicForm", "InflatedForm"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "气室、膜张力和封边不能替代生长拓扑；两种形态机制独立时可共存。"
+    },
+    {
+      "relation_id": "PR-045",
+      "style_ids": ["InflatedForm", "PureFuture"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "分舱膨胀与连续流体单体不能仅凭圆润共判；分别有气室和融合证据时可共存。"
+    },
+    {
+      "relation_id": "PR-046",
+      "style_ids": ["DreamyAir", "LayeredTransparency"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["color_optics", "material_surface"],
+      "rule": "柔散渐变与透明层间深度不得复用同一模糊高光；各有独占光学证据时可共存。"
+    },
+    {
+      "relation_id": "PR-047",
+      "style_ids": ["LayeredTransparency", "Y2KDigital"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["color_optics", "material_surface"],
+      "rule": "透明空间层与强虹彩被动反射分别有独占证据时可共存。"
+    },
+    {
+      "relation_id": "PR-048",
+      "style_ids": ["DeconstructedAssembly", "MechanicalTech"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "反常错接、外翻或切断与可读机械连接层级须分别闭环；外露本身不算解构。"
+    },
+    {
+      "relation_id": "PR-049",
+      "style_ids": ["DeconstructedAssembly", "FunctionalAesthetics"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "反常重组与可读操作、防护或挂载系统须由不同构件证据成立。"
+    },
+    {
+      "relation_id": "PR-050",
+      "style_ids": ["ArmorPower", "BrutalistMassing"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "外扩防护壳与原块体量不能用同一厚重轮廓双计；独立层级存在时可共存。"
+    },
+    {
+      "relation_id": "PR-051",
+      "style_ids": ["BrutalistMassing", "RefinedWilderness"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure", "material_surface"],
+      "rule": "整体原块粗砺与精确边界×粗粝表面对照须分别有独占证据。"
+    },
+    {
+      "relation_id": "PR-052",
+      "style_ids": ["BrutalistMassing", "MechanicalTech"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["form_structure"],
+      "rule": "直接结构边界不能替代机械连接层级；原块组织和机械关系独立时可共存。"
+    },
+    {
+      "relation_id": "PR-053",
+      "style_ids": ["CraftedIrregularity", "FolkOrnament"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["graphic_ornament", "material_surface"],
+      "rule": "制作式偏差与成组工艺纹饰不能复用同一线迹；分别闭环时可共存。"
+    },
+    {
+      "relation_id": "PR-054",
+      "style_ids": ["CraftedIrregularity", "NaturalTextures"],
+      "relation": "conditional",
+      "scope": "same_region_same_mechanism",
+      "same_region_coexistence": "independent_evidence",
+      "conflict_facet_ids": ["material_surface"],
+      "rule": "制作式重复偏差与非机械自然变化须由不同纹理证据成立；来源不清时降级。"
+    },
+    {
+      "relation_id": "PR-055",
+      "style_ids": ["CraftedIrregularity", "NeoRetro"],
+      "relation": "compatible",
+      "scope": "cross_region_or_mechanism",
+      "rule": "可见制作偏差与历史造型化重组各有独占证据时可并存。"
+    }
+  ],
+  "tag_dependencies": [
+    {
+      "relation_id": "TD-001",
+      "source_style_id": "MysticOrganic",
+      "relation": "requires",
+      "target_style_ids": ["BiomorphicForm", "NaturalTextures"],
+      "target_quantifier": "any",
+      "rule": "至少一个目标标签须独立通过；幽暗有机还须有异常光层或空间证据。"
+    }
+  ]
+}
