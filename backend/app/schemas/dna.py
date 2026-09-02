@@ -60,6 +60,8 @@ class ExtractionTaskItem(BaseModel):
     status: ImageTaskStatus
     result_id: str | None = None
     error: str | None = None
+    diagnostic_id: str | None = None
+    diagnostics: list[dict] = Field(default_factory=list)
 
 
 class ExtractionTask(BaseModel):

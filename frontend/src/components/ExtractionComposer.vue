@@ -8,7 +8,7 @@ import {
   WarningOutlined,
 } from '@ant-design/icons-vue'
 
-import type { ExtractionTask, ModelInfo } from '@/types/dna'
+import type { ExtractionDiagnostic, ExtractionTask, ModelInfo } from '@/types/dna'
 
 const props = defineProps<{
   models: ModelInfo[]
@@ -47,6 +47,13 @@ function itemStatusLabel(status: string) {
     completed: '已完成',
     failed: '失败',
   }[status]
+}
+
+function diagnosticLabel(item: ExtractionDiagnostic) {
+  if (item.code.startsWith('FIELD_')) return '字段规则'
+  if (item.code.startsWith('STYLE_')) return '风格证据'
+  if (item.code.includes('SCHEMA')) return '结构校验'
+  return '语义校验'
 }
 </script>
 
@@ -143,7 +150,27 @@ function itemStatusLabel(status: string) {
           <span :class="['task-status', item.status]">
             {{ itemStatusLabel(item.status) }}
           </span>
-          <small v-if="item.error" :title="item.error">{{ item.error }}</small>
+          <div v-if="item.error" class="task-diagnostics">
+            <p>
+              {{
+                item.diagnostics.length
+                  ? `发现 ${item.diagnostics.length} 项未闭合规则，未写入结果。`
+                  : '提取结果未通过最终检查。'
+              }}
+            </p>
+            <details>
+              <summary>查看诊断详情</summary>
+              <ul v-if="item.diagnostics.length">
+                <li v-for="(diagnostic, index) in item.diagnostics" :key="`${diagnostic.code}-${index}`">
+                  <span>{{ diagnosticLabel(diagnostic) }}</span>
+                  <strong>{{ diagnostic.field_id || diagnostic.style_id || diagnostic.final_path }}</strong>
+                  <p>{{ diagnostic.message }}</p>
+                </li>
+              </ul>
+              <pre v-else>{{ item.error }}</pre>
+              <code v-if="item.diagnostic_id">诊断编号：{{ item.diagnostic_id }}</code>
+            </details>
+          </div>
         </div>
       </div>
     </div>

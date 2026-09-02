@@ -27,6 +27,19 @@ export interface ExtractionTaskItem {
   status: ImageTaskStatus
   result_id: string | null
   error: string | null
+  diagnostic_id: string | null
+  diagnostics: ExtractionDiagnostic[]
+}
+
+export interface ExtractionDiagnostic {
+  code: string
+  repair_owner: 'compiler' | 'model' | 'fatal'
+  message: string
+  final_path: string
+  source_pointer: string | null
+  field_id?: string
+  style_id?: string
+  region?: string
 }
 
 export interface ExtractionTask {

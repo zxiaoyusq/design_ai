@@ -828,12 +828,74 @@ main {
   background: #f9e7e7;
 }
 
-.task-item small {
+.task-diagnostics {
   grid-column: 1 / -1;
-  overflow: hidden;
+  padding: 8px 10px;
   color: #b55a5a;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  background: rgba(188, 93, 93, 0.06);
+  border: 1px solid rgba(188, 93, 93, 0.12);
+  border-radius: 9px;
+}
+
+.task-diagnostics > p,
+.task-diagnostics summary,
+.task-diagnostics li p {
+  margin: 0;
+  font-size: 9px;
+  line-height: 1.55;
+}
+
+.task-diagnostics summary {
+  margin-top: 5px;
+  color: #8d5050;
+  cursor: pointer;
+}
+
+.task-diagnostics ul {
+  display: grid;
+  gap: 6px;
+  padding: 0;
+  margin: 8px 0;
+  list-style: none;
+}
+
+.task-diagnostics li {
+  padding: 7px;
+  background: rgba(255, 255, 255, 0.68);
+  border-radius: 7px;
+}
+
+.task-diagnostics li span {
+  display: inline-block;
+  padding: 1px 5px;
+  margin-right: 5px;
+  color: #8d5050;
+  background: #f8e2e2;
+  border-radius: 5px;
+}
+
+.task-diagnostics li strong {
+  color: #645e70;
+  font-size: 9px;
+}
+
+.task-diagnostics li p,
+.task-diagnostics pre {
+  margin-top: 4px;
+  color: #756e7e;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.task-diagnostics pre {
+  max-height: 180px;
+  overflow: auto;
+  font-size: 9px;
+}
+
+.task-diagnostics code {
+  color: #9891a2;
+  font-size: 8px;
 }
 
 .result-panel {

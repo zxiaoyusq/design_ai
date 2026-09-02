@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "knowledge_base_version": "4.1",
+  "field_value_aliases": {
+    "CMP-13": {
+      "面积": "尺寸"
+    }
+  },
+  "relation_token_fields": [
+    "PRT-03",
+    "PRT-05"
+  ],
+  "ordinal_buckets": [
+    0,
+    25,
+    50,
+    75,
+    100
+  ]
+}

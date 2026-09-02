@@ -35,6 +35,8 @@ class ExtractionTaskManager:
                     "status": ImageTaskStatus.PENDING,
                     "result_id": None,
                     "error": None,
+                    "diagnostic_id": None,
+                    "diagnostics": [],
                 }
             )
         task = {
@@ -76,11 +78,19 @@ class ExtractionTaskManager:
         status: ImageTaskStatus,
         result_id: str | None = None,
         error: str | None = None,
+        diagnostic_id: str | None = None,
+        diagnostics: list[dict] | None = None,
     ) -> None:
         with self._lock:
             task = self._tasks[task_id]
             item = task["items"][item_index]
-            item.update(status=status, result_id=result_id, error=error)
+            item.update(
+                status=status,
+                result_id=result_id,
+                error=error,
+                diagnostic_id=diagnostic_id,
+                diagnostics=diagnostics or [],
+            )
             finished = sum(
                 candidate["status"]
                 in {ImageTaskStatus.COMPLETED, ImageTaskStatus.FAILED}
@@ -121,7 +131,9 @@ class ExtractionTaskManager:
                     task_id,
                     index,
                     status=ImageTaskStatus.FAILED,
-                    error=str(exc)[:2000],
+                    error=str(exc),
+                    diagnostic_id=getattr(exc, "diagnostic_id", None),
+                    diagnostics=getattr(exc, "issues", []),
                 )
 
         with self._lock:

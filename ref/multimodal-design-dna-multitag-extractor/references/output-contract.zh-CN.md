@@ -2,7 +2,7 @@
 
 适用于最终 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json` 输出 `design_dna_multitag_observation_v1`；宿主编译后的完整结果通过 `schemas/design-dna-output.schema.json`。
 
-模型阶段只负责视觉值、证据、风格硬判、组合关系理由、不确定性和业务摘要。字段/风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像及可推导证据引用由 `scripts/compile_model_output.py` 确定性生成。
+模型阶段只负责经过字段准入后的视觉值、证据、风格判断、组合关系理由、不确定性和业务摘要。字段/风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像及可推导证据引用由 `scripts/compile_model_output.py` 确定性生成；宿主同时复核 profile/视角、受控值域、低置信镜像与风格证据闭环。
 
 ## 1. 顶层结构
 
@@ -38,6 +38,8 @@
 `direct` 固定 `not_requested`；`derived|inferred|reference_computed` 只能为 `computed|not_computable`。不可见或不可计算时值为 `null`。确认不存在使用 enum 的“无”或空列表，并保持 `observed`。
 
 只输出 canonical `field_id`。纯字符串标签集合使用 `multi_label`，结构化集合使用 `list`；派生字段必须具备全部注册依赖和源证据。当前 `original_md_dimensions` 固定为 `[]`。
+
+模型开始字段提取前必须先按目标视角与 `active_profiles` 获取准入集合。宿主会再次移除不适用字段，并按 `value-normalization.json` 处理显式别名、从描述性关系中提取标准关系词、把 ordinal 与规定的强度值量化到 `0|25|50|75|100`。无法无损归一化的受控值不得猜测，必须转为未知或不确定。
 
 ## 4. style_result
 
@@ -135,3 +137,4 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 - 输出只包含 JSON，不使用 Markdown 围栏、注释、尾逗号、NaN 或 Infinity。
 - 中文描述使用简体中文；稳定 ID、英文标签和标准枚举保持原样。
 - 模型只生成精简观察 JSON；宿主负责完整结构编译、组合预设派生、最终校验、保存及业务视图转换。
+- 宿主只允许执行不增加视觉事实的保守整理；风格命中不在 allowlist、引用字段无可用值、区域没有对应证据或规则闭环不足时，将 confirmed 标签降为 provisional。

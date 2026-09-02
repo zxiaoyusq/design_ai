@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from app.schemas.dna import ImageTaskStatus, TaskStatus
+from app.services.dna.extraction import DesignDnaExtractionError
 from app.services.dna.tasks import ExtractionTaskManager
 
 
@@ -42,6 +43,39 @@ class DnaTaskManagerTestCase(unittest.TestCase):
         self.assertIs(completed["items"][1]["status"], ImageTaskStatus.FAILED)
         self.assertEqual(run_extraction.call_count, 2)
         self.assertFalse(manager.is_image_in_active_task("a" * 32))
+
+    @patch("app.services.dna.tasks.run_design_dna_extraction")
+    @patch("app.services.dna.tasks.get_uploaded_image")
+    def test_failed_item_keeps_structured_diagnostics(
+        self,
+        get_image,
+        run_extraction,
+    ) -> None:
+        get_image.side_effect = [
+            (SimpleNamespace(filename="a.png", content_type="image/png"), Path("a.png")),
+            (SimpleNamespace(filename="a.png", content_type="image/png"), Path("a.png")),
+        ]
+        issue = {
+            "code": "STYLE_FIELD_UNAVAILABLE",
+            "repair_owner": "compiler",
+            "message": "风格证据字段没有可用值",
+            "final_path": "style_result.style_tags[0]",
+            "source_pointer": "/style_observations/confirmed_tags/0",
+        }
+        run_extraction.side_effect = DesignDnaExtractionError(
+            "结果未通过校验",
+            diagnostic_id="failure-001",
+            issues=[issue],
+        )
+        manager = ExtractionTaskManager()
+        task = manager.create(["a" * 32], "model-id", "关注材质")
+
+        manager.run(task["id"])
+        item = manager.get(task["id"])["items"][0]
+
+        self.assertIs(item["status"], ImageTaskStatus.FAILED)
+        self.assertEqual(item["diagnostic_id"], "failure-001")
+        self.assertEqual(item["diagnostics"], [issue])
 
 
 if __name__ == "__main__":

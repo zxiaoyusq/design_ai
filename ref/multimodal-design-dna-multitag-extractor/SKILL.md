@@ -3,7 +3,7 @@ name: multimodal-design-dna-multitag-extractor
 description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格标签与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "1.3.0"
+  version: "1.4.0"
   language: "zh-CN"
   schema-version: "design_dna_multitag_extraction_v1.1"
   knowledge-base-version: "4.1"
@@ -36,7 +36,7 @@ metadata:
 
 ### 2. 先提取可观察 DNA
 
-先确定品类与 `active_profiles`，再判断字段适用性。当前单图只允许 `core` 与有对象依据的单视图 profile，不激活 multi-face、reference 或 trend profile。
+先确定品类、视角与 `active_profiles`，再调用宿主字段准入工具取得当前图片可用的 canonical 字段集合。当前单图只允许 `core` 与有对象依据的单视图 profile，不激活 multi-face、reference 或 trend profile；模型只提取准入集合内且实际可观察、风格判定需要或用户明确关注的字段，不穷举全部语义维度。
 
 - `applicability_status` 只表示品类适用性；
 - `observability` 只表示输入是否可见；
@@ -83,7 +83,7 @@ KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `compo
 
 证据必须位于主体框内并只描述可见事实。证据、设计元素及风格 `regions` 只能使用 `target_object.visible_regions` 中的值或 `whole_object`。每个观察字段至少引用一条证据；已计算推断字段至少引用两条独立观察证据；每个风格标签必须引用其硬判所用的规范字段与证据。
 
-模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像和可由已有规范字段推导的证据闭环均不得重复生成。宿主先运行 `scripts/compile_model_output.py` 编译完整结构，再由 `scripts/save_result.py` 写入 `derived_style_presets` 并按最终 Schema 校验。宿主不得利用编译步骤发明视觉事实、改变风格硬判或伪造缺失证据。
+模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像和可由已有规范字段推导的证据闭环均不得重复生成。宿主先运行 `scripts/compile_model_output.py` 编译完整结构：按 profile/视角移除不适用字段，依据 `references/value-normalization.json` 归一化显式别名、关系词和离散刻度，重建低置信镜像；风格证据无法闭环时保守降级为 provisional，而不是补造证据。随后由 `scripts/save_result.py` 写入 `derived_style_presets` 并按最终 Schema 校验。宿主不得利用编译步骤发明视觉事实或改变仍有完整证据支持的视觉结论。
 
 最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。
 
@@ -109,6 +109,7 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 - 输出合同：`references/output-contract.zh-CN.md`
 - 知识库：`references/design-dna-knowledge-base.zh-CN.md`
 - 宿主校验使用的完整风格、关系与字段：`references/style-registry.json`、`references/tag-relations.json`、`references/field-registry.json`
+- 宿主值域归一化规则：`references/value-normalization.json`
 - 模型精简召回与关系索引：`references/model-reference-bundle.json`
 - 宿主专用组合派生规则：`references/style-combination-presets.json`
 - 品类适配与新 DNA：`references/category-adaptation.zh-CN.md`、`references/novel-dna-governance.zh-CN.md`

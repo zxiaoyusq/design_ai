@@ -58,7 +58,7 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 
 `active_profiles` 必须包含 `core`，只增加当前物品和视图确实支持的单视图品类 profile。当前流程不得激活 multi-face、reference 或 trend profile，DNA-M15 固定以 `profile_not_applicable` 排除。
 
-只有 profile、品类和必要视角均满足的字段才可确认。未激活 profile 的字段不进入 `design_elements`；core 中缺参考集的 reference-computed 字段记为 `not_computable`，不能写成不适用。
+确定视角和 profile 后，模型先调用宿主字段准入工具，只在返回的 canonical 字段中选择图片实际可观察、风格判定需要或用户明确关注的字段。只有 profile、品类和必要视角均满足的字段才可确认。未激活 profile 或当前视角不支持的字段不进入 `design_elements`；core 中缺参考集的 reference-computed 字段记为 `not_computable`，不能写成不适用。
 
 ### 步骤 C：提取规范 DNA
 
@@ -70,6 +70,7 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 - `multi_label` 只含登记过的字符串标签，`list` 用于结构化或混合条目；
 - derived 字段必须闭合全部依赖并覆盖源证据；
 - 同一区域、同一物理现象不重复计数；
+- 不输出仅为“可能有用”但图片和当前任务均未使用的字段，尤其不得穷举 M13/M14；
 - 当前模型固定输出 `original_md_dimensions=[]`。
 
 可见名称、Logo、角色或联名组合先按像素事实写入 IDG 字段。`IDG-09` 缺批准参考库时保持 `not_computable`；无论身份是否可确认，都不得恢复或新建身份风格标签。
@@ -180,7 +181,7 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 - 空集合使用 `[]`，单值不可得使用 `null`；
 - 稳定 ID、英文标签和标准枚举保持原样。
 
-模型不输出可由注册表或已有观察确定得到的字段/风格元数据、模块清单、统计值、排序、confirmed 候选镜像与证据并集。宿主使用 `compile_model_output.py` 生成 `design_dna_multitag_extraction_v1.1` 完整结构，但不得改变视觉事实与硬判语义。两个 Schema 分别是模型观察和最终字段结构的唯一权威。
+模型不输出可由注册表或已有观察确定得到的字段/风格元数据、模块清单、统计值、排序、confirmed 候选镜像与证据并集。宿主使用 `compile_model_output.py` 生成 `design_dna_multitag_extraction_v1.1` 完整结构，并负责字段准入复核、显式受控值归一化、低置信镜像同步以及风格证据闭环复核。无法闭环的字段置为未知或移除，无法闭环的 confirmed 风格保守降级为 provisional；宿主不得补造视觉值或证据。两个 Schema 分别是模型观察和最终字段结构的唯一权威。
 
 ## 六、输出前自检
 

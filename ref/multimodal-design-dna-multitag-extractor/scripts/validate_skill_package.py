@@ -17,7 +17,7 @@ sys.dont_write_bytecode = True
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "1.3.0"
+EXPECTED_SKILL_VERSION = "1.4.0"
 EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
 EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"
@@ -34,6 +34,7 @@ REQUIRED = [
     "references/model-reference-bundle.json",
     "references/style-combination-presets.json",
     "references/field-registry.json",
+    "references/value-normalization.json",
     "references/tag-relations.json",
     "schemas/design-dna-output.schema.json",
     "schemas/design-dna-model-output.schema.json",
@@ -1061,10 +1062,18 @@ def _check_registries(errors: list[str]) -> None:
     field_registry = _load_json("references/field-registry.json", errors)
     tag_relations = _load_json("references/tag-relations.json", errors)
     combination_presets = _load_json("references/style-combination-presets.json", errors)
+    value_normalization = _load_json("references/value-normalization.json", errors)
     manifest = _load_json("manifest.json", errors)
     if not all(
         isinstance(item, dict)
-        for item in (style_registry, field_registry, tag_relations, combination_presets, manifest)
+        for item in (
+            style_registry,
+            field_registry,
+            tag_relations,
+            combination_presets,
+            value_normalization,
+            manifest,
+        )
     ):
         return
     expected_version = manifest.get("knowledge_base_version")
@@ -1073,9 +1082,32 @@ def _check_registries(errors: list[str]) -> None:
         ("field", field_registry),
         ("tag-relations", tag_relations),
         ("combination-presets", combination_presets),
+        ("value-normalization", value_normalization),
     ):
         if registry.get("knowledge_base_version") != expected_version:
             errors.append(f"{name} registry knowledge_base_version mismatch")
+
+    field_ids = {
+        str(item.get("field_id"))
+        for item in field_registry.get("fields", [])
+        if isinstance(item, dict) and item.get("field_id")
+    }
+    aliases = value_normalization.get("field_value_aliases")
+    relation_fields = value_normalization.get("relation_token_fields")
+    ordinal_buckets = value_normalization.get("ordinal_buckets")
+    if not isinstance(aliases, dict) or any(
+        field_id not in field_ids or not isinstance(mapping, dict)
+        for field_id, mapping in aliases.items()
+    ):
+        errors.append("value-normalization field aliases must reference registry fields")
+    if (
+        not isinstance(relation_fields, list)
+        or len(relation_fields) != len(set(relation_fields))
+        or any(field_id not in field_ids for field_id in relation_fields)
+    ):
+        errors.append("value-normalization relation fields are invalid")
+    if ordinal_buckets != [0, 25, 50, 75, 100]:
+        errors.append("value-normalization ordinal buckets must be 0/25/50/75/100")
 
     if "parents" in style_registry:
         errors.append("flat style registry must not contain parents")

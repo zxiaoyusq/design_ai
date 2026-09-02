@@ -31,6 +31,7 @@
 - `references/model-reference-bundle.json`：模型一次读取的精简候选、allowlist 与关系索引。
 - `references/style-combination-presets.json`：宿主专用的组合派生与查询规则。
 - `references/field-registry.json`：规范字段机器表。
+- `references/value-normalization.json`：宿主专用的显式别名、关系词与离散刻度归一化规则。
 - `references/extraction-protocol.zh-CN.md`：完整执行协议。
 - `references/output-contract.zh-CN.md`：输出语义约束。
 - `schemas/design-dna-model-output.schema.json`：精简模型观察结构。
@@ -61,7 +62,7 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 
 ## 版本
 
-- Skill：`1.3.0`
+- Skill：`1.4.0`
 - 输出 Schema：`design_dna_multitag_extraction_v1.1`
 - 设计 DNA 知识库：`4.1`
 

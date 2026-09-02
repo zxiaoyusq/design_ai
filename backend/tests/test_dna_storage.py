@@ -102,6 +102,25 @@ class DnaStorageTestCase(unittest.TestCase):
                 "gpt-5.6-terra-20260820",
             )
 
+    def test_failure_trace_keeps_full_diagnostics(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_dir:
+            failure_dir = Path(temporary_dir) / "failures"
+            with patch.object(storage, "FAILURE_TRACES_DIR", failure_dir):
+                diagnostic_id, path = storage.save_failure_trace(
+                    {
+                        "error": "完整错误",
+                        "issues": [{"code": "FIELD_VALUE_OUT_OF_DOMAIN"}],
+                    }
+                )
+
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(path.parent, failure_dir)
+            self.assertEqual(payload["diagnostic_id"], diagnostic_id)
+            self.assertEqual(payload["error"], "完整错误")
+            self.assertEqual(
+                payload["issues"][0]["code"], "FIELD_VALUE_OUT_OF_DOMAIN"
+            )
+
     def test_deleting_upload_preserves_result_thumbnail(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_dir:
             root = Path(temporary_dir)

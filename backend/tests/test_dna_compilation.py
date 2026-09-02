@@ -229,6 +229,178 @@ class DnaCompilationTestCase(unittest.TestCase):
             ),
         )
 
+    def test_field_gate_value_normalization_and_uncertainty_mirroring(self) -> None:
+        """覆盖罐体样例暴露的视角、Profile、值域、序数和低置信错误。"""
+
+        observation = _lean_observation(self.full)
+        evidence_a = observation["evidence"][0]["evidence_id"]
+        evidence_b = observation["evidence"][1]["evidence_id"]
+        base = {
+            "raw_visual_description": "回归测试观察",
+            "region": "whole_object",
+            "observability": "observed",
+            "confidence": 0.9,
+            "evidence_refs": [evidence_a],
+        }
+        observation["design_observations"].extend(
+            [
+                {**base, "field_id": "FORM-05", "value": "连续"},
+                {**base, "field_id": "TEX-08", "value": {}},
+                {
+                    **base,
+                    "field_id": "HUM-03",
+                    "value": "高",
+                    "evidence_refs": [evidence_a, evidence_b],
+                },
+                {
+                    **base,
+                    "field_id": "PRT-03",
+                    "value": [
+                        "图文区—包含—中央文字",
+                        "外围边框—包围—中央图文区",
+                        "罐身—承载—中央图文区",
+                    ],
+                },
+                {**base, "field_id": "PRT-08", "value": "镜像"},
+                {
+                    **base,
+                    "field_id": "IMG-03",
+                    "value": [{"label": "未来", "strength": 62}],
+                    "evidence_refs": [evidence_a, evidence_b],
+                },
+            ]
+        )
+        for item in observation["design_observations"]:
+            if item["field_id"] == "SEM-01":
+                item["value"] = 62
+            if item["field_id"] == "GEO-01":
+                item["confidence"] = 0.62
+        observation["uncertainties"] = [
+            item
+            for item in observation["uncertainties"]
+            if item["field_id"] != "GEO-01"
+        ]
+
+        compiled, report = _compile_model_result(observation)
+        elements = {
+            item["field_id"]: item
+            for module in compiled["design_elements"]["extended_dna_modules"]
+            for item in module["elements"]
+        }
+
+        self.assertTrue(
+            {"FORM-05", "TEX-08", "HUM-03"}.issubset(
+                {item["field_id"] for item in report["filtered_fields"]}
+            )
+        )
+        self.assertEqual(elements["PRT-03"]["value"], ["包含", "包围", "承载"])
+        self.assertIsNone(elements["PRT-08"]["value"])
+        self.assertEqual(elements["SEM-01"]["value"], 50)
+        self.assertEqual(elements["IMG-03"]["value"][0]["strength"], 50)
+        uncertain_ids = {item["field_id"] for item in compiled["uncertain_fields"]}
+        self.assertIn("GEO-01", uncertain_ids)
+        self.assertIn("PRT-08", uncertain_ids)
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_invalid_style_evidence_is_reclassified_or_demoted(self) -> None:
+        """覆盖微型车样例中的字段角色、缺值和无区域证据错误。"""
+
+        observation = _lean_observation(self.full)
+        first, second = observation["style_observations"]["confirmed_tags"]
+        first["auxiliary_feature_hits"] = [
+            "CLR-13：面积色彩",
+            "CMF-07：表面统一",
+        ]
+        first["regions"] = ["back_cover", "front_nose"]
+        second["core_feature_hits"] = ["FORM-01：圆润轮廓"]
+        second["auxiliary_feature_hits"] = [
+            "GEO-12：低姿态",
+            "FORM-14：均匀曲率",
+            "PRT-13：功能组件",
+        ]
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertEqual(compiled["style_result"]["classification_status"], "unclassified")
+        self.assertEqual(compiled["style_result"]["style_tags"], [])
+        self.assertEqual(len(report["style_downgrades"]), 2)
+        demoted = {
+            item["style_id"]: item
+            for item in compiled["style_result"]["candidate_ranking"]
+            if item["style_id"] in {"SaturatedBold", "RefinedMinimalism"}
+        }
+        self.assertFalse(demoted["SaturatedBold"]["hard_rule_passed"])
+        self.assertFalse(demoted["RefinedMinimalism"]["hard_rule_passed"])
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_high_confidence_uncertainty_is_promoted_without_model_repair(self) -> None:
+        """模型把高置信观察误放入 uncertainties 时由宿主机械归类。"""
+
+        observation = _lean_observation(self.full)
+        uncertainty = copy.deepcopy(observation["uncertainties"][0])
+        uncertainty["field_id"] = "GEO-01"
+        uncertainty["region"] = "whole_object"
+        uncertainty["best_estimate"] = 75
+        uncertainty["observability"] = "observed"
+        uncertainty["confidence"] = 0.78
+        observation["uncertainties"] = [uncertainty]
+        observation["design_observations"] = [
+            item
+            for item in observation["design_observations"]
+            if item["field_id"] != "GEO-01"
+        ]
+
+        compiled, report = _compile_model_result(observation)
+        elements = {
+            item["field_id"]: item
+            for module in compiled["design_elements"]["extended_dna_modules"]
+            for item in module["elements"]
+        }
+
+        self.assertEqual(elements["GEO-01"]["value"], 75)
+        self.assertEqual(elements["GEO-01"]["confidence"], 0.78)
+        self.assertNotIn(
+            "GEO-01",
+            {item["field_id"] for item in compiled["uncertain_fields"]},
+        )
+        self.assertEqual(
+            report["observation_contract_normalizations"][0]["action"],
+            "promoted_to_design_observation",
+        )
+        self._assert_compiled_result_is_valid(compiled)
+
+    def _assert_compiled_result_is_valid(self, compiled: dict) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            compiled_path = Path(temporary_directory) / "compiled.json"
+            final_path = Path(temporary_directory) / "final.json"
+            compiled_path.write_text(
+                json.dumps(compiled, ensure_ascii=False), encoding="utf-8"
+            )
+            derive = subprocess.run(
+                [
+                    sys.executable,
+                    str(SKILL_ROOT / "scripts" / "derive_style_presets.py"),
+                    str(compiled_path),
+                    "--output",
+                    str(final_path),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(derive.returncode, 0, derive.stderr)
+            validate = subprocess.run(
+                [
+                    sys.executable,
+                    str(SKILL_ROOT / "scripts" / "validate_output.py"),
+                    str(final_path),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(validate.returncode, 0, validate.stdout + validate.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

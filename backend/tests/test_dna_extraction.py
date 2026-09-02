@@ -14,8 +14,10 @@ from app.services.dna.extraction import (
     DesignDnaExtractionError,
     _apply_json_patch,
     _invoke_agent,
+    _safely_degrade_invalid_observations,
     _task_text,
     _validation_failure_kind,
+    _validation_issues,
     run_design_dna_extraction,
 )
 from app.services.llm.telemetry import ModelCallTelemetry
@@ -63,6 +65,75 @@ class DnaExtractionTestCase(unittest.TestCase):
 
         self.assertEqual(_validation_failure_kind(deterministic), "deterministic")
         self.assertEqual(_validation_failure_kind(semantic), "semantic")
+
+    def test_validation_issue_uses_compiler_source_map(self) -> None:
+        error = DesignDnaExtractionError(
+            "结果未通过校验：\n"
+            "- style_result.style_tags[0].auxiliary_feature_hits[0]: "
+            "CLR-13 is not allowed by this style's auxiliary_field_ids"
+        )
+
+        issues = _validation_issues(
+            error,
+            {
+                "source_map": {
+                    "style_result.style_tags[0]": {
+                        "source_pointer": "/style_observations/confirmed_tags/1",
+                        "style_id": "NeoRetro",
+                    }
+                }
+            },
+        )
+
+        self.assertEqual(issues[0]["code"], "STYLE_AUXILIARY_FIELD_NOT_ALLOWED")
+        self.assertEqual(issues[0]["repair_owner"], "compiler")
+        self.assertEqual(
+            issues[0]["source_pointer"],
+            "/style_observations/confirmed_tags/1",
+        )
+        self.assertEqual(issues[0]["style_id"], "NeoRetro")
+
+    def test_safe_degradation_removes_field_and_demotes_style(self) -> None:
+        observation = {
+            "design_observations": [{"field_id": "PRT-08"}],
+            "uncertainties": [],
+            "style_observations": {
+                "classification_status": "confirmed",
+                "confirmed_tags": [
+                    {
+                        "style_id": "NeoRetro",
+                        "match_score": 80,
+                        "confidence": 0.82,
+                        "regions": ["whole_object"],
+                        "core_feature_hits": ["PRT-13：复古组件"],
+                        "auxiliary_feature_hits": ["CLR-13：复古配色"],
+                    }
+                ],
+                "other_candidates": [],
+                "pairwise_reasoning": [],
+                "composition_summary": "复古构成。",
+            },
+        }
+        issues = [
+            {
+                "source_pointer": "/design_observations/0",
+                "message": "字段值域不明确",
+            },
+            {
+                "source_pointer": "/style_observations/confirmed_tags/0",
+                "message": "风格证据未闭合",
+            },
+        ]
+
+        degraded, count = _safely_degrade_invalid_observations(observation, issues)
+
+        self.assertEqual(count, 2)
+        self.assertEqual(degraded["design_observations"], [])
+        style = degraded["style_observations"]
+        self.assertEqual(style["classification_status"], "unclassified")
+        self.assertEqual(style["confirmed_tags"], [])
+        self.assertEqual(style["other_candidates"][0]["style_id"], "NeoRetro")
+        self.assertFalse(style["other_candidates"][0]["hard_rule_passed"])
 
     def test_transient_stream_disconnect_is_retried_once(self) -> None:
         transient_error = type("APIError", (RuntimeError,), {"__module__": "openai"})

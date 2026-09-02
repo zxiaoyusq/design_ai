@@ -11,6 +11,7 @@ from app.agents.design_dna_extractor import (
     SKILLS_SOURCE,
     create_design_dna_agent,
     preloaded_skill_context,
+    resolve_applicable_design_fields,
 )
 
 
@@ -37,6 +38,10 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         )
         self.assertEqual(agent_factory.call_args.kwargs["model"], model)
         self.assertEqual(agent_factory.call_args.kwargs["skills"], [SKILLS_SOURCE])
+        self.assertEqual(
+            agent_factory.call_args.kwargs["tools"],
+            [resolve_applicable_design_fields],
+        )
         self.assertIn(BOUND_SKILL_NAME, AGENT_SYSTEM_PROMPT)
         self.assertIn("design_dna_multitag_observation_v1", AGENT_SYSTEM_PROMPT)
         self.assertIn("静态元数据、模块清单、统计值、排序", AGENT_SYSTEM_PROMPT)
@@ -77,6 +82,21 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         self.assertIn('"value_type":"float"', context)
         self.assertIn('"style_id":"NordicCalm"', context)
         self.assertIn("design_dna_multitag_observation_v1", context)
+
+    def test_field_gate_filters_view_and_profile_specific_fields(self) -> None:
+        result = resolve_applicable_design_fields.invoke(
+            {"target_view": "front", "active_profiles": ["core"]}
+        )
+        field_ids = {
+            item["field_id"]
+            for key in ("direct_fields", "computed_fields")
+            for item in result[key]
+        }
+
+        self.assertNotIn("FORM-05", field_ids)
+        self.assertNotIn("TEX-08", field_ids)
+        self.assertNotIn("HUM-03", field_ids)
+        self.assertIn("CMP-13", field_ids)
 
 
 if __name__ == "__main__":

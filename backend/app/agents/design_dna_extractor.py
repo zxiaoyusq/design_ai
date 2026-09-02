@@ -1,5 +1,6 @@
 """使用 DeepAgents 和项目 Skill 编排单图设计 DNA 提取。"""
 
+import json
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -7,6 +8,7 @@ from typing import Any
 from deepagents import create_deep_agent
 from deepagents.backends.filesystem import FilesystemBackend
 from deepagents.middleware.filesystem import FilesystemPermission
+from langchain_core.tools import tool
 from langgraph.graph.state import CompiledStateGraph
 
 from app.services.llm import create_chat_model
@@ -17,8 +19,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 SKILLS_SOURCE = "/.agents/skills/"
 BOUND_SKILL_NAME = "multimodal-design-dna-multitag-extractor"
-AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v4-preloaded-context"
-PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v1"
+AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v5-field-gated"
+PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v2"
 _PRELOADED_CONTEXT_FILES = (
     ("SKILL", "SKILL.md"),
     ("EXTRACTION_PROTOCOL", "references/extraction-protocol.zh-CN.md"),
@@ -46,6 +48,12 @@ JSON 对象。只负责图片视觉事实、风格硬判、关系理由和不确
 静态元数据、模块清单、统计值、排序、确认候选镜像、证据闭环或
 `derived_style_presets`，这些内容由宿主确定性编译。不要附加 Markdown、解释、思考过程或
 文件路径。
+
+在输出观察 JSON 前，先根据图片确定 `target_object.view` 与 `active_profiles`，然后调用
+`resolve_applicable_design_fields` 获取本图允许使用的字段。`design_observations` 只能包含
+工具返回的 field_id，并且只填写图片中实际可观察、风格硬判需要或用户明确关注的字段；
+不要为了覆盖注册表而穷举所有字段。DNA-M13 只保留最相关的少量语义轴，DNA-M14 只保留
+有明确业务价值的意向字段。字段值域不确定时写入 uncertainties，不要发明新枚举值。
 """.strip()
 
 
@@ -69,6 +77,59 @@ def preloaded_skill_context() -> str:
 
 def preloaded_skill_context_size() -> int:
     return len(preloaded_skill_context())
+
+
+@lru_cache(maxsize=1)
+def _field_registry_records() -> list[dict[str, Any]]:
+    path = SKILL_ROOT / "references" / "field-registry.json"
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return [item for item in data.get("fields", []) if isinstance(item, dict)]
+
+
+@tool
+def resolve_applicable_design_fields(
+    target_view: str,
+    active_profiles: list[str],
+) -> dict[str, Any]:
+    """按单图视角和已确认 Profile 返回允许提取的规范设计 DNA 字段。"""
+
+    profiles = {
+        profile for profile in active_profiles if isinstance(profile, str)
+    }
+    profiles.add("core")
+    normalized_view = "side" if target_view in {"left", "right"} else target_view
+    direct_fields: list[dict[str, Any]] = []
+    computed_fields: list[dict[str, Any]] = []
+    for record in _field_registry_records():
+        required_profiles = set(record.get("applicability") or [])
+        required_views = set(record.get("required_views") or [])
+        if required_profiles and not required_profiles.intersection(profiles):
+            continue
+        if "any" not in required_views and normalized_view not in required_views:
+            continue
+        item = {
+            "field_id": record.get("field_id"),
+            "module_id": record.get("module_id"),
+            "value_type": record.get("value_type"),
+            "evidence_mode": record.get("evidence_mode"),
+            "decision_use": record.get("decision_use"),
+        }
+        target = (
+            direct_fields
+            if record.get("evidence_mode") == "direct"
+            else computed_fields
+        )
+        target.append(item)
+    return {
+        "target_view": normalized_view,
+        "active_profiles": sorted(profiles),
+        "direct_fields": direct_fields,
+        "computed_fields": computed_fields,
+        "instruction": (
+            "只输出实际可观察或硬判需要的字段；不要穷举。"
+            "M13/M14 语义字段仅选择与图片或用户要求直接相关的少量项目。"
+        ),
+    }
 
 
 def create_design_dna_agent(model_id: str) -> CompiledStateGraph:
@@ -111,6 +172,7 @@ def create_design_dna_agent(model_id: str) -> CompiledStateGraph:
     ]
     return create_deep_agent(
         model=model,
+        tools=[resolve_applicable_design_fields],
         system_prompt=f"{AGENT_SYSTEM_PROMPT}\n\n{preloaded_skill_context()}",
         backend=backend,
         skills=[SKILLS_SOURCE],

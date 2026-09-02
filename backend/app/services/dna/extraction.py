@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import hashlib
 import json
+import re
 import subprocess
 import sys
 from copy import deepcopy
@@ -22,6 +23,7 @@ from app.agents.design_dna_extractor import (
 )
 from app.services.dna.storage import (
     save_business_view_model,
+    save_failure_trace,
     save_result_image,
     save_result_trace,
 )
@@ -70,11 +72,45 @@ _DETERMINISTIC_ERROR_MARKERS = (
     "relation must match tag-relations",
     "scope must match tag-relations",
     "style_id_a/style_id_b must use canonical lexical order",
+    "requires active profile",
+    "requires view in",
+    "ordinal value must be one of",
+    "but no matching uncertain_fields record",
+    "is not allowed by this style's auxiliary_field_ids",
+    "is not allowed by this style's decisive_field_ids",
+    "has no observed/computed value in this result",
+    "regions lack matching referenced evidence",
+)
+
+_ISSUE_CODE_PATTERNS = (
+    ("FIELD_PROFILE_NOT_APPLICABLE", "requires active profile"),
+    ("FIELD_VIEW_NOT_APPLICABLE", "requires view in"),
+    ("FIELD_ORDINAL_OUT_OF_DOMAIN", "ordinal value must be one of"),
+    ("FIELD_UNCERTAINTY_MISSING", "no matching uncertain_fields record"),
+    ("STYLE_AUXILIARY_FIELD_NOT_ALLOWED", "auxiliary_field_ids"),
+    ("STYLE_DECISIVE_FIELD_NOT_ALLOWED", "decisive_field_ids"),
+    ("STYLE_FIELD_UNAVAILABLE", "has no observed/computed value"),
+    ("STYLE_REGION_EVIDENCE_MISSING", "regions lack matching referenced evidence"),
+    ("FIELD_VALUE_OUT_OF_DOMAIN", "outside the controlled domain"),
+    ("FIELD_ENUM_OUT_OF_DOMAIN", "outside the enum domain"),
+    ("MODEL_SCHEMA_INVALID", "model_schema"),
+    ("FINAL_SCHEMA_INVALID", "schema "),
 )
 
 
 class DesignDnaExtractionError(RuntimeError):
     """单图 DNA 提取无法完成。"""
+
+    def __init__(
+        self,
+        message: str,
+        *,
+        diagnostic_id: str | None = None,
+        issues: list[dict[str, Any]] | None = None,
+    ) -> None:
+        super().__init__(message)
+        self.diagnostic_id = diagnostic_id
+        self.issues = issues or []
 
 
 @dataclass(frozen=True, slots=True)
@@ -104,6 +140,8 @@ def _task_text(user_prompt: str) -> str:
         f"请只使用 {BOUND_SKILL_NAME} Skill 分析随消息提供的单张图片。"
         "严格完成单一主物品锁定、品类适用性、可观察设计 DNA、0～3 个同层风格标签的"
         "独立硬规则判定、标签两两关系仲裁、证据、不确定字段和新 DNA 检查。"
+        "先确定视角与 active_profiles，并调用字段准入工具；只提取工具允许且图片实际可观察、"
+        "风格判定需要或用户明确关注的字段，不要穷举全部语义字段。"
         "最终只返回符合精简模型观察 Schema 的 JSON；字段和风格静态元数据、模块清单、"
         "统计值、排序、候选镜像、证据闭环与组合预设均由宿主编译，不要重复输出。\n\n"
         f"用户业务备注：\n{notes}"
@@ -192,12 +230,78 @@ def _validation_failure_kind(error: DesignDnaExtractionError) -> str:
     return "semantic"
 
 
+def _validation_issues(
+    error: DesignDnaExtractionError,
+    compilation_report: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """把最终校验文本转换为稳定问题对象，并关联模型观察 JSON Pointer。"""
+
+    lines = [
+        line.strip().removeprefix("-").strip()
+        for line in str(error).splitlines()
+        if line.strip().startswith("-")
+    ]
+    if not lines:
+        lines = [str(error).strip()]
+    source_map = (
+        compilation_report.get("source_map", {})
+        if isinstance(compilation_report, dict)
+        else {}
+    )
+    issues: list[dict[str, Any]] = []
+    for message in lines:
+        code = next(
+            (
+                candidate_code
+                for candidate_code, marker in _ISSUE_CODE_PATTERNS
+                if marker in message
+            ),
+            "SEMANTIC_VALIDATION_FAILED",
+        )
+        final_path = message.split(":", 1)[0].strip()
+        mapping: dict[str, Any] = {}
+        for path_key in sorted(source_map, key=len, reverse=True):
+            if final_path == path_key or final_path.startswith(f"{path_key}."):
+                candidate = source_map.get(path_key)
+                if isinstance(candidate, dict):
+                    mapping = candidate
+                break
+        compiler_owned = any(
+            marker in message for marker in _DETERMINISTIC_ERROR_MARKERS
+        )
+        issue = {
+            "code": code,
+            "repair_owner": "compiler" if compiler_owned else "model",
+            "message": message,
+            "final_path": final_path,
+            "source_pointer": mapping.get("source_pointer"),
+        }
+        for key in ("field_id", "style_id", "region"):
+            if mapping.get(key) is not None:
+                issue[key] = mapping[key]
+        issues.append(issue)
+    return issues
+
+
 def _contextualize_validation_error(
     error: DesignDnaExtractionError,
     compiled: dict[str, Any] | None,
     model_data: dict[str, Any] | None,
+    compilation_report: dict[str, Any] | None = None,
 ) -> DesignDnaExtractionError:
-    """为编译后数组路径补充对应的精简观察 JSON Pointer。"""
+    """为兼容文本错误追加结构化源路径；旧编译结果仍使用字段匹配兜底。"""
+
+    issues = _validation_issues(error, compilation_report)
+    mapped_issues = [issue for issue in issues if issue.get("source_pointer")]
+    if mapped_issues:
+        mappings = [
+            f"{issue['final_path']} -> {issue['source_pointer']}"
+            for issue in mapped_issues
+        ]
+        return DesignDnaExtractionError(
+            f"{error}\n模型观察路径映射：\n"
+            + "\n".join(f"- {item}" for item in mappings)
+        )
 
     if compiled is None or model_data is None:
         return error
@@ -237,10 +341,7 @@ def _contextualize_validation_error(
                     and observation.get("field_id") == field_id
                 ]
             if len(candidates) == 1:
-                compiled_path = (
-                    "design_elements.extended_dna_modules."
-                    f"{module_index}.elements.{element_index}"
-                )
+                compiled_path = f"design_element[{sum(len(candidate.get('elements', [])) for candidate in modules[:module_index] if isinstance(candidate, dict)) + element_index}]"
                 if compiled_path not in error_text:
                     continue
                 mappings.append(
@@ -249,7 +350,7 @@ def _contextualize_validation_error(
                 )
 
     for index, item in enumerate(uncertainties):
-        if isinstance(item, dict) and f"uncertain_fields.{index}" in error_text:
+        if isinstance(item, dict) and f"uncertain_fields[{index}]" in error_text:
             mappings.append(
                 f"uncertain_fields.{index} -> /uncertainties/{index} "
                 f"({item.get('field_id')}@{item.get('region')})"
@@ -258,7 +359,7 @@ def _contextualize_validation_error(
     confirmed_tags = style_observations.get("confirmed_tags")
     if isinstance(confirmed_tags, list):
         for index, item in enumerate(confirmed_tags):
-            if isinstance(item, dict) and f"style_result.style_tags.{index}" in error_text:
+            if isinstance(item, dict) and f"style_result.style_tags[{index}]" in error_text:
                 mappings.append(
                     f"style_result.style_tags.{index} -> "
                     f"/style_observations/confirmed_tags/{index} ({item.get('style_id')})"
@@ -268,7 +369,7 @@ def _contextualize_validation_error(
         for index, item in enumerate(pairwise):
             if (
                 isinstance(item, dict)
-                and f"style_result.pairwise_arbitrations.{index}" in error_text
+                and f"style_result.pairwise_arbitrations[{index}]" in error_text
             ):
                 mappings.append(
                     f"style_result.pairwise_arbitrations.{index} -> "
@@ -347,6 +448,129 @@ def _apply_json_patch(data: dict[str, Any], patch: dict[str, Any]) -> dict[str, 
     return result
 
 
+def _safely_degrade_invalid_observations(
+    data: dict[str, Any],
+    issues: list[dict[str, Any]],
+) -> tuple[dict[str, Any], int]:
+    """删除无可判定值的字段或降级无证据风格，不补造任何视觉事实。"""
+
+    result = deepcopy(data)
+    design_indices: set[int] = set()
+    uncertainty_indices: set[int] = set()
+    style_issue_messages: dict[int, list[str]] = {}
+    for issue in issues:
+        pointer = issue.get("source_pointer")
+        if not isinstance(pointer, str):
+            continue
+        match = re.fullmatch(r"/design_observations/(\d+)", pointer)
+        if match:
+            design_indices.add(int(match.group(1)))
+            continue
+        match = re.fullmatch(r"/uncertainties/(\d+)", pointer)
+        if match:
+            uncertainty_indices.add(int(match.group(1)))
+            continue
+        match = re.fullmatch(
+            r"/style_observations/confirmed_tags/(\d+)", pointer
+        )
+        if match:
+            style_issue_messages.setdefault(int(match.group(1)), []).append(
+                str(issue.get("message") or issue.get("code") or "风格证据未闭合")
+            )
+
+    design_observations = result.get("design_observations")
+    if isinstance(design_observations, list):
+        for index in sorted(design_indices, reverse=True):
+            if 0 <= index < len(design_observations):
+                design_observations.pop(index)
+    uncertainties = result.get("uncertainties")
+    if isinstance(uncertainties, list):
+        for index in sorted(uncertainty_indices, reverse=True):
+            if 0 <= index < len(uncertainties):
+                uncertainties.pop(index)
+
+    style_observations = result.get("style_observations")
+    if isinstance(style_observations, dict):
+        confirmed = style_observations.get("confirmed_tags")
+        other_candidates = style_observations.get("other_candidates")
+        if not isinstance(confirmed, list):
+            confirmed = []
+        if not isinstance(other_candidates, list):
+            other_candidates = []
+        demoted: list[dict[str, Any]] = []
+        for index in sorted(style_issue_messages, reverse=True):
+            if not 0 <= index < len(confirmed):
+                continue
+            tag = confirmed.pop(index)
+            if not isinstance(tag, dict):
+                continue
+            demoted.append(
+                {
+                    "style_id": tag.get("style_id"),
+                    "match_score": tag.get("match_score", 0),
+                    "confidence": tag.get("confidence", 0),
+                    "regions": deepcopy(tag.get("regions", [])),
+                    "candidate_status": "provisional",
+                    "hard_rule_passed": False,
+                    "main_support": _ordered_unique_text(
+                        [
+                            *(tag.get("core_feature_hits") or []),
+                            *(tag.get("auxiliary_feature_hits") or []),
+                        ]
+                    ),
+                    "main_conflicts": _ordered_unique_text(
+                        style_issue_messages[index]
+                    ),
+                }
+            )
+        demoted_ids = {
+            item.get("style_id") for item in demoted if item.get("style_id")
+        }
+        other_candidates = [
+            item
+            for item in other_candidates
+            if not isinstance(item, dict) or item.get("style_id") not in demoted_ids
+        ]
+        other_candidates.extend(reversed(demoted))
+        confirmed_ids = {
+            item.get("style_id") for item in confirmed if isinstance(item, dict)
+        }
+        pairwise = style_observations.get("pairwise_reasoning")
+        if isinstance(pairwise, list):
+            style_observations["pairwise_reasoning"] = [
+                item
+                for item in pairwise
+                if isinstance(item, dict)
+                and item.get("style_id_a") in confirmed_ids
+                and item.get("style_id_b") in confirmed_ids
+            ]
+        style_observations["confirmed_tags"] = confirmed
+        style_observations["other_candidates"] = other_candidates
+        style_observations["classification_status"] = (
+            "confirmed" if confirmed else "unclassified"
+        )
+        if not confirmed:
+            style_observations["composition_summary"] = (
+                "候选风格证据未通过确定性闭环检查，已保守降级为未分类。"
+            )
+
+    action_count = (
+        len(design_indices) + len(uncertainty_indices) + len(style_issue_messages)
+    )
+    return result, action_count
+
+
+def _ordered_unique_text(values: list[Any]) -> list[str]:
+    seen: set[str] = set()
+    result: list[str] = []
+    for value in values:
+        text = str(value).strip()
+        if text and text not in seen:
+            seen.add(text)
+            result.append(text)
+    return result
+
+
 def _merge_compilation_metrics(
     metrics: dict[str, Any], report: dict[str, Any]
 ) -> None:
@@ -369,6 +593,7 @@ def _record_validation_failure(
     metrics: dict[str, Any],
     kind: str,
     error: DesignDnaExtractionError,
+    issues: list[dict[str, Any]] | None = None,
 ) -> None:
     metrics["validation_failure_kinds"].append(kind)
     summaries = metrics["validation_failure_summaries"]
@@ -379,6 +604,8 @@ def _record_validation_failure(
     ]
     summary = " | ".join(error_lines[:8])[:2000] or str(error)[:2000]
     summaries.append(summary)
+    issue_history = metrics.setdefault("validation_issues", [])
+    issue_history.append(deepcopy(issues or _validation_issues(error)))
 
 
 def _invoke_agent(
@@ -521,47 +748,116 @@ def run_design_dna_extraction(
         "deterministic_corrections_by_area": {},
         "deterministic_changed_path_samples": [],
         "semantic_patch_attempt_count": 0,
+        "safe_degradation_count": 0,
         "full_fallback_attempt_count": 0,
         "validation_failure_kinds": [],
         "validation_failure_summaries": [],
+        "validation_issues": [],
         "application_network_retry_count": 0,
         # provider SDK 内部重试仍不可观测；流式断连由上面的应用层计数覆盖。
         "provider_internal_retry_count_observable": False,
         "preloaded_context_version": PRELOADED_CONTEXT_VERSION,
         "preloaded_context_chars": preloaded_skill_context_size(),
     }
-    result = _invoke_agent(agent, messages, telemetry, metrics)
+    result: dict[str, Any] = {}
     model_data: dict[str, Any] | None = None
     last_error: DesignDnaExtractionError | None = None
+    last_issues: list[dict[str, Any]] = []
     full_result_path: Path | None = None
     compiled_data: dict[str, Any] | None = None
+    compilation_report: dict[str, Any] | None = None
 
     def compile_and_save(candidate: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
-        nonlocal compiled_data
+        nonlocal compiled_data, compilation_report
         compiled_data = None
+        compilation_report = None
         compiled, report = _compile_model_result(candidate)
         compiled_data = compiled
+        compilation_report = report
         _merge_compilation_metrics(metrics, report)
         return _save_validated_result(image_path, compiled), compiled
+
+    def persist_failure(error: Exception) -> DesignDnaExtractionError:
+        metrics.update(telemetry.snapshot())
+        try:
+            relative_image_path = str(image_path.resolve().relative_to(PROJECT_ROOT))
+        except ValueError:
+            relative_image_path = str(image_path.resolve())
+        messages_result = result.get("messages") if isinstance(result, dict) else None
+        raw_response = None
+        if isinstance(messages_result, list) and messages_result:
+            raw_response = _message_text(messages_result[-1])
+        trace = {
+            "status": "failed",
+            "input_image": {
+                "path": relative_image_path,
+                "sha256": hashlib.sha256(image_path.read_bytes()).hexdigest(),
+            },
+            "model_id": model_id,
+            "user_prompt": user_prompt,
+            "agent_prompt_version": AGENT_PROMPT_VERSION,
+            "skill": BOUND_SKILL_NAME,
+            "started_at": started_at.isoformat(),
+            "completed_at": datetime.now(UTC).isoformat(),
+            "error": str(error),
+            "issues": deepcopy(last_issues),
+            "raw_model_response": raw_response,
+            "model_observation": deepcopy(model_data),
+            "compiled_result": deepcopy(compiled_data),
+            "compilation_report": deepcopy(compilation_report),
+            "execution_metrics": deepcopy(metrics),
+        }
+        try:
+            diagnostic_id, _path = save_failure_trace(trace)
+        except (OSError, TypeError, ValueError):
+            diagnostic_id = None
+        message = str(error)
+        if diagnostic_id:
+            message = f"{message}\n诊断编号：{diagnostic_id}"
+        return DesignDnaExtractionError(
+            message,
+            diagnostic_id=diagnostic_id,
+            issues=deepcopy(last_issues),
+        )
+
+    try:
+        result = _invoke_agent(agent, messages, telemetry, metrics)
+    except Exception as exc:
+        raise persist_failure(exc) from exc
 
     try:
         model_data = _parse_json_response(result)
         full_result_path, compiled_data = compile_and_save(model_data)
     except DesignDnaExtractionError as exc:
-        last_error = _contextualize_validation_error(exc, compiled_data, model_data)
+        last_issues = _validation_issues(exc, compilation_report)
+        last_error = _contextualize_validation_error(
+            exc,
+            compiled_data,
+            model_data,
+            compilation_report,
+        )
         failure_kind = (
             "structural" if model_data is None else _validation_failure_kind(exc)
         )
-        _record_validation_failure(metrics, failure_kind, last_error)
-        if failure_kind == "deterministic":
-            raise DesignDnaExtractionError(
+        _record_validation_failure(metrics, failure_kind, last_error, last_issues)
+        compiler_issues = [
+            issue for issue in last_issues if issue.get("repair_owner") == "compiler"
+        ]
+        if compiler_issues:
+            host_error = DesignDnaExtractionError(
                 "确定性编译后仍存在机械一致性错误，请检查宿主编译器：\n"
                 f"{exc}"
-            ) from exc
+            )
+            raise persist_failure(host_error) from exc
 
     if full_result_path is None and model_data is not None:
         for _attempt in range(MAX_PATCH_REPAIR_ATTEMPTS):
             metrics["semantic_patch_attempt_count"] += 1
+            semantic_issues = [
+                issue
+                for issue in last_issues
+                if issue.get("repair_owner") == "model"
+            ]
             patch_messages = [
                 *result.get("messages", messages),
                 {
@@ -573,7 +869,7 @@ def run_design_dna_extraction(
                         '{"updates":[{"op":"add|replace|remove",'
                         '"path":"/JSON/Pointer","value":...}]}。'
                         "remove 操作省略 value；数组可用数字下标或 add 到 /-。错误如下：\n"
-                        f"{str(last_error)[:8000]}"
+                        f"{json.dumps(semantic_issues, ensure_ascii=False)[:12000]}"
                     ),
                 },
             ]
@@ -589,19 +885,56 @@ def run_design_dna_extraction(
                 result = patch_result
                 break
             except DesignDnaExtractionError as exc:
+                last_issues = _validation_issues(exc, compilation_report)
                 last_error = _contextualize_validation_error(
-                    exc, compiled_data, model_data
+                    exc,
+                    compiled_data,
+                    model_data,
+                    compilation_report,
                 )
                 failure_kind = _validation_failure_kind(exc)
-                _record_validation_failure(metrics, failure_kind, last_error)
+                _record_validation_failure(
+                    metrics, failure_kind, last_error, last_issues
+                )
                 result = patch_result
-                if failure_kind == "deterministic":
-                    raise DesignDnaExtractionError(
+                compiler_issues = [
+                    issue
+                    for issue in last_issues
+                    if issue.get("repair_owner") == "compiler"
+                ]
+                if compiler_issues:
+                    host_error = DesignDnaExtractionError(
                         "局部修复经确定性编译后仍存在机械一致性错误，请检查宿主编译器：\n"
                         f"{exc}"
-                    ) from exc
+                    )
+                    raise persist_failure(host_error) from exc
 
-    if full_result_path is None:
+    if full_result_path is None and model_data is not None:
+        degraded_data, action_count = _safely_degrade_invalid_observations(
+            model_data,
+            last_issues,
+        )
+        if action_count:
+            metrics["safe_degradation_count"] += action_count
+            try:
+                model_data = degraded_data
+                full_result_path, compiled_data = compile_and_save(model_data)
+            except DesignDnaExtractionError as exc:
+                last_issues = _validation_issues(exc, compilation_report)
+                last_error = _contextualize_validation_error(
+                    exc,
+                    compiled_data,
+                    model_data,
+                    compilation_report,
+                )
+                _record_validation_failure(
+                    metrics,
+                    _validation_failure_kind(exc),
+                    last_error,
+                    last_issues,
+                )
+
+    if full_result_path is None and model_data is None:
         for _attempt in range(MAX_FULL_FALLBACK_ATTEMPTS):
             metrics["full_fallback_attempt_count"] += 1
             fallback_messages = [
@@ -623,17 +956,23 @@ def run_design_dna_extraction(
                 result = fallback_result
                 break
             except DesignDnaExtractionError as exc:
+                last_issues = _validation_issues(exc, compilation_report)
                 last_error = _contextualize_validation_error(
-                    exc, compiled_data, model_data
+                    exc,
+                    compiled_data,
+                    model_data,
+                    compilation_report,
                 )
                 _record_validation_failure(
                     metrics,
                     _validation_failure_kind(exc),
                     last_error,
+                    last_issues,
                 )
 
     if full_result_path is None or compiled_data is None or model_data is None:
-        raise last_error or DesignDnaExtractionError("设计 DNA 提取失败")
+        failure = last_error or DesignDnaExtractionError("设计 DNA 提取失败")
+        raise persist_failure(failure)
 
     business_view_path = _create_business_view(full_result_path)
     save_business_view_model(full_result_path.stem, model_id)

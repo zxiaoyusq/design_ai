@@ -22,6 +22,7 @@ from PIL import Image, ImageOps, UnidentifiedImageError
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 UPLOADS_DIR = PROJECT_ROOT / "data" / "uploads"
 RESULTS_DIR = PROJECT_ROOT / "data" / "result"
+FAILURE_TRACES_DIR = RESULTS_DIR / ".metadata" / "failures"
 MAX_IMAGE_BYTES = 20 * 1024 * 1024
 ALLOWED_FORMATS = {
     "GIF": (".gif", "image/gif"),
@@ -392,6 +393,21 @@ def save_result_trace(result_id: str, trace: dict[str, Any]) -> Path:
     content = json.dumps(trace, ensure_ascii=False, indent=2).encode("utf-8")
     _atomic_write(path, content + b"\n")
     return path
+
+
+def save_failure_trace(trace: dict[str, Any]) -> tuple[str, Path]:
+    """保存失败任务的完整旁路诊断，避免错误内容随进程状态丢失。"""
+
+    diagnostic_id = (
+        datetime.now(UTC).strftime("%Y%m%d_%H%M%S_%f")
+        + "_"
+        + uuid4().hex[:8]
+    )
+    payload = {"diagnostic_id": diagnostic_id, **trace}
+    path = FAILURE_TRACES_DIR / f"{diagnostic_id}.json"
+    content = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
+    _atomic_write(path, content + b"\n")
+    return diagnostic_id, path
 
 
 def _result_image_name(result_id: str) -> str:
