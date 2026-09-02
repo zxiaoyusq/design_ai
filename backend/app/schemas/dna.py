@@ -25,6 +25,41 @@ class ImageTaskStatus(StrEnum):
     FAILED = "failed"
 
 
+class ExtractionStage(StrEnum):
+    """单张图片提取过程中可公开展示的稳定阶段。"""
+
+    QUEUED = "queued"
+    PREPARING = "preparing"
+    MODEL_ANALYSIS = "model_analysis"
+    PARSING = "parsing"
+    COMPILING = "compiling"
+    SEMANTIC_REVIEW = "semantic_review"
+    REPAIRING = "repairing"
+    VALIDATING = "validating"
+    GENERATING_VIEW = "generating_view"
+    FINALIZING = "finalizing"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
+class ProgressEventLevel(StrEnum):
+    """阶段事件的展示级别，不包含模型内部思维内容。"""
+
+    INFO = "info"
+    WARNING = "warning"
+    ERROR = "error"
+
+
+class ExtractionProgressEvent(BaseModel):
+    """供前端轮询展示的一条受控过程记录。"""
+
+    stage: ExtractionStage
+    message: str
+    progress: int = Field(ge=0, le=100)
+    level: ProgressEventLevel = ProgressEventLevel.INFO
+    created_at: datetime
+
+
 class UploadedImage(BaseModel):
     """已保存、可被用户选择的图片。"""
 
@@ -62,6 +97,9 @@ class ExtractionTaskItem(BaseModel):
     error: str | None = None
     diagnostic_id: str | None = None
     diagnostics: list[dict] = Field(default_factory=list)
+    stage: ExtractionStage = ExtractionStage.QUEUED
+    stage_progress: int = Field(default=0, ge=0, le=100)
+    events: list[ExtractionProgressEvent] = Field(default_factory=list)
 
 
 class ExtractionTask(BaseModel):

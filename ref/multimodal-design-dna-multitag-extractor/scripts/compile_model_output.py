@@ -15,6 +15,7 @@ from typing import Any, Optional, Sequence
 ROOT = Path(__file__).resolve().parents[1]
 FIELD_REGISTRY_PATH = ROOT / "references" / "field-registry.json"
 STYLE_REGISTRY_PATH = ROOT / "references" / "style-registry.json"
+STYLE_EVIDENCE_RULES_PATH = ROOT / "references" / "style-evidence-rules.json"
 TAG_RELATIONS_PATH = ROOT / "references" / "tag-relations.json"
 KNOWLEDGE_BASE_PATH = ROOT / "references" / "design-dna-knowledge-base.zh-CN.md"
 VALUE_NORMALIZATION_PATH = ROOT / "references" / "value-normalization.json"
@@ -32,6 +33,17 @@ FORBIDDEN_SINGLE_IMAGE_PROFILES = {
     "profile:multi_face_device",
     "profile:reference_analysis",
     "profile:trend_analysis",
+}
+VALID_VIEWS = {
+    "front",
+    "rear",
+    "left",
+    "right",
+    "top",
+    "bottom",
+    "three_quarter",
+    "detail",
+    "unknown",
 }
 
 
@@ -132,6 +144,136 @@ def _normalize_observation_contract(
             )
         retained.append(item)
     observation["uncertainties"] = retained
+
+
+def _valid_normalized_bbox(value: Any) -> bool:
+    return bool(
+        isinstance(value, list)
+        and len(value) == 4
+        and all(
+            isinstance(item, (int, float))
+            and not isinstance(item, bool)
+            and 0 <= item <= 1
+            for item in value
+        )
+        and value[0] < value[2]
+        and value[1] < value[3]
+    )
+
+
+def _complete_evidence_record(evidence: Any) -> bool:
+    if not isinstance(evidence, dict):
+        return False
+    evidence_id = evidence.get("evidence_id")
+    description = evidence.get("description")
+    visual_cues = evidence.get("visual_cues")
+    return bool(
+        isinstance(evidence_id, str)
+        and re.fullmatch(r"EV-[A-Za-z0-9_-]+", evidence_id)
+        and isinstance(description, str)
+        and description.strip()
+        and evidence.get("view") in VALID_VIEWS
+        and isinstance(visual_cues, list)
+        and visual_cues
+        and all(isinstance(cue, str) and cue for cue in visual_cues)
+        and len(visual_cues) == len(set(visual_cues))
+        and _valid_normalized_bbox(evidence.get("bbox_norm"))
+    )
+
+
+def _synchronize_target_bbox(data: dict[str, Any], report: dict[str, Any]) -> None:
+    """吸收证据框与主体框之间不超过 0.03 的坐标取整偏差。"""
+
+    target = data.get("target_object")
+    evidence_items = data.get("evidence")
+    if not isinstance(target, dict) or not isinstance(evidence_items, list):
+        return
+    target_bbox = target.get("bbox_norm")
+    if not _valid_normalized_bbox(target_bbox):
+        return
+    valid_evidence = [
+        evidence for evidence in evidence_items if _complete_evidence_record(evidence)
+    ]
+    if not valid_evidence:
+        return
+    evidence_boxes = [evidence["bbox_norm"] for evidence in valid_evidence]
+    expanded = [
+        min(target_bbox[0], *(bbox[0] for bbox in evidence_boxes)),
+        min(target_bbox[1], *(bbox[1] for bbox in evidence_boxes)),
+        max(target_bbox[2], *(bbox[2] for bbox in evidence_boxes)),
+        max(target_bbox[3], *(bbox[3] for bbox in evidence_boxes)),
+    ]
+    expansion = [
+        target_bbox[0] - expanded[0],
+        target_bbox[1] - expanded[1],
+        expanded[2] - target_bbox[2],
+        expanded[3] - target_bbox[3],
+    ]
+    if expanded == target_bbox or any(delta > 0.03 + 1e-9 for delta in expansion):
+        return
+    original = copy.deepcopy(target_bbox)
+    target["bbox_norm"] = expanded
+    _record_change(report, "/target_object/bbox_norm")
+    report.setdefault("target_bbox_normalizations", []).append(
+        {
+            "action": "expanded_to_nearby_evidence_bounds",
+            "original_bbox_norm": original,
+            "normalized_bbox_norm": copy.deepcopy(expanded),
+            "max_edge_expansion": max(expansion),
+        }
+    )
+
+
+def _synchronize_evidence_regions(data: dict[str, Any], report: dict[str, Any]) -> None:
+    """把有效证据已经明确命名、但主体清单漏登记的区域补入可见区域。"""
+
+    target = data.get("target_object")
+    evidence_items = data.get("evidence")
+    if not isinstance(target, dict) or not isinstance(evidence_items, list):
+        return
+    visible_regions = target.get("visible_regions")
+    target_bbox = target.get("bbox_norm")
+    if not isinstance(visible_regions, list) or not _valid_normalized_bbox(target_bbox):
+        return
+
+    declared_regions = {
+        region for region in visible_regions if isinstance(region, str) and region
+    }
+    normalizations = report.setdefault("visible_region_normalizations", [])
+    for index, evidence in enumerate(evidence_items):
+        if not isinstance(evidence, dict):
+            continue
+        region = evidence.get("region")
+        bbox = evidence.get("bbox_norm")
+        evidence_id = evidence.get("evidence_id")
+        has_valid_bbox = (
+            _valid_normalized_bbox(bbox)
+            and bbox[0] >= target_bbox[0] - 1e-6
+            and bbox[1] >= target_bbox[1] - 1e-6
+            and bbox[2] <= target_bbox[2] + 1e-6
+            and bbox[3] <= target_bbox[3] + 1e-6
+        )
+        # 只同步模型已经用完整证据记录明确表达的空间事实，不根据字段名猜测区域。
+        if not (
+            isinstance(region, str)
+            and region
+            and region != "whole_object"
+            and region not in declared_regions
+            and _complete_evidence_record(evidence)
+            and has_valid_bbox
+        ):
+            continue
+        visible_regions.append(region)
+        declared_regions.add(region)
+        _record_change(report, "/target_object/visible_regions")
+        normalizations.append(
+            {
+                "source_pointer": f"/evidence/{index}/region",
+                "evidence_id": evidence_id,
+                "region": region,
+                "action": "declared_from_valid_evidence",
+            }
+        )
 
 
 def _replace_if_changed(
@@ -398,7 +540,8 @@ def _expand_observation(
     for source_index, item in enumerate(style_observations.get("confirmed_tags", [])):
         if not isinstance(item, dict):
             continue
-        applicable_count = item.get("applicable_rule_count", 0)
+        # confirmed 本身已经表达模型通过至少一条适用硬规则；具体计数由宿主展开。
+        applicable_count = item.get("applicable_rule_count", 1)
         confirmed_tags.append(
             {
                 "style_id": item.get("style_id"),
@@ -455,6 +598,14 @@ def _expand_observation(
         expanded["_source_pointer"] = f"/uncertainties/{source_index}"
         expanded_uncertainties.append(expanded)
 
+    expanded_evidence = []
+    for source_index, item in enumerate(observation.get("evidence", [])):
+        if not isinstance(item, dict):
+            continue
+        expanded = copy.deepcopy(item)
+        expanded["_source_pointer"] = f"/evidence/{source_index}"
+        expanded_evidence.append(expanded)
+
     return {
         "schema_version": FINAL_SCHEMA_VERSION,
         "knowledge_base_version": observation.get(
@@ -499,7 +650,7 @@ def _expand_observation(
         "novel_dna_elements": copy.deepcopy(
             observation.get("novel_dna_elements", [])
         ),
-        "evidence": copy.deepcopy(observation.get("evidence", [])),
+        "evidence": expanded_evidence,
         "quality_summary": {
             "visible_coverage": observation.get("image_quality", {}).get(
                 "object_visible_ratio", 0
@@ -908,9 +1059,336 @@ def _field_evidence_index(
     return {field_id: _ordered_unique(refs) for field_id, refs in result.items()}
 
 
+def _confirmed_element(element: dict[str, Any]) -> bool:
+    """判断字段是否足以进入 confirmed 风格证据链。"""
+
+    confidence = element.get("confidence")
+    available = (
+        element.get("observability") == "observed"
+        if element.get("evidence_mode") == "direct"
+        else element.get("computation_status") == "computed"
+    )
+    return bool(
+        available
+        and element.get("value") is not None
+        and isinstance(confidence, (int, float))
+        and not isinstance(confidence, bool)
+        and float(confidence) >= 0.75
+        and element.get("evidence_refs")
+    )
+
+
+def _value_at_path(value: Any, path: Any) -> Any:
+    """读取机器证据规则中的短路径；路径缺失时返回 None。"""
+
+    if path in (None, "", []):
+        return value
+    parts = path if isinstance(path, list) else str(path).split(".")
+    current = value
+    for part in parts:
+        if isinstance(current, dict) and str(part) in current:
+            current = current[str(part)]
+        elif isinstance(current, list) and str(part).isdigit():
+            index = int(part)
+            if index >= len(current):
+                return None
+            current = current[index]
+        else:
+            return None
+    return current
+
+
+def _matches_value_rule(value: Any, matcher: dict[str, Any]) -> bool:
+    """执行少量可审计的值级比较，不使用自由文本相似度猜测。"""
+
+    actual = _value_at_path(value, matcher.get("path"))
+    operator = matcher.get("operator")
+    expected = matcher.get("value")
+    expected_values = matcher.get("values")
+    if operator == "equals":
+        return actual == expected
+    if operator == "in":
+        return isinstance(expected_values, list) and actual in expected_values
+    if operator == "not_in":
+        return isinstance(expected_values, list) and actual not in expected_values
+    if operator in {"gte", "lte"}:
+        if (
+            not isinstance(actual, (int, float))
+            or isinstance(actual, bool)
+            or not isinstance(expected, (int, float))
+            or isinstance(expected, bool)
+        ):
+            return False
+        return actual >= expected if operator == "gte" else actual <= expected
+    if operator in {"contains_any", "contains_all"}:
+        if not isinstance(expected_values, list) or not expected_values:
+            return False
+        if isinstance(actual, list):
+            present = set(actual)
+            checks = [item in present for item in expected_values]
+        elif isinstance(actual, str):
+            checks = [str(item) in actual for item in expected_values]
+        elif isinstance(actual, dict):
+            present = set(actual)
+            checks = [item in present for item in expected_values]
+        else:
+            return False
+        return any(checks) if operator == "contains_any" else all(checks)
+    return False
+
+
+def _matching_rule_elements(
+    clause: dict[str, Any],
+    element_index: dict[tuple[str, str], dict[str, Any]],
+) -> list[dict[str, Any]]:
+    field_id = str(clause.get("field_id") or "")
+    matcher = clause.get("match")
+    if not field_id or not isinstance(matcher, dict):
+        return []
+    return [
+        element
+        for (candidate_id, _region), element in element_index.items()
+        if candidate_id == field_id
+        and _confirmed_element(element)
+        and _matches_value_rule(element.get("value"), matcher)
+    ]
+
+
+def _style_hit_text(field_ids: list[str], elements: list[dict[str, Any]]) -> str:
+    descriptions = _ordered_unique(
+        [
+            str(element.get("raw_visual_description") or "").strip()
+            for element in elements
+            if str(element.get("raw_visual_description") or "").strip()
+        ]
+    )
+    detail = "；".join(descriptions[:2]) or "字段值通过宿主值级证据规则"
+    return f"{'、'.join(field_ids)}：{detail}"
+
+
+def _auto_link_style_hits(
+    *,
+    style_id: str,
+    role: str,
+    existing_hits: list[str],
+    allowed_field_ids: set[str],
+    evidence_rules: dict[str, Any],
+    element_index: dict[tuple[str, str], dict[str, Any]],
+    source_pointer: Any,
+    report: dict[str, Any],
+) -> list[str]:
+    """只用显式值级规则补足缺失证据，不从字段名直接推断风格。"""
+
+    style_rules = evidence_rules.get("styles")
+    if not isinstance(style_rules, dict):
+        return existing_hits
+    style_config = style_rules.get(style_id)
+    if not isinstance(style_config, dict):
+        return existing_hits
+    result = list(existing_hits)
+    for rule in style_config.get("rules", []):
+        if not isinstance(rule, dict) or rule.get("role") != role:
+            continue
+        if existing_hits and not rule.get("always_link"):
+            continue
+        clauses = [
+            {
+                "field_id": rule.get("field_id"),
+                "match": rule.get("match"),
+            },
+            *[
+                clause
+                for clause in rule.get("requires", [])
+                if isinstance(clause, dict)
+            ],
+        ]
+        field_ids = [str(clause.get("field_id") or "") for clause in clauses]
+        if not field_ids or any(field_id not in allowed_field_ids for field_id in field_ids):
+            continue
+        already_cited = {
+            field_id
+            for hit in result
+            for field_id in FIELD_ID_PATTERN.findall(str(hit))
+        }
+        if set(field_ids).issubset(already_cited):
+            continue
+        matched_groups = [
+            _matching_rule_elements(clause, element_index) for clause in clauses
+        ]
+        if any(not group for group in matched_groups):
+            continue
+        elements = [group[0] for group in matched_groups]
+        hit = _style_hit_text(field_ids, elements)
+        result.append(hit)
+        report.setdefault("auto_linked_style_hits", []).append(
+            {
+                "style_id": style_id,
+                "source_pointer": source_pointer,
+                "role": role,
+                "rule_id": rule.get("rule_id"),
+                "field_ids": field_ids,
+                "evidence_refs": _ordered_unique(
+                    [
+                        evidence_id
+                        for element in elements
+                        for evidence_id in element.get("evidence_refs", [])
+                    ]
+                ),
+            }
+        )
+    return _ordered_unique(result)
+
+
+def _semantic_review_candidates(
+    *,
+    allowed_field_ids: set[str],
+    cited_field_ids: set[str],
+    fields: dict[str, dict[str, Any]],
+    element_index: dict[tuple[str, str], dict[str, Any]],
+    limit: int,
+) -> list[dict[str, Any]]:
+    """为小范围复核选择强字段；完整注册表不会进入模型上下文。"""
+
+    candidates = [
+        {
+            "field_id": field_id,
+            "field_name": element.get("field_name"),
+            "decision_use": fields.get(field_id, {}).get("decision_use"),
+            "value": copy.deepcopy(element.get("value")),
+            "raw_visual_description": element.get("raw_visual_description"),
+            "region": region,
+            "confidence": element.get("confidence"),
+            "evidence_refs": copy.deepcopy(element.get("evidence_refs", [])),
+        }
+        for (field_id, region), element in element_index.items()
+        if field_id in allowed_field_ids
+        and field_id not in cited_field_ids
+        and _confirmed_element(element)
+    ]
+    candidates.sort(
+        key=lambda item: (
+            -float(item.get("confidence") or 0),
+            -len(item.get("evidence_refs") or []),
+            str(item.get("field_id") or ""),
+            str(item.get("region") or ""),
+        )
+    )
+    return candidates[:limit]
+
+
+def _record_pruned_style_hit(
+    report: dict[str, Any],
+    *,
+    style_id: str,
+    source_pointer: Any,
+    role: str,
+    hit: str,
+    reason: str,
+    field_ids: list[str],
+) -> None:
+    """记录被剔除的弱引用；剔除本身不等于整个风格失败。"""
+
+    report.setdefault("pruned_style_hits", []).append(
+        {
+            "style_id": style_id,
+            "source_pointer": source_pointer,
+            "role": role,
+            "hit": hit,
+            "field_ids": field_ids,
+            "reason": reason,
+        }
+    )
+
+
+def _style_policy_downgrade_reasons(
+    style_record: dict[str, Any],
+    core_field_ids: set[str],
+    auxiliary_field_ids: set[str],
+    field_evidence: dict[str, list[str]],
+    element_index: dict[tuple[str, str], dict[str, Any]],
+) -> list[str]:
+    """复核注册表中的不可裁剪硬门槛，目前包括 NeoRetro 线索族策略。"""
+
+    policy = style_record.get("cue_family_policy")
+    if not isinstance(policy, dict):
+        return []
+    cited_field_ids = core_field_ids | auxiliary_field_ids
+    raw_families = policy.get("families")
+    families = raw_families if isinstance(raw_families, dict) else {}
+    family_hits = {
+        str(family_name): cited_field_ids.intersection(
+            str(field_id) for field_id in family_field_ids
+        )
+        for family_name, family_field_ids in families.items()
+        if isinstance(family_field_ids, list)
+        and cited_field_ids.intersection(str(field_id) for field_id in family_field_ids)
+    }
+    family_evidence = {
+        family_name: {
+            evidence_id
+            for field_id in family_field_ids
+            for evidence_id in field_evidence.get(field_id, [])
+        }
+        for family_name, family_field_ids in family_hits.items()
+    }
+    min_families = policy.get("min_distinct_families")
+    qualifying_group: tuple[str, ...] = ()
+    if (
+        isinstance(min_families, int)
+        and not isinstance(min_families, bool)
+        and min_families >= 1
+    ):
+        for family_group in combinations(sorted(family_evidence), min_families):
+            if all(
+                family_evidence[family_name]
+                - {
+                    evidence_id
+                    for other_name in family_group
+                    if other_name != family_name
+                    for evidence_id in family_evidence[other_name]
+                }
+                for family_name in family_group
+            ):
+                qualifying_group = family_group
+                break
+    reasons: list[str] = []
+    if isinstance(min_families, int) and len(qualifying_group) < min_families:
+        reasons.append(f"特殊硬门槛需要至少 {min_families} 组具有独立证据的线索族")
+
+    expressive_gate = policy.get("expressive_gate")
+    gate_field_id = (
+        expressive_gate.get("field_id")
+        if isinstance(expressive_gate, dict)
+        else None
+    )
+    allowed_values = set(
+        expressive_gate.get("allowed_values") or []
+        if isinstance(expressive_gate, dict)
+        else []
+    )
+    gate_values = {
+        element.get("value")
+        for (field_id, _region), element in element_index.items()
+        if field_id == gate_field_id
+        and isinstance(element.get("value"), str)
+        and field_id in field_evidence
+    }
+    if (
+        not isinstance(gate_field_id, str)
+        or gate_field_id not in core_field_ids
+        or not gate_values.intersection(allowed_values)
+    ):
+        reasons.append(
+            f"特殊硬门槛缺少决定字段 {gate_field_id} 的允许值 {sorted(allowed_values)}"
+        )
+    return reasons
+
+
 def _normalize_styles(
     data: dict[str, Any],
     styles: dict[str, dict[str, Any]],
+    fields: dict[str, dict[str, Any]],
+    evidence_rules: dict[str, Any],
     tag_relations: dict[str, Any],
     element_index: dict[tuple[str, str], dict[str, Any]],
     report: dict[str, Any],
@@ -939,6 +1417,12 @@ def _normalize_styles(
     }
     demoted_candidates: list[dict[str, Any]] = []
     retained_tags: list[dict[str, Any]] = []
+    review_policy = evidence_rules.get("review_policy")
+    if not isinstance(review_policy, dict):
+        review_policy = {}
+    review_candidate_limit = review_policy.get("max_fields_per_role", 6)
+    if not isinstance(review_candidate_limit, int) or review_candidate_limit < 1:
+        review_candidate_limit = 6
 
     for index, tag in enumerate(tags):
         path = f"/style_result/style_tags/{index}"
@@ -964,14 +1448,28 @@ def _normalize_styles(
                 hit_text = str(hit)
                 referenced = FIELD_ID_PATTERN.findall(hit_text)
                 if not referenced:
-                    downgrade_reasons.append(f"证据命中未引用规范字段：{hit_text}")
+                    _record_pruned_style_hit(
+                        report,
+                        style_id=style_id,
+                        source_pointer=tag.get("_source_pointer"),
+                        role=original_role,
+                        hit=hit_text,
+                        field_ids=[],
+                        reason="证据命中未引用规范字段",
+                    )
                     continue
                 unavailable = [
                     field_id for field_id in referenced if field_id not in field_evidence
                 ]
                 if unavailable:
-                    downgrade_reasons.append(
-                        f"字段没有可用于确认风格的值或证据：{', '.join(unavailable)}"
+                    _record_pruned_style_hit(
+                        report,
+                        style_id=style_id,
+                        source_pointer=tag.get("_source_pointer"),
+                        role=original_role,
+                        hit=hit_text,
+                        field_ids=unavailable,
+                        reason="字段没有置信度不低于 0.75 的可用值与证据",
                     )
                     continue
                 can_core = all(field_id in decisive_ids for field_id in referenced)
@@ -990,14 +1488,40 @@ def _normalize_styles(
                 elif can_core and can_auxiliary:
                     target_role = original_role
                 if target_role is None:
-                    downgrade_reasons.append(
-                        f"字段不在该风格允许的决定或辅助集合：{', '.join(referenced)}"
+                    _record_pruned_style_hit(
+                        report,
+                        style_id=style_id,
+                        source_pointer=tag.get("_source_pointer"),
+                        role=original_role,
+                        hit=hit_text,
+                        field_ids=referenced,
+                        reason="字段不在该风格允许的决定或辅助集合",
                     )
                     continue
                 rebuilt_hits[target_role].append(hit_text)
                 if target_role != original_role:
                     _record_change(report, f"{path}/{original_role}/reclassified")
 
+        rebuilt_hits["core_feature_hits"] = _auto_link_style_hits(
+            style_id=style_id,
+            role="core",
+            existing_hits=rebuilt_hits["core_feature_hits"],
+            allowed_field_ids=decisive_ids,
+            evidence_rules=evidence_rules,
+            element_index=element_index,
+            source_pointer=tag.get("_source_pointer"),
+            report=report,
+        )
+        rebuilt_hits["auxiliary_feature_hits"] = _auto_link_style_hits(
+            style_id=style_id,
+            role="auxiliary",
+            existing_hits=rebuilt_hits["auxiliary_feature_hits"],
+            allowed_field_ids=auxiliary_ids,
+            evidence_rules=evidence_rules,
+            element_index=element_index,
+            source_pointer=tag.get("_source_pointer"),
+            report=report,
+        )
         for role, hits in rebuilt_hits.items():
             _replace_if_changed(tag, role, _ordered_unique(hits), path, report)
         core_field_ids = {
@@ -1010,12 +1534,89 @@ def _normalize_styles(
             for hit in rebuilt_hits["auxiliary_feature_hits"]
             for field_id in FIELD_ID_PATTERN.findall(hit)
         }
+        review_roles: dict[str, list[dict[str, Any]]] = {}
+        cited_field_ids = core_field_ids | auxiliary_field_ids
         if not rebuilt_hits["core_feature_hits"]:
             downgrade_reasons.append("缺少注册表允许的决定字段")
+            review_candidates = _semantic_review_candidates(
+                allowed_field_ids=decisive_ids,
+                cited_field_ids=cited_field_ids,
+                fields=fields,
+                element_index=element_index,
+                limit=review_candidate_limit,
+            )
+            if review_candidates:
+                review_roles["core"] = review_candidates
+        elif not any(
+            fields.get(field_id, {}).get("decision_use") == "hard"
+            for field_id in core_field_ids
+        ):
+            downgrade_reasons.append("决定证据缺少 decision_use=hard 的规范字段")
+            review_candidates = _semantic_review_candidates(
+                allowed_field_ids={
+                    field_id
+                    for field_id in decisive_ids
+                    if fields.get(field_id, {}).get("decision_use") == "hard"
+                },
+                cited_field_ids=cited_field_ids,
+                fields=fields,
+                element_index=element_index,
+                limit=review_candidate_limit,
+            )
+            if review_candidates:
+                review_roles["core"] = review_candidates
         if not rebuilt_hits["auxiliary_feature_hits"]:
             downgrade_reasons.append("缺少注册表允许且可用的辅助字段")
+            review_candidates = _semantic_review_candidates(
+                allowed_field_ids=auxiliary_ids,
+                cited_field_ids=cited_field_ids,
+                fields=fields,
+                element_index=element_index,
+                limit=review_candidate_limit,
+            )
+            if review_candidates:
+                review_roles["auxiliary"] = review_candidates
         if auxiliary_field_ids and not auxiliary_field_ids.difference(core_field_ids):
             downgrade_reasons.append("辅助字段没有形成独立于决定字段的支持")
+        policy_reasons: list[str] = []
+        if style_record is not None:
+            policy_reasons = _style_policy_downgrade_reasons(
+                style_record,
+                core_field_ids,
+                auxiliary_field_ids,
+                field_evidence,
+                element_index,
+            )
+            downgrade_reasons.extend(policy_reasons)
+            policy = style_record.get("cue_family_policy")
+            if (
+                isinstance(policy, dict)
+                and any("线索族" in reason for reason in policy_reasons)
+                and not any("缺少决定字段" in reason for reason in policy_reasons)
+            ):
+                raw_families = policy.get("families")
+                families = raw_families if isinstance(raw_families, dict) else {}
+                family_fields = {
+                    str(field_id)
+                    for field_ids in families.values()
+                    if isinstance(field_ids, list)
+                    for field_id in field_ids
+                }
+                for role, allowed_ids in (
+                    ("core", decisive_ids),
+                    ("auxiliary", auxiliary_ids),
+                ):
+                    candidates = _semantic_review_candidates(
+                        allowed_field_ids=allowed_ids.intersection(family_fields),
+                        cited_field_ids=cited_field_ids,
+                        fields=fields,
+                        element_index=element_index,
+                        limit=review_candidate_limit,
+                    )
+                    if candidates:
+                        review_roles[role] = _ordered_unique(
+                            [*(review_roles.get(role) or []), *candidates]
+                        )[:review_candidate_limit]
         referenced_fields = [
             field_id
             for key in ("core_feature_hits", "auxiliary_feature_hits")
@@ -1098,6 +1699,39 @@ def _normalize_styles(
             or tag.get("exclusion_hits")
         ):
             downgrade_reasons.append("硬规则、缺失项或排除项未闭合")
+
+        coverage_ready = isinstance(coverage, dict) and (
+            coverage.get("applicable_rule_count", 0) >= 1
+            and coverage.get("passed_rule_count", 0) >= 1
+            and coverage.get("failed_rule_count", 0) == 0
+            and coverage.get("unknown_rule_count", 0) == 0
+        )
+        hard_rule_ready = bool(
+            tag.get("hard_rule_passed")
+            and not tag.get("missing_required_items")
+            and not tag.get("exclusion_hits")
+        )
+        expressive_gate_failed = any(
+            "特殊硬门槛缺少决定字段" in reason for reason in downgrade_reasons
+        )
+        if (
+            review_roles
+            and style_record is not None
+            and coverage_ready
+            and hard_rule_ready
+            and not expressive_gate_failed
+        ):
+            report.setdefault("semantic_review_requests", []).append(
+                {
+                    "style_id": style_id,
+                    "source_pointer": tag.get("_source_pointer"),
+                    "missing_roles": sorted(review_roles),
+                    "current_core_field_ids": sorted(core_field_ids),
+                    "current_auxiliary_field_ids": sorted(auxiliary_field_ids),
+                    "roles": review_roles,
+                    "downgrade_reasons": _ordered_unique(downgrade_reasons),
+                }
+            )
 
         if downgrade_reasons:
             demoted_candidates.append(
@@ -1509,6 +2143,8 @@ def _normalize_quality(
     filtered_count = len(report.get("filtered_fields", []))
     normalized_count = len(report.get("value_normalizations", []))
     downgraded_count = len(report.get("style_downgrades", []))
+    pruned_hit_count = len(report.get("pruned_style_hits", []))
+    pending_review_count = len(report.get("semantic_review_requests", []))
     compiler_warnings = []
     if filtered_count:
         compiler_warnings.append(f"宿主按视角、Profile 或规范字段过滤了 {filtered_count} 项观察。")
@@ -1516,6 +2152,14 @@ def _normalize_quality(
         compiler_warnings.append(f"宿主按受控值域确定性归一了 {normalized_count} 项字段。")
     if downgraded_count:
         compiler_warnings.append(f"宿主因证据闭环不足降级了 {downgraded_count} 个风格标签。")
+    if pruned_hit_count:
+        compiler_warnings.append(
+            f"宿主从风格证据链剔除了 {pruned_hit_count} 条弱引用，并用剩余证据重新闭环。"
+        )
+    if pending_review_count:
+        compiler_warnings.append(
+            f"有 {pending_review_count} 个风格的强字段需要窄范围语义复核，复核前保持 provisional。"
+        )
     _replace_if_changed(
         quality,
         "warnings",
@@ -1531,19 +2175,26 @@ def _finalize_source_map(data: dict[str, Any], report: dict[str, Any]) -> None:
     source_map: dict[str, dict[str, Any]] = {}
     flat_index = 0
     modules = data.get("design_elements", {}).get("extended_dna_modules", [])
-    for module in modules if isinstance(modules, list) else []:
+    for module_index, module in enumerate(
+        modules if isinstance(modules, list) else []
+    ):
         if not isinstance(module, dict):
             continue
-        for element in module.get("elements", []):
+        for element_index, element in enumerate(module.get("elements", [])):
             if not isinstance(element, dict):
                 continue
             pointer = element.get("_source_pointer")
             if isinstance(pointer, str):
-                source_map[f"design_element[{flat_index}]"] = {
+                mapping = {
                     "source_pointer": pointer,
                     "field_id": element.get("field_id"),
                     "region": element.get("region"),
                 }
+                source_map[f"design_element[{flat_index}]"] = mapping
+                source_map[
+                    "design_elements.extended_dna_modules."
+                    f"{module_index}.elements.{element_index}"
+                ] = copy.deepcopy(mapping)
             flat_index += 1
 
     style_result = data.get("style_result")
@@ -1570,6 +2221,19 @@ def _finalize_source_map(data: dict[str, Any], report: dict[str, Any]) -> None:
                 "field_id": item.get("field_id"),
                 "region": item.get("region"),
             }
+    evidence_items = data.get("evidence")
+    for index, item in enumerate(
+        evidence_items if isinstance(evidence_items, list) else []
+    ):
+        if not isinstance(item, dict):
+            continue
+        pointer = item.get("_source_pointer")
+        if isinstance(pointer, str):
+            source_map[f"evidence[{index}]"] = {
+                "source_pointer": pointer,
+                "evidence_id": item.get("evidence_id"),
+                "region": item.get("region"),
+            }
     report["source_map"] = source_map
 
     def strip_private(value: Any) -> None:
@@ -1590,6 +2254,7 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
 
     field_registry = _load_json(FIELD_REGISTRY_PATH)
     style_registry = _load_json(STYLE_REGISTRY_PATH)
+    style_evidence_rules = _load_json(STYLE_EVIDENCE_RULES_PATH)
     tag_relations = _load_json(TAG_RELATIONS_PATH)
     normalization = _load_json(VALUE_NORMALIZATION_PATH)
     knowledge_base = KNOWLEDGE_BASE_PATH.read_text(encoding="utf-8")
@@ -1608,6 +2273,8 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
         from jsonschema import Draft202012Validator
 
         _normalize_observation_contract(result, report)
+        _synchronize_target_bbox(result, report)
+        _synchronize_evidence_regions(result, report)
         observation_schema = _load_json(MODEL_OUTPUT_SCHEMA_PATH)
         schema_errors = sorted(
             Draft202012Validator(observation_schema).iter_errors(result),
@@ -1620,6 +2287,9 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
                 details.append(f"model_schema {path or '/'}: {error.message}")
             raise ValueError("模型观察结果未通过 Schema：\n- " + "\n- ".join(details))
         result = _expand_observation(result, fields, module_names)
+    else:
+        _synchronize_target_bbox(result, report)
+        _synchronize_evidence_regions(result, report)
     _replace_if_changed(result, "schema_version", FINAL_SCHEMA_VERSION, "", report)
     _replace_if_changed(
         result,
@@ -1637,7 +2307,15 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
         report,
     )
     _normalize_modules(result, module_names, report)
-    _normalize_styles(result, styles, tag_relations, element_index, report)
+    _normalize_styles(
+        result,
+        styles,
+        fields,
+        style_evidence_rules,
+        tag_relations,
+        element_index,
+        report,
+    )
     _normalize_uncertainties(result, fields, element_index, report)
     _normalize_quality(result, element_index, report)
     _finalize_source_map(result, report)

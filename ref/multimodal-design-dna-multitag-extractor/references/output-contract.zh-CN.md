@@ -2,7 +2,7 @@
 
 适用于最终 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json` 输出 `design_dna_multitag_observation_v1`；宿主编译后的完整结果通过 `schemas/design-dna-output.schema.json`。
 
-模型阶段只负责经过字段准入后的视觉值、证据、风格判断、组合关系理由、不确定性和业务摘要。字段/风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像及可推导证据引用由 `scripts/compile_model_output.py` 确定性生成；宿主同时复核 profile/视角、受控值域、低置信镜像与风格证据闭环。
+模型阶段只负责经过字段准入后的视觉值、证据、风格判断、组合关系理由、不确定性和业务摘要。字段/风格静态元数据、模块清单、规则计数、排序、confirmed 候选镜像及 core/auxiliary 证据链由宿主生成；`scripts/compile_model_output.py` 同时复核 profile/视角、受控值域、低置信镜像与风格证据闭环。
 
 ## 1. 顶层结构
 
@@ -79,6 +79,8 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 - 至少有一项独立辅助证据；
 - `regions` 非空并属于主体可见区域或 `whole_object`。
 
+宿主先用 `style-evidence-rules.json` 对强字段值执行确定性证据挂接，再从已有命中中剔除低置信、无值、无证据或越出该风格 allowlist 的额外引用。字段 ID 在 allowlist 中不等于当前值必然支持风格；没有明确值级规则时，只能通过窄范围语义复核决定是否挂接。被剔除字段仍保留在 `design_elements`/`uncertain_fields`；自动挂接、复核与裁剪都不会增加分数、置信度或绕过硬门槛。若整理后仍有完整决定、独立辅助、区域与规则闭环，标签可以保持 confirmed；否则降级为 provisional。注册表特殊门槛始终强制执行。
+
 三个数值不可互换：
 
 - `match_score` 为 0～100 的规则匹配度；
@@ -137,4 +139,5 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 - 输出只包含 JSON，不使用 Markdown 围栏、注释、尾逗号、NaN 或 Infinity。
 - 中文描述使用简体中文；稳定 ID、英文标签和标准枚举保持原样。
 - 模型只生成精简观察 JSON；宿主负责完整结构编译、组合预设派生、最终校验、保存及业务视图转换。
+- confirmed 观察省略规则计数和 core/auxiliary 命中数组；宿主优先用值级规则挂接，歧义项仅做一次窄范围语义复核。
 - 宿主只允许执行不增加视觉事实的保守整理；风格命中不在 allowlist、引用字段无可用值、区域没有对应证据或规则闭环不足时，将 confirmed 标签降为 provisional。

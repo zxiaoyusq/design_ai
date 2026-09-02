@@ -19,8 +19,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 SKILLS_SOURCE = "/.agents/skills/"
 BOUND_SKILL_NAME = "multimodal-design-dna-multitag-extractor"
-AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v5-field-gated"
-PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v2"
+AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v8-source-mapped-patching"
+PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v6"
 _PRELOADED_CONTEXT_FILES = (
     ("SKILL", "SKILL.md"),
     ("EXTRACTION_PROTOCOL", "references/extraction-protocol.zh-CN.md"),
@@ -49,11 +49,37 @@ JSON 对象。只负责图片视觉事实、风格硬判、关系理由和不确
 `derived_style_presets`，这些内容由宿主确定性编译。不要附加 Markdown、解释、思考过程或
 文件路径。
 
+对 confirmed 风格只输出 style_id、匹配度、置信度、视觉主导度、适用区域和颜色门槛；
+省略 `applicable_rule_count`、`not_applicable_rule_count`、`core_feature_hits` 与
+`auxiliary_feature_hits`。宿主将通过值级规则自动建立风格证据链；确实存在语义歧义时，
+应用层会另行执行只包含单个风格和少量字段的小范围复核。
+
 在输出观察 JSON 前，先根据图片确定 `target_object.view` 与 `active_profiles`，然后调用
 `resolve_applicable_design_fields` 获取本图允许使用的字段。`design_observations` 只能包含
 工具返回的 field_id，并且只填写图片中实际可观察、风格硬判需要或用户明确关注的字段；
 不要为了覆盖注册表而穷举所有字段。DNA-M13 只保留最相关的少量语义轴，DNA-M14 只保留
 有明确业务价值的意向字段。字段值域不确定时写入 uncertainties，不要发明新枚举值。
+""".strip()
+
+
+STYLE_SEMANTIC_REVIEW_SYSTEM_PROMPT = """
+你是设计 DNA 风格证据的窄范围语义复核器。输入只包含已经提取并通过强置信门槛的规范
+字段、一个或少量候选风格及对应知识库规则。你只判断“该字段的当前值和可见描述是否能
+直接支持指定风格的决定(core)或辅助(auxiliary)角色”，不得重新分析整张图片、改变字段
+值、发明视觉事实、放宽硬门槛或按风格名称联想。
+
+字段 ID 仅表示可用于该风格，不代表任意值都支持。只有字段值与描述明确命中给定风格的
+核心机制、决定锚点或辅助证据时，supports 才能为 true；边界模糊、只是品类常态、与硬
+排除相符或需要额外图像事实时一律为 false。core 必须能直接支撑决定锚点，auxiliary 必须
+形成不同于决定字段的辅助机制。core 的 `field_ids` 至少包含一个候选记录中
+`decision_use="hard"` 的字段；`decision_use="support"` 的字段只能与 hard 字段共同构成
+组合锚点，不能单独通过 core 复核。
+
+对每个风格的每个待复核角色返回一个决定；`field_ids` 可以选择一个字段，也可以选择共同
+形成锚点的最小字段组合，但只能来自该角色候选列表。最终只输出 JSON：
+{"decisions":[{"style_id":"...","role":"core|auxiliary","field_ids":["..."],
+"supports":true,"confidence":0.0,"reason":"一句简短理由"}]}。
+不要输出 Markdown、补丁、完整 DNA、额外字段或思考过程。
 """.strip()
 
 
@@ -178,4 +204,25 @@ def create_design_dna_agent(model_id: str) -> CompiledStateGraph:
         skills=[SKILLS_SOURCE],
         permissions=permissions,
         name="design-dna-multitag-extractor",
+    )
+
+
+def create_style_semantic_review_agent(model_id: str) -> CompiledStateGraph:
+    """创建不加载完整 Skill 上下文的小范围风格证据复核 Agent。"""
+
+    model_definition = get_model(model_id)
+    model_options: dict[str, Any] = {
+        "temperature": 0,
+        "streaming": True,
+        "timeout": 120,
+        "max_retries": 1,
+    }
+    if model_definition.max_output_tokens is not None:
+        model_options["max_tokens"] = min(model_definition.max_output_tokens, 4096)
+    model = create_chat_model(model_id, **model_options)
+    return create_deep_agent(
+        model=model,
+        tools=[],
+        system_prompt=STYLE_SEMANTIC_REVIEW_SYSTEM_PROMPT,
+        name="design-dna-style-evidence-reviewer",
     )

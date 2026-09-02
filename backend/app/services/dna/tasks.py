@@ -7,7 +7,12 @@ from datetime import UTC, datetime
 from threading import Lock
 from uuid import uuid4
 
-from app.schemas.dna import ImageTaskStatus, TaskStatus
+from app.schemas.dna import (
+    ExtractionStage,
+    ImageTaskStatus,
+    ProgressEventLevel,
+    TaskStatus,
+)
 from app.services.dna.extraction import run_design_dna_extraction
 from app.services.dna.storage import get_uploaded_image
 
@@ -37,6 +42,17 @@ class ExtractionTaskManager:
                     "error": None,
                     "diagnostic_id": None,
                     "diagnostics": [],
+                    "stage": ExtractionStage.QUEUED,
+                    "stage_progress": 0,
+                    "events": [
+                        {
+                            "stage": ExtractionStage.QUEUED,
+                            "message": "已加入提取队列",
+                            "progress": 0,
+                            "level": ProgressEventLevel.INFO,
+                            "created_at": now,
+                        }
+                    ],
                 }
             )
         task = {
@@ -91,13 +107,80 @@ class ExtractionTaskManager:
                 diagnostic_id=diagnostic_id,
                 diagnostics=diagnostics or [],
             )
-            finished = sum(
-                candidate["status"]
-                in {ImageTaskStatus.COMPLETED, ImageTaskStatus.FAILED}
-                for candidate in task["items"]
-            )
-            task["progress"] = round(finished / len(task["items"]) * 100)
+            if status in {ImageTaskStatus.COMPLETED, ImageTaskStatus.FAILED}:
+                stage = (
+                    ExtractionStage.COMPLETED
+                    if status is ImageTaskStatus.COMPLETED
+                    else ExtractionStage.FAILED
+                )
+                message = (
+                    "设计 DNA 提取完成"
+                    if status is ImageTaskStatus.COMPLETED
+                    else "提取流程已结束，请查看错误详情"
+                )
+                level = (
+                    ProgressEventLevel.INFO
+                    if status is ImageTaskStatus.COMPLETED
+                    else ProgressEventLevel.ERROR
+                )
+                item["stage"] = stage
+                item["stage_progress"] = 100
+                item["events"].append(
+                    {
+                        "stage": stage,
+                        "message": message,
+                        "progress": 100,
+                        "level": level,
+                        "created_at": datetime.now(UTC),
+                    }
+                )
+            self._recalculate_task_progress(task)
             task["updated_at"] = datetime.now(UTC)
+
+    @staticmethod
+    def _recalculate_task_progress(task: dict) -> None:
+        """批量任务进度取各图片阶段进度的平均值，仅用于过程提示。"""
+
+        task["progress"] = round(
+            sum(item["stage_progress"] for item in task["items"])
+            / len(task["items"])
+        )
+
+    def _report_item_progress(
+        self,
+        task_id: str,
+        item_index: int,
+        stage: ExtractionStage,
+        message: str,
+        progress: int,
+        level: ProgressEventLevel = ProgressEventLevel.INFO,
+    ) -> None:
+        """追加一条用户可读阶段事件，并保持估算进度单调递增。"""
+        now = datetime.now(UTC)
+        with self._lock:
+            task = self._tasks[task_id]
+            item = task["items"][item_index]
+            normalized_progress = max(
+                item["stage_progress"], min(99, max(0, progress))
+            )
+            item["stage"] = stage
+            item["stage_progress"] = normalized_progress
+            event = {
+                "stage": stage,
+                "message": message,
+                "progress": normalized_progress,
+                "level": level,
+                "created_at": now,
+            }
+            previous = item["events"][-1] if item["events"] else None
+            if not previous or (
+                previous["stage"] != stage or previous["message"] != message
+            ):
+                item["events"].append(event)
+                # 防止异常模型产生无限事件，轮询接口只保留最近的可读记录。
+                item["events"] = item["events"][-80:]
+            self._recalculate_task_progress(task)
+            task["updated_at"] = now
 
     def run(self, task_id: str) -> None:
         """由 FastAPI 后台线程执行一个已确认任务。"""
@@ -113,12 +196,29 @@ class ExtractionTaskManager:
         for index, image_id in enumerate(image_ids):
             self._update_item(task_id, index, status=ImageTaskStatus.RUNNING)
             try:
+                self._report_item_progress(
+                    task_id,
+                    index,
+                    ExtractionStage.PREPARING,
+                    "正在读取图片并准备模型与 Skill",
+                    4,
+                )
                 stored, image_path = get_uploaded_image(image_id)
                 output = run_design_dna_extraction(
                     image_path=image_path,
                     content_type=stored.content_type,
                     model_id=model_id,
                     user_prompt=prompt,
+                    progress_callback=lambda stage, message, progress, level: (
+                        self._report_item_progress(
+                            task_id,
+                            index,
+                            stage,
+                            message,
+                            progress,
+                            level,
+                        )
+                    ),
                 )
                 self._update_item(
                     task_id,

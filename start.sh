@@ -30,6 +30,24 @@ cleanup() {
   done
 }
 
+wait_for_backend() {
+  local attempt
+  local backend_url="http://${DESIGN_AI_HOST}:${DESIGN_AI_BACKEND_PORT}"
+
+  # 后端首次导入 Agent 与 Skill 时会比 Vite 更慢，先确认 API 已可用再启动前端，避免首次请求被代理拒绝。
+  for ((attempt = 1; attempt <= 100; attempt++)); do
+    if ! kill -0 "${BACKEND_PID}" 2>/dev/null; then
+      fail "后端服务启动失败，请查看上方 Uvicorn 输出"
+    fi
+    if curl --fail --silent --show-error --max-time 1 "${backend_url}/openapi.json" >/dev/null 2>&1; then
+      return
+    fi
+    sleep 0.1
+  done
+
+  fail "后端服务未在 10 秒内就绪：${backend_url}"
+}
+
 trap cleanup EXIT
 trap 'exit 130' INT TERM
 
@@ -62,6 +80,8 @@ python -c "import fastapi, uvicorn, deepagents" >/dev/null 2>&1 \
     --port "${DESIGN_AI_BACKEND_PORT}"
 ) &
 BACKEND_PID=$!
+
+wait_for_backend
 
 (
   cd "${FRONTEND_DIR}"

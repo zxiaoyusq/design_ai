@@ -31,6 +31,7 @@ class DnaExtractionTestCase(unittest.TestCase):
         self.assertIn("0～3 个同层风格标签", prompt)
         self.assertIn("精简模型观察 Schema", prompt)
         self.assertIn("统计值、排序、候选镜像、证据闭环与组合预设均由宿主编译", prompt)
+        self.assertIn("省略规则计数以及 core/auxiliary 命中数组", prompt)
         self.assertNotIn("multimodal-design-dna-extractor Skill", prompt)
 
     def test_uses_multitag_skill_save_pipeline(self) -> None:
@@ -92,6 +93,59 @@ class DnaExtractionTestCase(unittest.TestCase):
             "/style_observations/confirmed_tags/1",
         )
         self.assertEqual(issues[0]["style_id"], "NeoRetro")
+
+    def test_evidence_region_issue_has_compact_path_and_source(self) -> None:
+        error = DesignDnaExtractionError(
+            "结果未通过校验：\n"
+            "- evidence[2].region='wheel_contact' is outside "
+            "target_object.visible_regions"
+        )
+
+        issues = _validation_issues(
+            error,
+            {
+                "source_map": {
+                    "evidence[2]": {
+                        "source_pointer": "/evidence/2",
+                        "evidence_id": "EV-03",
+                        "region": "wheel_contact",
+                    }
+                }
+            },
+        )
+
+        self.assertEqual(issues[0]["code"], "REGION_NOT_DECLARED")
+        self.assertEqual(issues[0]["final_path"], "evidence[2].region")
+        self.assertEqual(issues[0]["source_pointer"], "/evidence/2")
+        self.assertEqual(issues[0]["evidence_id"], "EV-03")
+
+    def test_nested_schema_issue_maps_to_lean_observation(self) -> None:
+        error = DesignDnaExtractionError(
+            "结果未通过校验：\n"
+            "- schema design_elements.extended_dna_modules.9.elements.0."
+            "evidence_refs: ['EV-06'] is too short"
+        )
+
+        issues = _validation_issues(
+            error,
+            {
+                "source_map": {
+                    "design_elements.extended_dna_modules.9.elements.0": {
+                        "source_pointer": "/design_observations/38",
+                        "field_id": "IMG-08",
+                        "region": "whole_object",
+                    }
+                }
+            },
+        )
+
+        self.assertEqual(issues[0]["code"], "FINAL_SCHEMA_INVALID")
+        self.assertEqual(
+            issues[0]["final_path"],
+            "design_elements.extended_dna_modules.9.elements.0.evidence_refs",
+        )
+        self.assertEqual(issues[0]["source_pointer"], "/design_observations/38")
+        self.assertEqual(issues[0]["field_id"], "IMG-08")
 
     def test_safe_degradation_removes_field_and_demotes_style(self) -> None:
         observation = {
@@ -225,6 +279,301 @@ class DnaExtractionTestCase(unittest.TestCase):
         self.assertEqual(trace["execution_metrics"]["agent_invocation_count"], 2)
         self.assertEqual(trace["execution_metrics"]["semantic_patch_attempt_count"], 1)
         self.assertEqual(trace["execution_metrics"]["full_fallback_attempt_count"], 0)
+
+    @patch("app.services.dna.extraction.save_result_trace")
+    @patch("app.services.dna.extraction.save_result_image")
+    @patch("app.services.dna.extraction.save_business_view_model")
+    @patch("app.services.dna.extraction._create_business_view")
+    @patch("app.services.dna.extraction._save_validated_result")
+    @patch("app.services.dna.extraction._compile_model_result")
+    @patch("app.services.dna.extraction.create_design_dna_agent")
+    def test_invalid_patch_path_keeps_original_issue_for_safe_degradation(
+        self,
+        create_agent: Mock,
+        compile_result: Mock,
+        save_result: Mock,
+        create_business_view: Mock,
+        _save_model: Mock,
+        _save_image: Mock,
+        save_trace: Mock,
+    ) -> None:
+        observation = {
+            "schema_version": "design_dna_multitag_observation_v1",
+            "design_observations": [
+                {
+                    "field_id": "IMG-08",
+                    "confidence": 0.65,
+                    "evidence_refs": ["EV-06"],
+                }
+            ],
+            "uncertainties": [],
+        }
+        invalid_final_path = (
+            "/design_elements/extended_dna_modules/9/elements/0/evidence_refs"
+        )
+        agent = Mock()
+        agent.invoke.side_effect = [
+            {"messages": [SimpleNamespace(content=json.dumps(observation))]},
+            {
+                "messages": [
+                    SimpleNamespace(
+                        content=json.dumps(
+                            {
+                                "updates": [
+                                    {
+                                        "op": "replace",
+                                        "path": invalid_final_path,
+                                        "value": ["EV-06", "EV-05"],
+                                    }
+                                ]
+                            }
+                        )
+                    )
+                ]
+            },
+        ]
+        create_agent.return_value = agent
+        source_map = {
+            "design_elements.extended_dna_modules.9.elements.0": {
+                "source_pointer": "/design_observations/0",
+                "field_id": "IMG-08",
+                "region": "whole_object",
+            }
+        }
+        compiled_invalid = {
+            "schema_version": "compiled",
+            "design_elements": {
+                "extended_dna_modules": [
+                    {
+                        "module_id": "DNA-M14",
+                        "elements": [{"field_id": "IMG-08"}],
+                    }
+                ]
+            },
+        }
+        compiled_valid = {
+            "schema_version": "compiled",
+            "design_elements": {"extended_dna_modules": []},
+        }
+        compile_result.side_effect = [
+            (
+                compiled_invalid,
+                {
+                    "deterministic_correction_count": 1,
+                    "changed_paths": ["/design_elements"],
+                    "source_map": source_map,
+                },
+            ),
+            (
+                compiled_valid,
+                {
+                    "deterministic_correction_count": 1,
+                    "changed_paths": ["/design_elements"],
+                    "source_map": {},
+                },
+            ),
+        ]
+
+        with TemporaryDirectory() as temporary_directory:
+            image_path = Path(temporary_directory) / "image.png"
+            image_path.write_bytes(b"image")
+            full_path = Path(temporary_directory) / "result.json"
+            business_path = Path(temporary_directory) / "result_business_view.json"
+            save_result.side_effect = [
+                DesignDnaExtractionError(
+                    "结果未通过校验：\n"
+                    "- schema design_elements.extended_dna_modules.9.elements.0."
+                    "evidence_refs: ['EV-06'] is too short"
+                ),
+                full_path,
+            ]
+            create_business_view.return_value = business_path
+
+            output = run_design_dna_extraction(
+                image_path,
+                "image/png",
+                "claude-opus-5-20260820",
+                "",
+            )
+
+        self.assertEqual(output.full_result_path, full_path)
+        self.assertEqual(agent.invoke.call_count, 2)
+        second_prompt = agent.invoke.call_args_list[1].args[0]["messages"][-1][
+            "content"
+        ]
+        self.assertIn('"source_pointer": "/design_observations/0"', second_prompt)
+        self.assertIn("禁止使用 final_path", second_prompt)
+        self.assertEqual(
+            compile_result.call_args_list[1].args[0]["design_observations"],
+            [],
+        )
+        trace = save_trace.call_args.args[1]
+        self.assertEqual(trace["execution_metrics"]["safe_degradation_count"], 1)
+        self.assertIn(
+            "修复补丁路径不存在",
+            trace["execution_metrics"]["validation_failure_summaries"][1],
+        )
+
+    @patch("app.services.dna.extraction.save_result_trace")
+    @patch("app.services.dna.extraction.save_result_image")
+    @patch("app.services.dna.extraction.save_business_view_model")
+    @patch("app.services.dna.extraction._create_business_view")
+    @patch("app.services.dna.extraction._save_validated_result")
+    @patch("app.services.dna.extraction._compile_model_result")
+    @patch("app.services.dna.extraction.create_style_semantic_review_agent")
+    @patch("app.services.dna.extraction.create_design_dna_agent")
+    def test_compiler_review_request_uses_narrow_semantic_agent_once(
+        self,
+        create_agent: Mock,
+        create_review_agent: Mock,
+        compile_result: Mock,
+        save_result: Mock,
+        create_business_view: Mock,
+        _save_model: Mock,
+        _save_image: Mock,
+        save_trace: Mock,
+    ) -> None:
+        observation = {
+            "schema_version": "design_dna_multitag_observation_v1",
+            "style_observations": {
+                "confirmed_tags": [
+                    {
+                        "style_id": "RefinedMinimalism",
+                        "match_score": 82,
+                        "confidence": 0.84,
+                    }
+                ]
+            },
+        }
+        review_request = {
+            "style_id": "RefinedMinimalism",
+            "missing_roles": ["auxiliary", "core"],
+            "current_core_field_ids": [],
+            "current_auxiliary_field_ids": [],
+            "roles": {
+                "core": [
+                    {
+                        "field_id": "DEV-03",
+                        "field_name": "镜头排列",
+                        "decision_use": "hard",
+                        "value": "纵",
+                        "raw_visual_description": "镜头纵向规整排列。",
+                        "region": "camera_island",
+                        "confidence": 0.9,
+                        "evidence_refs": ["EV-01"],
+                    }
+                ],
+                "auxiliary": [
+                    {
+                        "field_id": "CMP-09",
+                        "field_name": "留白比例",
+                        "decision_use": "hard",
+                        "value": 0.64,
+                        "raw_visual_description": "主体表面保留大面积留白。",
+                        "region": "whole_object",
+                        "confidence": 0.86,
+                        "evidence_refs": ["EV-02"],
+                    }
+                ],
+            },
+            "downgrade_reasons": ["缺少决定与辅助证据"],
+        }
+        main_agent = Mock()
+        main_agent.invoke.return_value = {
+            "messages": [SimpleNamespace(content=json.dumps(observation))]
+        }
+        review_agent = Mock()
+        review_agent.invoke.return_value = {
+            "messages": [
+                SimpleNamespace(
+                    content=json.dumps(
+                        {
+                            "decisions": [
+                                {
+                                    "style_id": "RefinedMinimalism",
+                                    "role": "core",
+                                    "field_ids": ["DEV-03"],
+                                    "supports": True,
+                                    "confidence": 0.9,
+                                    "reason": "支持受控精致增量。",
+                                },
+                                {
+                                    "style_id": "RefinedMinimalism",
+                                    "role": "auxiliary",
+                                    "field_ids": ["CMP-09"],
+                                    "supports": True,
+                                    "confidence": 0.88,
+                                    "reason": "支持低信息构图。",
+                                },
+                            ]
+                        }
+                    )
+                )
+            ]
+        }
+        create_agent.return_value = main_agent
+        create_review_agent.return_value = review_agent
+        compile_result.side_effect = [
+            (
+                {
+                    "schema_version": "compiled",
+                    "style_result": {"style_tags": []},
+                },
+                {
+                    "deterministic_correction_count": 1,
+                    "changed_paths": ["/style_result"],
+                    "semantic_review_requests": [review_request],
+                },
+            ),
+            (
+                {
+                    "schema_version": "compiled",
+                    "style_result": {
+                        "style_tags": [{"style_id": "RefinedMinimalism"}]
+                    },
+                },
+                {"deterministic_correction_count": 0, "changed_paths": []},
+            ),
+        ]
+
+        with TemporaryDirectory() as temporary_directory:
+            image_path = Path(temporary_directory) / "image.png"
+            image_path.write_bytes(b"image")
+            full_path = Path(temporary_directory) / "result.json"
+            business_path = Path(temporary_directory) / "result_business_view.json"
+            save_result.return_value = full_path
+            create_business_view.return_value = business_path
+
+            progress_events = []
+            output = run_design_dna_extraction(
+                image_path,
+                "image/png",
+                "gpt-5.6-terra-20260820",
+                "关注构图",
+                progress_callback=lambda stage, message, progress, level: (
+                    progress_events.append((stage, message, progress, level))
+                ),
+            )
+
+        self.assertEqual(output.full_result_path, full_path)
+        self.assertEqual(main_agent.invoke.call_count, 1)
+        self.assertEqual(review_agent.invoke.call_count, 1)
+        reviewed_observation = compile_result.call_args_list[1].args[0]
+        reviewed_tag = reviewed_observation["style_observations"]["confirmed_tags"][0]
+        self.assertIn("DEV-03", reviewed_tag["core_feature_hits"][0])
+        self.assertIn("CMP-09", reviewed_tag["auxiliary_feature_hits"][0])
+        metrics = save_trace.call_args.args[1]["execution_metrics"]
+        self.assertEqual(metrics["agent_invocation_count"], 1)
+        self.assertEqual(metrics["style_semantic_review_agent_invocation_count"], 1)
+        self.assertEqual(metrics["style_semantic_review_accepted_count"], 2)
+        self.assertEqual(metrics["style_semantic_review_recovered_style_count"], 1)
+        stages = [event[0].value for event in progress_events]
+        self.assertIn("model_analysis", stages)
+        self.assertIn("compiling", stages)
+        self.assertIn("semantic_review", stages)
+        self.assertIn("validating", stages)
+        self.assertIn("generating_view", stages)
+        self.assertIn("finalizing", stages)
 
 
 if __name__ == "__main__":

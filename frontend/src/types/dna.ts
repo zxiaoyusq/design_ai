@@ -20,6 +20,27 @@ export interface UploadedImage {
 
 export type TaskStatus = 'queued' | 'running' | 'completed' | 'partial' | 'failed'
 export type ImageTaskStatus = 'pending' | 'running' | 'completed' | 'failed'
+export type ExtractionStage =
+  | 'queued'
+  | 'preparing'
+  | 'model_analysis'
+  | 'parsing'
+  | 'compiling'
+  | 'semantic_review'
+  | 'repairing'
+  | 'validating'
+  | 'generating_view'
+  | 'finalizing'
+  | 'completed'
+  | 'failed'
+
+export interface ExtractionProgressEvent {
+  stage: ExtractionStage
+  message: string
+  progress: number
+  level: 'info' | 'warning' | 'error'
+  created_at: string
+}
 
 export interface ExtractionTaskItem {
   image_id: string
@@ -29,6 +50,9 @@ export interface ExtractionTaskItem {
   error: string | null
   diagnostic_id: string | null
   diagnostics: ExtractionDiagnostic[]
+  stage: ExtractionStage
+  stage_progress: number
+  events: ExtractionProgressEvent[]
 }
 
 export interface ExtractionDiagnostic {
@@ -39,6 +63,7 @@ export interface ExtractionDiagnostic {
   source_pointer: string | null
   field_id?: string
   style_id?: string
+  evidence_id?: string
   region?: string
 }
 

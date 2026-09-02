@@ -52,6 +52,11 @@ class DnaApiTestCase(unittest.TestCase):
             self.assertEqual(preview.status_code, 200)
             self.assertEqual(task.status_code, 202)
             self.assertEqual(task.json()["items"][0]["status"], "pending")
+            self.assertEqual(task.json()["items"][0]["stage"], "queued")
+            self.assertEqual(
+                task.json()["items"][0]["events"][0]["message"],
+                "已加入提取队列",
+            )
 
     def test_uploaded_image_can_be_deleted(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_dir:

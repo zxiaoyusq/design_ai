@@ -8,9 +8,11 @@ import json
 import re
 import subprocess
 import sys
+from collections.abc import Callable
 from copy import deepcopy
 from dataclasses import dataclass
 from datetime import UTC, datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -19,8 +21,10 @@ from app.agents.design_dna_extractor import (
     BOUND_SKILL_NAME,
     PRELOADED_CONTEXT_VERSION,
     create_design_dna_agent,
+    create_style_semantic_review_agent,
     preloaded_skill_context_size,
 )
+from app.schemas.dna import ExtractionStage, ProgressEventLevel
 from app.services.dna.storage import (
     save_business_view_model,
     save_failure_trace,
@@ -44,6 +48,20 @@ COMPILE_MODEL_OUTPUT_SCRIPT = (
     / "multimodal-design-dna-multitag-extractor"
     / "scripts"
     / "compile_model_output.py"
+)
+STYLE_EVIDENCE_RULES_PATH = (
+    PROJECT_ROOT
+    / "ref"
+    / "multimodal-design-dna-multitag-extractor"
+    / "references"
+    / "style-evidence-rules.json"
+)
+STYLE_KNOWLEDGE_BASE_PATH = (
+    PROJECT_ROOT
+    / "ref"
+    / "multimodal-design-dna-multitag-extractor"
+    / "references"
+    / "design-dna-knowledge-base.zh-CN.md"
 )
 BUSINESS_VIEW_SCRIPT = PROJECT_ROOT / "extract_design_dna_business_view.py"
 MAX_PATCH_REPAIR_ATTEMPTS = 1
@@ -83,6 +101,7 @@ _DETERMINISTIC_ERROR_MARKERS = (
 )
 
 _ISSUE_CODE_PATTERNS = (
+    ("REGION_NOT_DECLARED", "outside target_object.visible_regions"),
     ("FIELD_PROFILE_NOT_APPLICABLE", "requires active profile"),
     ("FIELD_VIEW_NOT_APPLICABLE", "requires view in"),
     ("FIELD_ORDINAL_OUT_OF_DOMAIN", "ordinal value must be one of"),
@@ -125,6 +144,29 @@ class ExtractionOutput:
         return self.full_result_path.stem
 
 
+ProgressCallback = Callable[
+    [ExtractionStage, str, int, ProgressEventLevel],
+    None,
+]
+
+
+def _emit_progress(
+    callback: ProgressCallback | None,
+    stage: ExtractionStage,
+    message: str,
+    progress: int,
+    level: ProgressEventLevel = ProgressEventLevel.INFO,
+) -> None:
+    """过程展示属于旁路能力，回调异常不能中断提取主链路。"""
+
+    if callback is None:
+        return
+    try:
+        callback(stage, message, progress, level)
+    except Exception:
+        return
+
+
 def _image_content_block(image_path: Path, content_type: str) -> dict[str, str]:
     encoded = base64.b64encode(image_path.read_bytes()).decode("ascii")
     return {
@@ -144,8 +186,245 @@ def _task_text(user_prompt: str) -> str:
         "风格判定需要或用户明确关注的字段，不要穷举全部语义字段。"
         "最终只返回符合精简模型观察 Schema 的 JSON；字段和风格静态元数据、模块清单、"
         "统计值、排序、候选镜像、证据闭环与组合预设均由宿主编译，不要重复输出。\n\n"
+        "confirmed 风格省略规则计数以及 core/auxiliary 命中数组；宿主会根据规范字段值"
+        "自动挂接，歧义项另做小范围语义复核。\n\n"
         f"用户业务备注：\n{notes}"
     )
+
+
+@lru_cache(maxsize=1)
+def _style_review_policy() -> dict[str, Any]:
+    data = json.loads(STYLE_EVIDENCE_RULES_PATH.read_text(encoding="utf-8"))
+    policy = data.get("review_policy")
+    return policy if isinstance(policy, dict) else {}
+
+
+@lru_cache(maxsize=1)
+def _style_knowledge_sections() -> dict[str, str]:
+    """按稳定 style_id 切分知识库，只向复核模型提供命中的少量段落。"""
+
+    knowledge_base = STYLE_KNOWLEDGE_BASE_PATH.read_text(encoding="utf-8")
+    matches = list(
+        re.finditer(
+            r"^### ([A-Za-z][A-Za-z0-9]*) — .*?(?=^### |\Z)",
+            knowledge_base,
+            re.MULTILINE | re.DOTALL,
+        )
+    )
+    return {
+        match.group(1): match.group(0).strip()
+        for match in matches
+    }
+
+
+def _style_semantic_review_messages(
+    requests: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """构造不含图片和完整注册表的窄范围复核消息。"""
+
+    policy = _style_review_policy()
+    max_styles = policy.get("max_styles_per_review", 3)
+    if not isinstance(max_styles, int) or max_styles < 1:
+        max_styles = 3
+    sections = _style_knowledge_sections()
+    review_items = []
+    for request in requests[:max_styles]:
+        if not isinstance(request, dict):
+            continue
+        style_id = str(request.get("style_id") or "")
+        review_items.append(
+            {
+                "style_id": style_id,
+                "knowledge_rule": sections.get(style_id, ""),
+                "missing_roles": request.get("missing_roles", []),
+                "current_core_field_ids": request.get(
+                    "current_core_field_ids", []
+                ),
+                "current_auxiliary_field_ids": request.get(
+                    "current_auxiliary_field_ids", []
+                ),
+                "candidate_fields_by_role": request.get("roles", {}),
+                "current_downgrade_reasons": request.get(
+                    "downgrade_reasons", []
+                ),
+            }
+        )
+    payload = {
+        "task": "只复核候选字段的当前值是否支持指定风格证据角色",
+        "minimum_acceptance_confidence": policy.get(
+            "minimum_review_confidence", 0.75
+        ),
+        "styles": review_items,
+    }
+    return [
+        {
+            "role": "user",
+            "content": json.dumps(payload, ensure_ascii=False, separators=(",", ":")),
+        }
+    ]
+
+
+def _apply_style_semantic_review(
+    observation: dict[str, Any],
+    requests: list[dict[str, Any]],
+    review_result: dict[str, Any],
+) -> tuple[dict[str, Any], list[dict[str, Any]], int]:
+    """仅把高置信正向复核挂回模型观察；否定结论不会删除原始 DNA。"""
+
+    result = deepcopy(observation)
+    policy = _style_review_policy()
+    threshold = policy.get("minimum_review_confidence", 0.75)
+    if not isinstance(threshold, (int, float)) or isinstance(threshold, bool):
+        threshold = 0.75
+    allowed: dict[tuple[str, str], dict[str, dict[str, Any]]] = {}
+    for request in requests:
+        if not isinstance(request, dict):
+            continue
+        style_id = str(request.get("style_id") or "")
+        roles = request.get("roles")
+        if not isinstance(roles, dict):
+            continue
+        for role, candidates in roles.items():
+            if role not in {"core", "auxiliary"} or not isinstance(candidates, list):
+                continue
+            for candidate in candidates:
+                if not isinstance(candidate, dict):
+                    continue
+                field_id = str(candidate.get("field_id") or "")
+                allowed.setdefault((style_id, role), {}).setdefault(
+                    field_id, candidate
+                )
+
+    decisions: list[dict[str, Any]] = []
+    accepted: dict[
+        tuple[str, str], list[tuple[list[str], list[dict[str, Any]]]]
+    ] = {}
+    raw_decisions = review_result.get("decisions")
+    if not isinstance(raw_decisions, list):
+        raw_decisions = []
+    seen: set[tuple[str, str]] = set()
+    for item in raw_decisions:
+        if not isinstance(item, dict):
+            continue
+        key = (
+            str(item.get("style_id") or ""),
+            str(item.get("role") or ""),
+        )
+        role_candidates = allowed.get(key)
+        raw_field_ids = item.get("field_ids")
+        if not isinstance(raw_field_ids, list):
+            legacy_field_id = str(item.get("field_id") or "")
+            raw_field_ids = [legacy_field_id] if legacy_field_id else []
+        field_ids = _ordered_unique_text(raw_field_ids)
+        if (
+            role_candidates is None
+            or key in seen
+            or any(field_id not in role_candidates for field_id in field_ids)
+        ):
+            continue
+        seen.add(key)
+        confidence = item.get("confidence")
+        supports = item.get("supports") is True
+        role_requirement_satisfied = bool(
+            key[1] != "core"
+            or any(
+                role_candidates[field_id].get("decision_use") == "hard"
+                for field_id in field_ids
+            )
+        )
+        accepted_decision = bool(
+            supports
+            and field_ids
+            and role_requirement_satisfied
+            and isinstance(confidence, (int, float))
+            and not isinstance(confidence, bool)
+            and float(confidence) >= float(threshold)
+        )
+        normalized = {
+            "style_id": key[0],
+            "role": key[1],
+            "field_ids": field_ids,
+            "supports": supports,
+            "confidence": confidence,
+            "accepted": accepted_decision,
+            "reason": str(item.get("reason") or "").strip(),
+        }
+        decisions.append(normalized)
+        if accepted_decision:
+            accepted.setdefault(key, []).append(
+                (
+                    field_ids,
+                    [role_candidates[field_id] for field_id in field_ids],
+                )
+            )
+
+    styles = result.get("style_observations")
+    confirmed_tags = styles.get("confirmed_tags") if isinstance(styles, dict) else None
+    accepted_count = 0
+    if isinstance(confirmed_tags, list):
+        for tag in confirmed_tags:
+            if not isinstance(tag, dict):
+                continue
+            style_id = str(tag.get("style_id") or "")
+            for role, target_key in (
+                ("core", "core_feature_hits"),
+                ("auxiliary", "auxiliary_feature_hits"),
+            ):
+                additions = accepted.get((style_id, role), [])
+                if not additions:
+                    continue
+                hits = tag.get(target_key)
+                if not isinstance(hits, list):
+                    hits = []
+                for field_ids, candidates in additions:
+                    descriptions = _ordered_unique_text(
+                        [
+                            candidate.get("raw_visual_description")
+                            or candidate.get("field_name")
+                            or "语义复核确认该字段值支持当前风格"
+                            for candidate in candidates
+                        ]
+                    )
+                    hit = f"{'、'.join(field_ids)}：{'；'.join(descriptions)}"
+                    if hit not in hits:
+                        hits.append(hit)
+                        accepted_count += len(field_ids)
+                tag[target_key] = hits
+    return result, decisions, accepted_count
+
+
+def _annotate_style_review_outcome(
+    compiled: dict[str, Any], decisions: list[dict[str, Any]]
+) -> None:
+    """把未采纳的复核理由写入 provisional 候选，便于前端解释未分类。"""
+
+    candidates = compiled.get("style_result", {}).get("candidate_ranking")
+    if not isinstance(candidates, list):
+        return
+    decisions_by_style: dict[str, list[dict[str, Any]]] = {}
+    for decision in decisions:
+        if isinstance(decision, dict) and not decision.get("accepted"):
+            decisions_by_style.setdefault(
+                str(decision.get("style_id") or ""), []
+            ).append(decision)
+    for candidate in candidates:
+        if (
+            not isinstance(candidate, dict)
+            or candidate.get("candidate_status") == "confirmed"
+        ):
+            continue
+        style_decisions = decisions_by_style.get(str(candidate.get("style_id") or ""))
+        if not style_decisions:
+            continue
+        conflicts = list(candidate.get("main_conflicts") or [])
+        for decision in style_decisions:
+            reason = str(decision.get("reason") or "语义支持不足").strip()
+            field_ids = "、".join(decision.get("field_ids") or []) or "候选字段"
+            conflicts.append(
+                "语义复核未采纳 "
+                f"{field_ids} 作为 {decision.get('role')} 证据：{reason}"
+            )
+        candidate["main_conflicts"] = _ordered_unique_text(conflicts)
 
 
 def _message_text(message: Any) -> str:
@@ -258,7 +537,18 @@ def _validation_issues(
             ),
             "SEMANTIC_VALIDATION_FAILED",
         )
-        final_path = message.split(":", 1)[0].strip()
+        if ":" in message:
+            final_path = message.split(":", 1)[0].strip()
+        else:
+            # 部分语义错误在路径后直接接 “=”；只截取路径，避免前端重复整句。
+            path_match = re.match(
+                r"^[A-Za-z_][A-Za-z0-9_]*(?:\[\d+\])?"
+                r"(?:\.[A-Za-z_][A-Za-z0-9_]*(?:\[\d+\])?)*",
+                message,
+            )
+            final_path = path_match.group(0) if path_match else message
+        if final_path.startswith("schema "):
+            final_path = final_path.removeprefix("schema ").strip()
         mapping: dict[str, Any] = {}
         for path_key in sorted(source_map, key=len, reverse=True):
             if final_path == path_key or final_path.startswith(f"{path_key}."):
@@ -276,7 +566,7 @@ def _validation_issues(
             "final_path": final_path,
             "source_pointer": mapping.get("source_pointer"),
         }
-        for key in ("field_id", "style_id", "region"):
+        for key in ("field_id", "style_id", "evidence_id", "region"):
             if mapping.get(key) is not None:
                 issue[key] = mapping[key]
         issues.append(issue)
@@ -578,6 +868,15 @@ def _merge_compilation_metrics(
     metrics["deterministic_correction_count"] += int(
         report.get("deterministic_correction_count") or 0
     )
+    metrics["pruned_style_hit_count"] += len(
+        report.get("pruned_style_hits") or []
+    )
+    metrics["style_downgrade_count"] += len(
+        report.get("style_downgrades") or []
+    )
+    metrics["auto_linked_style_hit_count"] += len(
+        report.get("auto_linked_style_hits") or []
+    )
     correction_areas = metrics["deterministic_corrections_by_area"]
     samples = metrics["deterministic_changed_path_samples"]
     for path in report.get("changed_paths", []):
@@ -613,13 +912,20 @@ def _invoke_agent(
     messages: list[Any],
     telemetry: ModelCallTelemetry,
     metrics: dict[str, Any],
+    *,
+    invocation_metric: str = "agent_invocation_count",
+    recursion_limit: int = 120,
+    on_retry: Callable[[int], None] | None = None,
 ) -> dict[str, Any]:
     for network_attempt in range(MAX_AGENT_NETWORK_RETRIES + 1):
-        metrics["agent_invocation_count"] += 1
+        metrics[invocation_metric] = metrics.get(invocation_metric, 0) + 1
         try:
             result = agent.invoke(
                 {"messages": messages},
-                config={"recursion_limit": 120, "callbacks": [telemetry]},
+                config={
+                    "recursion_limit": recursion_limit,
+                    "callbacks": [telemetry],
+                },
             )
             if not isinstance(result, dict):
                 raise DesignDnaExtractionError("DeepAgent 返回结构不合法")
@@ -632,6 +938,11 @@ def _invoke_agent(
             ):
                 raise
             metrics["application_network_retry_count"] += 1
+            if on_retry is not None:
+                try:
+                    on_retry(network_attempt + 2)
+                except Exception:
+                    pass
     raise DesignDnaExtractionError("DeepAgent 网络重试后仍未返回结果")  # pragma: no cover
 
 
@@ -726,10 +1037,17 @@ def run_design_dna_extraction(
     content_type: str,
     model_id: str,
     user_prompt: str,
+    progress_callback: ProgressCallback | None = None,
 ) -> ExtractionOutput:
     """运行单图 Skill，并优先用确定性编译和局部补丁完成修复。"""
 
     started_at = datetime.now(UTC)
+    _emit_progress(
+        progress_callback,
+        ExtractionStage.PREPARING,
+        "正在加载模型配置和多标签 DNA Skill",
+        6,
+    )
     agent = create_design_dna_agent(model_id)
     messages: list[Any] = [
         {
@@ -740,13 +1058,62 @@ def run_design_dna_extraction(
             ],
         }
     ]
-    telemetry = ModelCallTelemetry()
+    model_phase: dict[str, Any] = {
+        "stage": ExtractionStage.MODEL_ANALYSIS,
+        "label": "主模型分析",
+        "progress": 14,
+    }
+
+    def report_model_event(event: str, request_count: int) -> None:
+        stage = model_phase["stage"]
+        label = model_phase["label"]
+        progress = model_phase["progress"]
+        if event == "request_started":
+            message = f"{label}：第 {request_count} 次模型请求已发送，等待响应"
+            level = ProgressEventLevel.INFO
+        elif event == "request_completed":
+            message = f"{label}：第 {request_count} 次模型请求已返回，正在整理上下文"
+            progress += 3
+            level = ProgressEventLevel.INFO
+        else:
+            message = f"{label}：第 {request_count} 次模型请求返回异常"
+            level = ProgressEventLevel.WARNING
+        _emit_progress(progress_callback, stage, message, progress, level)
+
+    def select_model_phase(
+        stage: ExtractionStage,
+        label: str,
+        progress: int,
+    ) -> None:
+        model_phase.update(stage=stage, label=label, progress=progress)
+
+    def report_retry(attempt: int) -> None:
+        _emit_progress(
+            progress_callback,
+            model_phase["stage"],
+            f"{model_phase['label']}连接异常，正在进行第 {attempt} 次尝试",
+            model_phase["progress"],
+            ProgressEventLevel.WARNING,
+        )
+
+    telemetry = ModelCallTelemetry(on_event=report_model_event)
     metrics: dict[str, Any] = {
         "agent_invocation_count": 0,
         "deterministic_compilation_count": 0,
         "deterministic_correction_count": 0,
+        "pruned_style_hit_count": 0,
+        "style_downgrade_count": 0,
+        "auto_linked_style_hit_count": 0,
         "deterministic_corrections_by_area": {},
         "deterministic_changed_path_samples": [],
+        "style_semantic_review_attempt_count": 0,
+        "style_semantic_review_agent_invocation_count": 0,
+        "style_semantic_review_accepted_count": 0,
+        "style_semantic_review_rejected_count": 0,
+        "style_semantic_review_recovered_style_count": 0,
+        "style_semantic_review_error_count": 0,
+        "style_semantic_review_decisions": [],
+        "style_semantic_review_errors": [],
         "semantic_patch_attempt_count": 0,
         "safe_degradation_count": 0,
         "full_fallback_attempt_count": 0,
@@ -766,15 +1133,131 @@ def run_design_dna_extraction(
     full_result_path: Path | None = None
     compiled_data: dict[str, Any] | None = None
     compilation_report: dict[str, Any] | None = None
+    semantic_review_attempted = False
 
     def compile_and_save(candidate: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
         nonlocal compiled_data, compilation_report
+        nonlocal semantic_review_attempted
         compiled_data = None
         compilation_report = None
+        _emit_progress(
+            progress_callback,
+            ExtractionStage.COMPILING,
+            "正在进行字段归一化、统计计算与风格证据整理",
+            64,
+        )
         compiled, report = _compile_model_result(candidate)
+        _merge_compilation_metrics(metrics, report)
+        review_decisions: list[dict[str, Any]] = []
+        review_requests = report.get("semantic_review_requests")
+        if (
+            isinstance(review_requests, list)
+            and review_requests
+            and not semantic_review_attempted
+        ):
+            semantic_review_attempted = True
+            metrics["style_semantic_review_attempt_count"] += 1
+            _emit_progress(
+                progress_callback,
+                ExtractionStage.SEMANTIC_REVIEW,
+                f"发现 {len(review_requests)} 个风格证据歧义，正在进行小范围语义复核",
+                74,
+            )
+            before_style_ids = {
+                str(item.get("style_id") or "")
+                for item in compiled.get("style_result", {}).get("style_tags", [])
+                if isinstance(item, dict)
+            }
+            try:
+                review_agent = create_style_semantic_review_agent(model_id)
+                select_model_phase(
+                    ExtractionStage.SEMANTIC_REVIEW,
+                    "风格语义复核",
+                    76,
+                )
+                review_response = _invoke_agent(
+                    review_agent,
+                    _style_semantic_review_messages(review_requests),
+                    telemetry,
+                    metrics,
+                    invocation_metric="style_semantic_review_agent_invocation_count",
+                    recursion_limit=24,
+                    on_retry=report_retry,
+                )
+                review_data = _parse_json_response(review_response)
+                reviewed_candidate, decisions, accepted_count = (
+                    _apply_style_semantic_review(
+                        candidate,
+                        review_requests,
+                        review_data,
+                    )
+                )
+                metrics["style_semantic_review_decisions"].extend(decisions)
+                review_decisions = decisions
+                metrics["style_semantic_review_accepted_count"] += accepted_count
+                metrics["style_semantic_review_rejected_count"] += sum(
+                    1 for item in decisions if not item.get("accepted")
+                )
+                if accepted_count:
+                    _emit_progress(
+                        progress_callback,
+                        ExtractionStage.COMPILING,
+                        f"语义复核采纳 {accepted_count} 条证据，正在重新闭合风格规则",
+                        80,
+                    )
+                    candidate.clear()
+                    candidate.update(reviewed_candidate)
+                    compiled, report = _compile_model_result(candidate)
+                    _merge_compilation_metrics(metrics, report)
+                    after_style_ids = {
+                        str(item.get("style_id") or "")
+                        for item in compiled.get("style_result", {}).get(
+                            "style_tags", []
+                        )
+                        if isinstance(item, dict)
+                    }
+                    metrics["style_semantic_review_recovered_style_count"] += len(
+                        after_style_ids - before_style_ids
+                    )
+                report["semantic_review"] = {
+                    "status": "completed",
+                    "accepted_link_count": accepted_count,
+                    "decisions": deepcopy(decisions),
+                }
+            except Exception as review_error:
+                # 复核失败不能放宽证据门槛；保留首次编译的保守降级结果继续落盘。
+                metrics["style_semantic_review_error_count"] += 1
+                metrics["style_semantic_review_errors"].append(
+                    str(review_error)[:1000]
+                )
+                report["semantic_review"] = {
+                    "status": "failed_conservative",
+                    "error": str(review_error)[:1000],
+                }
+                _emit_progress(
+                    progress_callback,
+                    ExtractionStage.SEMANTIC_REVIEW,
+                    "语义复核未完成，保持保守候选并继续最终校验",
+                    80,
+                    ProgressEventLevel.WARNING,
+                )
+                quality = compiled.get("quality_summary")
+                if isinstance(quality, dict):
+                    quality["warnings"] = _ordered_unique_text(
+                        [
+                            *(quality.get("warnings") or []),
+                            "小范围风格语义复核未完成，候选保持保守降级。",
+                        ]
+                    )
+        _annotate_style_review_outcome(compiled, review_decisions)
         compiled_data = compiled
         compilation_report = report
-        _merge_compilation_metrics(metrics, report)
+        _emit_progress(
+            progress_callback,
+            ExtractionStage.VALIDATING,
+            "正在执行最终 Schema 与语义一致性校验",
+            86,
+        )
         return _save_validated_result(image_path, compiled), compiled
 
     def persist_failure(error: Exception) -> DesignDnaExtractionError:
@@ -820,12 +1303,31 @@ def run_design_dna_extraction(
             issues=deepcopy(last_issues),
         )
 
+    _emit_progress(
+        progress_callback,
+        ExtractionStage.MODEL_ANALYSIS,
+        "主提取 Agent 已启动，正在分析图片中的可观察设计特征",
+        12,
+    )
+    select_model_phase(ExtractionStage.MODEL_ANALYSIS, "主模型分析", 14)
     try:
-        result = _invoke_agent(agent, messages, telemetry, metrics)
+        result = _invoke_agent(
+            agent,
+            messages,
+            telemetry,
+            metrics,
+            on_retry=report_retry,
+        )
     except Exception as exc:
         raise persist_failure(exc) from exc
 
     try:
+        _emit_progress(
+            progress_callback,
+            ExtractionStage.PARSING,
+            "主模型响应完成，正在解析精简观察结果",
+            56,
+        )
         model_data = _parse_json_response(result)
         full_result_path, compiled_data = compile_and_save(model_data)
     except DesignDnaExtractionError as exc:
@@ -853,6 +1355,13 @@ def run_design_dna_extraction(
     if full_result_path is None and model_data is not None:
         for _attempt in range(MAX_PATCH_REPAIR_ATTEMPTS):
             metrics["semantic_patch_attempt_count"] += 1
+            _emit_progress(
+                progress_callback,
+                ExtractionStage.REPAIRING,
+                "发现需要视觉或语义判断的问题，正在请求局部修复",
+                87,
+                ProgressEventLevel.WARNING,
+            )
             semantic_issues = [
                 issue
                 for issue in last_issues
@@ -868,19 +1377,53 @@ def run_design_dna_extraction(
                         "不要重复完整结果。格式为 "
                         '{"updates":[{"op":"add|replace|remove",'
                         '"path":"/JSON/Pointer","value":...}]}。'
-                        "remove 操作省略 value；数组可用数字下标或 add 到 /-。错误如下：\n"
+                        "remove 操作省略 value；数组可用数字下标或 add 到 /-。"
+                        "补丁 path 必须使用错误对象中的 source_pointer，它对应模型精简观察；"
+                        "禁止使用 final_path 或 design_elements 等编译后路径。"
+                        "无法安全补证时，可 remove 对应的低置信 design_observations 记录。"
+                        "错误如下：\n"
                         f"{json.dumps(semantic_issues, ensure_ascii=False)[:12000]}"
                     ),
                 },
             ]
-            patch_result = _invoke_agent(agent, patch_messages, telemetry, metrics)
+            select_model_phase(ExtractionStage.REPAIRING, "局部语义修复", 87)
+            patch_result = _invoke_agent(
+                agent,
+                patch_messages,
+                telemetry,
+                metrics,
+                on_retry=report_retry,
+            )
             try:
                 repair_data = _parse_json_response(patch_result)
                 if isinstance(repair_data.get("updates"), list):
-                    model_data = _apply_json_patch(model_data, repair_data)
+                    repaired_model_data = _apply_json_patch(model_data, repair_data)
                 else:
                     # 某些模型可能忽略补丁要求；若返回了完整契约，直接作为兜底候选。
-                    model_data = repair_data
+                    repaired_model_data = repair_data
+            except DesignDnaExtractionError as repair_error:
+                # 修复响应自身无效时保留原始校验问题，供后续保守整理准确定位。
+                repair_issues = _validation_issues(
+                    repair_error,
+                    compilation_report,
+                )
+                _record_validation_failure(
+                    metrics,
+                    "semantic",
+                    repair_error,
+                    repair_issues,
+                )
+                _emit_progress(
+                    progress_callback,
+                    ExtractionStage.REPAIRING,
+                    "局部补丁无法应用，将保留原问题进行保守整理",
+                    88,
+                    ProgressEventLevel.WARNING,
+                )
+                result = patch_result
+                continue
+            model_data = repaired_model_data
+            try:
                 full_result_path, compiled_data = compile_and_save(model_data)
                 result = patch_result
                 break
@@ -910,6 +1453,13 @@ def run_design_dna_extraction(
                     raise persist_failure(host_error) from exc
 
     if full_result_path is None and model_data is not None:
+        _emit_progress(
+            progress_callback,
+            ExtractionStage.COMPILING,
+            "局部修复仍未闭合，正在执行不新增视觉事实的保守整理",
+            89,
+            ProgressEventLevel.WARNING,
+        )
         degraded_data, action_count = _safely_degrade_invalid_observations(
             model_data,
             last_issues,
@@ -937,6 +1487,13 @@ def run_design_dna_extraction(
     if full_result_path is None and model_data is None:
         for _attempt in range(MAX_FULL_FALLBACK_ATTEMPTS):
             metrics["full_fallback_attempt_count"] += 1
+            _emit_progress(
+                progress_callback,
+                ExtractionStage.REPAIRING,
+                "模型响应无法解析，正在进行最后一次完整结构修复",
+                89,
+                ProgressEventLevel.WARNING,
+            )
             fallback_messages = [
                 *result.get("messages", messages),
                 {
@@ -949,7 +1506,14 @@ def run_design_dna_extraction(
                     ),
                 },
             ]
-            fallback_result = _invoke_agent(agent, fallback_messages, telemetry, metrics)
+            select_model_phase(ExtractionStage.REPAIRING, "完整结构修复", 89)
+            fallback_result = _invoke_agent(
+                agent,
+                fallback_messages,
+                telemetry,
+                metrics,
+                on_retry=report_retry,
+            )
             try:
                 model_data = _parse_json_response(fallback_result)
                 full_result_path, compiled_data = compile_and_save(model_data)
@@ -974,7 +1538,19 @@ def run_design_dna_extraction(
         failure = last_error or DesignDnaExtractionError("设计 DNA 提取失败")
         raise persist_failure(failure)
 
+    _emit_progress(
+        progress_callback,
+        ExtractionStage.GENERATING_VIEW,
+        "最终校验已通过，正在生成业务视图",
+        93,
+    )
     business_view_path = _create_business_view(full_result_path)
+    _emit_progress(
+        progress_callback,
+        ExtractionStage.FINALIZING,
+        "正在保存生成模型、结果缩略图和追溯信息",
+        97,
+    )
     save_business_view_model(full_result_path.stem, model_id)
     save_result_image(full_result_path.stem, image_path)
     try:

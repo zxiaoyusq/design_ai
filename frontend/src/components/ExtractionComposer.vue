@@ -8,7 +8,14 @@ import {
   WarningOutlined,
 } from '@ant-design/icons-vue'
 
-import type { ExtractionDiagnostic, ExtractionTask, ModelInfo } from '@/types/dna'
+import type {
+  ExtractionDiagnostic,
+  ExtractionProgressEvent,
+  ExtractionStage,
+  ExtractionTask,
+  ExtractionTaskItem,
+  ModelInfo,
+} from '@/types/dna'
 
 const props = defineProps<{
   models: ModelInfo[]
@@ -52,8 +59,53 @@ function itemStatusLabel(status: string) {
 function diagnosticLabel(item: ExtractionDiagnostic) {
   if (item.code.startsWith('FIELD_')) return '字段规则'
   if (item.code.startsWith('STYLE_')) return '风格证据'
+  if (item.code.startsWith('REGION_')) return '区域声明'
   if (item.code.includes('SCHEMA')) return '结构校验'
   return '语义校验'
+}
+
+function diagnosticTarget(item: ExtractionDiagnostic) {
+  const target = item.field_id || item.style_id || item.evidence_id || item.final_path
+  return target === item.message ? '' : target
+}
+
+const stageLabels: Record<ExtractionStage, string> = {
+  queued: '等待执行',
+  preparing: '准备环境',
+  model_analysis: '图片分析',
+  parsing: '解析结果',
+  compiling: '确定性整理',
+  semantic_review: '风格复核',
+  repairing: '局部修复',
+  validating: '最终校验',
+  generating_view: '生成业务视图',
+  finalizing: '保存结果',
+  completed: '已完成',
+  failed: '已失败',
+}
+
+function recentEvents(item: ExtractionTaskItem) {
+  return item.events.slice(-10)
+}
+
+function eventTime(event: ExtractionProgressEvent) {
+  return new Intl.DateTimeFormat('zh-CN', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  }).format(new Date(event.created_at))
+}
+
+function errorSummary(item: ExtractionTaskItem) {
+  if (item.diagnostics.length) {
+    return `发现 ${item.diagnostics.length} 项未闭合规则，未写入结果。`
+  }
+  const error = item.error?.toLowerCase() ?? ''
+  if (error.includes('524') || error.includes('timeout') || error.includes('timed out')) {
+    return '远程模型服务响应超时，未生成可供最终校验的完整结果。'
+  }
+  return '提取流程异常结束，请查看错误详情。'
 }
 </script>
 
@@ -136,7 +188,7 @@ function diagnosticLabel(item: ExtractionDiagnostic) {
           <WarningOutlined v-else />
           <strong>{{ taskStatusText }}</strong>
         </div>
-        <span>{{ task.progress }}%</span>
+        <span>{{ task.progress }}% · 阶段估算</span>
       </div>
       <a-progress
         :percent="task.progress"
@@ -150,20 +202,31 @@ function diagnosticLabel(item: ExtractionDiagnostic) {
           <span :class="['task-status', item.status]">
             {{ itemStatusLabel(item.status) }}
           </span>
+          <div v-if="item.events.length" class="task-log" aria-live="polite">
+            <div class="task-log-head">
+              <span>实时执行记录</span>
+              <strong>{{ stageLabels[item.stage] }} · {{ item.stage_progress }}%</strong>
+            </div>
+            <ol>
+              <li
+                v-for="(event, index) in recentEvents(item)"
+                :key="`${event.created_at}-${event.stage}-${index}`"
+                :class="event.level"
+              >
+                <time>{{ eventTime(event) }}</time>
+                <span class="task-log-dot"></span>
+                <p>{{ event.message }}</p>
+              </li>
+            </ol>
+          </div>
           <div v-if="item.error" class="task-diagnostics">
-            <p>
-              {{
-                item.diagnostics.length
-                  ? `发现 ${item.diagnostics.length} 项未闭合规则，未写入结果。`
-                  : '提取结果未通过最终检查。'
-              }}
-            </p>
+            <p>{{ errorSummary(item) }}</p>
             <details>
               <summary>查看诊断详情</summary>
               <ul v-if="item.diagnostics.length">
                 <li v-for="(diagnostic, index) in item.diagnostics" :key="`${diagnostic.code}-${index}`">
                   <span>{{ diagnosticLabel(diagnostic) }}</span>
-                  <strong>{{ diagnostic.field_id || diagnostic.style_id || diagnostic.final_path }}</strong>
+                  <strong v-if="diagnosticTarget(diagnostic)">{{ diagnosticTarget(diagnostic) }}</strong>
                   <p>{{ diagnostic.message }}</p>
                 </li>
               </ul>

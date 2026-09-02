@@ -17,7 +17,7 @@ sys.dont_write_bytecode = True
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "1.4.0"
+EXPECTED_SKILL_VERSION = "1.6.2"
 EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
 EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"
@@ -31,6 +31,7 @@ REQUIRED = [
     "references/category-adaptation.zh-CN.md",
     "references/novel-dna-governance.zh-CN.md",
     "references/style-registry.json",
+    "references/style-evidence-rules.json",
     "references/model-reference-bundle.json",
     "references/style-combination-presets.json",
     "references/field-registry.json",
@@ -272,6 +273,16 @@ def _check_schema(errors: list[str]) -> None:
     }
     if forbidden_model_fields.intersection(confirmed_observation.get("properties", {})):
         errors.append("confirmed style observations contain host-compiled metadata")
+    optional_host_fields = {
+        "applicable_rule_count",
+        "not_applicable_rule_count",
+        "core_feature_hits",
+        "auxiliary_feature_hits",
+    }
+    if optional_host_fields.intersection(confirmed_observation.get("required", [])):
+        errors.append(
+            "confirmed style observations must not require host-built rule counts or evidence links"
+        )
     if set(result_properties.get("classification_status", {}).get("enum", [])) != {
         "confirmed",
         "unclassified",
@@ -1059,6 +1070,7 @@ def _check_examples_and_evals(errors: list[str]) -> None:
 
 def _check_registries(errors: list[str]) -> None:
     style_registry = _load_json("references/style-registry.json", errors)
+    style_evidence_rules = _load_json("references/style-evidence-rules.json", errors)
     field_registry = _load_json("references/field-registry.json", errors)
     tag_relations = _load_json("references/tag-relations.json", errors)
     combination_presets = _load_json("references/style-combination-presets.json", errors)
@@ -1068,6 +1080,7 @@ def _check_registries(errors: list[str]) -> None:
         isinstance(item, dict)
         for item in (
             style_registry,
+            style_evidence_rules,
             field_registry,
             tag_relations,
             combination_presets,
@@ -1079,6 +1092,7 @@ def _check_registries(errors: list[str]) -> None:
     expected_version = manifest.get("knowledge_base_version")
     for name, registry in (
         ("style", style_registry),
+        ("style-evidence", style_evidence_rules),
         ("field", field_registry),
         ("tag-relations", tag_relations),
         ("combination-presets", combination_presets),
@@ -1123,6 +1137,7 @@ def _check_registries(errors: list[str]) -> None:
             errors.append(f"style {style.get('style_id')} must not contain parent_style_id")
         if not style.get("confusion_groups"):
             errors.append(f"active style {style.get('style_id')} has no confusion group")
+
         if style.get("tag_kind") not in {"atomic", "composite", "identity"}:
             errors.append(f"style {style.get('style_id')} has invalid tag_kind")
         facet_ids = style.get("facet_ids")
@@ -1146,6 +1161,75 @@ def _check_registries(errors: list[str]) -> None:
                 f"style {style.get('style_id')} tag_kind={style.get('tag_kind')!r} "
                 f"requires similarity_weight={expected_weight}"
             )
+
+    active_by_id = {
+        str(item.get("style_id") or ""): item
+        for item in active
+        if item.get("style_id")
+    }
+    rules_by_style = style_evidence_rules.get("styles")
+    if not isinstance(rules_by_style, dict):
+        errors.append("style-evidence rules styles must be an object")
+        rules_by_style = {}
+    unknown_rule_styles = sorted(set(rules_by_style) - set(active_by_id))
+    if unknown_rule_styles:
+        errors.append(
+            f"style-evidence rules reference inactive styles {unknown_rule_styles}"
+        )
+    seen_rule_ids: set[str] = set()
+    supported_operators = {
+        "equals",
+        "in",
+        "not_in",
+        "gte",
+        "lte",
+        "contains_any",
+        "contains_all",
+    }
+    for style_id, config in rules_by_style.items():
+        if not isinstance(config, dict):
+            errors.append(f"style-evidence {style_id} config must be an object")
+            continue
+        style = active_by_id.get(style_id, {})
+        for rule in config.get("rules", []):
+            if not isinstance(rule, dict):
+                errors.append(f"style-evidence {style_id} contains non-object rule")
+                continue
+            rule_id = str(rule.get("rule_id") or "")
+            if not rule_id or rule_id in seen_rule_ids:
+                errors.append(f"style-evidence has missing/duplicate rule_id {rule_id!r}")
+            seen_rule_ids.add(rule_id)
+            role = rule.get("role")
+            allowed_key = (
+                "decisive_field_ids" if role == "core" else "auxiliary_field_ids"
+            )
+            if role not in {"core", "auxiliary"}:
+                errors.append(f"style-evidence {rule_id} has invalid role {role!r}")
+                continue
+            clauses = [
+                {"field_id": rule.get("field_id"), "match": rule.get("match")},
+                *(
+                    rule.get("requires", [])
+                    if isinstance(rule.get("requires"), list)
+                    else []
+                ),
+            ]
+            allowed_ids = set(style.get(allowed_key) or [])
+            for clause in clauses:
+                if not isinstance(clause, dict):
+                    errors.append(f"style-evidence {rule_id} has invalid clause")
+                    continue
+                field_id = clause.get("field_id")
+                matcher = clause.get("match")
+                if field_id not in allowed_ids:
+                    errors.append(
+                        f"style-evidence {rule_id} field {field_id!r} is outside {allowed_key}"
+                    )
+                if (
+                    not isinstance(matcher, dict)
+                    or matcher.get("operator") not in supported_operators
+                ):
+                    errors.append(f"style-evidence {rule_id} has invalid matcher")
 
     from validate_output import validate_registries, validate_tag_relations
 

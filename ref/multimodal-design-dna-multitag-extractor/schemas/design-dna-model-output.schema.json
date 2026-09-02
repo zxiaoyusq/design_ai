@@ -773,11 +773,7 @@
         "confidence",
         "dominance",
         "regions",
-        "applicable_rule_count",
-        "not_applicable_rule_count",
-        "color_requirement_status",
-        "core_feature_hits",
-        "auxiliary_feature_hits"
+        "color_requirement_status"
       ],
       "properties": {
         "style_id": {
@@ -847,10 +843,12 @@
           "uniqueItems": true
         },
         "applicable_rule_count": {
+          "description": "兼容旧模型输出；新模型省略，由宿主根据 confirmed 状态展开。",
           "type": "integer",
           "minimum": 1
         },
         "not_applicable_rule_count": {
+          "description": "兼容旧模型输出；新模型省略，由宿主展开。",
           "type": "integer",
           "minimum": 0
         },
@@ -861,6 +859,7 @@
           ]
         },
         "core_feature_hits": {
+          "description": "兼容旧模型输出；新模型省略，由宿主值级规则或小范围语义复核构建。",
           "type": "array",
           "items": {
             "type": "string",
@@ -870,6 +869,7 @@
           "uniqueItems": true
         },
         "auxiliary_feature_hits": {
+          "description": "兼容旧模型输出；新模型省略，由宿主值级规则或小范围语义复核构建。",
           "type": "array",
           "items": {
             "type": "string",

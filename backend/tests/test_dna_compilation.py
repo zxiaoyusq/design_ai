@@ -8,7 +8,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from app.services.dna.extraction import _compile_model_result
+from app.services.dna.extraction import (
+    _apply_style_semantic_review,
+    _compile_model_result,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -19,6 +22,7 @@ EXAMPLE_PATH = SKILL_ROOT / "examples" / "smartphone-red-multitag.example.json"
 def _lean_observation(full: dict) -> dict:
     """只保留模型需要判断的视觉/语义字段，模拟 observation_v1 输出。"""
 
+    full = copy.deepcopy(full)
     style_result = full["style_result"]
     confirmed_ids = {item["style_id"] for item in style_result["style_tags"]}
     all_elements = [
@@ -165,6 +169,25 @@ class DnaCompilationTestCase(unittest.TestCase):
             [item["rank"] for item in compiled["style_result"]["candidate_ranking"]],
             [1, 2, 3, 4],
         )
+        nested_element_mappings = {
+            path: mapping
+            for path, mapping in report["source_map"].items()
+            if path.startswith("design_elements.extended_dna_modules.")
+        }
+        self.assertEqual(
+            len(nested_element_mappings),
+            sum(
+                len(module["elements"])
+                for module in compiled["design_elements"]["extended_dna_modules"]
+            ),
+        )
+        self.assertIn(
+            "/design_observations/0",
+            {
+                mapping["source_pointer"]
+                for mapping in nested_element_mappings.values()
+            },
+        )
         self.assertLess(
             len(json.dumps(observation, ensure_ascii=False, separators=(",", ":"))),
             len(json.dumps(self.full, ensure_ascii=False, separators=(",", ":"))) * 0.65,
@@ -198,6 +221,92 @@ class DnaCompilationTestCase(unittest.TestCase):
                 check=False,
             )
             self.assertEqual(validate.returncode, 0, validate.stdout + validate.stderr)
+
+    def test_valid_evidence_region_is_declared_and_source_mapped(self) -> None:
+        """证据已明确圈定的区域不应因主体清单漏登记而触发整轮模型修复。"""
+
+        observation = _lean_observation(self.full)
+        evidence = copy.deepcopy(observation["evidence"][0])
+        evidence.update(
+            {
+                "evidence_id": "EV-wheel-contact",
+                "region": "wheel_contact",
+                "description": "前后轮与地面接触区域清晰可见。",
+                "bbox_norm": [0.17, 0.7, 0.81, 0.95],
+            }
+        )
+        observation["evidence"].append(evidence)
+        self.assertNotIn(
+            "wheel_contact",
+            observation["target_object"]["visible_regions"],
+        )
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertIn("wheel_contact", compiled["target_object"]["visible_regions"])
+        self.assertEqual(
+            report["visible_region_normalizations"],
+            [
+                {
+                    "source_pointer": f"/evidence/{len(observation['evidence']) - 1}/region",
+                    "evidence_id": "EV-wheel-contact",
+                    "region": "wheel_contact",
+                    "action": "declared_from_valid_evidence",
+                }
+            ],
+        )
+        self.assertEqual(
+            report["source_map"][f"evidence[{len(observation['evidence']) - 1}]"],
+            {
+                "source_pointer": f"/evidence/{len(observation['evidence']) - 1}",
+                "evidence_id": "EV-wheel-contact",
+                "region": "wheel_contact",
+            },
+        )
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_nearby_evidence_bounds_expand_target_bbox(self) -> None:
+        """证据框仅因坐标取整轻微越界时由宿主扩大主体框。"""
+
+        observation = _lean_observation(self.full)
+        observation["target_object"]["bbox_norm"] = [0.1, 0.06, 0.9, 0.94]
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertEqual(
+            compiled["target_object"]["bbox_norm"],
+            [0.1, 0.04, 0.9, 0.96],
+        )
+        normalization = report["target_bbox_normalizations"][0]
+        self.assertEqual(
+            normalization["action"],
+            "expanded_to_nearby_evidence_bounds",
+        )
+        self.assertAlmostEqual(normalization["max_edge_expansion"], 0.02)
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_outside_evidence_bbox_does_not_expand_visible_regions(self) -> None:
+        """主体框外证据不能借区域同步绕过最终空间校验。"""
+
+        observation = _lean_observation(self.full)
+        evidence = copy.deepcopy(observation["evidence"][0])
+        evidence.update(
+            {
+                "evidence_id": "EV-outside-region",
+                "region": "outside_region",
+                "description": "用于验证空间边界的证据。",
+                "bbox_norm": [0, 0, 1, 1],
+            }
+        )
+        observation["evidence"].append(evidence)
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertNotIn(
+            "outside_region",
+            compiled["target_object"]["visible_regions"],
+        )
+        self.assertEqual(report["visible_region_normalizations"], [])
 
     def test_full_result_mechanical_inconsistencies_are_normalized(self) -> None:
         malformed = copy.deepcopy(self.full)
@@ -321,16 +430,196 @@ class DnaCompilationTestCase(unittest.TestCase):
 
         compiled, report = _compile_model_result(observation)
 
-        self.assertEqual(compiled["style_result"]["classification_status"], "unclassified")
-        self.assertEqual(compiled["style_result"]["style_tags"], [])
-        self.assertEqual(len(report["style_downgrades"]), 2)
+        self.assertEqual(compiled["style_result"]["classification_status"], "confirmed")
+        self.assertEqual(
+            [item["style_id"] for item in compiled["style_result"]["style_tags"]],
+            ["SaturatedBold"],
+        )
+        self.assertEqual(len(report["style_downgrades"]), 1)
+        self.assertTrue(
+            any(
+                item["style_id"] == "SaturatedBold"
+                and item["field_ids"] == ["CMP-13"]
+                for item in report["auto_linked_style_hits"]
+            )
+        )
         demoted = {
             item["style_id"]: item
             for item in compiled["style_result"]["candidate_ranking"]
             if item["style_id"] in {"SaturatedBold", "RefinedMinimalism"}
         }
-        self.assertFalse(demoted["SaturatedBold"]["hard_rule_passed"])
+        self.assertTrue(demoted["SaturatedBold"]["hard_rule_passed"])
         self.assertFalse(demoted["RefinedMinimalism"]["hard_rule_passed"])
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_value_rules_build_saturated_bold_evidence_without_model_hits(self) -> None:
+        """明确的高彩大面积主色和色彩对比应由宿主自动建立证据链。"""
+
+        observation = _lean_observation(self.full)
+        tag = observation["style_observations"]["confirmed_tags"][0]
+        for key in (
+            "applicable_rule_count",
+            "not_applicable_rule_count",
+            "core_feature_hits",
+            "auxiliary_feature_hits",
+        ):
+            tag.pop(key, None)
+        observation["style_observations"]["confirmed_tags"] = [tag]
+        observation["style_observations"]["pairwise_reasoning"] = []
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertEqual(compiled["style_result"]["classification_status"], "confirmed")
+        style = compiled["style_result"]["style_tags"][0]
+        self.assertIn("CLR-10", style["core_feature_hits"][0])
+        self.assertIn("CLR-04", style["core_feature_hits"][0])
+        self.assertIn("CMP-13", style["auxiliary_feature_hits"][0])
+        self.assertEqual(len(report["auto_linked_style_hits"]), 2)
+        self.assertFalse(report.get("semantic_review_requests"))
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_ambiguous_missing_links_request_narrow_semantic_review(self) -> None:
+        """无安全值级规则时只提交当前风格的少量强字段，并接受高置信复核挂接。"""
+
+        observation = _lean_observation(self.full)
+        tag = observation["style_observations"]["confirmed_tags"][1]
+        for key in (
+            "applicable_rule_count",
+            "not_applicable_rule_count",
+            "core_feature_hits",
+            "auxiliary_feature_hits",
+        ):
+            tag.pop(key, None)
+        observation["style_observations"]["confirmed_tags"] = [tag]
+        observation["style_observations"]["pairwise_reasoning"] = []
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertEqual(compiled["style_result"]["classification_status"], "unclassified")
+        requests = report["semantic_review_requests"]
+        self.assertEqual([item["style_id"] for item in requests], ["RefinedMinimalism"])
+        self.assertEqual(set(requests[0]["roles"]), {"core", "auxiliary"})
+        self.assertIn(
+            "DEV-03",
+            {item["field_id"] for item in requests[0]["roles"]["core"]},
+        )
+        self.assertIn(
+            "CMP-09",
+            {item["field_id"] for item in requests[0]["roles"]["auxiliary"]},
+        )
+
+        reviewed, decisions, accepted_count = _apply_style_semantic_review(
+            observation,
+            requests,
+            {
+                "decisions": [
+                    {
+                        "style_id": "RefinedMinimalism",
+                        "role": "core",
+                        "field_ids": ["DEV-03", "DEV-05"],
+                        "supports": True,
+                        "confidence": 0.9,
+                        "reason": "纵向镜头秩序可支持受控精致增量。",
+                    },
+                    {
+                        "style_id": "RefinedMinimalism",
+                        "role": "auxiliary",
+                        "field_ids": ["CMP-09"],
+                        "supports": True,
+                        "confidence": 0.88,
+                        "reason": "大面积低信息留白构成独立辅助机制。",
+                    },
+                ]
+            },
+        )
+        recompiled, second_report = _compile_model_result(reviewed)
+
+        self.assertEqual(accepted_count, 3)
+        self.assertTrue(all(item["accepted"] for item in decisions))
+        self.assertEqual(
+            recompiled["style_result"]["classification_status"], "confirmed"
+        )
+        self.assertFalse(second_report.get("semantic_review_requests"))
+        self._assert_compiled_result_is_valid(recompiled)
+
+    def test_weak_extra_style_hit_is_pruned_without_demotion(self) -> None:
+        """额外弱引用不应拖垮已经由强决定与辅助证据闭环的风格。"""
+
+        observation = _lean_observation(self.full)
+        observation["style_observations"]["confirmed_tags"][0][
+            "core_feature_hits"
+        ].append("CMF-01：低置信材质候选")
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertEqual(
+            {item["style_id"] for item in compiled["style_result"]["style_tags"]},
+            {"SaturatedBold", "RefinedMinimalism"},
+        )
+        self.assertTrue(
+            any(
+                item["style_id"] == "SaturatedBold"
+                and item["field_ids"] == ["CMF-01"]
+                for item in report["pruned_style_hits"]
+            )
+        )
+        self.assertIn(
+            "CMF-01",
+            {item["field_id"] for item in compiled["uncertain_fields"]},
+        )
+        self.assertNotIn(
+            "CMF-01",
+            " ".join(
+                compiled["style_result"]["style_tags"][0]["core_feature_hits"]
+            ),
+        )
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_pruning_cannot_bypass_neoretro_expressive_gate(self) -> None:
+        """即使普通决定/辅助字段充分，特殊必需门槛缺失仍必须降级。"""
+
+        observation = _lean_observation(self.full)
+        observation["design_observations"].append(
+            {
+                "field_id": "DET-08",
+                "value": {"geometry": "直"},
+                "raw_visual_description": "背板存在一条直线装饰",
+                "region": "back_cover",
+                "observability": "observed",
+                "confidence": 0.9,
+                "evidence_refs": ["EV-004"],
+            }
+        )
+        tag = copy.deepcopy(observation["style_observations"]["confirmed_tags"][0])
+        tag.update(
+            {
+                "style_id": "NeoRetro",
+                "match_score": 80,
+                "confidence": 0.82,
+                "dominance": 1,
+                "regions": ["back_cover"],
+                "core_feature_hits": ["CLR-01：高饱和红色背板"],
+                "auxiliary_feature_hits": ["DET-08：直线装饰"],
+            }
+        )
+        styles = observation["style_observations"]
+        styles["classification_status"] = "confirmed"
+        styles["confirmed_tags"] = [tag]
+        styles["pairwise_reasoning"] = []
+        styles["composition_summary"] = "红色与装饰线形成复古候选。"
+
+        compiled, report = _compile_model_result(observation)
+
+        self.assertEqual(compiled["style_result"]["classification_status"], "unclassified")
+        self.assertEqual(compiled["style_result"]["style_tags"], [])
+        downgrade = next(
+            item
+            for item in report["style_downgrades"]
+            if item["style_id"] == "NeoRetro"
+        )
+        self.assertTrue(
+            any("DET-17" in reason for reason in downgrade["reasons"])
+        )
         self._assert_compiled_result_is_valid(compiled)
 
     def test_high_confidence_uncertainty_is_promoted_without_model_repair(self) -> None:

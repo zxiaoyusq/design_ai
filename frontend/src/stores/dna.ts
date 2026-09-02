@@ -115,7 +115,7 @@ export const useDnaStore = defineStore('dna', () => {
 
   async function pollTask(taskId: string) {
     while (currentTask.value && !TERMINAL_TASK_STATUS.has(currentTask.value.status)) {
-      await wait(1800)
+      await wait(1200)
       currentTask.value = await fetchExtraction(taskId)
     }
     results.value = await fetchResults()

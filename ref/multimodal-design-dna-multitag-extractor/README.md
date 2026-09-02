@@ -15,7 +15,11 @@
 - provisional/rejected 的 dominance 固定为 0；若自身硬门槛已通过但因标签对冲突降级，必须记录非空 `main_conflicts`。
 - 当前有 38 个活动标签：37 个 atomic 参与相似检索，只有 MysticOrganic 为零权重 composite。
 - 组合预设不交给模型判断；Python 仅根据 confirmed 原子标签确定性写入最终 `derived_style_presets`。
-- 模型只输出视觉与语义观察；Python 从注册表补全静态元数据，并计算统计、排序、候选镜像和证据闭环。
+- 模型只输出视觉与语义观察；Python 从注册表补全静态元数据、规则计数、排序和候选镜像，并依据值级规则自动建立证据链。
+- 证据已有明确区域、有效坐标和可见描述而主体清单漏登记时，Python 只同步这个已有区域，不要求模型重生成结果。
+- 证据框与主体框每边不超过 0.03 的取整偏差由 Python 合并；更大的越界继续交给严格校验。
+- 最终模块路径通过编译报告映射回精简观察路径；局部补证无效时保留原始问题，并保守移除无法闭环的低置信推断观察。
+- 值级规则无法安全判断时，宿主只把当前风格和少量强字段交给窄范围语义复核；不重新分析图片，也不重生成完整 JSON。
 - `facet_ids` 只用于后台导航；TribeIdentity 已废弃，身份只写入 IDG-05/07/09，不再生成风格标签。
 - 每对返回标签必须通过关系仲裁；conditional 同区模式为 `forbidden` 时必拒，为 `independent_evidence` 时须有双方独占核心证据。
 - NeoRetro 还须由两族不共享证据及 `DET-17=历史造型化` 闭环；该值只描述可见语法，不证明年代或来源。
@@ -28,6 +32,7 @@
 - `SKILL.md`：任务边界与核心流程。
 - `references/design-dna-knowledge-base.zh-CN.md`：风格与规范 DNA 定义。
 - `references/style-registry.json`、`references/tag-relations.json`：扁平标签及其组合关系。
+- `references/style-evidence-rules.json`：宿主专用的值级证据挂接规则与语义复核边界。
 - `references/model-reference-bundle.json`：模型一次读取的精简候选、allowlist 与关系索引。
 - `references/style-combination-presets.json`：宿主专用的组合派生与查询规则。
 - `references/field-registry.json`：规范字段机器表。
@@ -62,7 +67,7 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 
 ## 版本
 
-- Skill：`1.4.0`
+- Skill：`1.6.2`
 - 输出 Schema：`design_dna_multitag_extraction_v1.1`
 - 设计 DNA 知识库：`4.1`
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from threading import Lock
 from typing import Any
 from uuid import UUID
@@ -12,8 +13,12 @@ from langchain_core.callbacks import BaseCallbackHandler
 class ModelCallTelemetry(BaseCallbackHandler):
     """采集一次业务执行中所有内部 ChatModel 调用的可用统计。"""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        on_event: Callable[[str, int], None] | None = None,
+    ) -> None:
         self._lock = Lock()
+        self._on_event = on_event
         self.request_count = 0
         self.success_count = 0
         self.error_count = 0
@@ -34,6 +39,8 @@ class ModelCallTelemetry(BaseCallbackHandler):
         del serialized, messages, run_id, parent_run_id, kwargs
         with self._lock:
             self.request_count += 1
+            request_count = self.request_count
+        self._notify("request_started", request_count)
 
     def on_llm_end(
         self,
@@ -52,6 +59,8 @@ class ModelCallTelemetry(BaseCallbackHandler):
                 self.input_tokens += usage[0]
                 self.output_tokens += usage[1]
                 self.total_tokens += usage[2]
+            request_count = self.request_count
+        self._notify("request_completed", request_count)
 
     def on_llm_error(
         self,
@@ -64,6 +73,18 @@ class ModelCallTelemetry(BaseCallbackHandler):
         del error, run_id, parent_run_id, kwargs
         with self._lock:
             self.error_count += 1
+            request_count = self.request_count
+        self._notify("request_failed", request_count)
+
+    def _notify(self, event: str, request_count: int) -> None:
+        """进度展示异常不能反向中断真实模型调用。"""
+
+        if self._on_event is None:
+            return
+        try:
+            self._on_event(event, request_count)
+        except Exception:
+            return
 
     @staticmethod
     def _usage_from_response(response: Any) -> tuple[int, int, int] | None:

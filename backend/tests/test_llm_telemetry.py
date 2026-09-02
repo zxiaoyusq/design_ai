@@ -46,6 +46,21 @@ class ModelCallTelemetryTestCase(unittest.TestCase):
             },
         )
 
+    def test_reports_safe_request_lifecycle_events(self) -> None:
+        events: list[tuple[str, int]] = []
+        telemetry = ModelCallTelemetry(
+            on_event=lambda event, count: events.append((event, count))
+        )
+        run_id = uuid4()
+
+        telemetry.on_chat_model_start({}, [[]], run_id=run_id)
+        telemetry.on_llm_error(RuntimeError("timeout"), run_id=run_id)
+
+        self.assertEqual(
+            events,
+            [("request_started", 1), ("request_failed", 1)],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

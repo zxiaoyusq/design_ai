@@ -1,0 +1,184 @@
+{
+  "schema_version": "style_evidence_rules_v1",
+  "knowledge_base_version": "4.1",
+  "purpose": "host_only_value_level_style_evidence_linking",
+  "review_policy": {
+    "minimum_field_confidence": 0.75,
+    "minimum_review_confidence": 0.75,
+    "max_styles_per_review": 3,
+    "max_fields_per_role": 6
+  },
+  "styles": {
+    "SaturatedBold": {
+      "rules": [
+        {
+          "rule_id": "SB-CORE-HIGH-CHROMA-MAJOR-AREA",
+          "role": "core",
+          "field_id": "CLR-10",
+          "match": {
+            "path": "center",
+            "operator": "gte",
+            "value": 0.18
+          },
+          "requires": [
+            {
+              "field_id": "CLR-04",
+              "match": {
+                "operator": "gte",
+                "value": 0.5
+              }
+            }
+          ],
+          "explanation": "高彩度中心与大面积主色共同满足个性鲜彩的决定锚点。"
+        },
+        {
+          "rule_id": "SB-AUX-COLOR-CONTRAST",
+          "role": "auxiliary",
+          "field_id": "CMP-13",
+          "match": {
+            "operator": "contains_any",
+            "values": [
+              "色相",
+              "彩度"
+            ]
+          },
+          "explanation": "主要对比来源明确包含色相或彩度，可作为色彩边界的独立辅助证据。"
+        }
+      ]
+    },
+    "NeoRetro": {
+      "rules": [
+        {
+          "rule_id": "NR-CORE-HISTORICAL-GRAMMAR",
+          "role": "core",
+          "always_link": true,
+          "field_id": "DET-17",
+          "match": {
+            "operator": "equals",
+            "value": "历史造型化"
+          },
+          "explanation": "复古重组只能由明确的历史造型化语法通过表达门。"
+        }
+      ]
+    },
+    "CharacterMorph": {
+      "rules": [
+        {
+          "rule_id": "CM-CORE-READABLE-CHARACTER-TOPOLOGY",
+          "role": "core",
+          "field_id": "FORM-15",
+          "match": {
+            "operator": "not_in",
+            "values": [
+              "无",
+              "不确定"
+            ]
+          },
+          "explanation": "非空且可确认的角色拓扑是角色拟态的必要决定字段。"
+        }
+      ]
+    },
+    "InflatedForm": {
+      "rules": [
+        {
+          "rule_id": "IF-CORE-INFLATED-CHAMBER",
+          "role": "core",
+          "field_id": "FORM-16",
+          "match": {
+            "operator": "equals",
+            "value": "气室膨胀"
+          },
+          "explanation": "气室膨胀值通过该风格不可替代的成形机制门。"
+        }
+      ]
+    },
+    "LayeredTransparency": {
+      "rules": [
+        {
+          "rule_id": "LT-CORE-TRANSPARENT-LAYER-RELATION",
+          "role": "core",
+          "field_id": "OPT-14",
+          "match": {
+            "operator": "in",
+            "values": [
+              "重叠",
+              "嵌套",
+              "透明外壳显构",
+              "多层折射"
+            ]
+          },
+          "explanation": "可确认的透明层间空间关系通过透明层叠的决定门。"
+        }
+      ]
+    },
+    "DeconstructedAssembly": {
+      "rules": [
+        {
+          "rule_id": "DA-CORE-NONSTANDARD-ASSEMBLY",
+          "role": "core",
+          "field_id": "PRT-14",
+          "match": {
+            "operator": "not_in",
+            "values": [
+              "常规",
+              "不确定"
+            ]
+          },
+          "explanation": "非标准结构重组关系是解构拼装的必要决定字段。"
+        }
+      ]
+    },
+    "DigitalGlitch": {
+      "rules": [
+        {
+          "rule_id": "DG-CORE-DIGITAL-ERROR-GRAMMAR",
+          "role": "core",
+          "field_id": "TEX-17",
+          "match": {
+            "operator": "not_in",
+            "values": [
+              "无",
+              "不确定"
+            ]
+          },
+          "explanation": "可确认的数字失真语法是数字故障的必要决定字段。"
+        }
+      ]
+    },
+    "BrutalistMassing": {
+      "rules": [
+        {
+          "rule_id": "BM-CORE-PRIMAL-MASSING",
+          "role": "core",
+          "field_id": "GEO-15",
+          "match": {
+            "operator": "in",
+            "values": [
+              "单一原块",
+              "板块堆叠",
+              "块板混合"
+            ]
+          },
+          "explanation": "原块或板块主导的体量组织是粗野原块的必要决定字段。"
+        }
+      ]
+    },
+    "CraftedIrregularity": {
+      "rules": [
+        {
+          "rule_id": "CI-CORE-CONTROLLED-MAKING-DEVIATION",
+          "role": "core",
+          "field_id": "TEX-16",
+          "match": {
+            "operator": "not_in",
+            "values": [
+              "无",
+              "不确定"
+            ]
+          },
+          "explanation": "可确认的制作式偏差模式是制作式不规整的必要决定字段。"
+        }
+      ]
+    }
+  }
+}

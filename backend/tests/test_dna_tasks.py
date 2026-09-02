@@ -5,7 +5,7 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from app.schemas.dna import ImageTaskStatus, TaskStatus
+from app.schemas.dna import ExtractionStage, ImageTaskStatus, TaskStatus
 from app.services.dna.extraction import DesignDnaExtractionError
 from app.services.dna.tasks import ExtractionTaskManager
 
@@ -76,6 +76,56 @@ class DnaTaskManagerTestCase(unittest.TestCase):
         self.assertIs(item["status"], ImageTaskStatus.FAILED)
         self.assertEqual(item["diagnostic_id"], "failure-001")
         self.assertEqual(item["diagnostics"], [issue])
+
+    @patch("app.services.dna.tasks.run_design_dna_extraction")
+    @patch("app.services.dna.tasks.get_uploaded_image")
+    def test_task_exposes_live_stage_events(
+        self,
+        get_image,
+        run_extraction,
+    ) -> None:
+        get_image.side_effect = [
+            (SimpleNamespace(filename="a.png", content_type="image/png"), Path("a.png")),
+            (SimpleNamespace(filename="a.png", content_type="image/png"), Path("a.png")),
+        ]
+
+        def run_with_progress(**kwargs):
+            callback = kwargs["progress_callback"]
+            callback(
+                ExtractionStage.MODEL_ANALYSIS,
+                "第 1 次模型请求已发送，等待响应",
+                14,
+                "info",
+            )
+            callback(
+                ExtractionStage.VALIDATING,
+                "正在执行最终校验",
+                86,
+                "info",
+            )
+            return SimpleNamespace(result_id="result-a")
+
+        run_extraction.side_effect = run_with_progress
+        manager = ExtractionTaskManager()
+        task = manager.create(["a" * 32], "model-id", "关注材质")
+
+        manager.run(task["id"])
+        completed = manager.get(task["id"])
+        item = completed["items"][0]
+
+        self.assertEqual(completed["progress"], 100)
+        self.assertIs(item["stage"], ExtractionStage.COMPLETED)
+        self.assertEqual(item["stage_progress"], 100)
+        self.assertEqual(
+            [event["stage"] for event in item["events"]],
+            [
+                ExtractionStage.QUEUED,
+                ExtractionStage.PREPARING,
+                ExtractionStage.MODEL_ANALYSIS,
+                ExtractionStage.VALIDATING,
+                ExtractionStage.COMPLETED,
+            ],
+        )
 
 
 if __name__ == "__main__":
