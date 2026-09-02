@@ -3,7 +3,7 @@ name: multimodal-design-dna-multitag-extractor
 description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格标签与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "1.6.2"
+  version: "1.6.3"
   language: "zh-CN"
   schema-version: "design_dna_multitag_extraction_v1.1"
   knowledge-base-version: "4.1"
@@ -83,7 +83,7 @@ KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `compo
 
 证据必须位于主体框内并只描述可见事实。证据、设计元素及风格 `regions` 只能使用 `target_object.visible_regions` 中的值或 `whole_object`。每个观察字段至少引用一条证据；已计算推断字段至少引用两条独立观察证据；每个风格标签必须引用其硬判所用的规范字段与证据。
 
-模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、规则计数、排序、confirmed 候选镜像以及 core/auxiliary 证据链均不得重复生成。宿主先运行 `scripts/compile_model_output.py` 编译完整结构：证据框仅因坐标取整而超出主体框不超过 0.03 时，可将主体框扩至该证据边界；若一条证据随后已同时提供非空区域、主体框内坐标与可见描述，但该区域漏记于 `visible_regions`，宿主可将这个已有区域补入声明，不得根据字段名猜测新区域。随后按 profile/视角移除不适用字段，依据 `references/value-normalization.json` 归一化显式别名、关系词和离散刻度，重建低置信镜像，并依据宿主专用 `references/style-evidence-rules.json` 从强字段值自动挂接可确定的风格证据。无法由值级规则安全判断但存在强候选字段时，宿主只提交当前风格、相关知识库段落和少量候选字段执行一次窄范围语义复核，不重新分析图片或生成完整 JSON。最终校验错误必须通过编译报告映射回精简观察 JSON Pointer 后再修复；推断字段证据不足时不得补造证据，局部补证失败后可保守移除对应的低置信观察。弱引用只从证据链剔除，原 DNA 与不确定项继续保留；只有复核后仍缺少决定锚点、独立辅助证据、区域闭环、规则门槛或注册表特殊硬门槛时，风格才降级为 provisional。随后由 `scripts/save_result.py` 写入 `derived_style_presets` 并按最终 Schema 校验。宿主不得利用编译或复核步骤发明视觉事实、放宽特殊硬门槛或改变仍有完整证据支持的视觉结论。
+模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、规则计数、排序、confirmed 候选镜像以及 core/auxiliary 证据链均不得重复生成。宿主先运行 `scripts/compile_model_output.py` 编译完整结构：合法 enum 若被模型写成仅含字符串 `label` 的单键对象，宿主先验证值域再展开为字符串；证据框仅因坐标取整而超出主体框不超过 0.05 时，可将主体框扩至该证据边界；若一条证据随后已同时提供非空区域、主体框内坐标与可见描述，但该区域漏记于 `visible_regions`，宿主可将这个已有区域补入声明，不得根据字段名猜测新区域。随后按 profile/视角移除不适用字段，依据 `references/value-normalization.json` 归一化显式别名、关系词和离散刻度，重建低置信镜像，并依据宿主专用 `references/style-evidence-rules.json` 从强字段值自动挂接可确定的风格证据。无法由值级规则安全判断但存在强候选字段时，宿主只提交当前风格、相关知识库段落和少量候选字段执行一次窄范围语义复核，不重新分析图片或生成完整 JSON。最终校验错误必须通过编译报告映射回精简观察 JSON Pointer 后再修复；推断字段证据不足时不得补造证据，局部补证失败后可保守移除对应的低置信观察。弱引用只从证据链剔除，原 DNA 与不确定项继续保留；只有复核后仍缺少决定锚点、独立辅助证据、区域闭环、规则门槛或注册表特殊硬门槛时，风格才降级为 provisional。随后由 `scripts/save_result.py` 写入 `derived_style_presets` 并按最终 Schema 校验。宿主不得利用编译或复核步骤发明视觉事实、放宽特殊硬门槛或改变仍有完整证据支持的视觉结论。
 
 最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。
 

@@ -19,8 +19,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 SKILLS_SOURCE = "/.agents/skills/"
 BOUND_SKILL_NAME = "multimodal-design-dna-multitag-extractor"
-AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v8-source-mapped-patching"
-PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v6"
+AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v9-host-normalization"
+PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v7"
 _PRELOADED_CONTEXT_FILES = (
     ("SKILL", "SKILL.md"),
     ("EXTRACTION_PROTOCOL", "references/extraction-protocol.zh-CN.md"),

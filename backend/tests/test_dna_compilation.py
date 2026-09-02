@@ -269,7 +269,7 @@ class DnaCompilationTestCase(unittest.TestCase):
         """证据框仅因坐标取整轻微越界时由宿主扩大主体框。"""
 
         observation = _lean_observation(self.full)
-        observation["target_object"]["bbox_norm"] = [0.1, 0.06, 0.9, 0.94]
+        observation["target_object"]["bbox_norm"] = [0.15, 0.04, 0.9, 0.96]
 
         compiled, report = _compile_model_result(observation)
 
@@ -282,7 +282,36 @@ class DnaCompilationTestCase(unittest.TestCase):
             normalization["action"],
             "expanded_to_nearby_evidence_bounds",
         )
-        self.assertAlmostEqual(normalization["max_edge_expansion"], 0.02)
+        self.assertAlmostEqual(normalization["max_edge_expansion"], 0.05)
+        self._assert_compiled_result_is_valid(compiled)
+
+    def test_enum_single_label_wrapper_is_normalized_without_model_repair(self) -> None:
+        """合法枚举的单键 label 包装属于机械格式差异，应由宿主安全展开。"""
+
+        observation = _lean_observation(self.full)
+        form_observation = next(
+            item
+            for item in observation["design_observations"]
+            if item["field_id"] == "FORM-12"
+        )
+        form_observation["value"] = {"label": "几何"}
+
+        compiled, report = _compile_model_result(observation)
+        form_element = next(
+            item
+            for module in compiled["design_elements"]["extended_dna_modules"]
+            for item in module["elements"]
+            if item["field_id"] == "FORM-12"
+        )
+
+        self.assertEqual(form_element["value"], "几何")
+        self.assertTrue(
+            any(
+                item["field_id"] == "FORM-12"
+                and "枚举单键包装" in item["notes"][0]
+                for item in report["value_normalizations"]
+            )
+        )
         self._assert_compiled_result_is_valid(compiled)
 
     def test_outside_evidence_bbox_does_not_expand_visible_regions(self) -> None:
@@ -302,6 +331,10 @@ class DnaCompilationTestCase(unittest.TestCase):
 
         compiled, report = _compile_model_result(observation)
 
+        self.assertEqual(
+            compiled["target_object"]["bbox_norm"],
+            observation["target_object"]["bbox_norm"],
+        )
         self.assertNotIn(
             "outside_region",
             compiled["target_object"]["visible_regions"],

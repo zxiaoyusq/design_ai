@@ -17,7 +17,7 @@ sys.dont_write_bytecode = True
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "1.6.2"
+EXPECTED_SKILL_VERSION = "1.6.3"
 EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
 EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"

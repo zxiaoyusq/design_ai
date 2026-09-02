@@ -23,6 +23,7 @@ MODEL_OUTPUT_SCHEMA_PATH = ROOT / "schemas" / "design-dna-model-output.schema.js
 FINAL_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
 OBSERVATION_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
 KNOWLEDGE_BASE_VERSION = "4.1"
+MAX_NEARBY_EVIDENCE_EXPANSION = 0.05
 FIELD_ID_PATTERN = re.compile(r"[A-Z][A-Z0-9_]*-[0-9]{2,3}")
 MODULE_HEADING_PATTERN = re.compile(r"^### (DNA-M(?:0[1-9]|1[0-5]))｜(.+)$", re.M)
 VALUE_SPACE_ROW_PATTERN = re.compile(
@@ -182,7 +183,7 @@ def _complete_evidence_record(evidence: Any) -> bool:
 
 
 def _synchronize_target_bbox(data: dict[str, Any], report: dict[str, Any]) -> None:
-    """吸收证据框与主体框之间不超过 0.03 的坐标取整偏差。"""
+    """吸收证据框与主体框之间不超过 0.05 的坐标取整偏差。"""
 
     target = data.get("target_object")
     evidence_items = data.get("evidence")
@@ -209,7 +210,10 @@ def _synchronize_target_bbox(data: dict[str, Any], report: dict[str, Any]) -> No
         expanded[2] - target_bbox[2],
         expanded[3] - target_bbox[3],
     ]
-    if expanded == target_bbox or any(delta > 0.03 + 1e-9 for delta in expansion):
+    if expanded == target_bbox or any(
+        delta > MAX_NEARBY_EVIDENCE_EXPANSION + 1e-9
+        for delta in expansion
+    ):
         return
     original = copy.deepcopy(target_bbox)
     target["bbox_norm"] = expanded
@@ -353,13 +357,23 @@ def _normalized_controlled_value(
     controlled = spaces.get(field_id)
     if controlled:
         controlled_type, allowed = controlled
-        if controlled_type == "enum" and isinstance(value, str):
-            normalized = aliases.get(value, value)
-            if normalized != value:
-                notes.append(f"值别名 {value!r} → {normalized!r}")
-            if normalized not in allowed:
-                return None, [*notes, f"值 {normalized!r} 不在受控值域"]
-            value = normalized
+        if controlled_type == "enum":
+            # 仅展开没有附加语义的单键包装；多键对象继续交给严格校验，避免丢失信息。
+            if (
+                isinstance(value, dict)
+                and set(value) == {"label"}
+                and isinstance(value.get("label"), str)
+            ):
+                wrapped = value
+                value = wrapped["label"]
+                notes.append(f"枚举单键包装 {wrapped!r} → {value!r}")
+            if isinstance(value, str):
+                normalized = aliases.get(value, value)
+                if normalized != value:
+                    notes.append(f"值别名 {value!r} → {normalized!r}")
+                if normalized not in allowed:
+                    return None, [*notes, f"值 {normalized!r} 不在受控值域"]
+                value = normalized
         elif controlled_type in {"list", "multi_label"} and isinstance(value, list):
             normalized_items: list[Any] = []
             invalid_items: list[str] = []
