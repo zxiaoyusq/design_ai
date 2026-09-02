@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-extractor"
+SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 
 
 class DnaSkillPackageTestCase(unittest.TestCase):
@@ -21,7 +21,11 @@ class DnaSkillPackageTestCase(unittest.TestCase):
         )
         self.assertEqual(package_check.returncode, 0, package_check.stderr)
 
-        for example_name in ("smartphone-rear.example.json", "apparel.example.json"):
+        for example_name in (
+            "smartphone-rear.example.json",
+            "smartphone-red-multitag.example.json",
+            "apparel.example.json",
+        ):
             result = subprocess.run(
                 [
                     sys.executable,

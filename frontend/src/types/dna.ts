@@ -52,7 +52,7 @@ export interface DesignDnaResultSummary {
   preview_url: string | null
   created_at: string
   category: string | null
-  primary_style: string | null
+  style_tags: string[]
   summary: string | null
 }
 

@@ -72,7 +72,7 @@ function displayDate(value: string) {
             </div>
             <div class="result-list-copy">
               <strong>{{ result.image_name }}</strong>
-              <span>{{ result.primary_style || result.category || '设计 DNA 已提取' }}</span>
+              <span>{{ result.style_tags.join(' · ') || result.category || '设计 DNA 已提取' }}</span>
               <small>{{ displayDate(result.created_at) }}</small>
             </div>
           </button>

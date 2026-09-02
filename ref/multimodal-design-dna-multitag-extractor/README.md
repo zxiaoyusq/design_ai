@@ -15,6 +15,7 @@
 - provisional/rejected 的 dominance 固定为 0；若自身硬门槛已通过但因标签对冲突降级，必须记录非空 `main_conflicts`。
 - 当前有 38 个活动标签：37 个 atomic 参与相似检索，只有 MysticOrganic 为零权重 composite。
 - 组合预设不交给模型判断；Python 仅根据 confirmed 原子标签确定性写入最终 `derived_style_presets`。
+- 模型只输出视觉与语义观察；Python 从注册表补全静态元数据，并计算统计、排序、候选镜像和证据闭环。
 - `facet_ids` 只用于后台导航；TribeIdentity 已废弃，身份只写入 IDG-05/07/09，不再生成风格标签。
 - 每对返回标签必须通过关系仲裁；conditional 同区模式为 `forbidden` 时必拒，为 `independent_evidence` 时须有双方独占核心证据。
 - NeoRetro 还须由两族不共享证据及 `DET-17=历史造型化` 闭环；该值只描述可见语法，不证明年代或来源。
@@ -27,22 +28,27 @@
 - `SKILL.md`：任务边界与核心流程。
 - `references/design-dna-knowledge-base.zh-CN.md`：风格与规范 DNA 定义。
 - `references/style-registry.json`、`references/tag-relations.json`：扁平标签及其组合关系。
+- `references/model-reference-bundle.json`：模型一次读取的精简候选、allowlist 与关系索引。
 - `references/style-combination-presets.json`：宿主专用的组合派生与查询规则。
 - `references/field-registry.json`：规范字段机器表。
 - `references/extraction-protocol.zh-CN.md`：完整执行协议。
 - `references/output-contract.zh-CN.md`：输出语义约束。
-- `schemas/design-dna-model-output.schema.json`：模型阶段结构。
+- `schemas/design-dna-model-output.schema.json`：精简模型观察结构。
 - `schemas/design-dna-output.schema.json`：包含 Python 派生字段的最终结构。
+- `scripts/compile_model_output.py`：把模型观察编译为完整结果骨架。
 - `scripts/derive_style_presets.py`：确定性写入组合预设。
 - `scripts/validate_output.py`：Schema 与语义校验。
 - `evals/`：单标签、多标签共存、冲突和通用回归。
 
 ## 使用
 
-向宿主提供恰好一张图片。Agent 返回模型阶段 JSON；宿主必须先派生组合预设，再校验或保存最终 JSON。
+向宿主提供恰好一张图片。Agent 返回精简观察 JSON；宿主必须先编译完整结构、派生组合预设，再校验或保存最终 JSON。
+
+高频宿主可将 Skill、协议、模型参考包、知识库与模型 Schema 组合成稳定系统前缀，以利用 provider Prompt Cache 并避免逐文件工具调用；未预装时仍按 `SKILL.md` 的加载顺序执行。
 
 ```bash
-python scripts/derive_style_presets.py model_result.json --output result.json
+python scripts/compile_model_output.py model_observation.json > compiled_result.json
+python scripts/derive_style_presets.py compiled_result.json --output result.json
 python scripts/validate_output.py result.json
 python scripts/validate_skill_package.py
 ```
@@ -55,7 +61,7 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 
 ## 版本
 
-- Skill：`1.2.0`
+- Skill：`1.3.0`
 - 输出 Schema：`design_dna_multitag_extraction_v1.1`
 - 设计 DNA 知识库：`4.1`
 

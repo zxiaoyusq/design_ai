@@ -60,7 +60,7 @@ function itemStatusLabel(status: string) {
       </div>
       <div class="skill-chip">
         <span class="status-dot"></span>
-        Design DNA Skill
+        Multi-tag Design DNA Skill
       </div>
     </div>
 

@@ -3,7 +3,7 @@ name: multimodal-design-dna-multitag-extractor
 description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格标签与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "1.2.0"
+  version: "1.3.0"
   language: "zh-CN"
   schema-version: "design_dna_multitag_extraction_v1.1"
   knowledge-base-version: "4.1"
@@ -19,9 +19,11 @@ metadata:
 
 ## 执行前加载
 
+若宿主已把本 Skill、执行协议、模型参考包、知识库、适配规则和模型 Schema 作为带版本的完整系统前缀注入，则直接使用该快照，不再通过工具逐文件重复读取；未预装时按下列顺序读取。
+
 1. 模型阶段只读取 `references/extraction-protocol.zh-CN.md`；`references/output-contract.zh-CN.md` 供宿主后处理和最终校验使用。
-2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`；最终结果由宿主按 `schemas/design-dna-output.schema.json` 校验。
-3. 读取完整 `references/style-registry.json` 与 `references/tag-relations.json`；用 `references/knowledge-index.zh-CN.md` 定位品类相关字段。判定时必须读取全局规则、全部候选及相关混淆记录。模型不得读取或匹配组合预设。
+2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`，只输出 `design_dna_multitag_observation_v1` 精简观察结构；最终结果由宿主编译并按 `schemas/design-dna-output.schema.json` 校验。
+3. 模型读取 `references/model-reference-bundle.json` 中的全部活动候选、字段 allowlist、关系、依赖及规范字段类型；不得重复读取宿主专用的完整 `style-registry.json`、`tag-relations.json`、`field-registry.json`，也不得读取组合预设。用 `references/knowledge-index.zh-CN.md` 定位品类字段值域、全部候选规则及相关混淆记录。
 4. 跨品类时读取 `references/category-adaptation.zh-CN.md`；出现知识库外元素时再读取 `references/novel-dna-governance.zh-CN.md`。
 
 ## 核心工作流
@@ -73,7 +75,7 @@ KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `compo
 
 `composition_summary` 只概括已确认标签如何分布于主体区域及如何共同构成视觉，不得创造新标签或替代规则证据。没有已确认标签时说明未分类或暂定原因。
 
-`candidate_ranking` 是完整候选排序，严格按 `(-match_score, style_id)` 排列，必须包含全部确认标签，也可包含暂定或未通过候选；分别使用 `candidate_status="confirmed|provisional|rejected"`。只有 confirmed 项可进入 `style_tags`。确认候选的 dominance 必须大于 0 并与标签一致；provisional/rejected 固定为 0，其 `hard_rule_passed` 可真可假。若非 confirmed 候选仍通过自身门槛，表示因标签对冲突而降级，`main_conflicts` 必须非空。置信度低于 0.75、决定边界不可见或字段不可计算时写入 `uncertain_fields`。
+最终 `candidate_ranking` 由宿主完成排序并加入 confirmed 镜像；模型只输出 provisional/rejected 候选。若非 confirmed 候选仍通过自身门槛，表示因标签对冲突而降级，`main_conflicts` 必须非空。置信度低于 0.75、决定边界不可见或字段不可计算时写入 `uncertainties`，并携带可观察性、置信度和原始证据；宿主可据此生成缺失的低置信设计字段，模型无需在两个数组重复维护同一记录。
 
 完成既有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`；候选必须可观察、可复用、可参数化，并与已有字段去重。
 
@@ -81,14 +83,15 @@ KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `compo
 
 证据必须位于主体框内并只描述可见事实。证据、设计元素及风格 `regions` 只能使用 `target_object.visible_regions` 中的值或 `whole_object`。每个观察字段至少引用一条证据；已计算推断字段至少引用两条独立观察证据；每个风格标签必须引用其硬判所用的规范字段与证据。
 
-模型只返回符合 `design-dna-model-output.schema.json` 的 JSON，不得生成 `derived_style_presets`。宿主随后必须运行 `scripts/derive_style_presets.py`，或直接使用已内置该步骤的 `scripts/save_result.py`，从 confirmed `style_tags` 确定性写入组合预设，再按最终 Schema 校验。组合预设不参与图像推理、不反向补证，也不进入 `style_tags`。
+模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像和可由已有规范字段推导的证据闭环均不得重复生成。宿主先运行 `scripts/compile_model_output.py` 编译完整结构，再由 `scripts/save_result.py` 写入 `derived_style_presets` 并按最终 Schema 校验。宿主不得利用编译步骤发明视觉事实、改变风格硬判或伪造缺失证据。
 
 最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。
 
 ## 确定性校验
 
 ```bash
-python scripts/derive_style_presets.py model_result.json --output result.json
+python scripts/compile_model_output.py model_observation.json > compiled_result.json
+python scripts/derive_style_presets.py compiled_result.json --output result.json
 python scripts/validate_output.py result.json
 ```
 
@@ -105,10 +108,12 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 - 执行协议：`references/extraction-protocol.zh-CN.md`
 - 输出合同：`references/output-contract.zh-CN.md`
 - 知识库：`references/design-dna-knowledge-base.zh-CN.md`
-- 模型使用的风格、关系与字段：`references/style-registry.json`、`references/tag-relations.json`、`references/field-registry.json`
+- 宿主校验使用的完整风格、关系与字段：`references/style-registry.json`、`references/tag-relations.json`、`references/field-registry.json`
+- 模型精简召回与关系索引：`references/model-reference-bundle.json`
 - 宿主专用组合派生规则：`references/style-combination-presets.json`
 - 品类适配与新 DNA：`references/category-adaptation.zh-CN.md`、`references/novel-dna-governance.zh-CN.md`
 - 模型/最终 JSON Schema：`schemas/design-dna-model-output.schema.json`、`schemas/design-dna-output.schema.json`
 - 组合派生器：`scripts/derive_style_presets.py`
+- 模型观察编译器：`scripts/compile_model_output.py`
 - 结果校验器：`scripts/validate_output.py`
 - 评测：`evals/rubric.zh-CN.md`、`evals/cases.jsonl`

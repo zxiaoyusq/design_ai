@@ -31,6 +31,12 @@ ALLOWED_FORMATS = {
 }
 RESULT_ID_PATTERN = re.compile(r"^[\w-]+$", re.UNICODE)
 BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_business_view_v1.1"
+MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.0"
+BUSINESS_VIEW_SCHEMA_VERSIONS = {
+    BUSINESS_VIEW_SCHEMA_VERSION,
+    MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION,
+}
+MULTITAG_SOURCE_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
 
 
 class ImageStorageError(ValueError):
@@ -322,7 +328,7 @@ def load_result(result_id: str, view: str) -> dict[str, Any]:
         raise ValueError(f"结果文件根节点不是对象：{path.name}")
     if view == "business" and (
         "model_id" not in data
-        or data.get("schema_version") != BUSINESS_VIEW_SCHEMA_VERSION
+        or data.get("schema_version") not in BUSINESS_VIEW_SCHEMA_VERSIONS
     ):
         data = save_business_view_model(result_id)
     return data
@@ -347,7 +353,19 @@ def save_business_view_model(
         trace = _trace_data(result_id)
         trace_model_id = trace.get("model_id") if trace else None
         resolved_model_id = trace_model_id if isinstance(trace_model_id, str) else None
-    data["schema_version"] = BUSINESS_VIEW_SCHEMA_VERSION
+    if data.get("schema_version") not in BUSINESS_VIEW_SCHEMA_VERSIONS:
+        try:
+            full_result = json.loads(
+                _safe_result_path(result_id, ".json").read_text(encoding="utf-8-sig")
+            )
+        except (OSError, json.JSONDecodeError):
+            full_result = {}
+        data["schema_version"] = (
+            MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION
+            if isinstance(full_result, dict)
+            and full_result.get("schema_version") == MULTITAG_SOURCE_SCHEMA_VERSION
+            else BUSINESS_VIEW_SCHEMA_VERSION
+        )
     data["model_id"] = resolved_model_id
     content = json.dumps(data, ensure_ascii=False, indent=2).encode("utf-8")
     _atomic_write(path, content + b"\n")
@@ -403,9 +421,18 @@ def list_results() -> list[dict[str, Any]]:
             continue
         object_view = business.get("object", {}) if isinstance(business, dict) else {}
         style_view = business.get("style", {}) if isinstance(business, dict) else {}
+        style_tags = []
+        if isinstance(style_view, dict):
+            style_tags = [
+                item.get("label_zh") or item.get("label_en") or item.get("style_id")
+                for item in style_view.get("tags", [])
+                if isinstance(item, dict)
+            ]
         primary_style = style_view.get("primary") or style_view.get("primary_style")
         if isinstance(primary_style, dict):
             primary_style = primary_style.get("name") or primary_style.get("level_2")
+        if not style_tags and isinstance(primary_style, str):
+            style_tags = [primary_style]
         try:
             get_result_image(result_id)
             preview_url: str | None = f"/api/v1/dna/results/{result_id}/image"
@@ -421,7 +448,7 @@ def list_results() -> list[dict[str, Any]]:
                     tz=UTC,
                 ),
                 "category": object_view.get("category") if isinstance(object_view, dict) else None,
-                "primary_style": primary_style if isinstance(primary_style, str) else None,
+                "style_tags": [tag for tag in style_tags if isinstance(tag, str)],
                 "summary": business.get("design_summary") if isinstance(business, dict) else None,
             }
         )

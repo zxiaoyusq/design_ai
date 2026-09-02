@@ -1,5 +1,22 @@
 # 架构决策
 
+## 2026-09-02：模型只输出精简观察，完整结果由宿主编译
+
+- 模型阶段契约改为 `design_dna_multitag_observation_v1`，只保留图片事实、字段 ID/值/区域/证据、风格硬判、关系理由、不确定性和业务摘要；最终结果继续使用 `design_dna_multitag_extraction_v1.1`，因此现有 API、结果文件和前端无需迁移。
+- 字段/风格静态元数据、模块清单、规则计数展开、dominance 归一化、统计、排序、confirmed 候选镜像、关系类型及可从规范字段推导的证据引用统一由幂等 Python 编译器生成。编译器不得改变视觉值、风格硬判、关系理由或凭空创造证据。
+- 低置信 `uncertainties` 自带可观察性、置信度和证据；宿主可据此创建缺失的低置信设计字段，再生成最终不确定项镜像，避免模型维护两个耦合数组。
+- 校验错误分为 deterministic 与 semantic：前者视为宿主编译缺陷，不消耗模型调用；后者优先通过受限 JSON Pointer 补丁修复，失败后最多执行一次完整观察兜底。
+- DeepAgent 的稳定 Skill、协议、模型参考包、知识库和模型 Schema 作为版本化系统前缀预装，以便 provider Prompt Cache 复用并避免逐文件工具调用；`skills` 绑定仍保留，历史单标签 Skill 继续禁止访问。
+- 成功追踪记录 Agent/LLM 请求、Token、网络重试、编译与语义修复指标；provider SDK 内部重试不可观测会被显式标记。任务去重本阶段不实施。
+
+## 2026-09-02：当前 DNA 提取应用链路切换为扁平多标签 Skill
+
+- 当前 DNA 提取 DeepAgent 只执行 `multimodal-design-dna-multitag-extractor`；系统提示明确禁止激活历史单标签 Skill，文件权限同时拒绝读取历史 Skill 包，避免两个输出契约混用。
+- 大模型只返回精简 observation v1 JSON，不得写入 `derived_style_presets`；应用层按上方新决策编译完整 v1.1 结果，再调用 Skill 保存入口完成组合派生、最终 Schema 与语义校验。
+- 完整详情 JSON 继续保持 Skill 原始契约；业务视图由宿主确定性转换为 `design_dna_multitag_business_view_v1.0`，增加所选模型和来源版本，但不向严格的完整结果写入应用字段。
+- 业务与前端展示以同层 `style_tags` 为唯一已确认风格结论，dominance 只表示组合内视觉占比，不恢复主/次或一/二级语义；派生组合单独展示且不占标签名额。
+- 历史单标签结果文件不批量改写；结果摘要保留兼容读取，详情中的旧字段作为历史扩展信息展示。
+
 ## 2026-09-02：组合预设由宿主确定性派生
 
 - 模型只输出原子标签和可追溯 DNA，不读取组合预设注册表，也不生成 `derived_style_presets`。

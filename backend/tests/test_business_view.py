@@ -1,5 +1,6 @@
 """设计 DNA 业务视图的跨 Schema 兼容测试。"""
 
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -8,7 +9,12 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from extract_design_dna_business_view import _flatten_elements, _normalize_level_2  # noqa: E402
+from extract_design_dna_business_view import (  # noqa: E402
+    MULTITAG_BUSINESS_SCHEMA_VERSION,
+    _flatten_elements,
+    _normalize_level_2,
+    extract_business_view,
+)
 
 
 class BusinessViewCompatibilityTestCase(unittest.TestCase):
@@ -52,6 +58,31 @@ class BusinessViewCompatibilityTestCase(unittest.TestCase):
         self.assertEqual(
             [record["group"] for record in v4_records],
             ["组件与负空间", "标识与文字"],
+        )
+
+    def test_multitag_business_view_keeps_flat_confirmed_tags(self) -> None:
+        example_path = (
+            PROJECT_ROOT
+            / "ref"
+            / "multimodal-design-dna-multitag-extractor"
+            / "examples"
+            / "smartphone-red-multitag.example.json"
+        )
+        full_result = json.loads(example_path.read_text(encoding="utf-8"))
+
+        business = extract_business_view(full_result)
+
+        self.assertEqual(business["schema_version"], MULTITAG_BUSINESS_SCHEMA_VERSION)
+        self.assertEqual(
+            [tag["style_id"] for tag in business["style"]["tags"]],
+            ["SaturatedBold", "RefinedMinimalism"],
+        )
+        self.assertNotIn("primary", business["style"])
+        self.assertNotIn("secondary", business["style"])
+        self.assertEqual(len(business["style"]["pairwise_arbitrations"]), 1)
+        self.assertEqual(
+            business["source_schema_version"],
+            "design_dna_multitag_extraction_v1.1",
         )
 
 

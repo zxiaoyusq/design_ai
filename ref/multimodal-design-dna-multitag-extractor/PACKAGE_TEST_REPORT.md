@@ -1,16 +1,17 @@
 # Package Test Report
 
-测试日期：2026-09-01
+测试日期：2026-09-02
 
 ## 结论
 
-`multimodal-design-dna-multitag-extractor` 1.2.0 已完成组合预设的确定性结果派生、双 Schema 分层、校验和回归评测。它继续独立维护，不替换或修改原 `multimodal-design-dna-extractor`。
+`multimodal-design-dna-multitag-extractor` 1.3.0 已完成精简模型观察协议、确定性结果编译、局部补丁修复、组合预设派生及完整回归评测。它继续独立维护，不替换或修改原 `multimodal-design-dna-extractor`。
 
 ## 结构基线
 
 | 项目 | 结果 |
 | --- | ---: |
 | 输出 Schema | `design_dna_multitag_extraction_v1.1` |
+| 模型观察 Schema | `design_dna_multitag_observation_v1` |
 | 知识库 | 4.1 |
 | 活动扁平风格 | 38 |
 | atomic / composite | 37 / 1 |
@@ -34,7 +35,8 @@
 - `NeoRetro` 需要至少两族不共享字段证据，并以 `DET-17=历史造型化` 通过表达门；普通泡罩、圆灯、轮圈、结构包边、现代 Logo 或普通控件不能成立该标签。
 - 37 个 atomic 标签独立计权；`MysticOrganic` 是唯一零权重 composite，须满足 `requires(any)` 依赖。`TribeIdentity` 已迁移到 `IDG-05/07/09`，身份不占风格名额或 dominance。
 - 12 个命名组合预设只由 Python 根据 confirmed 原子标签派生；预设 ID 与活动标签不重名，只写入 `derived_style_presets`，不进入 `style_tags`，也不参与反向补证。
-- 模型阶段使用不含派生字段的独立 Schema，Prompt bundle 不含任何预设定义；最终 Schema 要求派生字段存在且与 Python 重算结果完全一致。
+- 模型阶段使用精简观察 Schema，不再输出字段/风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像及可推导证据并集；最终 Schema 保持 v1.1，并要求派生字段与 Python 重算结果完全一致。
+- 低置信 `uncertainties` 携带自身可观察性、置信度和证据；宿主可生成缺失的低置信设计字段，再确定性同步最终不确定项镜像。
 - 严格 JSON 读取与保存拒绝 `NaN/Infinity`；证据、字段和风格区域只能来自主体可见区域或 `whole_object`。
 
 ## 自动化结果
@@ -43,9 +45,17 @@
 - 服装、单标签手机、双标签手机 3 个完整示例均以 `--warnings-as-errors` 通过 Schema、注册表和语义校验。
 - 80 条 JSONL 图像规则评测 ID 唯一且可解析：24 条混淆、19 条通用、5 条多标签、32 条扩展风格正例/边界/反例/共存例；另有 14 条 Python 派生用例覆盖全部预设与误触发阻断。
 - 变异门禁可拒绝旧层级字段、废弃标签、低置信风格字段、零规则计数、dominance/排序错误、候选状态错配、缺失标签对、同区冲突、同证据换字段、非法区域及非有限数值；合法的同区独立纹饰共存与冲突降级候选可通过。
-- 保存入口可接收不含派生字段的模型 JSON，在最终校验前确定性覆盖写入组合预设；伪造、缺失或过期的最终派生值会被语义校验拒绝。
-- 模型 Schema 与知识索引重建一致；Prompt bundle 不含预设规则，共 193,281 字符、243,646 字节，SHA-256 为 `9befa0224af1867237521c4386d9c04a763892e8ddde51edf2ff4b05fb34546a`。
-- 包级结构、版本、双 Schema、示例、评测、脚本、索引及 35 个内容文件校验和通过。
+- 保存入口可接收精简观察 JSON 或已有完整结果，在最终校验前统一执行幂等编译并覆盖写入组合预设；伪造、缺失或过期的最终派生值会被语义校验拒绝。
+- 双标签手机样例转换为精简观察后，紧凑 JSON 从约 16.3 KB 降至约 8.9 KB，减少约 45%，编译后的最终结果仍通过完整 Schema、注册表和语义校验。
+- 模型参考包以一次读取覆盖 38 个活动候选、192 个字段类型和 54 对显式关系；完整注册表继续作为宿主编译与校验权威。
+- 模型 Schema、模型参考包与知识索引重建一致；Prompt bundle 不含组合预设规则，共 142,470 字符、192,017 字节，SHA-256 为 `f9901e47cb0900cc3c3f82f8632571166b56b62fc52a56477dbf583f30bdbba7`。
+- 包级结构、版本、双 Schema、示例、评测、脚本、索引及 39 个内容文件校验和通过。
+
+## 应用链路实测
+
+- 使用 `claude-opus-5-20260820` 对 `folder-phone-a.png` 完成真实图片多模态 DeepAgent 提取，生成 `20260902_020814_folder-phone-a_design_dna.json` 及业务视图，最终严格语义校验通过。
+- 结果包含 69 个规范字段、4 个不确定项及 5 个完整候选，确认标签为 `NordicCalm`；模型输出协议为 observation v1，最终协议保持 multitag extraction v1.1。
+- 文件读取式 v3 Agent 的追踪显示：3 次 Agent 执行、19 次内部模型请求、约 164 万总 Token。该数据推动 v4 将 147,696 字符的稳定 Skill 上下文预装为可缓存系统前缀，避免逐文件工具调用；受网关限流影响，预装模式未重复进行昂贵的真实推理，已由系统提示构造和自动化测试覆盖。
 
 ## 既有前向盲测基线
 
@@ -60,7 +70,9 @@
 ```bash
 python scripts/validate_skill_package.py
 python scripts/build_model_output_schema.py --check
-python scripts/derive_style_presets.py model_result.json --output result.json
+python scripts/build_model_reference_bundle.py --check
+python scripts/compile_model_output.py model_observation.json > compiled_result.json
+python scripts/derive_style_presets.py compiled_result.json --output result.json
 python scripts/validate_output.py --warnings-as-errors examples/smartphone-rear.example.json
 python scripts/validate_output.py --warnings-as-errors examples/smartphone-red-multitag.example.json
 python scripts/validate_output.py --warnings-as-errors examples/apparel.example.json

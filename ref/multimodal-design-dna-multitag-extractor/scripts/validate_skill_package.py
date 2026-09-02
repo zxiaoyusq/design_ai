@@ -17,8 +17,9 @@ sys.dont_write_bytecode = True
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "1.2.0"
+EXPECTED_SKILL_VERSION = "1.3.0"
 EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
+EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"
 REQUIRED = [
     "SKILL.md",
@@ -30,12 +31,16 @@ REQUIRED = [
     "references/category-adaptation.zh-CN.md",
     "references/novel-dna-governance.zh-CN.md",
     "references/style-registry.json",
+    "references/model-reference-bundle.json",
     "references/style-combination-presets.json",
     "references/field-registry.json",
     "references/tag-relations.json",
     "schemas/design-dna-output.schema.json",
     "schemas/design-dna-model-output.schema.json",
     "scripts/derive_style_presets.py",
+    "scripts/compile_model_output.py",
+    "scripts/build_observation_schema.py",
+    "scripts/build_model_reference_bundle.py",
     "scripts/build_model_output_schema.py",
     "scripts/validate_output.py",
     "scripts/save_result.py",
@@ -164,13 +169,15 @@ def _check_versions(errors: list[str]) -> None:
     kb_schema_const = schema.get("properties", {}).get("knowledge_base_version", {}).get("const")
     if kb_schema_const != manifest.get("knowledge_base_version"):
         errors.append(f"schema knowledge_base_version const {kb_schema_const!r} != manifest")
+    if manifest.get("model_output_schema_version") != EXPECTED_MODEL_SCHEMA_VERSION:
+        errors.append("manifest model_output_schema_version is not the lean observation contract")
     if (
         model_schema.get("properties", {}).get("schema_version", {}).get("const")
-        != manifest.get("schema_version")
+        != EXPECTED_MODEL_SCHEMA_VERSION
         or model_schema.get("properties", {}).get("knowledge_base_version", {}).get("const")
         != manifest.get("knowledge_base_version")
     ):
-        errors.append("model output schema versions must match manifest")
+        errors.append("model output schema must use observation v1 and the manifest KB version")
     kb = (ROOT / "references/design-dna-knowledge-base.zh-CN.md").read_text(encoding="utf-8")
     version_match = re.search(r"知识库版本\*\*：\s*([^\s]+)", kb)
     kb_version = version_match.group(1) if version_match else None
@@ -233,16 +240,37 @@ def _check_schema(errors: list[str]) -> None:
     result_properties = style_result.get("properties", {})
     if set(result_properties) != expected_result_fields:
         errors.append("schema styleResult properties must reject legacy primary/secondary fields")
-    model_style_result = model_schema.get("$defs", {}).get("styleResult", {})
-    model_result_fields = expected_result_fields - {"derived_style_presets"}
-    if (
-        set(model_style_result.get("required", [])) != model_result_fields
-        or set(model_style_result.get("properties", {})) != model_result_fields
-        or "derivedStylePreset" in model_schema.get("$defs", {})
-    ):
-        errors.append(
-            "model output schema must equal the final style result contract minus derived_style_presets"
-        )
+    model_properties = model_schema.get("properties", {})
+    if set(model_properties) != {
+        "schema_version",
+        "knowledge_base_version",
+        "target_object",
+        "image_quality",
+        "active_profiles",
+        "rule_adaptations",
+        "style_observations",
+        "design_observations",
+        "uncertainties",
+        "novel_dna_elements",
+        "evidence",
+        "quality_notes",
+    }:
+        errors.append("model output schema must expose only the lean observation fields")
+    model_definitions = model_schema.get("$defs", {})
+    if "styleResult" in model_definitions or "qualitySummary" in model_definitions:
+        errors.append("model output schema must not retain host-compiled final result definitions")
+    confirmed_observation = model_definitions.get("confirmedStyleObservation", {})
+    forbidden_model_fields = {
+        "label_en",
+        "label_zh",
+        "aliases",
+        "tag_kind",
+        "facet_ids",
+        "evidence_refs",
+        "rule_coverage",
+    }
+    if forbidden_model_fields.intersection(confirmed_observation.get("properties", {})):
+        errors.append("confirmed style observations contain host-compiled metadata")
     if set(result_properties.get("classification_status", {}).get("enum", [])) != {
         "confirmed",
         "unclassified",
@@ -431,18 +459,13 @@ def _check_examples_and_evals(errors: list[str]) -> None:
         if pair_count != tag_count * (tag_count - 1) // 2:
             errors.append("example pairwise_arbitrations must contain exactly C(n,2) records")
 
-    final_schema = _load_json("schemas/design-dna-output.schema.json", errors)
     model_schema = _load_json("schemas/design-dna-model-output.schema.json", errors)
-    if isinstance(final_schema, dict) and isinstance(model_schema, dict):
+    if isinstance(model_schema, dict):
         from jsonschema import Draft202012Validator
 
         for payload in example_payloads:
-            model_payload = copy.deepcopy(payload)
-            model_payload.get("style_result", {}).pop("derived_style_presets", None)
-            if list(Draft202012Validator(model_schema).iter_errors(model_payload)):
-                errors.append("final example without derived presets must pass the model output schema")
-            if not list(Draft202012Validator(final_schema).iter_errors(model_payload)):
-                errors.append("final schema must reject model output before deterministic derivation")
+            if not list(Draft202012Validator(model_schema).iter_errors(payload)):
+                errors.append("lean model schema must reject a complete final-result example")
 
     style_registry = _load_json("references/style-registry.json", errors)
     active_style_ids = {
@@ -1649,6 +1672,16 @@ def _check_index(errors: list[str]) -> None:
         errors.append(
             "model output schema is not generated from the final schema\n"
             f"{model_schema_process.stdout}{model_schema_process.stderr}"
+        )
+    model_reference_process = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/build_model_reference_bundle.py"), "--check"],
+        text=True,
+        capture_output=True,
+    )
+    if model_reference_process.returncode != 0:
+        errors.append(
+            "model reference bundle is not generated from registries\n"
+            f"{model_reference_process.stdout}{model_reference_process.stderr}"
         )
 
 

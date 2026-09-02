@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Optional, Sequence
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+from compile_model_output import compile_model_output
 from derive_style_presets import write_derived_style_presets
 from validate_output import validate_semantics
 
@@ -169,7 +170,8 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     try:
-        data = _load_json_source(args.input)
+        model_data = _load_json_source(args.input)
+        data, _compilation_report = compile_model_output(model_data)
         preset_registry = _strict_json_loads(
             DEFAULT_COMBINATION_PRESETS.read_text(encoding="utf-8")
         )

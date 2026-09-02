@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-将 multimodal-design-dna-extractor Skill 的完整结果 JSON，转换为适合设计业务人员展示的精简 JSON。
+将单标签或 multimodal-design-dna-multitag-extractor Skill 的完整结果 JSON，转换为适合设计业务人员展示的精简 JSON。
 
-兼容输入：design_dna_extraction_v3.1、design_dna_extraction_v4.0
+兼容输入：design_dna_extraction_v3.1、design_dna_extraction_v4.0、
+design_dna_multitag_extraction_v1.1
 依赖：仅 Python 标准库，Python 3.9+
 
 单文件用法：
@@ -40,9 +41,12 @@ from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional,
 
 
 BUSINESS_SCHEMA_VERSION = "design_dna_business_view_v1.1"
+MULTITAG_BUSINESS_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.0"
+MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.1"
 SUPPORTED_SOURCE_SCHEMAS = {
     "design_dna_extraction_v3.1",
     "design_dna_extraction_v4.0",
+    MULTITAG_SOURCE_SCHEMA,
 }
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "result"
@@ -647,6 +651,127 @@ def _extract_style_view(
     return result
 
 
+def _multitag_style_item_view(
+    item: Mapping[str, Any],
+    evidence_map: Mapping[str, Mapping[str, Any]],
+    config: BusinessViewConfig,
+) -> Dict[str, Any]:
+    """把同层原子标签转换为业务字段，不引入主次或层级语义。"""
+
+    confidence = _clamp(item.get("confidence"))
+    feature_hits = _unique(
+        list(item.get("core_feature_hits", []) or [])
+        + list(item.get("auxiliary_feature_hits", []) or [])
+    )
+    result: Dict[str, Any] = {
+        "style_id": item.get("style_id"),
+        "label_zh": item.get("label_zh"),
+        "label_en": item.get("label_en"),
+        "tag_kind": item.get("tag_kind"),
+        "match_score": _round_score(item.get("match_score"), 1),
+        "confidence": _confidence_label(confidence, config),
+        "confidence_score": _round_score(confidence),
+        "dominance": _round_score(item.get("dominance"), 2),
+        "regions": list(item.get("regions", []) or []),
+        "facet_ids": list(item.get("facet_ids", []) or []),
+        "feature_hits": feature_hits[:4],
+        "evidence": _resolve_evidence_texts(
+            item.get("evidence_refs", []) or [],
+            evidence_map,
+            config.max_style_evidence,
+        ),
+    }
+    if config.include_source_trace:
+        result.update(
+            {
+                "aliases": list(item.get("aliases", []) or []),
+                "hard_rule_passed": item.get("hard_rule_passed"),
+                "rule_coverage": item.get("rule_coverage"),
+                "color_requirement": item.get("color_requirement"),
+                "evidence_refs": list(item.get("evidence_refs", []) or []),
+            }
+        )
+    return result
+
+
+def _extract_multitag_style_view(
+    data: Mapping[str, Any],
+    evidence_map: Mapping[str, Mapping[str, Any]],
+    config: BusinessViewConfig,
+) -> Dict[str, Any]:
+    """提炼多标签结论；所有 confirmed 标签始终以同层数组展示。"""
+
+    style_result = data.get("style_result", {}) or {}
+    status = style_result.get("classification_status", "unclassified")
+    tags = [
+        _multitag_style_item_view(item, evidence_map, config)
+        for item in style_result.get("style_tags", []) or []
+        if isinstance(item, dict)
+    ]
+    presets = [
+        {
+            "preset_id": item.get("preset_id"),
+            "label_zh": item.get("label_zh"),
+            "label_en": item.get("label_en"),
+            "matched_style_ids": list(item.get("matched_style_ids", []) or []),
+        }
+        for item in style_result.get("derived_style_presets", []) or []
+        if isinstance(item, dict)
+    ]
+    arbitrations = [
+        {
+            "style_id_a": item.get("style_id_a"),
+            "style_id_b": item.get("style_id_b"),
+            "relation": item.get("relation"),
+            "scope": item.get("scope"),
+            "decision": item.get("decision"),
+            "reason": item.get("reason"),
+        }
+        for item in style_result.get("pairwise_arbitrations", []) or []
+        if isinstance(item, dict)
+    ]
+
+    keywords = _unique(
+        hit
+        for tag in tags
+        for hit in tag.get("feature_hits", []) or []
+    )[: config.max_style_keywords]
+    evidence = _unique(
+        text
+        for tag in tags
+        for text in tag.get("evidence", []) or []
+    )[: config.max_style_evidence]
+
+    result: Dict[str, Any] = {
+        "status": STATUS_LABELS.get(status, status),
+        "tags": tags,
+        "derived_presets": presets,
+        "composition_summary": style_result.get("composition_summary"),
+        "keywords": keywords,
+        "evidence": evidence,
+        "pairwise_arbitrations": arbitrations,
+    }
+
+    # 无已确认标签时保留少量候选，帮助业务人员理解未分类原因。
+    if not tags:
+        result["candidates"] = [
+            {
+                "rank": item.get("rank"),
+                "style_id": item.get("style_id"),
+                "label_zh": item.get("label_zh"),
+                "label_en": item.get("label_en"),
+                "candidate_status": item.get("candidate_status"),
+                "match_score": _round_score(item.get("match_score"), 1),
+                "confidence_score": _round_score(item.get("confidence")),
+                "main_support": list(item.get("main_support", []) or [])[:3],
+                "main_conflicts": list(item.get("main_conflicts", []) or [])[:3],
+            }
+            for item in style_result.get("candidate_ranking", []) or []
+            if isinstance(item, dict)
+        ][:3]
+    return result
+
+
 def _flatten_elements(data: Mapping[str, Any]) -> List[Dict[str, Any]]:
     elements_root = data.get("design_elements", {}) or {}
     flattened: List[Dict[str, Any]] = []
@@ -1111,6 +1236,13 @@ def _fallback_summary(
     category = object_view.get("subcategory") or object_view.get("category") or "主物品"
     primary = style_view.get("primary")
     style_text = primary.get("level_2") if isinstance(primary, dict) else None
+    if not style_text:
+        tag_names = [
+            item.get("label_zh") or item.get("label_en")
+            for item in style_view.get("tags", []) or []
+            if isinstance(item, dict)
+        ]
+        style_text = "、".join(str(name) for name in tag_names if name)
     parts = []
     for item in key_dna[:3]:
         name = item.get("name")
@@ -1118,9 +1250,9 @@ def _fallback_summary(
         if name and not _value_is_missing(value):
             parts.append(f"{name}为{_value_to_text(value)}")
     if style_text and parts:
-        return f"主物品为{category}，整体偏向{style_text}；" + "，".join(parts) + "。"
+        return f"主物品为{category}，风格标签为{style_text}；" + "，".join(parts) + "。"
     if style_text:
-        return f"主物品为{category}，整体偏向{style_text}。"
+        return f"主物品为{category}，风格标签为{style_text}。"
     if parts:
         return f"主物品为{category}；" + "，".join(parts) + "。"
     return f"主物品为{category}，当前图片可提取信息有限。"
@@ -1144,7 +1276,12 @@ def extract_business_view(
 
     evidence_map = _build_evidence_map(data)
     object_view = _extract_object_view(data, config)
-    style_view = _extract_style_view(data, evidence_map, config)
+    is_multitag = source_schema == MULTITAG_SOURCE_SCHEMA
+    style_view = (
+        _extract_multitag_style_view(data, evidence_map, config)
+        if is_multitag
+        else _extract_style_view(data, evidence_map, config)
+    )
     key_dna = _extract_key_dna(data, evidence_map, config)
     semantic_profile = _extract_semantic_profile(data, config)
     uncertain_fields = _extract_uncertain_fields(data, config)
@@ -1158,7 +1295,11 @@ def extract_business_view(
         summary = summary.strip()
 
     result: Dict[str, Any] = {
-        "schema_version": BUSINESS_SCHEMA_VERSION,
+        "schema_version": (
+            MULTITAG_BUSINESS_SCHEMA_VERSION
+            if is_multitag
+            else BUSINESS_SCHEMA_VERSION
+        ),
         # 模型信息由调用方在生成业务视图后写入；独立运行脚本时明确保留空值。
         "model_id": data.get("model_id"),
         "object": object_view,
@@ -1170,6 +1311,9 @@ def extract_business_view(
         "novel_dna": novel_dna,
         "quality": quality,
     }
+    if is_multitag:
+        result["source_schema_version"] = source_schema
+        result["source_knowledge_base_version"] = data.get("knowledge_base_version")
     if config.include_source_trace:
         result["source_schema_version"] = source_schema
         result["source_knowledge_base_version"] = data.get("knowledge_base_version")

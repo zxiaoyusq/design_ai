@@ -19,7 +19,20 @@ const targetObject = computed(() => asRecord(props.data.target_object))
 const imageQuality = computed(() => asRecord(props.data.image_quality))
 const modules = computed(() => asRecord(props.data.module_applicability))
 const styleResult = computed(() => asRecord(props.data.style_result))
-const primaryStyle = computed(() => asRecord(styleResult.value.primary_style))
+const styleTags = computed(() => asRecordList(styleResult.value.style_tags))
+const derivedPresets = computed(() => asRecordList(styleResult.value.derived_style_presets))
+const candidates = computed(() => asRecordList(styleResult.value.candidate_ranking))
+const arbitrations = computed(() => asRecordList(styleResult.value.pairwise_arbitrations))
+const extraStyleFields = computed(() =>
+  omitFields(styleResult.value, [
+    'classification_status',
+    'style_tags',
+    'derived_style_presets',
+    'candidate_ranking',
+    'pairwise_arbitrations',
+    'composition_summary',
+  ]),
+)
 const designElements = computed(() => asRecord(props.data.design_elements))
 const dimensions = computed(() => asRecordList(designElements.value.original_md_dimensions))
 const extendedModules = computed(() => asRecordList(designElements.value.extended_dna_modules))
@@ -113,30 +126,92 @@ function without(record: DataRecord, keys: string[]) {
 
     <section class="result-section-card">
       <div class="result-section-heading">
-        <div><span>04</span><div><h4>风格判定</h4><p>候选风格匹配、规则命中与冲突裁定</p></div></div>
+        <div><span>04</span><div><h4>扁平多标签风格判定</h4><p>已确认标签、组合派生、完整候选排名与两两仲裁</p></div></div>
         <span class="status-pill">{{ displayScalar(styleResult.classification_status) }}</span>
       </div>
-      <div class="detail-style-lead">
-        <div><span>一级风格</span><strong>{{ primaryStyle.level_1 || '待判定' }}</strong></div>
-        <div><span>二级风格</span><strong>{{ primaryStyle.level_2 || '待判定' }}</strong></div>
-        <div class="confidence-meter">
-          <span>匹配度</span>
-          <a-progress :percent="toPercent(primaryStyle.match_score)" :show-info="false" stroke-color="#8b79b9" />
-          <b>{{ toPercent(primaryStyle.match_score) }}%</b>
+
+      <div v-if="styleTags.length" class="style-tag-grid">
+        <article v-for="tag in styleTags" :key="String(tag.style_id)" class="style-tag-card detail-tag-card">
+          <div class="style-tag-head">
+            <div>
+              <span>{{ tag.style_id }}</span>
+              <strong>{{ tag.label_zh || tag.label_en || '未命名风格' }}</strong>
+              <small v-if="tag.label_en">{{ tag.label_en }}</small>
+            </div>
+            <b>{{ toPercent(tag.dominance) }}% 占比</b>
+          </div>
+          <div class="style-score-row">
+            <div class="confidence-meter">
+              <span>匹配度</span>
+              <a-progress :percent="toPercent(tag.match_score)" :show-info="false" stroke-color="#8b79b9" />
+              <b>{{ toPercent(tag.match_score) }}%</b>
+            </div>
+            <div class="confidence-meter">
+              <span>置信度</span>
+              <a-progress :percent="toPercent(tag.confidence)" :show-info="false" stroke-color="#c58f73" />
+              <b>{{ toPercent(tag.confidence) }}%</b>
+            </div>
+          </div>
+          <DataValue :value="without(tag, ['style_id', 'label_zh', 'label_en', 'match_score', 'confidence', 'dominance'])" />
+        </article>
+      </div>
+      <div v-else class="inline-empty">没有通过完整硬规则的已确认标签</div>
+
+      <div class="result-note">
+        <span>组合说明</span>
+        <p>{{ displayScalar(styleResult.composition_summary) }}</p>
+      </div>
+
+      <div class="subsection-block">
+        <h5>确定性派生的风格组合</h5>
+        <div v-if="derivedPresets.length" class="result-card-grid">
+          <article v-for="item in derivedPresets" :key="String(item.preset_id)" class="mini-data-card">
+            <strong>{{ item.label_zh || item.label_en || item.preset_id }}</strong>
+            <DataValue :value="item" />
+          </article>
+        </div>
+        <div v-else class="inline-empty">当前原子标签组合未命中命名预设</div>
+      </div>
+
+      <div class="subsection-block">
+        <h5>完整候选排名</h5>
+        <div class="candidate-list">
+          <article v-for="candidate in candidates" :key="String(candidate.style_id)" class="candidate-card">
+            <div class="candidate-rank">{{ candidate.rank }}</div>
+            <div>
+              <div class="candidate-title">
+                <strong>{{ candidate.label_zh || candidate.label_en || candidate.style_id }}</strong>
+                <span>{{ displayScalar(candidate.candidate_status) }}</span>
+              </div>
+              <DataValue :value="without(candidate, ['rank', 'label_zh', 'label_en', 'candidate_status'])" />
+            </div>
+          </article>
         </div>
       </div>
-      <DataValue :value="styleResult" />
+
+      <div class="subsection-block">
+        <h5>已确认标签的两两仲裁</h5>
+        <div v-if="arbitrations.length" class="result-card-grid single-column">
+          <article v-for="(item, index) in arbitrations" :key="index" class="mini-data-card">
+            <strong>{{ item.style_id_a }} × {{ item.style_id_b }}</strong>
+            <DataValue :value="without(item, ['style_id_a', 'style_id_b'])" />
+          </article>
+        </div>
+        <div v-else class="inline-empty">单标签或未分类结果无需两两仲裁</div>
+      </div>
+
+      <DataValue v-if="hasContent(extraStyleFields)" :value="extraStyleFields" />
     </section>
 
     <section class="result-section-card design-elements-section">
       <div class="result-section-heading">
-        <div><span>05</span><div><h4>设计元素</h4><p>基础设计维度与扩展 DNA 模块的逐字段结果</p></div></div>
+        <div><span>05</span><div><h4>设计元素</h4><p>多标签 Skill 的规范扩展 DNA 模块逐字段结果</p></div></div>
         <b class="count-badge">{{ dimensions.length + extendedModules.length }} 组</b>
       </div>
 
-      <div class="element-family">
+      <div v-if="dimensions.length" class="element-family">
         <h5>基础设计维度</h5>
-        <a-collapse v-if="dimensions.length" ghost>
+        <a-collapse ghost>
           <a-collapse-panel v-for="(dimension, index) in dimensions" :key="`dimension-${index}`">
             <template #header>
               <div class="collapse-heading">
@@ -156,7 +231,6 @@ function without(record: DataRecord, keys: string[]) {
             </div>
           </a-collapse-panel>
         </a-collapse>
-        <div v-else class="inline-empty">暂无基础设计维度</div>
       </div>
 
       <div class="element-family">

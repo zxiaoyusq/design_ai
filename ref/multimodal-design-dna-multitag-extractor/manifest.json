@@ -1,11 +1,12 @@
 {
   "name": "multimodal-design-dna-multitag-extractor",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "entry": "SKILL.md",
   "language": "zh-CN",
   "standard": "Agent Skills",
   "schema_version": "design_dna_multitag_extraction_v1.1",
   "model_output_schema": "schemas/design-dna-model-output.schema.json",
+  "model_output_schema_version": "design_dna_multitag_observation_v1",
   "knowledge_base_version": "4.1",
   "requires": {
     "vision_input": true,

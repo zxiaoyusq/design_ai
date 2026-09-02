@@ -65,3 +65,15 @@
 - 已将独立多标签 Skill 升级至 1.2.0、输出 Schema 升级至 `design_dna_multitag_extraction_v1.1`，最终结果新增 `derived_style_presets`。
 - 已拆分模型阶段与最终结果 Schema；模型 Prompt 不加载组合预设规则，Python 保存流程仅根据 confirmed 原子标签确定性覆盖写入组合预设。
 - 已增加 14 条组合派生评测、伪造值拒绝门禁和保存链路验证；收紧玩趣组合，避免单独鲜彩误触发。
+- 已将当前 DNA 提取模块的 DeepAgent 从原单标签 Skill 切换并约束到 `multimodal-design-dna-multitag-extractor`；Agent 只生成模型阶段 JSON，应用层调用新 Skill 保存脚本完成组合派生、最终校验和落盘。
+- 业务视图升级为 `design_dna_multitag_business_view_v1.0`，以同层 `tags` 展示已确认原子标签，并包含 dominance、作用区域、确定性组合预设、组合说明和标签两两仲裁；模型、来源 Schema 与知识库版本继续可追溯。
+- 结果列表 API 与前端摘要已由 `primary_style` 改为 `style_tags`，同时保留已有单标签历史结果的列表读取兼容。
+- 业务视图和完整详情页面已移除主/次、一/二级风格布局，改为同层标签卡片、完整候选排名、派生组合和关系仲裁；对象型 DNA 值使用分层字段卡片展示，不再转成 JSON 字符串。
+- 多标签 Skill 包及示例、业务视图转换、后端 API/存储/Agent 共 28 项自动化测试全部通过；前端 TypeScript 检查和生产构建通过，并用双标签手机样例完成浏览器业务/详情双视图验证。
+- 已将多标签 Skill 升级至 1.3.0，模型阶段改用 `design_dna_multitag_observation_v1` 精简观察协议；最终 `design_dna_multitag_extraction_v1.1` 与前端展示协议保持不变。
+- 已新增确定性结果编译器，从字段、风格和关系注册表补全静态元数据、模块结构、统计、dominance 归一化、排序、confirmed 候选镜像、不确定字段镜像及可推导证据闭环。
+- 校验失败现按确定性/语义错误分类；确定性错误不再调用模型，语义错误先请求 JSON Pointer 局部补丁，仅在补丁无效时进行一次完整观察结果兜底。
+- 已新增 DeepAgent 内部模型请求数、成功/失败次数、Token 用量、Agent 执行次数、网络断流重试、编译修正和语义修复追踪；流开始后的瞬时断连由应用层最多重试一次，429 限流不立即重试。
+- 已新增覆盖全部活动风格、规范字段类型和标签关系的模型精简参考包，并将稳定 Skill 上下文预装为可缓存系统前缀，减少逐文件读取引起的重复模型调用。
+- 双标签样例的模型输出由约 16.3 KB 降至约 8.9 KB，减少约 45%；精简观察编译后继续通过完整 Schema 与语义校验。
+- 已用 Claude Opus 5 对 `folder-phone-a.png` 完成真实多模态贯通，生成 `20260902_020814_folder-phone-a_design_dna.json` 及业务视图；结果含 69 个字段、4 个不确定项和 `NordicCalm` 标签，最终严格校验通过。

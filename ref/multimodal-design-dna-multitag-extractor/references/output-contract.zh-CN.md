@@ -1,6 +1,8 @@
 # 扁平多标签输出协议
 
-适用于 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json`；Python 派生后的完整结果通过 `schemas/design-dna-output.schema.json`。
+适用于最终 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json` 输出 `design_dna_multitag_observation_v1`；宿主编译后的完整结果通过 `schemas/design-dna-output.schema.json`。
+
+模型阶段只负责视觉值、证据、风格硬判、组合关系理由、不确定性和业务摘要。字段/风格静态元数据、模块清单、统计值、排序、confirmed 候选镜像及可推导证据引用由 `scripts/compile_model_output.py` 确定性生成。
 
 ## 1. 顶层结构
 
@@ -124,7 +126,7 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 
 ## 7. 不确定字段与新 DNA
 
-置信度低于 0.75、存在竞争、视角不足或不可计算的已有字段应进入 `uncertain_fields`。候选概率之和应约为 1；无可靠候选时使用空数组。
+置信度低于 0.75、存在竞争、视角不足或不可计算的已有字段应进入模型观察的 `uncertainties`，并保留可观察性、置信度和原始证据。宿主将其编译为最终 `uncertain_fields`；模型无需在 `design_observations` 重复同一低置信字段。候选概率之和由宿主归一化；无可靠候选时使用空数组。
 
 `novel_dna_elements` 只容纳知识库不能充分表达、位于主体上且可复用、可参数化的内容。`new_enum_value` 只能指向已有 enum 字段；没有可靠候选时输出 `[]`。
 
@@ -132,4 +134,4 @@ TribeIdentity 已废弃，不能出现在 `style_tags` 或 `candidate_ranking`�
 
 - 输出只包含 JSON，不使用 Markdown 围栏、注释、尾逗号、NaN 或 Infinity。
 - 中文描述使用简体中文；稳定 ID、英文标签和标准枚举保持原样。
-- 模型只生成模型阶段 JSON；宿主负责组合预设派生、最终校验、保存及业务视图转换。
+- 模型只生成精简观察 JSON；宿主负责完整结构编译、组合预设派生、最终校验、保存及业务视图转换。

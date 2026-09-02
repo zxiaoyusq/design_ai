@@ -219,7 +219,7 @@ async function changeResultView(view: 'business' | 'detail') {
 
     <footer>
       <span>形鉴 · AI 审美洞察平台</span>
-      <span>Design DNA Schema v4.0</span>
+      <span>Multi-tag Design DNA Schema v1.1</span>
     </footer>
   </div>
 </template>

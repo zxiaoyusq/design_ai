@@ -55,7 +55,14 @@ class DnaStorageTestCase(unittest.TestCase):
             (results_dir / f"{result_id}.json").write_text("{}", encoding="utf-8")
             business = {
                 "object": {"category": "智能手机"},
-                "style": {"primary": {"level_2": "现代简致"}},
+                "style": {
+                    "tags": [
+                        {
+                            "style_id": "RefinedMinimalism",
+                            "label_zh": "精致克制",
+                        }
+                    ]
+                },
                 "design_summary": "简洁、克制的现代产品。",
             }
             (results_dir / f"{result_id}_business_view.json").write_text(
@@ -71,7 +78,7 @@ class DnaStorageTestCase(unittest.TestCase):
                 detail = storage.load_result(result_id, "business")
 
             self.assertEqual(summaries[0]["image_name"], "product")
-            self.assertEqual(summaries[0]["primary_style"], "现代简致")
+            self.assertEqual(summaries[0]["style_tags"], ["精致克制"])
             self.assertEqual(detail["design_summary"], business["design_summary"])
             self.assertEqual(detail["model_id"], "gpt-5.6-terra-20260820")
             self.assertEqual(

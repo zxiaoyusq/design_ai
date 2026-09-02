@@ -1,12 +1,12 @@
 # 扁平多标签设计 DNA 提取执行协议
 
-> 适用于 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`。模型阶段只使用一张图片、完整知识库、注册表与模型输出 Schema。
+> 最终结果适用于 `schema_version="design_dna_multitag_extraction_v1.1"` 与 `knowledge_base_version="4.1"`；模型阶段只输出 `design_dna_multitag_observation_v1` 精简观察结构。
 
 ## 一、任务
 
 从图片中选择唯一一个主物品，先提取可追溯的规范设计 DNA，再独立判定零到三个可共存的扁平风格标签，并输出候选、不确定项、成对仲裁、组合摘要和知识库外新 DNA 候选。
 
-知识库与机器注册表决定已有标签、字段、值域、硬门槛、排除项、混淆边界及关系。通用设计知识只能帮助识别视觉事实和发现知识库缺口，不得改写已有规则。
+知识库与机器注册表决定已有标签、字段、值域、硬门槛、排除项、混淆边界及关系。模型通过 `model-reference-bundle.json` 一次读取活动候选、字段 allowlist、字段类型与关系；完整注册表由宿主编译和校验使用。观察值必须符合索引中的 `value_type`，不能用自然语言描述替代 float 或 object。通用设计知识只能帮助识别视觉事实和发现知识库缺口，不得改写已有规则。
 
 ## 二、基本原则
 
@@ -62,7 +62,7 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 
 ### 步骤 C：提取规范 DNA
 
-字段身份、类型、证据模式、profile、视角与派生依赖以 `field-registry.json` 为准，enum/multi_label 值域以知识库为准。每项记录规范 `field_id`、值、可见描述、区域、状态、置信度和证据引用。
+字段身份、类型、证据模式、profile、视角与派生依赖以 `field-registry.json` 为准，enum/multi_label 值域以知识库为准。模型每项只记录规范 `field_id`、值、可见描述、区域、可观察性、置信度和原始证据引用；名称、路径、类型、证据模式、计算状态和模块归属由宿主从注册表补全。
 
 要求：
 
@@ -141,7 +141,7 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 
 ### 步骤 H：不确定项与新 DNA
 
-置信度低于 0.75、存在合理竞争、视角不足、图像干扰、定义边界不足或非直接字段不可计算时，写入 `uncertain_fields`，列出候选概率、支持与反对证据及建议补充信息。
+置信度低于 0.75、存在合理竞争、视角不足、图像干扰、定义边界不足或非直接字段不可计算时，写入模型观察的 `uncertainties`，列出可观察性、置信度、原始证据、候选概率及建议补充信息。宿主会从该记录生成或同步最终 `uncertain_fields` 与对应低置信设计字段，不要求模型重复维护两份镜像结构。
 
 完成已有字段映射后，才可提出：
 
@@ -171,16 +171,16 @@ KB 4.1 共有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `co
 
 ## 五、输出
 
-完整结果必须满足：
+模型观察结果必须满足：
 
-- `schema_version="design_dna_multitag_extraction_v1.1"`；
+- `schema_version="design_dna_multitag_observation_v1"`；
 - `knowledge_base_version="4.1"`；
 - 模型阶段通过 `schemas/design-dna-model-output.schema.json`；
 - 结果只包含 JSON，不含 Markdown、解释、注释、路径、NaN、Infinity 或尾逗号；
 - 空集合使用 `[]`，单值不可得使用 `null`；
 - 稳定 ID、英文标签和标准枚举保持原样。
 
-Schema 是字段结构与必填项的唯一权威；本文定义语义与决策顺序。提取器只生成结果，文件保存、命名、防覆盖和业务视图转换由宿主负责。
+模型不输出可由注册表或已有观察确定得到的字段/风格元数据、模块清单、统计值、排序、confirmed 候选镜像与证据并集。宿主使用 `compile_model_output.py` 生成 `design_dna_multitag_extraction_v1.1` 完整结构，但不得改变视觉事实与硬判语义。两个 Schema 分别是模型观察和最终字段结构的唯一权威。
 
 ## 六、输出前自检
 
@@ -191,10 +191,10 @@ Schema 是字段结构与必填项的唯一权威；本文定义语义与决策�
 5. 每个标签独立通过门槛、颜色、证据和排除检查，未输出 TribeIdentity 等废弃 ID；
 6. 每个标签对恰有一条成对仲裁，`style_id_a < style_id_b`；同区 conditional 已满足相应禁止或独立证据模式；
 7. 多标签具有独立机制或区域，没有同义重复计票；
-8. 单标签 dominance 为 1，多标签之和约为 1，且 `style_tags` 排序合法；
-9. `candidate_ranking` 包含全部确认标签并严格排序；非 confirmed 候选 dominance 为 0，硬判通过但因标签对冲突降级时有 `main_conflicts`；
+8. 模型只判断标签相对 dominance；单标签归一化、多标签和及最终排序由宿主完成；
+9. 模型只输出非 confirmed 候选；confirmed 候选镜像、完整排序与 rank 由宿主完成，硬判通过但因标签对冲突降级时仍须有 `main_conflicts`；
 10. 证据、设计元素和风格区域只使用可见区域或 `whole_object`；
 11. 组合摘要没有创造结论；
 12. 低置信度、不可见或不可计算项已登记；
 13. 所有数字有限，未出现 NaN 或 Infinity；
-14. confirmed 标签的适用规则数与通过规则数均至少为 1；版本固定为 multitag v1.1 / KB 4.1，并通过模型阶段 Schema。
+14. confirmed 标签的适用规则数至少为 1；版本固定为 observation v1 / KB 4.1，并通过模型阶段 Schema。

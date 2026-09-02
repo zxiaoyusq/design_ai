@@ -6,8 +6,11 @@ from unittest.mock import Mock, patch
 from deepagents.middleware.filesystem import FilesystemPermission
 
 from app.agents.design_dna_extractor import (
+    AGENT_SYSTEM_PROMPT,
+    BOUND_SKILL_NAME,
     SKILLS_SOURCE,
     create_design_dna_agent,
+    preloaded_skill_context,
 )
 
 
@@ -34,11 +37,27 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         )
         self.assertEqual(agent_factory.call_args.kwargs["model"], model)
         self.assertEqual(agent_factory.call_args.kwargs["skills"], [SKILLS_SOURCE])
+        self.assertIn(BOUND_SKILL_NAME, AGENT_SYSTEM_PROMPT)
+        self.assertIn("design_dna_multitag_observation_v1", AGENT_SYSTEM_PROMPT)
+        self.assertIn("静态元数据、模块清单、统计值、排序", AGENT_SYSTEM_PROMPT)
+        self.assertEqual(
+            agent_factory.call_args.kwargs["name"],
+            "design-dna-multitag-extractor",
+        )
+        system_prompt = agent_factory.call_args.kwargs["system_prompt"]
+        self.assertIn("<PRELOADED_SKILL_CONTEXT", system_prompt)
+        self.assertIn('name="MODEL_REFERENCE_BUNDLE"', system_prompt)
+        self.assertIn('name="MODEL_OUTPUT_SCHEMA"', system_prompt)
+        self.assertIn("直接使用该快照完成任务", system_prompt)
         permissions = agent_factory.call_args.kwargs["permissions"]
         self.assertTrue(
             all(isinstance(rule, FilesystemPermission) for rule in permissions)
         )
-        self.assertEqual([rule.mode for rule in permissions], ["deny", "deny"])
+        self.assertEqual([rule.mode for rule in permissions], ["deny", "deny", "deny"])
+        self.assertIn(
+            "/ref/multimodal-design-dna-extractor/**",
+            permissions[0].paths,
+        )
 
     @patch("app.agents.design_dna_extractor.create_deep_agent")
     @patch("app.agents.design_dna_extractor.create_chat_model")
@@ -50,6 +69,14 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         create_design_dna_agent("gpt-5.6-sol-20260820")
 
         self.assertNotIn("max_tokens", model_factory.call_args.kwargs)
+
+    def test_preloaded_context_contains_field_types_and_all_style_candidates(self) -> None:
+        context = preloaded_skill_context()
+
+        self.assertIn('"field_id":"GEO-01"', context)
+        self.assertIn('"value_type":"float"', context)
+        self.assertIn('"style_id":"NordicCalm"', context)
+        self.assertIn("design_dna_multitag_observation_v1", context)
 
 
 if __name__ == "__main__":
