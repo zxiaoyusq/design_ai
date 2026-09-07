@@ -39,6 +39,7 @@ node_modules/
 # Local uploads and generated extraction results
 data/uploads/
 data/result/
+data/trend_data/
 
 # Local model conversation traces and attached media
 conversation_history/

@@ -67,8 +67,22 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 
 ## 版本
 
-- Skill：`1.6.3`
+- Skill：`1.6.4`
 - 输出 Schema：`design_dna_multitag_extraction_v1.1`
 - 设计 DNA 知识库：`4.1`
 
 本 Skill 独立维护，不依赖外部 Excel 或旧 Skill 运行时。
+
+## 宿主脚本维护
+
+- `compile_model_output.py` 编排观察展开、字段整理、风格整理与源路径报告；具体字段和风格逻辑分别位于 `compile_fields.py`、`compile_styles.py`。
+- `validate_output.py` 保留原命令行与公开校验函数，按主体/字段和风格/关系调用 `validate_fields.py`、`validate_styles.py`；基础注册表契约位于 `validation_rules.py`。
+- 编译与校验统一使用 `dna_rules.py` 解析知识库值域和视角准入，避免同一规则出现不同解释。
+- `validate_skill_package.py` 负责包检查编排；静态 Schema/注册表检查位于 `package_checks.py`，行为回归测试位于 `tests/`。包自检包含这些测试，且主进程与子进程均不生成字节码文件。
+
+后端已取得编译结果和报告时，使用以下入口只派生组合预设、严格校验并保存；不得再次归一化已编译字段。默认保存入口继续支持未编译输入。
+
+```bash
+python scripts/save_result.py --compiled --image original.jpg compiled_result.json
+python -B -m unittest discover -s tests
+```

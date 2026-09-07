@@ -3,7 +3,7 @@ name: multimodal-design-dna-multitag-extractor
 description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格标签与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "1.6.3"
+  version: "1.6.4"
   language: "zh-CN"
   schema-version: "design_dna_multitag_extraction_v1.1"
   knowledge-base-version: "4.1"
