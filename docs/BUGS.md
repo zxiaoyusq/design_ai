@@ -1,5 +1,11 @@
 # 已知问题
 
+## 2026-09-07：44 条用户需求缺少用户关联
+
+- 影响范围：`transcend_model_iduserdemands` 中数据库 ID 904–947 的 44 条未删除需求，在当前 `transcend_model_a3w` 中没有关联记录，无法确定归属用户。
+- 当前处理：原字段和源 ID/BID 保留在 `data/userreseach_data/users.json` 根节点的 `unlinked_demand_research`，标记 `link_status=no_active_user_relation`。不删除记录、不推测用户，也不改写数据库。
+- 后续处理：由业务侧确认归属并补充源关系后重新提取。源关系中另有 18 条指向不存在用户和已删除需求的记录，已过滤并记入 `export_report.json` 的 `ignored_relation_count`。
+
 ## 2026-09-05：一张趋势来源图片暂时无法下载
 
 - 影响范围：趋势 `11730` 的第 34 张图片，`image_id=11730_034`，来自 `media.gucci.com` 的 `salone_KV_4000x2250.jpg`。

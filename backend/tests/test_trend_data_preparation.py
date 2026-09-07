@@ -111,7 +111,7 @@ class TrendWorkbookTestCase(unittest.TestCase):
         self.assertIsInstance(record["confidence"], (int, float))
         self.assertEqual(record["clust_status"], 1)
         self.assertIsInstance(record["clust_status"], int)
-        self.assertEqual(record["release_time"], "2026-09-01T10:20:30")
+        self.assertEqual(record["release_time"], "2026-09-01")
         self.assertEqual(record["local_vl_info"], {"主色": "绿色", "置信度": 0.9})
         expected_urls = [
             "https://example.test/a.png",

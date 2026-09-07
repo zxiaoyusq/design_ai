@@ -19,7 +19,7 @@ import re
 import shutil
 import tempfile
 import time
-from typing import Any
+from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qs, quote, urlsplit
 from urllib.request import Request, urlopen
@@ -47,6 +47,17 @@ def _json_value(value: Any) -> Any:
     if isinstance(value, float) and not math.isfinite(value):
         return None
     return value
+
+
+def _release_date(value: Any) -> str | None:
+    """发布日期只保留源值的日历日期，不转换时区；空日期仍为 null。"""
+    if value is None or value == "":
+        return None
+    if isinstance(value, datetime):
+        return value.date().isoformat()
+    if isinstance(value, date):
+        return value.isoformat()
+    return date.fromisoformat(str(value).strip()[:10]).isoformat()
 
 
 def _number(value: Any, *, integer: bool = False) -> Any:
@@ -112,6 +123,10 @@ def read_trends(
                 "source_row": row_number,
                 **{field: _json_value(row.get(field)) for field in DESCRIPTION_FIELDS},
             }
+            try:
+                record["release_time"] = _release_date(row.get("release_time"))
+            except ValueError as exc:
+                raise ValueError(f"第 {row_number} 行 release_time 不是有效日期：{row.get('release_time')}") from exc
             for field in ("tags", "subcategory"):
                 record[field] = _labels(record[field])
             for field in ("image_width", "image_height", "clust_status"):
@@ -187,8 +202,9 @@ def _download_url(url: str) -> str:
 def download_image(
     image: dict[str, Any], output_dir: Path, timeout: float = 30,
     retries: int = 2, max_bytes: int = 50 * 1024 * 1024,
+    opener: Callable[..., Any] | None = None,
 ) -> dict[str, Any]:
-    """下载并校验原图；按 ID、序号及 URL 复用缓存，失败不伪造本地路径。"""
+    """下载并校验原图；可选 opener 仅替换连接方式，缓存和图片校验规则不变。"""
     result = {**image, "status": "failed", "local_path": None}
     url = image["url"]
     try:
@@ -225,7 +241,7 @@ def download_image(
         temporary_path: Path | None = None
         try:
             request = Request(request_url, headers={"User-Agent": "Mozilla/5.0", "Accept": "image/*,*/*;q=0.8"})
-            with urlopen(request, timeout=timeout) as response:
+            with (opener or urlopen)(request, timeout=timeout) as response:
                 resolved_url = response.url
                 with tempfile.NamedTemporaryFile(dir=stem.parent, suffix=".part", delete=False) as stream:
                     temporary_path = Path(stream.name)
@@ -345,7 +361,7 @@ def main(argv: list[str] | None = None) -> int:
 每条趋势保留原 id、Excel 行号 source_row 及全部 13 个指定描述字段。
 tags / subcategory 按中英文逗号转为数组，confidence 转为数值，clust_status
 及可解析的源宽高转为整数，local_vl_info 解析为 JSON；解析失败保留原文。
-空单元格保留 null，空标签为 []，日期单元格使用 ISO 文本，源日期字符串不推测时区。
+空单元格保留 null，空标签为 []，release_time 只保留 YYYY-MM-DD，不转换时区。
 image_url 保留原始多图字符串，images 按 || 分隔后的顺序记录每张图片。
 源 image_width / image_height 不改写；每张实际图片尺寸见 images 的 width / height。
 

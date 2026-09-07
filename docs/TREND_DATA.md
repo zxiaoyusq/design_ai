@@ -37,7 +37,7 @@ conda run -n base python backend/scripts/prepare_trend_data.py --limit 5 --outpu
 | `subcategory`、`tags` | 按中英文逗号拆成数组，忽略空项 |
 | `confidence` | 可解析的数值文本转为数字 |
 | `language_original` | 保留原值 |
-| `release_time` | 日期单元格转 ISO 文本，已有日期字符串原样保留，不推测时区 |
+| `release_time` | 日期单元格或日期时间字符串统一为 `YYYY-MM-DD`，截去时间和时区后缀，不转换时区；空值保留 `null`，无效日期报错并指出源行 |
 | `clust_status` | 可解析的整数文本转为整数 |
 | `local_vl_info` | JSON 对象/数组转为结构化值；无效 JSON 保留原文并记录提醒 |
 
