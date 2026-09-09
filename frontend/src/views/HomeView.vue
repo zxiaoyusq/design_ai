@@ -151,6 +151,7 @@ async function changeResultView(view: 'business' | 'detail') {
       </a>
       <nav>
         <a class="active" href="#extract">DNA 提取</a>
+        <RouterLink to="/high-trends">高潜趋势</RouterLink>
         <a href="#results">结果档案</a>
       </nav>
       <div class="system-state"><span></span> Agent 服务在线</div>

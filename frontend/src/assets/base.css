@@ -2017,6 +2017,12 @@ footer {
   }
 
   .topbar nav {
+    display: flex;
+    gap: 18px;
+    justify-content: end;
+  }
+
+  .topbar .system-state {
     display: none;
   }
 
