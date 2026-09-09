@@ -19,8 +19,8 @@ def prepare(root, request, output, *, dry_run, overhead):
         users=str(root / "data/userreseach_data/users.json"),
         project_root=str(root), output=str(output),
         start_date=request.start_date.isoformat(), end_date=request.end_date.isoformat(),
-        undated="exclude", user_limit=None, batch_chars=48000-overhead,
-        max_calls=request.max_calls, map_output_tokens=2500, final_output_tokens=5000,
+        undated="exclude", user_limit=request.user_limit, batch_chars=48000-overhead,
+        max_calls=request.max_calls, map_output_tokens=None, final_output_tokens=None,
         model=request.model_id, model_parameters='{"temperature":0}',
         dry_run=dry_run, no_cache=True,
     ))

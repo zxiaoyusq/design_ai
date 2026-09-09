@@ -22,6 +22,8 @@ const startDate = ref(localDate(earlier))
 const endDate = ref(localDate(today))
 const modelId = ref('')
 const prompt = ref('')
+const userScope = ref<'auto' | 'all' | 'first'>('auto')
+const userLimit = ref<number | null>(20)
 const maxCalls = ref<number | null>(24)
 const models = ref<ModelInfo[]>([])
 const catalog = ref<HighTrendCatalog | null>(null)
@@ -49,7 +51,7 @@ const isActive = (item: HighTrendTask | null) => item?.status === 'queued' || it
 const running = computed(() => isActive(task.value))
 const anyRunning = computed(() => history.value.some(isActive) || running.value)
 const validRange = computed(() => Boolean(startDate.value && endDate.value && startDate.value <= endDate.value))
-const validRequest = computed(() => validRange.value && Boolean(modelId.value) && Number.isInteger(maxCalls.value) && (maxCalls.value ?? 0) >= 1 && (maxCalls.value ?? 0) <= 100)
+const validRequest = computed(() => validRange.value && (userScope.value !== 'first' || (Number.isInteger(userLimit.value) && (userLimit.value ?? 0) > 0)) && Boolean(modelId.value) && Number.isInteger(maxCalls.value) && (maxCalls.value ?? 0) >= 1 && (maxCalls.value ?? 0) <= 100)
 const result = computed(() => task.value?.result)
 const cards = computed(() => result.value?.trends ?? [])
 const gaps = computed(() => result.value?.user_research_gaps?.directions ?? [])
@@ -60,10 +62,16 @@ const percent = computed(() => {
 })
 
 function requestBody(): HighTrendRequest {
-  return { start_date: startDate.value, end_date: endDate.value, model_id: modelId.value, max_calls: maxCalls.value ?? 24, prompt: prompt.value.trim() }
+  return { start_date: startDate.value, end_date: endDate.value, model_id: modelId.value, max_calls: maxCalls.value ?? 24, prompt: prompt.value.trim(), user_scope: userScope.value, user_limit: userScope.value === 'first' ? userLimit.value : null }
+}
+/** 历史任务只展示冻结的实际数量，不能按原提示词重新推算范围。 */
+function taskScope(current: HighTrendTask) {
+  const label = current.scope?.label ?? '原任务冻结范围'
+  return current.counts ? `${label} · 实际选中 ${current.counts.selected_users} 位，其中 ${current.counts.users_with_text} 位有有效文本` : label
 }
 function readError(value: unknown, fallback: string) {
   const detail = (value as { response?: { data?: { detail?: unknown } } })?.response?.data?.detail
+  if (Array.isArray(detail)) return detail.map(item => String(item.msg ?? '参数无效').replace(/^Value error, /, '')).join('；')
   return typeof detail === 'string' ? detail : value instanceof Error ? value.message : fallback
 }
 function dateTime(value: string) {
@@ -80,7 +88,7 @@ function updateHistory(current: HighTrendTask) {
   else history.value[index] = current
 }
 
-watch([startDate, endDate, modelId, maxCalls, prompt], () => {
+watch([startDate, endDate, modelId, maxCalls, prompt, userScope, userLimit], () => {
   previewVersion++
   preview.value = null
   previewLoading.value = false
@@ -128,7 +136,7 @@ function confirmResume() {
   if (!current?.resume?.can_resume || anyRunning.value || resuming.value || !cap || !Number.isInteger(cap) || cap > 100 || cap < current.resume.minimum_max_calls) return
   Modal.confirm({
     title: '从未完成步骤继续？',
-    content: `沿用本任务的日期、模型与文字要求，复用 ${current.completed_jobs} 个已完成步骤。已尝试 ${current.resume.used_calls} 次，剩余预计 ${current.resume.remaining_jobs} 步；累计调用上限 ${cap} 次。继续会产生新的模型调用。`,
+    content: `沿用本任务冻结的资料（${taskScope(current)}）、模型与文字要求，复用 ${current.completed_jobs} 个已完成步骤。已尝试 ${current.resume.used_calls} 次，剩余预计 ${current.resume.remaining_jobs} 步；累计调用上限 ${cap} 次。继续会产生新的模型调用。`,
     okText: '确认继续', cancelText: '暂不继续', centered: true,
     async onOk() {
       if (resuming.value || disposed) return
@@ -169,6 +177,8 @@ function confirmStart() {
       h('p', `趋势日期：${body.start_date} 至 ${body.end_date}`),
       h('p', `模型：${modelName}`),
       body.prompt ? h('p', { style: 'white-space: pre-wrap; max-height: 160px; overflow: auto;' }, `你的要求：${body.prompt}`) : null,
+      h('p', `用户范围：${preview.value.scope.label}；实际选中 ${preview.value.counts.selected_users} 位。`),
+      h('p', preview.value.scope.note),
       h('p', `纳入 ${preview.value.counts.selected_trends} 条趋势、${preview.value.counts.users_with_text} 位有文本的用户。`),
       h('p', `预计调用 ${preview.value.plan.planned_calls} 次，上限 ${body.max_calls} 次；开始后将调用模型并保存结果。`),
     ]),
@@ -230,13 +240,19 @@ onUnmounted(() => {
       </section>
       <div v-if="error" class="page-alert"><a-alert type="error" show-icon :message="error" closable @close="error = ''" /></div>
       <section class="workspace-card scope-panel">
-        <div class="section-heading"><div><span class="eyebrow">01 / 选择观察范围</span><h2>这一次，关注哪段趋势？</h2><p>日期仅筛选趋势资料，用户研究使用全部可用文本。</p></div><span class="range-badge">默认近两个月</span></div>
+        <div class="section-heading"><div><span class="eyebrow">01 / 选择观察范围</span><h2>这一次，关注哪段趋势？</h2><p>日期筛选趋势资料；用户范围可在下方选择，也可从文字要求中识别。</p></div><span class="range-badge">默认近两个月</span></div>
         <div class="scope-form">
           <div class="date-field"><label for="trend-start">开始日期 <span>*</span></label><input id="trend-start" v-model="startDate" type="date" required :max="endDate || undefined" /></div>
           <ArrowRightOutlined class="date-arrow" />
           <div class="date-field"><label for="trend-end">结束日期 <span>*</span></label><input id="trend-end" v-model="endDate" type="date" required :min="startDate || undefined" /></div>
           <div class="model-field"><label for="trend-model">推理模型 <span>*</span></label><a-select id="trend-model" v-model:value="modelId" size="large" placeholder="选择模型" :options="models.map(model => ({ value: model.id, label: model.name }))" /></div>
           <a-button :loading="previewLoading" :disabled="!validRequest" size="large" @click="estimate">预估范围</a-button>
+        </div>
+        <div class="user-scope-controls">
+          <label for="trend-user-scope">用户研究范围</label>
+          <a-select id="trend-user-scope" v-model:value="userScope" :options="[{ value: 'auto', label: '从文字识别，未指定则全部' }, { value: 'first', label: '前 N 位用户' }, { value: 'all', label: '全部用户' }]" />
+          <template v-if="userScope === 'first'"><label for="trend-user-limit">用户数量</label><a-input-number id="trend-user-limit" v-model:value="userLimit" :min="1" :precision="0" /></template>
+          <p>按原始资料顺序选用户，再保留有效回答。文字与选项冲突时会提示修改。</p>
         </div>
         <p v-if="!validRange" class="field-error">请填写完整日期，开始日期不能晚于结束日期。</p>
         <details class="advanced-options"><summary>高级选项</summary><label for="trend-max-calls">模型调用上限</label><a-input-number id="trend-max-calls" v-model:value="maxCalls" :min="1" :max="100" :precision="0" /><p>默认 24 次，可设为 1–100 次；提高上限可能增加模型用量。</p></details>
@@ -247,10 +263,11 @@ onUnmounted(() => {
             <label for="trend-prompt" class="chat-label"><MessageOutlined /> 告诉 Agent 你关注什么</label>
             <a-textarea id="trend-prompt" v-model:value="prompt" :rows="4" :maxlength="4000" show-count
               placeholder="例如：重点关注色彩、材质和触感上的共性，不限定产品品类。每个方向请给出具体的设计启发，并保留用户之间不同的偏好。" />
-            <p class="catalog-note">可补充关注方向、使用场景或输出要求；留空则提炼通用设计趋势。</p>
+            <p class="catalog-note">可填写“只选择前 20 个用户”，代码会在整理资料前筛选。支持前 N 位或全部用户；其他人群条件暂不自动筛选。也可补充设计关注方向。</p>
           </div>
         </div>
         <div v-if="preview" class="preview-result">
+          <p class="resolved-scope">采用范围：{{ preview.scope.label }} · 实际选中 {{ preview.counts.selected_users }} / {{ preview.counts.source_users }} 位用户 · {{ preview.scope.origin === 'prompt' ? '从文字识别' : preview.scope.origin === 'option' ? '来自范围选项' : '未指定数量，采用全部' }}<br /><small>{{ preview.scope.note }}</small></p>
           <div class="preview-stats"><div><strong>{{ preview.counts.selected_trends }}</strong><span>条趋势</span></div><div><strong>{{ preview.counts.users_with_text }}</strong><span>位有文本用户</span></div><div><strong>{{ preview.counts.user_records }}</strong><span>条用研记录</span></div><div><strong>{{ preview.plan.planned_calls }}</strong><span>次预计模型调用</span></div></div>
           <a-button class="run-button" type="primary" :loading="starting" :disabled="anyRunning || !preview.counts.selected_trends || !preview.counts.users_with_text" @click="confirmStart">确认并生成洞察 <ArrowRightOutlined /></a-button>
           <p class="estimate-note">预计处理 {{ preview.plan.input_source_chars.toLocaleString() }} 字符，{{ preview.plan.map_jobs ? `分 ${preview.plan.map_jobs} 组归纳` : '直接归纳' }}；模型调用上限 {{ maxCalls }} 次。{{ anyRunning ? '已有任务执行中，可在历史任务中查看进度。' : '' }}</p>
@@ -264,7 +281,7 @@ onUnmounted(() => {
           <div class="history-head"><h2>历史任务</h2><a-button type="text" aria-label="刷新历史任务" :loading="historyLoading" @click="refreshHistory"><ReloadOutlined /></a-button></div>
           <p v-if="!history.length" class="empty-copy">生成后，洞察与执行记录会保留在这里。</p>
           <button v-for="entry in history" :key="entry.id" class="history-item" :class="{ selected: selectedId === entry.id }" @click="selectTask(entry.id)">
-            <span class="history-date">{{ entry.request.start_date }}<br />— {{ entry.request.end_date }}</span><a-tag :color="entry.status === 'completed' ? 'green' : entry.status === 'failed' ? 'red' : 'purple'">{{ statusLabels[entry.status] }}</a-tag><small>{{ dateTime(entry.created_at) }}</small>
+            <span class="history-date">{{ entry.request.start_date }}<br />— {{ entry.request.end_date }}</span><a-tag :color="entry.status === 'completed' ? 'green' : entry.status === 'failed' ? 'red' : 'purple'">{{ statusLabels[entry.status] }}</a-tag><small>{{ taskScope(entry) }}</small><small>{{ dateTime(entry.created_at) }}</small>
           </button>
         </aside>
         <div class="insights-content">
@@ -272,6 +289,7 @@ onUnmounted(() => {
           <a-spin v-if="taskLoading" class="task-spinner" tip="正在读取任务…" />
           <section v-if="task" class="workspace-card task-overview" aria-live="polite">
             <div class="section-heading"><div><span class="eyebrow">02 / 洞察档案</span><h2>{{ statusLabels[task.status] }}</h2><p>{{ task.message }}</p></div><div v-if="result" class="downloads"><a :href="trendDownloadUrl(task.id, 'markdown')" download>Markdown ↓</a><a :href="trendDownloadUrl(task.id, 'json')" download>JSON ↓</a></div></div>
+            <p class="resolved-scope">{{ taskScope(task) }}</p>
             <template v-if="running"><a-progress :percent="percent" :show-info="false" status="active" stroke-color="#6257d8" /><p class="catalog-note">已完成 {{ task.completed_jobs }} / {{ task.total_jobs }} 项 · 每 2 秒更新</p></template>
             <a-alert v-if="task.status === 'partial'" type="warning" message="本轮部分完成，已保留可用结果。请结合下方提示与来源判断。" show-icon />
             <a-alert v-if="task.status === 'empty'" type="info" message="本轮没有可交付的研究正文，可以查看执行记录或调整范围重新生成。" show-icon />
@@ -353,6 +371,11 @@ summary { cursor: pointer; line-height: 1.8; }
 .task-meta { border-top: 1px solid #f0ebf5; padding-top: 12px; }
 .resume-panel { margin-top: 18px; padding: 16px; border: 1px solid #e5dcf3; border-radius: 12px; font-size: 12px; color: #76628e; }
 .resume-panel label, .resume-panel :deep(.ant-input-number) { margin-right: 12px; margin-bottom: 10px; }
+.user-scope-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; font-size: 12px; color: #76628e; }
+.user-scope-controls :deep(.ant-select) { width: 240px; }
+.user-scope-controls p { flex-basis: 100%; margin: 0; color: #9686a5; }
+.resolved-scope { width: 100%; font-size: 12px; line-height: 1.8; color: #76628e; }
+.resolved-scope small { color: #9686a5; }
 .trend-chat { margin-top: 24px; }
 .trend-chat .catalog-note { margin-top: 22px; }
 .task-prompt { margin-top: 16px; padding: 14px 18px; background: #f5f1fb; border-radius: 14px; font-size: 12px; color: #76628e; }

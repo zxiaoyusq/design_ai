@@ -43,7 +43,8 @@ def make_job(run, stage, key, text, source_ids, manifest, aliases=None):
     if profile:
         profile = json.loads(json.dumps(profile))
         cap = manifest['settings']['final_output_tokens' if stage == 'synthesize' else 'map_output_tokens']
-        profile['parameters']['max_tokens'] = min(profile['parameters'].get('max_tokens', cap), cap)
+        if cap is not None:
+            profile['parameters']['max_tokens'] = min(profile['parameters'].get('max_tokens', cap), cap)
     job = {'job_id': jid, 'stage': stage, 'prompt_version': f'{VERSION}:{stage}',
            'messages': messages, 'source_ids': source_ids, 'aliases': aliases or {},
            'model_profile': profile, 'message_sha256': digest(messages)}
@@ -54,8 +55,9 @@ def make_job(run, stage, key, text, source_ids, manifest, aliases=None):
 def prepare(args):
     if args.batch_chars < 2000 or args.max_calls < 1:
         raise ValueError('batch-chars 至少2000，max-calls须为正整数')
-    if min(args.map_output_tokens, args.final_output_tokens) < 1:
-        raise ValueError('输出token预算须为正整数')
+    if any(cap is not None and (type(cap) is not int or cap < 1)
+           for cap in (args.map_output_tokens, args.final_output_tokens)):
+        raise ValueError('输出token预算如提供须为正整数')
     root = Path(args.project_root).resolve()
     data = build_sources(args.trends, args.users, root, args.start_date, args.end_date,
                          args.undated, args.user_limit)
@@ -75,6 +77,10 @@ def prepare(args):
                      (type(profile['parameters']['max_tokens']) is not int or profile['parameters']['max_tokens'] < 1))):
         raise ValueError('模型参数须为对象，max_tokens如提供须为正整数')
     run = Path(args.output).resolve() if args.output else root / 'data/result/high_trend' / (datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S') + '_lean_' + uuid4().hex[:8])
+    # None 表示不主动设置输出上限，不能在预估中误写成零输出预算。
+    output_cap = None
+    if args.final_output_tokens is not None and (direct or args.map_output_tokens is not None):
+        output_cap = args.final_output_tokens + (0 if direct else len(packs) * args.map_output_tokens)
     manifest = {**{k: v for k, v in data.items() if k != 'sources'}, 'workflow': 'lean',
         'skill_version': VERSION, 'created_at': timestamp(), 'project_root': str(root), 'run_dir': str(run),
         'model_profile': profile, 'settings': {'batch_chars': args.batch_chars, 'max_calls': args.max_calls,
@@ -84,7 +90,7 @@ def prepare(args):
                  'planned_calls': planned_calls, 'input_source_chars': sum(len(p['text']) for p in packs),
                  'first_stage_message_chars': len(direct_text) + len(FINAL_PROMPT) if direct and planned_calls else sum(len(p['text']) + len(MAP_PROMPT) for p in packs) if planned_calls else 0,
                  'max_final_message_chars': args.batch_chars if planned_calls and not direct else 0,
-                 'planned_output_token_cap': (args.final_output_tokens + (0 if direct else len(packs) * args.map_output_tokens)) if planned_calls else 0,
+                 'planned_output_token_cap': output_cap if planned_calls else 0,
                  'note': '字符是代码统计，不等于实际token；缓存可减少新调用，失败重试同样计入总调用上限。'}}
     if args.dry_run:
         return manifest
@@ -190,7 +196,8 @@ def accept(run, jid, text, model=None, execution=None):
         result = publish(run, manifest, {sid: all_sources[sid] for sid in job['source_ids']}, text, job['aliases'],
                          {'model': model, 'prompt_version': job['prompt_version'], 'message_sha256': job['message_sha256'],
                           'partial': bool(failed) or any(v.get('truncated') for v in state['jobs'].values()),
-                          'missing_batches': failed, 'warnings': state['warnings'], **(execution or {})})
+                          'missing_batches': failed, 'warnings': state['warnings'], **(execution or {})},
+                         image_sources=all_sources)
         state['status'] = result.get('status', 'complete')
     write(run / 'state.json', state)
     performance(run)
@@ -298,7 +305,7 @@ def main(argv=None):
     for flag, default in [('trends','data/trend_data/trends.json'), ('users','data/userreseach_data/users.json'), ('project-root','.'), ('output',None), ('start-date',None), ('end-date',None), ('model',None), ('model-parameters','{}')]:
         p.add_argument('--'+flag, default=default)
     p.add_argument('--undated', choices=['include','exclude'], default='exclude')
-    for flag, default in [('user-limit',None), ('batch-chars',48000), ('max-calls',24), ('map-output-tokens',2500), ('final-output-tokens',5000)]:
+    for flag, default in [('user-limit',None), ('batch-chars',48000), ('max-calls',24), ('map-output-tokens',None), ('final-output-tokens',None)]:
         p.add_argument('--'+flag, type=int, default=default)
     p.add_argument('--dry-run', action='store_true'); p.add_argument('--no-cache', action='store_true')
     for name in ['status','next','performance','run','accept']:

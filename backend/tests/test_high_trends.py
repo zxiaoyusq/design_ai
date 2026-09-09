@@ -90,6 +90,9 @@ class HighTrendTests(unittest.TestCase):
             self.assertIn("publishing", [x["stage"] for x in task["events"]])
             factory.assert_called_once()
             self.assertEqual(factory.call_args.kwargs["max_retries"], 0)
+            self.assertNotIn("max_tokens", factory.call_args.kwargs)
+            self.assertNotIn("max_tokens", trace["model_profile"]["parameters"])
+            self.assertIsNone(preview.json()["plan"]["planned_output_token_cap"])
             restarted = HighTrendManager(self.root)
             self.assertEqual(restarted.get(task_id)["status"], "completed")
 
@@ -156,6 +159,7 @@ class HighTrendTests(unittest.TestCase):
 
         def fake_step(model, job, skill_text):
             self.assertEqual(job["user_prompt"], self.request.prompt)
+            self.assertNotIn("max_tokens", job["model_profile"]["parameters"])
             refs = list(job["aliases"]) if job["aliases"] else job["source_ids"]
             return {"text": "## 柔和表面\n可以探索触感和耐用之间的平衡。["+" ".join(refs)+"]",
                     "seconds": .01, "input_tokens": 10, "output_tokens": 5, "truncated": False,
@@ -212,6 +216,75 @@ class HighTrendTests(unittest.TestCase):
             response = TestClient(app).post("/api/v1/high-trends/preview", json={
                 **self.request.model_dump(mode="json"), "prompt": "字" * 4001})
         self.assertEqual(response.status_code, 422)
+
+    def test_user_scope_filters_before_model_and_freezes_selection(self):
+        self.request.prompt = "只选择前一位用户，关注触感。"
+        with patch("app.api.high_trends.high_trend_manager", self.manager), patch(
+            "app.agents.design_trend_synthesizer.create_chat_model", return_value=self.model(
+                "## 柔和表面\n低反光和触感的结合。[T00001 U000001]"
+            )
+        ) as model:
+            client = TestClient(app)
+            data = self.request.model_dump(mode="json")
+            preview = client.post("/api/v1/high-trends/preview", json=data).json()
+            self.assertEqual(preview["scope"]["user_limit"], 1)
+            self.assertEqual(preview["scope"]["origin"], "prompt")
+            self.assertEqual(preview["counts"]["selected_users"], 1)
+            model.assert_not_called()
+            response = client.post("/api/v1/high-trends/tasks", json=data)
+            self.assertEqual(response.status_code, 202, response.text)
+            task = self.manager.get(response.json()["id"])
+            self.assertEqual(task["status"], "completed")
+            self.assertEqual(task["scope"], preview["scope"])
+            self.assertEqual(task["selection"], preview["selection"])
+            self.assertEqual(task["counts"], preview["counts"])
+            folder = self.manager.output/task["id"]
+            sources = read(folder/"sources.json")
+            self.assertFalse(any(str(row.get("user_id")) == "2" for row in sources.values()))
+            trace = read(folder/"requests/synthesize-001.agent.json")
+            self.assertNotIn("喜欢哑光。", json.dumps(trace, ensure_ascii=False))
+            self.assertEqual(read(folder/"manifest.json")["selection"]["user_limit"], 1)
+            model.assert_called_once()
+
+    def test_scope_options_conflicts_and_source_order(self):
+        from app.services.high_trends.scope import resolve_user_scope
+        for text in ("只选择前 20 个用户", "前二十位用户", "仅用前20名用户"):
+            with self.subTest(text=text):
+                self.assertEqual(resolve_user_scope(self.request.model_copy(update={"prompt": text}))["user_limit"], 20)
+        explicit = self.request.model_copy(update={"user_scope": "first", "user_limit": 1})
+        self.assertEqual(self.manager.preview(explicit)["counts"]["selected_users"], 1)
+        self.assertEqual(resolve_user_scope(self.request)["origin"], "default")
+        self.assertIsNone(resolve_user_scope(self.request.model_copy(update={"prompt": "使用全部用户"}))["user_limit"])
+        for changes in ({"prompt": "前0个用户"}, {"prompt": "不要选前20个用户"},
+                        {"prompt": "前1位用户和前2位用户"},
+                        {"prompt": "前2位用户", "user_scope": "first", "user_limit": 1},
+                        {"prompt": "前2位用户", "user_scope": "all"}):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                self.manager.preview(self.request.model_copy(update=changes))
+        with patch("app.api.high_trends.high_trend_manager", self.manager), patch(
+            "app.services.high_trends.tasks.run_trend_step"
+        ) as model:
+            client = TestClient(app)
+            for endpoint in ("preview", "tasks"):
+                response = client.post(f"/api/v1/high-trends/{endpoint}", json={
+                    **self.request.model_dump(mode="json"), "user_scope": "all", "prompt": "前1位用户"})
+                self.assertEqual(response.status_code, 400)
+            for changes in ({"user_scope": "first"}, {"user_scope": "first", "user_limit": 0},
+                            {"user_scope": "first", "user_limit": 1.5}):
+                self.assertEqual(client.post("/api/v1/high-trends/preview", json={
+                    **self.request.model_dump(mode="json"), **changes}).status_code, 422)
+            model.assert_not_called()
+        self.assertFalse(self.manager.output.exists())
+        # 前一位没有有效回答时不能偷偷补第二位；超过总数则返回实际数量。
+        users = read(self.root/"data/userreseach_data/users.json")
+        users["users"][0]["aesthetic_research"] = [{"id": 11, "ai_analysis": "未提及"}]
+        self.write("data/userreseach_data/users.json", users)
+        counts = self.manager.preview(explicit)["counts"]
+        self.assertEqual(counts["selected_users"], 1)
+        self.assertEqual(counts["users_with_text"], 0)
+        counts = self.manager.preview(explicit.model_copy(update={"user_limit": 20}))["counts"]
+        self.assertEqual(counts["selected_users"], 2)
+        self.assertEqual(counts["users_with_text"], 1)
 
     def test_error_detail_redacts_unknown_error_and_resume_active_guard(self):
         from app.services.high_trends.errors import error_detail

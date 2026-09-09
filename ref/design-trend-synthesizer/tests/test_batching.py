@@ -123,7 +123,7 @@ class BatchingTests(unittest.TestCase):
             args = execute.call_args.args[0]
             self.assertEqual(
                 (args.batch_chars, args.max_calls, args.map_output_tokens, args.final_output_tokens),
-                (48000, 24, 2500, 5000),
+                (48000, 24, None, None),
             )
 
 

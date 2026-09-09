@@ -16,6 +16,7 @@ from app.agents.design_trend_synthesizer import (
 )
 from app.services.high_trends.skill import PROJECT_ROOT, SKILL_ROOT, lean, prepare
 from app.services.high_trends.errors import error_detail
+from app.services.high_trends.scope import resolve_user_scope
 from app.services.llm.catalog import get_model
 
 logger = logging.getLogger(__name__)
@@ -64,16 +65,22 @@ class HighTrendManager:
 
     def preview(self, request):
         get_model(request.model_id)
+        scope = resolve_user_scope(request)
+        request = request.model_copy(update={"user_limit": scope["user_limit"]})
         skill_text = (SKILL_ROOT / "SKILL.md").read_text()
         overhead = len(prompt_prefix(skill_text)) + len(user_request_message(request.prompt))
         manifest = prepare(self.root, request, self.output / "preview", dry_run=True,
                            overhead=overhead)
         manifest["plan"]["agent_context_chars_per_call"] = overhead
         return {"counts": manifest["counts"], "plan": manifest["plan"],
-                "selection": manifest["selection"], "settings": manifest["settings"]}
+                "selection": manifest["selection"], "settings": manifest["settings"], "scope": scope}
 
     def create(self, request):
         get_model(request.model_id)
+        scope = resolve_user_scope(request)
+        # 保存原始选项；只有进入 Skill 的参数使用解析后的数量，便于追溯二者。
+        original_request = request.model_dump(mode="json")
+        request = request.model_copy(update={"user_limit": scope["user_limit"]})
         with self._lock:
             if self._active:
                 raise RuntimeError("已有高潜趋势任务正在运行，请等待完成后再启动。")
@@ -85,7 +92,8 @@ class HighTrendManager:
             lean.atomic_text(folder / "agent_skill.md", skill_text)
             created = now()
             task = {"id": task_id, "status": "queued", "stage": "queued", "message": "资料已整理，等待开始",
-                    "created_at": created, "updated_at": created, "request": request.model_dump(mode="json"),
+                    "created_at": created, "updated_at": created, "request": original_request,
+                    "scope": scope, "selection": manifest["selection"],
                     "completed_jobs": 0, "total_jobs": manifest["plan"]["planned_calls"],
                     "counts": manifest["counts"], "plan": manifest["plan"], "events": [],
                     "skill_version": manifest["skill_version"], "agent_prompt_version": AGENT_PROMPT_VERSION,
@@ -241,6 +249,9 @@ class HighTrendManager:
                     raise RuntimeError("没有可执行阶段，也没有完成结果")
                 jid = progress["pending"][0]
                 job = read(folder / "requests" / f"{jid}.json")
+                # 旧任务继续也采用当前无输出上限策略；原请求文件保留，实际调用快照反映变更。
+                if job.get("model_profile"):
+                    job["model_profile"]["parameters"].pop("max_tokens", None)
                 job["user_prompt"] = task["request"].get("prompt", "")
                 stage = job["stage"]
                 count = progress["accepted_jobs"]

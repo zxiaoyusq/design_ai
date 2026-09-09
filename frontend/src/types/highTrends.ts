@@ -5,6 +5,16 @@ export interface HighTrendRequest {
   model_id: string
   max_calls: number
   prompt?: string
+  user_scope?: 'auto' | 'all' | 'first'
+  user_limit?: number | null
+}
+
+/** 数量筛选在整理资料前生效，来源说明保留到历史任务。 */
+export interface HighTrendScope {
+  user_limit: number | null
+  origin: 'option' | 'prompt' | 'default'
+  label: string
+  note: string
 }
 
 export interface HighTrendCatalog {
@@ -16,7 +26,8 @@ export interface HighTrendCatalog {
 }
 
 export interface HighTrendPreview {
-  counts: { selected_trends: number; selected_users: number; users_with_text: number; user_records: number }
+  scope: HighTrendScope
+  counts: { source_users: number; selected_trends: number; selected_users: number; users_with_text: number; user_records: number }
   plan: { planned_calls: number; map_jobs: number; input_source_chars: number }
   warnings?: string[]
 }
@@ -77,6 +88,8 @@ export interface HighTrendTask {
   created_at: string
   updated_at: string
   request: HighTrendRequest
+  scope?: HighTrendScope
+  counts?: HighTrendPreview['counts']
   error?: string | null
   error_detail?: { code: string; message: string; exception_type: string; job_id?: string | null; seconds?: number | null; http_status?: number | null; time: string }
   error_history?: HighTrendTask['error_detail'][]

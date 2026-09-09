@@ -222,14 +222,18 @@ class DesignTrendModelAdapterTestCase(unittest.TestCase):
                 self.assertIsNone(details["reasoning_output_tokens"])
         self.assertTrue(all(value is None for value in adapter._usage_details({}, {"usage": "malformed"}).values()))
 
-    def test_max_tokens_is_required_and_not_silently_added(self):
+    def test_max_tokens_is_optional_and_not_silently_added(self):
+        del self.request["model_profile"]["parameters"]["max_tokens"]
+        result, factory, _ = self.invoke()
+        self.assertEqual(result["status"], "ok")
+        self.assertNotIn("max_tokens", factory.call_args.kwargs)
+        self.assertNotIn("max_tokens", result["model_profile"]["parameters"])
+
+    def test_invalid_explicit_max_tokens_is_rejected(self):
         for value in (None, 0, -1, True, "12000"):
             with self.subTest(value=value):
                 request = copy.deepcopy(self.request)
-                if value is None:
-                    del request["model_profile"]["parameters"]["max_tokens"]
-                else:
-                    request["model_profile"]["parameters"]["max_tokens"] = value
+                request["model_profile"]["parameters"]["max_tokens"] = value
                 with patch.object(adapter, "create_chat_model") as factory:
                     self.assertEqual(adapter.run_request(request)["category"], "permanent")
                 factory.assert_not_called()

@@ -55,7 +55,7 @@ def _parse_model_json(raw: str) -> dict[str, Any] | None:
 
 
 def validate_request(request: Any) -> tuple[dict[str, Any], list[dict[str, str]]]:
-    """要求可复现的输出参数及纯文本消息，不能从缺失参数猜测模型预算。"""
+    """验证纯文本消息与生成参数；未提供 max_tokens 时沿用服务默认值，不主动补限额。"""
     if not isinstance(request, dict):
         raise ValueError("请求必须为 JSON 对象")
     profile = request.get("model_profile")
@@ -66,8 +66,8 @@ def validate_request(request: Any) -> tuple[dict[str, Any], list[dict[str, str]]
     parameters = profile["parameters"]
     if set(parameters) - OUTPUT_PARAMETERS:
         raise ValueError("parameters 含未支持的生成选项或禁止覆盖的连接/传输选项")
-    if type(parameters.get("max_tokens")) is not int or parameters["max_tokens"] <= 0:
-        raise ValueError("parameters 必须显式提供正整数 max_tokens")
+    if "max_tokens" in parameters and (type(parameters["max_tokens"]) is not int or parameters["max_tokens"] <= 0):
+        raise ValueError("max_tokens 如提供须为正整数")
     json.dumps(profile, allow_nan=False)
     messages = request.get("messages")
     if not isinstance(messages, list) or not messages:
@@ -286,7 +286,7 @@ def run_request(request: Any) -> dict[str, Any]:
     try:
         profile, messages = validate_request(request)
     except (ValueError, TypeError):
-        return {"status": "error", "category": "permanent", "message": "请求无效：需纯文本 messages、显式 max_tokens，且不得覆盖连接或传输参数"}
+        return {"status": "error", "category": "permanent", "message": "请求无效：需纯文本 messages、合法生成参数，且不得覆盖连接或传输参数"}
     try:
         settings = get_llm_settings()
         secrets = (settings.api_key, settings.base_url)

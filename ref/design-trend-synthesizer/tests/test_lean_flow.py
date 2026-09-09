@@ -56,6 +56,19 @@ class LeanFlowTests(unittest.TestCase):
         self.assertEqual(lean.read(Path(manifest['run_dir'])/'performance_report.json')['manual_host_jobs'], 1)
         self.assertFalse(lean.next_job(manifest['run_dir'])['pending'])
 
+    def test_optional_output_budget_is_omitted_for_map_and_final(self):
+        manifest = lean.prepare(self.multi_args(model='offline-fixture', map_output_tokens=None,
+                                               final_output_tokens=None))
+        self.assertIsNone(manifest['plan']['planned_output_token_cap'])
+        run = Path(manifest['run_dir'])
+        for jid in lean.status(run)['pending']:
+            job = lean.read(run/'requests'/f'{jid}.json')
+            self.assertNotIn('max_tokens', job['model_profile']['parameters'])
+            lean.accept(run, jid, '## 柔和表面\n触感与轮廓。['+' '.join(job['source_ids'])+']')
+        jid = lean.next_job(run)['pending'][0]
+        final = lean.read(run/'requests'/f'{jid}.json')
+        self.assertNotIn('max_tokens', final['model_profile']['parameters'])
+
     def test_large_path_is_map_then_single_final_with_short_notes(self):
         manifest = lean.prepare(self.multi_args())
         self.assertFalse(manifest['plan']['direct'])

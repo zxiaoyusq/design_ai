@@ -17,6 +17,7 @@ class LeanOutputTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         (self.root / "available.jpg").write_bytes(b"fixture; pixels are never read")
+        (self.root / "question-only.jpg").write_bytes(b"question-only fixture")
         self.sources = {
             "T00001": {"id": "trend:one", "kind": "trend", "source_file": "trends",
                        "json_pointer": "/trends/0", "fields": {"summary_zh": "磨砂表面降低反光。"},
@@ -26,7 +27,11 @@ class LeanOutputTests(unittest.TestCase):
             "U000003": self.user("u2", "q1", "希望触感柔和。", "/users/1/aesthetic_research/0"),
         }
         self.sources["U000001"]["fields"]["question"] = "请比较P3。"
-        self.sources["U000001"]["image_refs"] = [self.image(code, "available.jpg", code) for code in ("P1", "P2", "P3")]
+        self.sources["U000001"]["image_refs"] = [
+            self.image("P1", "available.jpg", "P1"),
+            self.image("P2", "available.jpg", "P2"),
+            self.image("P3", "question-only.jpg", "P3"),
+        ]
         self.manifest = {"project_root": str(self.root), "selection": {"start_date": "2026-01-01"},
                          "counts": {"users_with_text": 2, "selected_trends": 1},
                          "inputs": {"trends": {"path": str(self.root / "trends.json")},
@@ -64,10 +69,15 @@ class LeanOutputTests(unittest.TestCase):
         self.assertEqual(len(warnings), 2)
 
     def test_publish_counts_original_answers_and_existing_image_codes(self):
+        (self.root / "other-user.jpg").write_bytes(b"another fixture; pixels are never read")
+        self.sources["U000004"] = self.user("u2", "q2", "偏好P4的构图。", "/users/1/aesthetic_research/1")
+        self.sources["U000004"]["image_refs"] = [self.image("extra-photo", "other-user.jpg", "P4")]
         run = self.root / "result"
-        summary = publish(run, self.manifest, self.sources,
+        result_sources = {key: value for key, value in self.sources.items() if key != "U000004"}
+        summary = publish(run, self.manifest, result_sources,
                           "## 低反光与柔和触感\n设计方向正文。[引用 T00001 U000001 U000002]\n模型提到P3也不补图片。",
-                          execution={"model": "offline-fixture", "prompt_version": "test-only"})
+                          execution={"model": "offline-fixture", "prompt_version": "test-only"},
+                          image_sources=self.sources)
         card = self.read(run)["trends"][0]
         self.assertEqual(summary["status"], "complete")
         self.assertTrue(summary["has_content"])
@@ -86,6 +96,18 @@ class LeanOutputTests(unittest.TestCase):
         self.assertTrue(summary["warnings"])
         self.assertEqual(len((run / "high_potential_trends.jsonl").read_text().splitlines()), 1)
         self.assertEqual(self.read(run, "validation_report.json")["missing_image_references"], 1)
+        self.assertEqual(self.read(run, "validation_report.json")["result_image_paths"], 2)
+        self.assertEqual(self.read(run, "validation_report.json")["additional_user_image_paths"], 1)
+        image_paths = (run / "image_paths.md").read_text(encoding="utf-8")
+        result_section, user_section = image_paths.split("## 用户提及的其他图片路径")
+        self.assertIn("## 与结果相关的所有图片路径", result_section)
+        self.assertIn("available.jpg", result_section)
+        self.assertIn("missing.jpg", result_section)
+        self.assertNotIn("other-user.jpg", result_section)
+        self.assertIn("other-user.jpg", user_section)
+        self.assertNotIn("available.jpg", user_section)
+        self.assertNotIn("question-only.jpg", image_paths)
+        self.assertEqual(self.read(run)["image_path_report_file"], "image_paths.md")
         self.assertEqual(self.read(run, "completion.json"), summary)
 
     def test_half_is_not_a_majority_and_old_advice_sections_are_removed(self):
@@ -101,7 +123,7 @@ class LeanOutputTests(unittest.TestCase):
         self.assertEqual(len(document["diagnostics"]), 1)
         self.assertNotIn("majority", document["diagnostics"][0]["mention_statistics"])
         self.assertEqual(document["diagnostics"][0]["source_ids"], ["U000001", "U000002"])
-        for filename in ("high_potential_trends.json", "report.md", "completion.json", "validation_report.json"):
+        for filename in ("high_potential_trends.json", "report.md", "image_paths.md", "completion.json", "validation_report.json"):
             rendered = (run / filename).read_text(encoding="utf-8")
             self.assertNotIn("下一轮验证", rendered)
             self.assertNotIn("validation_questions", rendered)

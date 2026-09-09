@@ -106,6 +106,12 @@ def _original_text(record):
     return value if isinstance(value, str) else encode(value)
 
 
+def _code_mentioned(text, code):
+    """图片编码必须作为独立编号出现在用户原回答中，避免把题干图片误算为用户提及。"""
+    return bool(isinstance(code, str) and code and re.search(
+        r"(?<![A-Za-z0-9])" + re.escape(code) + r"(?![A-Za-z0-9])", text))
+
+
 def _source_record(short_id, record, manifest):
     # 交付JSON只带定位信息，原文保留在sources.json；避免每张卡重复拷贝整段问答。
     source = {"short_id": short_id, "record_id": record['id'], "kind": record['kind'],
@@ -124,9 +130,7 @@ def _images(ids, sources, project_root, warnings):
         original = _original_text(record)
         # 编码只从当前源记录的图库取，并要求原回答明确出现；问题与模型正文均不能补编码。
         codes = list(dict.fromkeys(ref["code"] for ref in record.get("image_refs", [])
-                                   if isinstance(ref.get("code"), str) and ref["code"]
-                                   and re.search(r"(?<![A-Za-z0-9])" + re.escape(ref["code"])
-                                                 + r"(?![A-Za-z0-9])", original)))
+                                   if _code_mentioned(original, ref.get("code"))))
         evidence.append({"id": short_id, "record_id": record["id"], "kind": record["kind"],
                          "relation": "mention", "image_codes": codes})
     refs = resolve_images(evidence, records, project_root)
@@ -137,6 +141,94 @@ def _images(ids, sources, project_root, warnings):
             ref["path"] = ref["absolute_path"] = None
             warnings.append(f"来源 {ref['source_record_id']} 的图片 {ref['image_id'] or ref['code'] or '未编号'} 不可用，路径置空。")
     return refs
+
+
+def _ref_path(ref, project_root):
+    """兼容最终引用与原始来源引用，统一返回规范化绝对路径。"""
+    value = ref.get("absolute_path") or ref.get("declared_path")
+    if value is None and ref.get("local_path"):
+        value = Path(ref.get("source_root") or project_root) / ref["local_path"]
+    if value is None:
+        return None
+    path = Path(value)
+    return (path if path.is_absolute() else project_root / path).resolve()
+
+
+def _append_image(entries, by_path, ref, project_root, *, source_id=None, result=None):
+    path = _ref_path(ref, project_root)
+    if path is None:
+        return
+    key = str(path)
+    entry = by_path.get(key)
+    if entry is None:
+        entry = {"path": key, "file_exists": path.is_file(), "image_ids": [], "codes": [],
+                 "source_record_ids": [], "results": []}
+        by_path[key] = entry
+        entries.append(entry)
+    for field, value in (("image_ids", ref.get("image_id")), ("codes", ref.get("code")),
+                         ("source_record_ids", source_id or ref.get("source_record_id")),
+                         ("results", result)):
+        value = str(value) if value is not None else None
+        if value and value not in entry[field]:
+            entry[field].append(value)
+
+
+def _image_path_report(items, sources, project_root):
+    """生成两段去重路径：最终结果关联图片，以及其余用户明确提及图片。"""
+    result_images, result_by_path = [], {}
+    for item in items:
+        result_label = f"{item['id']} {item['title']}"
+        for ref in item.get("image_refs", []):
+            _append_image(result_images, result_by_path, ref, project_root, result=result_label)
+
+    user_images, user_by_path = [], {}
+    for short_id, record in sources.items():
+        if record.get("kind") not in USER_KINDS:
+            continue
+        original = _original_text(record)
+        for ref in record.get("image_refs", []):
+            # user_qa 只认回答中明确出现的编码；user_demand 的 ref_pic_links 本身就是直接关联。
+            if record.get("kind") == "user_qa" and not _code_mentioned(original, ref.get("code")):
+                continue
+            path = _ref_path(ref, project_root)
+            if path is None or str(path) in result_by_path:
+                continue
+            _append_image(user_images, user_by_path, ref, project_root,
+                          source_id=f"{short_id} / {record['id']}")
+
+    def render(entries, empty_text):
+        if not entries:
+            return [empty_text]
+        lines = []
+        for entry in entries:
+            details = []
+            if entry["image_ids"]:
+                details.append("图片 ID：" + "、".join(entry["image_ids"]))
+            if entry["codes"]:
+                details.append("图片编码：" + "、".join(entry["codes"]))
+            if entry["results"]:
+                details.append("关联结果：" + "；".join(entry["results"]))
+            if entry["source_record_ids"]:
+                details.append("来源记录：" + "；".join(entry["source_record_ids"]))
+            if not entry["file_exists"]:
+                details.append("文件不存在")
+            suffix = " — " + "；".join(details) if details else ""
+            lines.append(f"- [打开图片](<{entry['path']}>) `{entry['path']}`{suffix}")
+        return lines
+
+    lines = ["# 图片路径汇总", "",
+             "仅汇总来源索引中的既有路径，按规范化绝对路径去重；图片未被读取或视觉核验。", "",
+             "## 与结果相关的所有图片路径", "",
+             f"共 {len(result_images)} 条去重路径。", ""]
+    lines += render(result_images, "本轮结果没有可关联的图片路径。")
+    lines += ["", "## 用户提及的其他图片路径", "",
+              "以下路径来自全部入选用户来源，并已排除第一部分出现的路径。", "",
+              f"共 {len(user_images)} 条去重路径。", ""]
+    lines += render(user_images, "没有与第一部分去重后剩余的用户提及图片路径。")
+    return "\n".join(lines) + "\n", {
+        "result_image_paths": len(result_images),
+        "additional_user_image_paths": len(user_images),
+    }
 
 
 def _population(manifest, sources, warnings):
@@ -166,7 +258,7 @@ def _render_item(item):
     return lines
 
 
-def publish(run, manifest, sources, text, aliases=None, execution=None):
+def publish(run, manifest, sources, text, aliases=None, execution=None, image_sources=None):
     """确定性发布宽松正文、已有来源与统计；自由正文可交付，空内容如实标记为空。"""
     run = Path(run)
     project_root = Path(manifest["project_root"]).resolve()
@@ -212,20 +304,26 @@ def publish(run, manifest, sources, text, aliases=None, execution=None):
     generated = timestamp()
     gap_section = {"status": "compiled", "population_count": population, "directions": gaps,
                    "scope_note": GAP_SCOPE, "count_note": COUNT_NOTE}
+    # 综合任务只携带实际进入笔记的来源；独立图片清单仍需扫描本轮完整用户来源。
+    image_path_text, image_path_counts = _image_path_report(
+        cards + gaps, sources if image_sources is None else image_sources, project_root)
     document = {"schema_version": "design_trend_insights_v3", "generated_at": generated,
                 "selection": manifest.get("selection", {}), "input_counts": manifest.get("counts", {}),
                 "source_inputs": manifest.get("inputs", {}), "trends": cards, "user_research_gaps": gap_section,
                 "diagnostics": diagnostics, "unlinked_notes": unlinked, "execution": execution,
-                "source_index_file": "sources.json", "scope_note": SOURCE_SCOPE,
+                "source_index_file": "sources.json", "image_path_report_file": "image_paths.md",
+                "scope_note": SOURCE_SCOPE,
                 "warnings": warnings, "has_content": has_content, "partial": partial}
     summary = {"status": "empty" if not has_content else "partial" if partial else "complete",
                "has_content": has_content, "partial": partial, "completed_at": generated,
                "trends": len(cards), "user_research_gaps": len(gaps), "diagnostics": len(diagnostics),
                "unlinked_notes": len(unlinked), "warnings": warnings, "source_scope": SOURCE_SCOPE,
-               "report": str((run / "report.md").resolve())}
+               "report": str((run / "report.md").resolve()),
+               "image_paths": str((run / "image_paths.md").resolve())}
     validation = {**summary, "checks": "仅核对已知引用、去重人数和图片文件是否存在。", "semantic_review": "not_performed",
                   "image_reference_count": sum(len(item["image_refs"]) for item in cards + gaps + diagnostics),
-                  "missing_image_references": sum(not ref["file_exists"] for item in cards + gaps + diagnostics for ref in item["image_refs"])}
+                  "missing_image_references": sum(not ref["file_exists"] for item in cards + gaps + diagnostics for ref in item["image_refs"]),
+                  **image_path_counts}
     selection = manifest.get("selection", {})
     lines = ["# 通用设计趋势洞察", "", SOURCE_SCOPE, "", COUNT_NOTE, "",
              f"趋势日期范围：{selection.get('start_date') or '不限'} 至 {selection.get('end_date') or '不限'}；用户文本不按趋势日期过滤。",
@@ -250,9 +348,10 @@ def publish(run, manifest, sources, text, aliases=None, execution=None):
         lines += ["# 编译提示", ""] + [f"- {warning}" for warning in warnings]
     write(run / "high_potential_trends.json", document)
     if not (run / 'sources.json').exists():
-        write(run / 'sources.json', sources)
+        write(run / 'sources.json', sources if image_sources is None else image_sources)
     atomic_text(run / "high_potential_trends.jsonl", "".join(encode(card) + "\n" for card in cards))
     atomic_text(run / "report.md", "\n".join(lines) + "\n")
+    atomic_text(run / "image_paths.md", image_path_text)
     write(run / "validation_report.json", validation)
     # 完成文件最后写入；调用方仍须检查 has_content，不能把文件存在等同于研究成功。
     write(run / "completion.json", summary)
