@@ -144,15 +144,15 @@ async function changeResultView(view: 'business' | 'detail') {
     <div class="ambient ambient-two"></div>
 
     <header class="topbar">
-      <a class="brand" href="#top" aria-label="形鉴首页">
+      <a class="brand" href="#top" aria-label="用户审美洞察与趋势捕捉首页">
         <span class="brand-mark"><span></span></span>
         <span class="brand-copy">
+          <strong>用户审美洞察与趋势捕捉</strong>
         </span>
       </a>
       <nav>
         <a class="active" href="#extract">DNA 提取</a>
         <RouterLink to="/high-trends">高潜趋势</RouterLink>
-        <a href="#results">结果档案</a>
       </nav>
       <div class="system-state"><span></span> Agent 服务在线</div>
     </header>
@@ -160,7 +160,6 @@ async function changeResultView(view: 'business' | 'detail') {
     <main id="top">
       <section class="hero">
         <div class="hero-badge"><BulbOutlined /> AI AESTHETIC INTELLIGENCE</div>
-        <h1>用户审美洞察与趋势捕捉，<br /><em>DNA 元素提取</em></h1>
         <p>
           通过多模态 Agent 识别主物品，将风格、形态、构图、色彩与 CMF
           转化为可追溯、可计算的设计 DNA。
@@ -219,7 +218,7 @@ async function changeResultView(view: 'business' | 'detail') {
     </main>
 
     <footer>
-      <span>形鉴 · AI 审美洞察平台</span>
+      <span>用户审美洞察与趋势捕捉 · AI 审美洞察平台</span>
       <span>Multi-tag Design DNA Schema v1.1</span>
     </footer>
   </div>

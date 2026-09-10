@@ -11,11 +11,12 @@ class ModelCatalogTestCase(unittest.TestCase):
             [model.id for model in list_models()],
             [
                 "claude-opus-5-20260820",
-                "claude-fable-5-20260820",
                 "gpt-5.6-terra-20260820",
                 "gpt-5.6-sol-20260820",
                 "MiniMax-M3",
-                "qwen3.7-max",
+                "qwen3.8-max-20260820",
+                "deepseek-v4-flash-vision-exp-official",
+                "gemini-3.7-flash-20260820",
             ],
         )
 
@@ -25,7 +26,7 @@ class ModelCatalogTestCase(unittest.TestCase):
             ModelProvider.ANTHROPIC,
         )
         self.assertIs(
-            get_model("qwen3.7-max").model_provider,
+            get_model("qwen3.8-max-20260820").model_provider,
             ModelProvider.OPENAI,
         )
 

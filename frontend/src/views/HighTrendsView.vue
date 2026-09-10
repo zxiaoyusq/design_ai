@@ -228,19 +228,18 @@ onUnmounted(() => {
   <div class="app-shell trends-shell">
     <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
     <header class="topbar">
-      <RouterLink class="brand" to="/" aria-label="形鉴首页"><span class="brand-mark"><span></span></span><strong>形鉴</strong></RouterLink>
+      <RouterLink class="brand" to="/" aria-label="用户审美洞察与趋势捕捉首页"><span class="brand-mark"><span></span></span><span class="brand-copy"><strong>用户审美洞察与趋势捕捉</strong></span></RouterLink>
       <nav aria-label="主导航"><RouterLink to="/">DNA 提取</RouterLink><RouterLink class="active" to="/high-trends">高潜趋势</RouterLink></nav>
       <div class="system-state"><span></span> 审美洞察工作台</div>
     </header>
     <main>
       <section class="hero trend-hero">
         <div class="hero-badge"><BulbOutlined /> TREND &amp; PEOPLE</div>
-        <h1>让趋势与真实需求，<br /><em>在这里相遇。</em></h1>
         <p>从趋势资料与用户研究的交集中，提炼值得关注的通用设计方向。每个方向保留来源、用户提及与图片线索，方便你继续判断。</p>
       </section>
       <div v-if="error" class="page-alert"><a-alert type="error" show-icon :message="error" closable @close="error = ''" /></div>
       <section class="workspace-card scope-panel">
-        <div class="section-heading"><div><span class="eyebrow">01 / 选择观察范围</span><h2>这一次，关注哪段趋势？</h2><p>日期筛选趋势资料；用户范围可在下方选择，也可从文字要求中识别。</p></div><span class="range-badge">默认近两个月</span></div>
+        <div class="section-heading"><div><span class="eyebrow">01 / 选择观察范围</span><p>日期筛选趋势资料；用户范围可在下方选择，也可从文字要求中识别。</p></div><span class="range-badge">默认近两个月</span></div>
         <div class="scope-form">
           <div class="date-field"><label for="trend-start">开始日期 <span>*</span></label><input id="trend-start" v-model="startDate" type="date" required :max="endDate || undefined" /></div>
           <ArrowRightOutlined class="date-arrow" />
@@ -321,7 +320,7 @@ onUnmounted(() => {
         </div>
       </section>
     </main>
-    <footer><span>形鉴 · AI 审美洞察平台</span><span>趋势启发 · 来源可追溯 · 人工复核</span></footer>
+    <footer><span>用户审美洞察与趋势捕捉 · AI 审美洞察平台</span><span>趋势启发 · 来源可追溯 · 人工复核</span></footer>
   </div>
 </template>
 

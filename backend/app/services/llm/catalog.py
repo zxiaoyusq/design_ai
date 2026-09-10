@@ -35,12 +35,6 @@ _MODELS = (
         max_output_tokens=128_000,
     ),
     ModelDefinition(
-        id="claude-fable-5-20260820",
-        name="Claude Fable 5",
-        model_provider=ModelProvider.ANTHROPIC,
-        max_output_tokens=128_000,
-    ),
-    ModelDefinition(
         id="gpt-5.6-terra-20260820",
         name="GPT-5.6 Terra",
         model_provider=ModelProvider.OPENAI,
@@ -56,8 +50,18 @@ _MODELS = (
         model_provider=ModelProvider.OPENAI,
     ),
     ModelDefinition(
-        id="qwen3.7-max",
-        name="Qwen 3.7 Max",
+        id="qwen3.8-max-20260820",
+        name="Qwen 3.8 Max",
+        model_provider=ModelProvider.OPENAI,
+    ),
+    ModelDefinition(
+        id="deepseek-v4-flash-vision-exp-official",
+        name="deepseek v4 vision",
+        model_provider=ModelProvider.OPENAI,
+    ),
+    ModelDefinition(
+        id="gemini-3.7-flash-20260820",
+        name="gemini 3.7 flash",
         model_provider=ModelProvider.OPENAI,
     ),
 )
