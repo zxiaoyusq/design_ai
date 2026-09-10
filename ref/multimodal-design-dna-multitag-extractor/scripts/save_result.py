@@ -154,6 +154,11 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     )
     parser.add_argument("--image", required=True, help="原始图片路径或文件名，用于生成输出文件名")
     parser.add_argument(
+        "--compiled",
+        action="store_true",
+        help="输入已编译的最终结构；只派生预设、严格校验并保存，不再归一化",
+    )
+    parser.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_OUTPUT_DIR,
@@ -171,7 +176,11 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     args = _parse_args(argv)
     try:
         model_data = _load_json_source(args.input)
-        data, _compilation_report = compile_model_output(model_data)
+        # 后端已持有编译结果及对应报告；保存阶段不能再改变其字段或风格判断。
+        if args.compiled:
+            data = model_data
+        else:
+            data, _compilation_report = compile_model_output(model_data)
         preset_registry = _strict_json_loads(
             DEFAULT_COMBINATION_PRESETS.read_text(encoding="utf-8")
         )

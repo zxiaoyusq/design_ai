@@ -989,6 +989,7 @@ def _save_validated_result(image_path: Path, data: dict[str, Any]) -> Path:
         [
             sys.executable,
             str(SAVE_RESULT_SCRIPT),
+            "--compiled",
             "--image",
             str(image_path),
             "-",

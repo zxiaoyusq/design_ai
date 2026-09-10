@@ -1,6 +1,6 @@
 {
   "name": "multimodal-design-dna-multitag-extractor",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "entry": "SKILL.md",
   "language": "zh-CN",
   "standard": "Agent Skills",

@@ -1,0 +1,85 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import SafeMarkdown from './SafeMarkdown.vue'
+import type { HighTrendCard, TrendImage } from '@/types/highTrends'
+
+const props = defineProps<{ card: HighTrendCard; index: number; supplement?: boolean }>()
+function isTrendImage(image: TrendImage) {
+  return image.kind === 'trend' || image.role === 'trend_reference'
+    || props.card.source_records.some(source => source.record_id === image.source_record_id && source.kind === 'trend')
+}
+const imageGroups = computed(() => [
+  { title: '趋势参考', images: props.card.image_refs.filter(isTrendImage) },
+  { title: '用研提及', images: props.card.image_refs.filter(image => !isTrendImage(image)) },
+])
+
+/** 图片只使用后端分配的同源接口，源文件路径和模型提供的链接不直接作为图片地址。 */
+function imageUrl(image: TrendImage) {
+  return image.url && /^\/api\/v1\/high-trends\/tasks\/[^/]+\/images\/\d+$/.test(image.url) ? image.url : undefined
+}
+</script>
+
+<template>
+  <article class="trend-card" :class="{ supplement }">
+    <div class="card-topline"><span>{{ supplement ? '用户研究补充' : '趋势 × 用户洞察' }}</span><span>{{ String(index + 1).padStart(2, '0') }}</span></div>
+    <h3>{{ card.title }}</h3>
+    <div class="mention-pill">已引用去重用户 <strong>{{ card.mention_statistics.unique_mentioned_users }}</strong> / {{ card.mention_statistics.population_count }} 人</div>
+    <SafeMarkdown :text="card.description" />
+    <p class="stat-note">{{ card.mention_statistics.note }}</p>
+    <p v-if="card.trend_coverage_note" class="stat-note">{{ card.trend_coverage_note }}</p>
+    <a-image-preview-group>
+      <div v-for="group in imageGroups.filter(group => group.images.length)" :key="group.title" class="image-group">
+        <h4>{{ group.title }} <span>{{ group.images.length }} 张 · 来源关联，未做视觉核验</span></h4>
+        <div class="evidence-images">
+          <figure v-for="(image, imageIndex) in group.images" :key="imageIndex">
+            <a-image v-if="imageUrl(image)" :src="imageUrl(image)" :alt="`${group.title} ${image.image_id || image.code || imageIndex + 1}`" :width="112" :height="96" />
+            <div v-else class="missing-image">图片不可用</div>
+            <figcaption>{{ image.image_id || image.code || '来源图片' }}</figcaption>
+          </figure>
+        </div>
+      </div>
+    </a-image-preview-group>
+    <p v-if="!card.image_refs.length" class="stat-note">当前引用没有可关联图片。</p>
+    <details class="sources">
+      <summary>查看 {{ card.source_records.length }} 条来源与原文</summary>
+      <section v-for="source in card.source_records" :key="source.short_id" class="source-record">
+        <div><a-tag :color="source.kind === 'trend' ? 'purple' : 'cyan'">{{ source.short_id }}</a-tag><strong>{{ source.title || (source.kind === 'trend' ? '趋势资料' : '用户研究') }}</strong></div>
+        <p v-if="source.user_id != null" class="stat-note">用户 {{ source.user_id }}</p>
+        <p v-if="source.question" class="question">{{ source.question }}</p>
+        <SafeMarkdown v-if="source.excerpt" :text="source.excerpt" />
+        <p v-else class="stat-note">本条来源未提供原文摘要。</p>
+        <code>{{ source.source_path }}{{ source.json_pointer ? ` · ${source.json_pointer}` : '' }}</code>
+      </section>
+    </details>
+    <div class="review-note">待人工复核</div>
+  </article>
+</template>
+
+<style scoped>
+.trend-card { min-width: 0; padding: 28px; background: #fff; border: 1px solid #e8e3f2; border-radius: 20px; box-shadow: 0 12px 40px #4a386508; }
+.card-topline { display: flex; justify-content: space-between; color: #817398; font-size: 10px; letter-spacing: .12em; }
+.card-topline > span:last-child { font-size: 21px; font-family: 'DM Mono', monospace; color: #b9add3; }
+h3 { margin: 10px 0 14px; font-size: 23px; line-height: 1.5; color: #352b4e; }
+.mention-pill { display: inline-block; margin-bottom: 20px; padding: 7px 12px; color: #75628d; font-size: 11px; background: #f4f0fa; border-radius: 20px; }
+.mention-pill strong { color: #6550a1; }
+.stat-note { margin: 10px 0; color: #93899f; font-size: 11px; line-height: 1.75; }
+.image-group { margin-top: 20px; }
+h4 { margin: 0 0 10px; font-size: 12px; color: #685b7b; }
+h4 span { margin-left: 8px; font-size: 10px; font-weight: 400; color: #a199ad; }
+.evidence-images { display: flex; gap: 10px; flex-wrap: wrap; }
+figure { width: 112px; margin: 0; }
+:deep(.ant-image) { overflow: hidden; border-radius: 10px; background: #f1edf6; }
+:deep(.ant-image-img) { object-fit: cover; }
+figcaption { margin-top: 5px; color: #958a9f; font-size: 9px; overflow-wrap: anywhere; }
+.missing-image { display: grid; height: 96px; place-items: center; background: #f5f2f7; border-radius: 10px; color: #aaa0b5; font-size: 11px; }
+.sources { margin-top: 22px; padding-top: 18px; border-top: 1px solid #eee9f3; font-size: 12px; }
+summary { cursor: pointer; color: #76628e; }
+.source-record { padding: 16px 0; border-bottom: 1px solid #f1edf6; }
+.source-record strong { font-size: 12px; font-weight: 500; }
+.source-record code { color: #a095ab; font-size: 10px; overflow-wrap: anywhere; }
+.question { white-space: pre-wrap; font-size: 12px; line-height: 1.7; }
+.review-note { color: #a59aae; font-size: 10px; margin-top: 16px; text-align: right; }
+.supplement { background: #fcfdfb; border-color: #e2e9dc; }
+.supplement .mention-pill { background: #edf3e8; color: #657f59; }
+@media (max-width: 600px) { .trend-card { padding: 20px; } h3 { font-size: 20px; } }
+</style>

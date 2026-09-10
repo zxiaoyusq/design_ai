@@ -13,7 +13,7 @@ class LLMApiTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         payload = response.json()
-        self.assertEqual(len(payload["models"]), 6)
+        self.assertEqual(len(payload["models"]), 7)
         self.assertEqual(payload["models"][0]["id"], "claude-opus-5-20260820")
         self.assertNotIn("llm_key", response.text.lower())
         self.assertNotIn("llm_url", response.text.lower())

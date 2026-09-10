@@ -53,14 +53,14 @@ class LLMClientTestCase(unittest.TestCase):
             llm_url="https://gateway.example.com/v1/",
         )
 
-        create_chat_model("qwen3.7-max", settings=settings)
+        create_chat_model("qwen3.8-max-20260820", settings=settings)
 
         self.assertEqual(factory.call_args.kwargs["base_url"], "https://gateway.example.com/v1")
 
     def test_connection_options_cannot_be_overridden(self) -> None:
         with self.assertRaisesRegex(ValueError, "不允许覆盖"):
             create_chat_model(
-                "qwen3.7-max",
+                "qwen3.8-max-20260820",
                 settings=self.settings,
                 base_url="https://untrusted.example.com",
             )

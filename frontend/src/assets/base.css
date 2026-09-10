@@ -139,7 +139,8 @@ button {
 
 .brand-copy strong {
   font-size: 18px;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .brand-copy small {
@@ -2017,6 +2018,12 @@ footer {
   }
 
   .topbar nav {
+    display: flex;
+    gap: 18px;
+    justify-content: end;
+  }
+
+  .topbar .system-state {
     display: none;
   }
 
@@ -2068,6 +2075,19 @@ footer {
 }
 
 @media (max-width: 520px) {
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .brand-copy strong {
+    font-size: 13px;
+  }
+
   .system-state {
     font-size: 0;
   }
