@@ -1,5 +1,11 @@
 # 开发进度
 
+## 2026-09-09
+
+- 已新增 `site.sh` 固定域名一键启停脚本，提供 `start`、`stop`、`restart`、`status` 子命令；启动后 FastAPI 仅监听本机，Vite 监听 `0.0.0.0:80`，可通过 `http://gamedevcenter.ahagamecenter.com` 直接访问。
+- 已将固定域名加入 Vite Host 白名单与 FastAPI CORS 允许来源；运行时 PID 与日志保存在忽略版本控制的 `.runtime/`。
+- 已在部署服务器实测 `http://gamedevcenter.ahagamecenter.com` 返回 HTTP 200，且同域名 `/api/v1/llm/models` 可正确经 Vite 代理访问 FastAPI；当前站点由 `design-ai-site.service` 持续运行，可执行 `./site.sh stop` 停止。
+
 ## 2026-08-31
 
 - 已根据 `AGENTS.md` 创建前端、后端及测试代码的主要目录结构。

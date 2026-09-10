@@ -8,8 +8,12 @@ FRONTEND_DIR="${PROJECT_DIR}/frontend"
 DESIGN_AI_HOST="${DESIGN_AI_HOST:-127.0.0.1}"
 DESIGN_AI_BACKEND_PORT="${DESIGN_AI_BACKEND_PORT:-8000}"
 DESIGN_AI_FRONTEND_PORT="${DESIGN_AI_FRONTEND_PORT:-5173}"
+CLOUDFLARED_BIN="${DESIGN_AI_CLOUDFLARED:-}"
 BACKEND_PID=""
 FRONTEND_PID=""
+TUNNEL_PID=""
+TUNNEL_LOG_FILE=""
+TUNNEL_URL=""
 
 fail() {
   echo "启动失败：$1" >&2
@@ -18,16 +22,20 @@ fail() {
 
 cleanup() {
   trap - EXIT INT TERM
-  for pid in "${BACKEND_PID}" "${FRONTEND_PID}"; do
+  # 先关闭公网 Tunnel，再停止本地服务，缩短退出时的外网暴露窗口。
+  for pid in "${TUNNEL_PID}" "${FRONTEND_PID}" "${BACKEND_PID}"; do
     if [[ -n "${pid}" ]] && kill -0 "${pid}" 2>/dev/null; then
       kill "${pid}" 2>/dev/null || true
     fi
   done
-  for pid in "${BACKEND_PID}" "${FRONTEND_PID}"; do
+  for pid in "${TUNNEL_PID}" "${FRONTEND_PID}" "${BACKEND_PID}"; do
     if [[ -n "${pid}" ]]; then
       wait "${pid}" 2>/dev/null || true
     fi
   done
+  if [[ -n "${TUNNEL_LOG_FILE}" ]]; then
+    rm -f "${TUNNEL_LOG_FILE}"
+  fi
 }
 
 wait_for_backend() {
@@ -51,7 +59,6 @@ wait_for_backend() {
 trap cleanup EXIT
 trap 'exit 130' INT TERM
 
-command -v pnpm >/dev/null 2>&1 || fail "未找到 pnpm"
 [[ -d "${FRONTEND_DIR}/node_modules" ]] || fail "请先在 frontend 目录执行 pnpm install"
 [[ -f "${BACKEND_DIR}/.env" ]] || fail "缺少 backend/.env"
 
@@ -67,11 +74,23 @@ CONDA_BASE="$(${CONDA_COMMAND} info --base)"
 CONDA_PROFILE="${CONDA_BASE}/etc/profile.d/conda.sh"
 [[ -f "${CONDA_PROFILE}" ]] || fail "未找到 conda 初始化脚本"
 
-# 按工程规范固定使用 base 环境，避免后端依赖落到其他 Python 环境。
+# 按工程规范固定使用 314 环境，确保后端运行在 Python 3.14。
 source "${CONDA_PROFILE}"
-conda activate base
-python -c "import fastapi, uvicorn, deepagents" >/dev/null 2>&1 \
-  || fail "base 环境缺少后端依赖，请先安装 backend/requirements.txt"
+conda activate 314
+command -v pnpm >/dev/null 2>&1 || fail "314 环境未找到 pnpm"
+pnpm --version >/dev/null 2>&1 || fail "314 环境中的 pnpm 无法运行"
+if [[ -n "${CLOUDFLARED_BIN}" ]]; then
+  [[ -x "${CLOUDFLARED_BIN}" ]] || fail "DESIGN_AI_CLOUDFLARED 指定的文件不可执行"
+elif command -v cloudflared >/dev/null 2>&1; then
+  CLOUDFLARED_BIN="$(command -v cloudflared)"
+else
+  fail "未找到 cloudflared"
+fi
+(
+  cd "${BACKEND_DIR}"
+  python -c "import app.main, fastapi, uvicorn, deepagents"
+) >/dev/null 2>&1 \
+  || fail "314 环境缺少后端依赖，请先安装 backend/requirements.txt"
 
 (
   cd "${BACKEND_DIR}"
@@ -93,11 +112,49 @@ wait_for_backend
 ) &
 FRONTEND_PID=$!
 
+TUNNEL_LOG_FILE="$(mktemp /tmp/design-ai-cloudflared.XXXXXX.log)"
+(
+  exec "${CLOUDFLARED_BIN}" tunnel \
+    --no-autoupdate \
+    --protocol http2 \
+    --url "http://127.0.0.1:${DESIGN_AI_FRONTEND_PORT}"
+) >"${TUNNEL_LOG_FILE}" 2>&1 &
+TUNNEL_PID=$!
+
+# 域名生成早于边缘连接可用，必须等到至少一个连接注册成功后再输出地址。
+TUNNEL_READY=0
+for _ in {1..240}; do
+  if ! kill -0 "${TUNNEL_PID}" 2>/dev/null; then
+    tail -n 30 "${TUNNEL_LOG_FILE}" >&2 || true
+    fail "Cloudflare Tunnel 启动失败"
+  fi
+  TUNNEL_URL="$(awk '
+    match($0, /https:\/\/[a-z0-9-]+\.trycloudflare\.com/) {
+      print substr($0, RSTART, RLENGTH)
+      exit
+    }
+  ' "${TUNNEL_LOG_FILE}")"
+  if [[ -n "${TUNNEL_URL}" ]] && awk '
+    /Registered tunnel connection/ { ready=1 }
+    END { exit !ready }
+  ' "${TUNNEL_LOG_FILE}"; then
+    TUNNEL_READY=1
+    break
+  fi
+  sleep 0.25
+done
+
+if [[ "${TUNNEL_READY}" -ne 1 ]]; then
+  tail -n 30 "${TUNNEL_LOG_FILE}" >&2 || true
+  fail "等待 Cloudflare 临时域名超时"
+fi
+
 echo "前端：http://${DESIGN_AI_HOST}:${DESIGN_AI_FRONTEND_PORT}"
 echo "后端：http://${DESIGN_AI_HOST}:${DESIGN_AI_BACKEND_PORT}/docs"
-echo "按 Ctrl+C 同时停止前后端服务。"
+echo "Cloudflare：${TUNNEL_URL}"
+echo "临时域名会在每次重启后变化；按 Ctrl+C 同时停止 Tunnel 和前后端服务。"
 
-# Bash 3 兼容的双进程监控：任一服务退出时，清理另一服务并返回其退出码。
+# Bash 3 兼容的多进程监控：任一服务退出时，清理其余服务并返回其退出码。
 exit_code=0
 while true; do
   if ! kill -0 "${BACKEND_PID}" 2>/dev/null; then
@@ -110,6 +167,13 @@ while true; do
   if ! kill -0 "${FRONTEND_PID}" 2>/dev/null; then
     set +e
     wait "${FRONTEND_PID}"
+    exit_code=$?
+    set -e
+    break
+  fi
+  if ! kill -0 "${TUNNEL_PID}" 2>/dev/null; then
+    set +e
+    wait "${TUNNEL_PID}"
     exit_code=$?
     set -e
     break

@@ -15,6 +15,8 @@ export default defineConfig({
   server: {
     host: '127.0.0.1',
     port: 5173,
+    // 本地开发支持 Quick Tunnel；固定公网域名由 site.sh + Caddy 反向代理到此服务。
+    allowedHosts: ['.trycloudflare.com', 'gamedevcenter.ahagamecenter.com'],
     proxy: {
       '/api': {
         target: backendUrl,

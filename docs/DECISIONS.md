@@ -142,6 +142,12 @@
 - Quick Tunnel 无需账户凭据，启动后生成动态 `*.trycloudflare.com` 地址，仅用于开发和临时验证；固定域名与访问控制后续使用 Named Tunnel 配置。
 - Tunnel 与前后端使用同一进程生命周期，任一进程退出时统一清理，避免遗留公网入口。
 
+## 2026-09-09：固定公网域名直连 Vite 的 80 端口
+
+- `gamedevcenter.ahagamecenter.com` 通过常规 DNS 解析至部署服务器，不依赖 Cloudflare Tunnel；`site.sh` 让 Vite 监听 `0.0.0.0:80`，固定域名直接访问该端口。
+- FastAPI 继续只监听 `127.0.0.1:8000`，前端沿用 `/api` 代理访问后端，公网不暴露后端端口，也不需要额外反向代理服务。
+- `site.sh` 是固定域名的唯一进程管理入口，按 PID 与实际命令双重校验后停止服务，避免 PID 重用时误杀其他进程。
+
 ## 2026-08-31：开发环境由根目录脚本统一启动
 
 - 根目录 `start.sh` 并发启动 FastAPI 与 Vite；使用的 conda 环境以后续 Python 3.14 决策为准。

@@ -33,6 +33,21 @@ class LLMApiTestCase(unittest.TestCase):
             "https://design-ai-example.trycloudflare.com",
         )
 
+    def test_fixed_public_domain_http_origin_is_allowed(self) -> None:
+        response = TestClient(app).options(
+            "/api/v1/llm/models",
+            headers={
+                "Origin": "http://gamedevcenter.ahagamecenter.com",
+                "Access-Control-Request-Method": "GET",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.headers["access-control-allow-origin"],
+            "http://gamedevcenter.ahagamecenter.com",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

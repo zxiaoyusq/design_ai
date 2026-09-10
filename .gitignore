@@ -23,6 +23,9 @@ ENV/
 .env.*
 !.env.example
 
+# Local runtime state and logs written by site.sh
+.runtime/
+
 # IDE and editor settings
 .idea/
 .vscode/
