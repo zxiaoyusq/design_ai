@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""生成模型判定所需的精简风格与关系索引，完整注册表仍由宿主使用。"""
+"""生成模型候选召回所需的精简风格与字段索引。"""
 from __future__ import annotations
 
 import argparse
@@ -11,7 +11,6 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 STYLE_REGISTRY = ROOT / "references" / "style-registry.json"
-TAG_RELATIONS = ROOT / "references" / "tag-relations.json"
 FIELD_REGISTRY = ROOT / "references" / "field-registry.json"
 DEFAULT_OUTPUT = ROOT / "references" / "model-reference-bundle.json"
 
@@ -25,11 +24,10 @@ def _load(path: Path) -> dict[str, Any]:
 
 def build_bundle() -> dict[str, Any]:
     styles = _load(STYLE_REGISTRY)
-    relations = _load(TAG_RELATIONS)
     fields = _load(FIELD_REGISTRY)
     return {
         "knowledge_base_version": styles.get("knowledge_base_version"),
-        "purpose": "model_style_recall_and_pair_arbitration",
+        "purpose": "model_style_candidate_recall",
         "active_styles": [
             {
                 "style_id": item.get("style_id"),
@@ -58,39 +56,6 @@ def build_bundle() -> dict[str, Any]:
                 if key in item
             }
             for item in fields.get("fields", [])
-            if isinstance(item, dict)
-        ],
-        "max_confirmed_tags": relations.get("max_confirmed_tags"),
-        "default_pair_relation": relations.get("default_pair_relation"),
-        "pair_relations": [
-            {
-                key: item[key]
-                for key in (
-                    "style_ids",
-                    "relation",
-                    "scope",
-                    "conflict_facet_ids",
-                    "same_region_coexistence",
-                    "rule",
-                )
-                if key in item
-            }
-            for item in relations.get("pair_relations", [])
-            if isinstance(item, dict)
-        ],
-        "tag_dependencies": [
-            {
-                key: item[key]
-                for key in (
-                    "source_style_id",
-                    "relation",
-                    "target_style_ids",
-                    "target_quantifier",
-                    "rule",
-                )
-                if key in item
-            }
-            for item in relations.get("tag_dependencies", [])
             if isinstance(item, dict)
         ],
     }

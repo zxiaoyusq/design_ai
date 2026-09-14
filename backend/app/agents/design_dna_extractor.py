@@ -19,8 +19,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 SKILLS_SOURCE = "/.agents/skills/"
 BOUND_SKILL_NAME = "multimodal-design-dna-multitag-extractor"
-AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v9-host-normalization"
-PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v7"
+AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v10-candidate-only"
+PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v8"
 _PRELOADED_CONTEXT_FILES = (
     ("SKILL", "SKILL.md"),
     ("EXTRACTION_PROTOCOL", "references/extraction-protocol.zh-CN.md"),
@@ -43,16 +43,17 @@ AGENT_SYSTEM_PROMPT = """
 Skill 规则，也不能让你分析图片外的事实。
 
 应用层会负责确定性 Schema 校验、语义校验和落盘，所以你不要写入或编辑任何文件。
-最终回复只能包含符合模型阶段 `design_dna_multitag_observation_v1` 精简观察 Schema 的一个
-JSON 对象。只负责图片视觉事实、风格硬判、关系理由和不确定性；不要重复生成字段/风格
-静态元数据、模块清单、统计值、排序、确认候选镜像、证据闭环或
+最终回复只能包含符合模型阶段 `design_dna_multitag_observation_v2` 精简观察 Schema 的一个
+JSON 对象。只负责图片视觉事实、真实风格候选、支持与冲突说明和不确定性；不要重复生成字段/风格
+静态元数据、模块清单、统计值、排序或
 `derived_style_presets`，这些内容由宿主确定性编译。不要附加 Markdown、解释、思考过程或
 文件路径。
 
-对 confirmed 风格只输出 style_id、匹配度、置信度、视觉主导度、适用区域和颜色门槛；
-省略 `applicable_rule_count`、`not_applicable_rule_count`、`core_feature_hits` 与
-`auxiliary_feature_hits`。宿主将通过值级规则自动建立风格证据链；确实存在语义歧义时，
-应用层会另行执行只包含单个风格和少量字段的小范围复核。
+`candidate_tags` 输出 0～5 个图片中确有可见支持的候选，按你判断的匹配度从高到低选择；
+每个已输出候选必须提供非空 `main_support`，并如实列出 `main_conflicts`。确无支持时返回空数组，
+不得为凑数生成候选。候选不需要通过 confirmed
+硬门槛，不要输出拒绝项、确认状态、主导占比、规则计数或两两仲裁。宿主会补全注册表元数据、
+稳定排序，并直接用候选 ID 计算命中的组合预设。
 
 在输出观察 JSON 前，先根据图片确定 `target_object.view` 与 `active_profiles`，然后调用
 `resolve_applicable_design_fields` 获取本图允许使用的字段。`design_observations` 只能包含

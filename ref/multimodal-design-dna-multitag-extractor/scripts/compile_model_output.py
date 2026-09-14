@@ -30,8 +30,8 @@ TAG_RELATIONS_PATH = ROOT / "references" / "tag-relations.json"
 KNOWLEDGE_BASE_PATH = ROOT / "references" / "design-dna-knowledge-base.zh-CN.md"
 VALUE_NORMALIZATION_PATH = ROOT / "references" / "value-normalization.json"
 MODEL_OUTPUT_SCHEMA_PATH = ROOT / "schemas" / "design-dna-model-output.schema.json"
-FINAL_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
-OBSERVATION_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
+FINAL_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.2"
+OBSERVATION_SCHEMA_VERSION = "design_dna_multitag_observation_v2"
 KNOWLEDGE_BASE_VERSION = "4.1"
 MAX_NEARBY_EVIDENCE_EXPANSION = 0.05
 MODULE_HEADING_PATTERN = re.compile(r"^### (DNA-M(?:0[1-9]|1[0-5]))｜(.+)$", re.M)
@@ -364,55 +364,15 @@ def _expand_observation(
     if not isinstance(quality_notes, dict):
         quality_notes = {}
 
-    confirmed_tags: list[dict[str, Any]] = []
-    for source_index, item in enumerate(style_observations.get("confirmed_tags", [])):
-        if not isinstance(item, dict):
-            continue
-        # confirmed 本身已经表达模型通过至少一条适用硬规则；具体计数由宿主展开。
-        applicable_count = item.get("applicable_rule_count", 1)
-        confirmed_tags.append(
-            {
-                "style_id": item.get("style_id"),
-                "match_score": item.get("match_score"),
-                "confidence": item.get("confidence"),
-                "dominance": item.get("dominance"),
-                "regions": copy.deepcopy(item.get("regions", [])),
-                "hard_rule_passed": True,
-                "rule_coverage": {
-                    "applicable_rule_count": applicable_count,
-                    "passed_rule_count": applicable_count,
-                    "failed_rule_count": 0,
-                    "unknown_rule_count": 0,
-                    "not_applicable_rule_count": item.get(
-                        "not_applicable_rule_count", 0
-                    ),
-                },
-                "color_requirement": {
-                    "status": item.get("color_requirement_status"),
-                    "evidence_refs": [],
-                },
-                "core_feature_hits": copy.deepcopy(
-                    item.get("core_feature_hits", [])
-                ),
-                "auxiliary_feature_hits": copy.deepcopy(
-                    item.get("auxiliary_feature_hits", [])
-                ),
-                "missing_required_items": [],
-                "exclusion_hits": [],
-                "evidence_refs": [],
-                "_source_pointer": (
-                    f"/style_observations/confirmed_tags/{source_index}"
-                ),
-            }
-        )
-
-    other_candidates: list[dict[str, Any]] = []
-    for item in style_observations.get("other_candidates", []):
+    style_candidates: list[dict[str, Any]] = []
+    for source_index, item in enumerate(style_observations.get("candidate_tags", [])):
         if not isinstance(item, dict):
             continue
         candidate = copy.deepcopy(item)
-        candidate["dominance"] = 0
-        other_candidates.append(candidate)
+        candidate["_source_pointer"] = (
+            f"/style_observations/candidate_tags/{source_index}"
+        )
+        style_candidates.append(candidate)
 
     expanded_uncertainties = []
     for source_index, item in enumerate(observation.get("uncertainties", [])):
@@ -455,12 +415,7 @@ def _expand_observation(
             "rule_adaptations": copy.deepcopy(observation.get("rule_adaptations", [])),
         },
         "style_result": {
-            "classification_status": style_observations.get("classification_status"),
-            "style_tags": confirmed_tags,
-            "candidate_ranking": other_candidates,
-            "pairwise_arbitrations": copy.deepcopy(
-                style_observations.get("pairwise_reasoning", [])
-            ),
+            "style_candidates": style_candidates,
             "composition_summary": style_observations.get("composition_summary", ""),
         },
         "design_elements": {
@@ -507,7 +462,7 @@ def _normalize_quality(
         if isinstance(element.get("confidence"), (int, float))
         and not isinstance(element.get("confidence"), bool)
     ]
-    tags = data.get("style_result", {}).get("style_tags", [])
+    tags = data.get("style_result", {}).get("style_candidates", [])
     style_confidences = [
         float(item["confidence"])
         for item in tags
@@ -539,24 +494,11 @@ def _normalize_quality(
     ]
     filtered_count = len(report.get("filtered_fields", []))
     normalized_count = len(report.get("value_normalizations", []))
-    downgraded_count = len(report.get("style_downgrades", []))
-    pruned_hit_count = len(report.get("pruned_style_hits", []))
-    pending_review_count = len(report.get("semantic_review_requests", []))
     compiler_warnings = []
     if filtered_count:
         compiler_warnings.append(f"宿主按视角、Profile 或规范字段过滤了 {filtered_count} 项观察。")
     if normalized_count:
         compiler_warnings.append(f"宿主按受控值域确定性归一了 {normalized_count} 项字段。")
-    if downgraded_count:
-        compiler_warnings.append(f"宿主因证据闭环不足降级了 {downgraded_count} 个风格标签。")
-    if pruned_hit_count:
-        compiler_warnings.append(
-            f"宿主从风格证据链剔除了 {pruned_hit_count} 条弱引用，并用剩余证据重新闭环。"
-        )
-    if pending_review_count:
-        compiler_warnings.append(
-            f"有 {pending_review_count} 个风格的强字段需要窄范围语义复核，复核前保持 provisional。"
-        )
     _replace_if_changed(
         quality,
         "warnings",
@@ -596,7 +538,7 @@ def _finalize_source_map(data: dict[str, Any], report: dict[str, Any]) -> None:
 
     style_result = data.get("style_result")
     if isinstance(style_result, dict):
-        for collection_name in ("style_tags", "candidate_ranking"):
+        for collection_name in ("style_candidates",):
             items = style_result.get(collection_name)
             for index, item in enumerate(items if isinstance(items, list) else []):
                 if not isinstance(item, dict):

@@ -15,7 +15,7 @@ from app.main import app
 from app.schemas.high_trends import HighTrendRequest, HighTrendResumeRequest
 from app.services.high_trends.tasks import HighTrendManager, read
 
-MODEL = "gpt-5.6-sol-20260820"
+MODEL = "gpt-5.6-sol"
 
 
 class TextFixtureModel(FakeMessagesListChatModel):

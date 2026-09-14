@@ -32,12 +32,17 @@ ALLOWED_FORMATS = {
 }
 RESULT_ID_PATTERN = re.compile(r"^[\w-]+$", re.UNICODE)
 BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_business_view_v1.1"
-MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.0"
+MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.1"
+LEGACY_MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.0"
 BUSINESS_VIEW_SCHEMA_VERSIONS = {
     BUSINESS_VIEW_SCHEMA_VERSION,
     MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION,
+    LEGACY_MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION,
 }
-MULTITAG_SOURCE_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
+MULTITAG_SOURCE_SCHEMA_VERSIONS = {
+    "design_dna_multitag_extraction_v1.1",
+    "design_dna_multitag_extraction_v1.2",
+}
 
 
 class ImageStorageError(ValueError):
@@ -364,7 +369,7 @@ def save_business_view_model(
         data["schema_version"] = (
             MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION
             if isinstance(full_result, dict)
-            and full_result.get("schema_version") == MULTITAG_SOURCE_SCHEMA_VERSION
+            and full_result.get("schema_version") in MULTITAG_SOURCE_SCHEMA_VERSIONS
             else BUSINESS_VIEW_SCHEMA_VERSION
         )
     data["model_id"] = resolved_model_id
@@ -437,18 +442,22 @@ def list_results() -> list[dict[str, Any]]:
             continue
         object_view = business.get("object", {}) if isinstance(business, dict) else {}
         style_view = business.get("style", {}) if isinstance(business, dict) else {}
-        style_tags = []
+        style_candidates = []
         if isinstance(style_view, dict):
-            style_tags = [
+            candidate_items = style_view.get("style_candidates")
+            if not isinstance(candidate_items, list):
+                # 保留升级前业务视图的只读兼容。
+                candidate_items = style_view.get("tags", [])
+            style_candidates = [
                 item.get("label_zh") or item.get("label_en") or item.get("style_id")
-                for item in style_view.get("tags", [])
+                for item in candidate_items
                 if isinstance(item, dict)
             ]
         primary_style = style_view.get("primary") or style_view.get("primary_style")
         if isinstance(primary_style, dict):
             primary_style = primary_style.get("name") or primary_style.get("level_2")
-        if not style_tags and isinstance(primary_style, str):
-            style_tags = [primary_style]
+        if not style_candidates and isinstance(primary_style, str):
+            style_candidates = [primary_style]
         try:
             get_result_image(result_id)
             preview_url: str | None = f"/api/v1/dna/results/{result_id}/image"
@@ -464,7 +473,9 @@ def list_results() -> list[dict[str, Any]]:
                     tz=UTC,
                 ),
                 "category": object_view.get("category") if isinstance(object_view, dict) else None,
-                "style_tags": [tag for tag in style_tags if isinstance(tag, str)],
+                "style_candidates": [
+                    tag for tag in style_candidates if isinstance(tag, str)
+                ],
                 "summary": business.get("design_summary") if isinstance(business, dict) else None,
             }
         )

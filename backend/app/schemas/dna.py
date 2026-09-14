@@ -123,7 +123,7 @@ class DesignDnaResultSummary(BaseModel):
     preview_url: str | None = None
     created_at: datetime
     category: str | None = None
-    style_tags: list[str] = Field(default_factory=list)
+    style_candidates: list[str] = Field(default_factory=list)
     summary: str | None = None
 
 

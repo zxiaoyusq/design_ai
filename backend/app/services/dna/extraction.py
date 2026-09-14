@@ -73,31 +73,20 @@ _DETERMINISTIC_ERROR_MARKERS = (
     "quality_summary.low_confidence_field_count",
     "stable order",
     "ranks must be consecutive",
-    "single confirmed tag requires dominance=1",
-    "dominance values must sum",
     "label_en=",
     "label_zh=",
     "aliases must match style registry",
     "tag_kind=",
     "facet_ids must match style registry",
-    "candidate_ranking value differs",
-    "candidate_status=confirmed IDs must exactly equal",
     "source_path=",
     "field_name does not match field registry",
     "value_type=",
     "evidence_mode=",
     "must match design_elements",
-    "relation must match tag-relations",
-    "scope must match tag-relations",
-    "style_id_a/style_id_b must use canonical lexical order",
     "requires active profile",
     "requires view in",
     "ordinal value must be one of",
     "but no matching uncertain_fields record",
-    "is not allowed by this style's auxiliary_field_ids",
-    "is not allowed by this style's decisive_field_ids",
-    "has no observed/computed value in this result",
-    "regions lack matching referenced evidence",
 )
 
 _ISSUE_CODE_PATTERNS = (
@@ -180,14 +169,14 @@ def _task_text(user_prompt: str) -> str:
     notes = user_prompt.strip() or "无额外业务备注。"
     return (
         f"请只使用 {BOUND_SKILL_NAME} Skill 分析随消息提供的单张图片。"
-        "严格完成单一主物品锁定、品类适用性、可观察设计 DNA、0～3 个同层风格标签的"
-        "独立硬规则判定、标签两两关系仲裁、证据、不确定字段和新 DNA 检查。"
+        "严格完成单一主物品锁定、品类适用性、可观察设计 DNA、0～5 个真实同层风格候选、"
+        "证据、不确定字段和新 DNA 检查。"
         "先确定视角与 active_profiles，并调用字段准入工具；只提取工具允许且图片实际可观察、"
         "风格判定需要或用户明确关注的字段，不要穷举全部语义字段。"
         "最终只返回符合精简模型观察 Schema 的 JSON；字段和风格静态元数据、模块清单、"
-        "统计值、排序、候选镜像、证据闭环与组合预设均由宿主编译，不要重复输出。\n\n"
-        "confirmed 风格省略规则计数以及 core/auxiliary 命中数组；宿主会根据规范字段值"
-        "自动挂接，歧义项另做小范围语义复核。\n\n"
+        "统计值、排序与组合预设均由宿主编译，不要重复输出。\n\n"
+        "每个候选必须有图片可见的主要支持项；有削弱因素时如实写入冲突项，不输出确认、"
+        "未分类、主导占比、硬规则状态或两两仲裁。\n\n"
         f"用户业务备注：\n{notes}"
     )
 
@@ -646,24 +635,13 @@ def _contextualize_validation_error(
                 f"({item.get('field_id')}@{item.get('region')})"
             )
 
-    confirmed_tags = style_observations.get("confirmed_tags")
-    if isinstance(confirmed_tags, list):
-        for index, item in enumerate(confirmed_tags):
-            if isinstance(item, dict) and f"style_result.style_tags[{index}]" in error_text:
+    candidate_tags = style_observations.get("candidate_tags")
+    if isinstance(candidate_tags, list):
+        for index, item in enumerate(candidate_tags):
+            if isinstance(item, dict) and f"style_result.style_candidates[{index}]" in error_text:
                 mappings.append(
-                    f"style_result.style_tags.{index} -> "
-                    f"/style_observations/confirmed_tags/{index} ({item.get('style_id')})"
-                )
-    pairwise = style_observations.get("pairwise_reasoning")
-    if isinstance(pairwise, list):
-        for index, item in enumerate(pairwise):
-            if (
-                isinstance(item, dict)
-                and f"style_result.pairwise_arbitrations[{index}]" in error_text
-            ):
-                mappings.append(
-                    f"style_result.pairwise_arbitrations.{index} -> "
-                    f"/style_observations/pairwise_reasoning/{index}"
+                    f"style_result.style_candidates.{index} -> "
+                    f"/style_observations/candidate_tags/{index} ({item.get('style_id')})"
                 )
 
     if not mappings:
@@ -742,12 +720,12 @@ def _safely_degrade_invalid_observations(
     data: dict[str, Any],
     issues: list[dict[str, Any]],
 ) -> tuple[dict[str, Any], int]:
-    """删除无可判定值的字段或降级无证据风格，不补造任何视觉事实。"""
+    """删除无可判定值的字段或无有效支持的候选，不补造任何视觉事实。"""
 
     result = deepcopy(data)
     design_indices: set[int] = set()
     uncertainty_indices: set[int] = set()
-    style_issue_messages: dict[int, list[str]] = {}
+    style_indices: set[int] = set()
     for issue in issues:
         pointer = issue.get("source_pointer")
         if not isinstance(pointer, str):
@@ -760,13 +738,9 @@ def _safely_degrade_invalid_observations(
         if match:
             uncertainty_indices.add(int(match.group(1)))
             continue
-        match = re.fullmatch(
-            r"/style_observations/confirmed_tags/(\d+)", pointer
-        )
+        match = re.fullmatch(r"/style_observations/candidate_tags/(\d+)", pointer)
         if match:
-            style_issue_messages.setdefault(int(match.group(1)), []).append(
-                str(issue.get("message") or issue.get("code") or "风格证据未闭合")
-            )
+            style_indices.add(int(match.group(1)))
 
     design_observations = result.get("design_observations")
     if isinstance(design_observations, list):
@@ -781,71 +755,14 @@ def _safely_degrade_invalid_observations(
 
     style_observations = result.get("style_observations")
     if isinstance(style_observations, dict):
-        confirmed = style_observations.get("confirmed_tags")
-        other_candidates = style_observations.get("other_candidates")
-        if not isinstance(confirmed, list):
-            confirmed = []
-        if not isinstance(other_candidates, list):
-            other_candidates = []
-        demoted: list[dict[str, Any]] = []
-        for index in sorted(style_issue_messages, reverse=True):
-            if not 0 <= index < len(confirmed):
-                continue
-            tag = confirmed.pop(index)
-            if not isinstance(tag, dict):
-                continue
-            demoted.append(
-                {
-                    "style_id": tag.get("style_id"),
-                    "match_score": tag.get("match_score", 0),
-                    "confidence": tag.get("confidence", 0),
-                    "regions": deepcopy(tag.get("regions", [])),
-                    "candidate_status": "provisional",
-                    "hard_rule_passed": False,
-                    "main_support": _ordered_unique_text(
-                        [
-                            *(tag.get("core_feature_hits") or []),
-                            *(tag.get("auxiliary_feature_hits") or []),
-                        ]
-                    ),
-                    "main_conflicts": _ordered_unique_text(
-                        style_issue_messages[index]
-                    ),
-                }
-            )
-        demoted_ids = {
-            item.get("style_id") for item in demoted if item.get("style_id")
-        }
-        other_candidates = [
-            item
-            for item in other_candidates
-            if not isinstance(item, dict) or item.get("style_id") not in demoted_ids
-        ]
-        other_candidates.extend(reversed(demoted))
-        confirmed_ids = {
-            item.get("style_id") for item in confirmed if isinstance(item, dict)
-        }
-        pairwise = style_observations.get("pairwise_reasoning")
-        if isinstance(pairwise, list):
-            style_observations["pairwise_reasoning"] = [
-                item
-                for item in pairwise
-                if isinstance(item, dict)
-                and item.get("style_id_a") in confirmed_ids
-                and item.get("style_id_b") in confirmed_ids
-            ]
-        style_observations["confirmed_tags"] = confirmed
-        style_observations["other_candidates"] = other_candidates
-        style_observations["classification_status"] = (
-            "confirmed" if confirmed else "unclassified"
-        )
-        if not confirmed:
-            style_observations["composition_summary"] = (
-                "候选风格证据未通过确定性闭环检查，已保守降级为未分类。"
-            )
+        candidate_tags = style_observations.get("candidate_tags")
+        if isinstance(candidate_tags, list):
+            for index in sorted(style_indices, reverse=True):
+                if 0 <= index < len(candidate_tags):
+                    candidate_tags.pop(index)
 
     action_count = (
-        len(design_indices) + len(uncertainty_indices) + len(style_issue_messages)
+        len(design_indices) + len(uncertainty_indices) + len(style_indices)
     )
     return result, action_count
 
@@ -1134,11 +1051,8 @@ def run_design_dna_extraction(
     full_result_path: Path | None = None
     compiled_data: dict[str, Any] | None = None
     compilation_report: dict[str, Any] | None = None
-    semantic_review_attempted = False
-
     def compile_and_save(candidate: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
         nonlocal compiled_data, compilation_report
-        nonlocal semantic_review_attempted
         compiled_data = None
         compilation_report = None
         _emit_progress(
@@ -1149,108 +1063,6 @@ def run_design_dna_extraction(
         )
         compiled, report = _compile_model_result(candidate)
         _merge_compilation_metrics(metrics, report)
-        review_decisions: list[dict[str, Any]] = []
-        review_requests = report.get("semantic_review_requests")
-        if (
-            isinstance(review_requests, list)
-            and review_requests
-            and not semantic_review_attempted
-        ):
-            semantic_review_attempted = True
-            metrics["style_semantic_review_attempt_count"] += 1
-            _emit_progress(
-                progress_callback,
-                ExtractionStage.SEMANTIC_REVIEW,
-                f"发现 {len(review_requests)} 个风格证据歧义，正在进行小范围语义复核",
-                74,
-            )
-            before_style_ids = {
-                str(item.get("style_id") or "")
-                for item in compiled.get("style_result", {}).get("style_tags", [])
-                if isinstance(item, dict)
-            }
-            try:
-                review_agent = create_style_semantic_review_agent(model_id)
-                select_model_phase(
-                    ExtractionStage.SEMANTIC_REVIEW,
-                    "风格语义复核",
-                    76,
-                )
-                review_response = _invoke_agent(
-                    review_agent,
-                    _style_semantic_review_messages(review_requests),
-                    telemetry,
-                    metrics,
-                    invocation_metric="style_semantic_review_agent_invocation_count",
-                    recursion_limit=24,
-                    on_retry=report_retry,
-                )
-                review_data = _parse_json_response(review_response)
-                reviewed_candidate, decisions, accepted_count = (
-                    _apply_style_semantic_review(
-                        candidate,
-                        review_requests,
-                        review_data,
-                    )
-                )
-                metrics["style_semantic_review_decisions"].extend(decisions)
-                review_decisions = decisions
-                metrics["style_semantic_review_accepted_count"] += accepted_count
-                metrics["style_semantic_review_rejected_count"] += sum(
-                    1 for item in decisions if not item.get("accepted")
-                )
-                if accepted_count:
-                    _emit_progress(
-                        progress_callback,
-                        ExtractionStage.COMPILING,
-                        f"语义复核采纳 {accepted_count} 条证据，正在重新闭合风格规则",
-                        80,
-                    )
-                    candidate.clear()
-                    candidate.update(reviewed_candidate)
-                    compiled, report = _compile_model_result(candidate)
-                    _merge_compilation_metrics(metrics, report)
-                    after_style_ids = {
-                        str(item.get("style_id") or "")
-                        for item in compiled.get("style_result", {}).get(
-                            "style_tags", []
-                        )
-                        if isinstance(item, dict)
-                    }
-                    metrics["style_semantic_review_recovered_style_count"] += len(
-                        after_style_ids - before_style_ids
-                    )
-                report["semantic_review"] = {
-                    "status": "completed",
-                    "accepted_link_count": accepted_count,
-                    "decisions": deepcopy(decisions),
-                }
-            except Exception as review_error:
-                # 复核失败不能放宽证据门槛；保留首次编译的保守降级结果继续落盘。
-                metrics["style_semantic_review_error_count"] += 1
-                metrics["style_semantic_review_errors"].append(
-                    str(review_error)[:1000]
-                )
-                report["semantic_review"] = {
-                    "status": "failed_conservative",
-                    "error": str(review_error)[:1000],
-                }
-                _emit_progress(
-                    progress_callback,
-                    ExtractionStage.SEMANTIC_REVIEW,
-                    "语义复核未完成，保持保守候选并继续最终校验",
-                    80,
-                    ProgressEventLevel.WARNING,
-                )
-                quality = compiled.get("quality_summary")
-                if isinstance(quality, dict):
-                    quality["warnings"] = _ordered_unique_text(
-                        [
-                            *(quality.get("warnings") or []),
-                            "小范围风格语义复核未完成，候选保持保守降级。",
-                        ]
-                    )
-        _annotate_style_review_outcome(compiled, review_decisions)
         compiled_data = compiled
         compilation_report = report
         _emit_progress(

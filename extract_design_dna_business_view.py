@@ -4,7 +4,7 @@
 将单标签或 multimodal-design-dna-multitag-extractor Skill 的完整结果 JSON，转换为适合设计业务人员展示的精简 JSON。
 
 兼容输入：design_dna_extraction_v3.1、design_dna_extraction_v4.0、
-design_dna_multitag_extraction_v1.1
+design_dna_multitag_extraction_v1.1、design_dna_multitag_extraction_v1.2
 依赖：仅 Python 标准库，Python 3.9+
 
 单文件用法：
@@ -41,12 +41,14 @@ from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional,
 
 
 BUSINESS_SCHEMA_VERSION = "design_dna_business_view_v1.1"
-MULTITAG_BUSINESS_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.0"
-MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.1"
+MULTITAG_BUSINESS_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.1"
+MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.2"
+LEGACY_MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.1"
 SUPPORTED_SOURCE_SCHEMAS = {
     "design_dna_extraction_v3.1",
     "design_dna_extraction_v4.0",
     MULTITAG_SOURCE_SCHEMA,
+    LEGACY_MULTITAG_SOURCE_SCHEMA,
 }
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "result"
@@ -656,11 +658,12 @@ def _multitag_style_item_view(
     evidence_map: Mapping[str, Mapping[str, Any]],
     config: BusinessViewConfig,
 ) -> Dict[str, Any]:
-    """把同层原子标签转换为业务字段，不引入主次或层级语义。"""
+    """把同层候选转换为业务字段，不引入确认、主次或层级语义。"""
 
     confidence = _clamp(item.get("confidence"))
     feature_hits = _unique(
-        list(item.get("core_feature_hits", []) or [])
+        list(item.get("main_support", []) or [])
+        + list(item.get("core_feature_hits", []) or [])
         + list(item.get("auxiliary_feature_hits", []) or [])
     )
     result: Dict[str, Any] = {
@@ -668,26 +671,19 @@ def _multitag_style_item_view(
         "label_zh": item.get("label_zh"),
         "label_en": item.get("label_en"),
         "tag_kind": item.get("tag_kind"),
+        "rank": item.get("rank"),
         "match_score": _round_score(item.get("match_score"), 1),
         "confidence": _confidence_label(confidence, config),
         "confidence_score": _round_score(confidence),
-        "dominance": _round_score(item.get("dominance"), 2),
         "regions": list(item.get("regions", []) or []),
         "facet_ids": list(item.get("facet_ids", []) or []),
-        "feature_hits": feature_hits[:4],
-        "evidence": _resolve_evidence_texts(
-            item.get("evidence_refs", []) or [],
-            evidence_map,
-            config.max_style_evidence,
-        ),
+        "main_support": feature_hits[:4],
+        "main_conflicts": list(item.get("main_conflicts", []) or [])[:3],
     }
     if config.include_source_trace:
         result.update(
             {
                 "aliases": list(item.get("aliases", []) or []),
-                "hard_rule_passed": item.get("hard_rule_passed"),
-                "rule_coverage": item.get("rule_coverage"),
-                "color_requirement": item.get("color_requirement"),
                 "evidence_refs": list(item.get("evidence_refs", []) or []),
             }
         )
@@ -699,15 +695,22 @@ def _extract_multitag_style_view(
     evidence_map: Mapping[str, Mapping[str, Any]],
     config: BusinessViewConfig,
 ) -> Dict[str, Any]:
-    """提炼多标签结论；所有 confirmed 标签始终以同层数组展示。"""
+    """提炼多标签结论；所有真实候选始终以同层数组展示。"""
 
     style_result = data.get("style_result", {}) or {}
-    status = style_result.get("classification_status", "unclassified")
-    tags = [
+    raw_candidates = style_result.get("style_candidates")
+    if not isinstance(raw_candidates, list):
+        # 历史 v1.1 结果优先保留已确认标签；没有时退回候选排名。
+        legacy_tags = style_result.get("style_tags")
+        raw_candidates = legacy_tags if isinstance(legacy_tags, list) and legacy_tags else style_result.get("candidate_ranking", [])
+    candidates = [
         _multitag_style_item_view(item, evidence_map, config)
-        for item in style_result.get("style_tags", []) or []
+        for item in raw_candidates or []
         if isinstance(item, dict)
     ]
+    for rank, candidate in enumerate(candidates, start=1):
+        if not isinstance(candidate.get("rank"), int):
+            candidate["rank"] = rank
     presets = [
         {
             "preset_id": item.get("preset_id"),
@@ -718,57 +721,18 @@ def _extract_multitag_style_view(
         for item in style_result.get("derived_style_presets", []) or []
         if isinstance(item, dict)
     ]
-    arbitrations = [
-        {
-            "style_id_a": item.get("style_id_a"),
-            "style_id_b": item.get("style_id_b"),
-            "relation": item.get("relation"),
-            "scope": item.get("scope"),
-            "decision": item.get("decision"),
-            "reason": item.get("reason"),
-        }
-        for item in style_result.get("pairwise_arbitrations", []) or []
-        if isinstance(item, dict)
-    ]
-
     keywords = _unique(
         hit
-        for tag in tags
-        for hit in tag.get("feature_hits", []) or []
+        for candidate in candidates
+        for hit in candidate.get("main_support", []) or []
     )[: config.max_style_keywords]
-    evidence = _unique(
-        text
-        for tag in tags
-        for text in tag.get("evidence", []) or []
-    )[: config.max_style_evidence]
 
     result: Dict[str, Any] = {
-        "status": STATUS_LABELS.get(status, status),
-        "tags": tags,
+        "style_candidates": candidates,
         "derived_presets": presets,
         "composition_summary": style_result.get("composition_summary"),
         "keywords": keywords,
-        "evidence": evidence,
-        "pairwise_arbitrations": arbitrations,
     }
-
-    # 无已确认标签时保留少量候选，帮助业务人员理解未分类原因。
-    if not tags:
-        result["candidates"] = [
-            {
-                "rank": item.get("rank"),
-                "style_id": item.get("style_id"),
-                "label_zh": item.get("label_zh"),
-                "label_en": item.get("label_en"),
-                "candidate_status": item.get("candidate_status"),
-                "match_score": _round_score(item.get("match_score"), 1),
-                "confidence_score": _round_score(item.get("confidence")),
-                "main_support": list(item.get("main_support", []) or [])[:3],
-                "main_conflicts": list(item.get("main_conflicts", []) or [])[:3],
-            }
-            for item in style_result.get("candidate_ranking", []) or []
-            if isinstance(item, dict)
-        ][:3]
     return result
 
 
@@ -1276,7 +1240,10 @@ def extract_business_view(
 
     evidence_map = _build_evidence_map(data)
     object_view = _extract_object_view(data, config)
-    is_multitag = source_schema == MULTITAG_SOURCE_SCHEMA
+    is_multitag = source_schema in {
+        MULTITAG_SOURCE_SCHEMA,
+        LEGACY_MULTITAG_SOURCE_SCHEMA,
+    }
     style_view = (
         _extract_multitag_style_view(data, evidence_map, config)
         if is_multitag

@@ -35,12 +35,12 @@ _MODELS = (
         max_output_tokens=128_000,
     ),
     ModelDefinition(
-        id="gpt-5.6-terra-20260820",
+        id="gpt-5.6-terra",
         name="GPT-5.6 Terra",
         model_provider=ModelProvider.OPENAI,
     ),
     ModelDefinition(
-        id="gpt-5.6-sol-20260820",
+        id="gpt-5.6-sol",
         name="GPT-5.6 Sol",
         model_provider=ModelProvider.OPENAI,
     ),
@@ -55,12 +55,12 @@ _MODELS = (
         model_provider=ModelProvider.OPENAI,
     ),
     ModelDefinition(
-        id="deepseek-v4-flash-vision-exp-official",
-        name="deepseek v4 vision",
+        id="deepseek-v4-pro-official",
+        name="deepseek v4.1 flash",
         model_provider=ModelProvider.OPENAI,
     ),
     ModelDefinition(
-        id="gemini-3.7-flash-20260820",
+        id="gemini-3.7-flash",
         name="gemini 3.7 flash",
         model_provider=ModelProvider.OPENAI,
     ),

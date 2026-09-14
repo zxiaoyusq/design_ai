@@ -61,56 +61,7 @@ def build_schema() -> dict:
                     },
                 },
             },
-            "confirmedStyleObservation": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": [
-                    "style_id",
-                    "match_score",
-                    "confidence",
-                    "dominance",
-                    "regions",
-                    "color_requirement_status",
-                ],
-                "properties": {
-                    "style_id": final_defs["styleId"],
-                    "match_score": {"type": "number", "minimum": 0, "maximum": 100},
-                    "confidence": {"type": "number", "minimum": 0.75, "maximum": 1},
-                    "dominance": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
-                    "regions": {
-                        "type": "array",
-                        "items": {"type": "string", "minLength": 1},
-                        "minItems": 1,
-                        "uniqueItems": True,
-                    },
-                    "applicable_rule_count": {
-                        "description": "兼容旧模型输出；新模型省略，由宿主根据 confirmed 状态展开。",
-                        "type": "integer",
-                        "minimum": 1,
-                    },
-                    "not_applicable_rule_count": {
-                        "description": "兼容旧模型输出；新模型省略，由宿主展开。",
-                        "type": "integer",
-                        "minimum": 0,
-                    },
-                    "color_requirement_status": {"enum": ["pass", "not_applicable"]},
-                    "core_feature_hits": {
-                        "description": "兼容旧模型输出；新模型省略，由宿主值级规则或小范围语义复核构建。",
-                        "type": "array",
-                        "items": {"type": "string", "minLength": 1},
-                        "minItems": 1,
-                        "uniqueItems": True,
-                    },
-                    "auxiliary_feature_hits": {
-                        "description": "兼容旧模型输出；新模型省略，由宿主值级规则或小范围语义复核构建。",
-                        "type": "array",
-                        "items": {"type": "string", "minLength": 1},
-                        "minItems": 1,
-                        "uniqueItems": True,
-                    },
-                },
-            },
-            "otherStyleCandidate": {
+            "styleCandidateObservation": {
                 "type": "object",
                 "additionalProperties": False,
                 "required": [
@@ -118,8 +69,6 @@ def build_schema() -> dict:
                     "match_score",
                     "confidence",
                     "regions",
-                    "candidate_status",
-                    "hard_rule_passed",
                     "main_support",
                     "main_conflicts",
                 ],
@@ -130,105 +79,39 @@ def build_schema() -> dict:
                     "regions": {
                         "type": "array",
                         "items": {"type": "string", "minLength": 1},
+                        "minItems": 1,
                         "uniqueItems": True,
                     },
-                    "candidate_status": {"enum": ["provisional", "rejected"]},
-                    "hard_rule_passed": {"type": "boolean"},
                     "main_support": {
+                        "description": "图片中直接支持该候选的主要视觉依据。",
                         "type": "array",
                         "items": {"type": "string", "minLength": 1},
+                        "minItems": 1,
                         "uniqueItems": True,
                     },
                     "main_conflicts": {
+                        "description": "可见但削弱该候选的主要冲突；没有时返回空数组。",
                         "type": "array",
                         "items": {"type": "string", "minLength": 1},
                         "uniqueItems": True,
                     },
-                },
-                "allOf": [
-                    {
-                        "if": {
-                            "properties": {"hard_rule_passed": {"const": True}},
-                            "required": ["hard_rule_passed"],
-                        },
-                        "then": {"properties": {"main_conflicts": {"minItems": 1}}},
-                    }
-                ],
-            },
-            "pairwiseReasoning": {
-                "type": "object",
-                "additionalProperties": False,
-                "required": ["style_id_a", "style_id_b", "reason"],
-                "properties": {
-                    "style_id_a": final_defs["styleId"],
-                    "style_id_b": final_defs["styleId"],
-                    "reason": {"type": "string", "minLength": 1},
                 },
             },
             "styleObservations": {
                 "type": "object",
                 "additionalProperties": False,
                 "required": [
-                    "classification_status",
-                    "confirmed_tags",
-                    "other_candidates",
-                    "pairwise_reasoning",
+                    "candidate_tags",
                     "composition_summary",
                 ],
                 "properties": {
-                    "classification_status": {"enum": ["confirmed", "unclassified"]},
-                    "confirmed_tags": {
+                    "candidate_tags": {
                         "type": "array",
-                        "items": {"$ref": "#/$defs/confirmedStyleObservation"},
-                        "maxItems": 3,
-                    },
-                    "other_candidates": {
-                        "type": "array",
-                        "items": {"$ref": "#/$defs/otherStyleCandidate"},
-                    },
-                    "pairwise_reasoning": {
-                        "type": "array",
-                        "items": {"$ref": "#/$defs/pairwiseReasoning"},
-                        "maxItems": 3,
+                        "items": {"$ref": "#/$defs/styleCandidateObservation"},
+                        "maxItems": 5,
                     },
                     "composition_summary": {"type": "string", "minLength": 1},
                 },
-                "allOf": [
-                    {
-                        "if": {
-                            "properties": {"classification_status": {"const": "confirmed"}},
-                            "required": ["classification_status"],
-                        },
-                        "then": {"properties": {"confirmed_tags": {"minItems": 1}}},
-                    },
-                    {
-                        "if": {
-                            "properties": {"classification_status": {"const": "unclassified"}},
-                            "required": ["classification_status"],
-                        },
-                        "then": {
-                            "properties": {
-                                "confirmed_tags": {"maxItems": 0},
-                                "other_candidates": {"minItems": 1},
-                                "pairwise_reasoning": {"maxItems": 0},
-                            }
-                        },
-                    },
-                    {
-                        "if": {
-                            "properties": {"confirmed_tags": {"minItems": 2, "maxItems": 2}},
-                            "required": ["confirmed_tags"],
-                        },
-                        "then": {"properties": {"pairwise_reasoning": {"minItems": 1, "maxItems": 1}}},
-                    },
-                    {
-                        "if": {
-                            "properties": {"confirmed_tags": {"minItems": 3, "maxItems": 3}},
-                            "required": ["confirmed_tags"],
-                        },
-                        "then": {"properties": {"pairwise_reasoning": {"minItems": 3, "maxItems": 3}}},
-                    },
-                ],
             },
             "uncertaintyObservation": {
                 "type": "object",
@@ -296,7 +179,7 @@ def build_schema() -> dict:
     )
     return {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "$id": "https://example.internal/schemas/design-dna-multitag-observation-v1.json",
+        "$id": "https://example.internal/schemas/design-dna-multitag-observation-v2.json",
         "title": "Multimodal Design DNA Multi-tag Model Observation",
         "description": "Lean model-authored visual and semantic observations; the host compiles deterministic metadata, statistics, ordering, references, and final result fields.",
         "type": "object",
@@ -316,7 +199,7 @@ def build_schema() -> dict:
             "quality_notes",
         ],
         "properties": {
-            "schema_version": {"const": "design_dna_multitag_observation_v1"},
+            "schema_version": {"const": "design_dna_multitag_observation_v2"},
             "knowledge_base_version": {"const": "4.1"},
             "target_object": {"$ref": "#/$defs/targetObject"},
             "image_quality": {"$ref": "#/$defs/imageQuality"},

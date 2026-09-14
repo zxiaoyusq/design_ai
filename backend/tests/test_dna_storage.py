@@ -56,7 +56,7 @@ class DnaStorageTestCase(unittest.TestCase):
             business = {
                 "object": {"category": "智能手机"},
                 "style": {
-                    "tags": [
+                    "style_candidates": [
                         {
                             "style_id": "RefinedMinimalism",
                             "label_zh": "精致克制",
@@ -78,7 +78,7 @@ class DnaStorageTestCase(unittest.TestCase):
                 detail = storage.load_result(result_id, "business")
 
             self.assertEqual(summaries[0]["image_name"], "product")
-            self.assertEqual(summaries[0]["style_tags"], ["精致克制"])
+            self.assertEqual(summaries[0]["style_candidates"], ["精致克制"])
             self.assertEqual(detail["design_summary"], business["design_summary"])
             self.assertEqual(detail["model_id"], "gpt-5.6-terra-20260820")
             self.assertEqual(

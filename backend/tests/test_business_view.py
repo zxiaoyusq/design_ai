@@ -60,7 +60,7 @@ class BusinessViewCompatibilityTestCase(unittest.TestCase):
             ["组件与负空间", "标识与文字"],
         )
 
-    def test_multitag_business_view_keeps_flat_confirmed_tags(self) -> None:
+    def test_multitag_business_view_keeps_flat_style_candidates(self) -> None:
         example_path = (
             PROJECT_ROOT
             / "ref"
@@ -74,15 +74,16 @@ class BusinessViewCompatibilityTestCase(unittest.TestCase):
 
         self.assertEqual(business["schema_version"], MULTITAG_BUSINESS_SCHEMA_VERSION)
         self.assertEqual(
-            [tag["style_id"] for tag in business["style"]["tags"]],
+            [tag["style_id"] for tag in business["style"]["style_candidates"]],
             ["SaturatedBold", "RefinedMinimalism"],
         )
         self.assertNotIn("primary", business["style"])
         self.assertNotIn("secondary", business["style"])
-        self.assertEqual(len(business["style"]["pairwise_arbitrations"]), 1)
+        self.assertNotIn("status", business["style"])
+        self.assertNotIn("pairwise_arbitrations", business["style"])
         self.assertEqual(
             business["source_schema_version"],
-            "design_dna_multitag_extraction_v1.1",
+            "design_dna_multitag_extraction_v1.2",
         )
 
 
