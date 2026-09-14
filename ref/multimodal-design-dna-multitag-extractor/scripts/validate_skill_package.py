@@ -19,9 +19,9 @@ from package_checks import _check_schema, _check_registries, _load_json, _reject
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "1.6.4"
-EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.1"
-EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v1"
+EXPECTED_SKILL_VERSION = "2.0.0"
+EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.2"
+EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v2"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"
 REQUIRED = [
     "SKILL.md",
@@ -141,7 +141,7 @@ def _check_versions(errors: list[str]) -> None:
         or model_schema.get("properties", {}).get("knowledge_base_version", {}).get("const")
         != manifest.get("knowledge_base_version")
     ):
-        errors.append("model output schema must use observation v1 and the manifest KB version")
+        errors.append("model output schema must use observation v2 and the manifest KB version")
     kb = (ROOT / "references/design-dna-knowledge-base.zh-CN.md").read_text(encoding="utf-8")
     version_match = re.search(r"知识库版本\*\*：\s*([^\s]+)", kb)
     kb_version = version_match.group(1) if version_match else None
@@ -169,16 +169,10 @@ def _check_examples_and_evals(errors: list[str]) -> None:
             example_payloads.append(payload)
 
     if not any(
-        len(item.get("style_result", {}).get("style_tags", [])) >= 2
+        len(item.get("style_result", {}).get("style_candidates", [])) >= 2
         for item in example_payloads
     ):
-        errors.append("examples must include at least one valid multi-tag pairwise arbitration")
-    for item in example_payloads:
-        style_result = item.get("style_result", {})
-        tag_count = len(style_result.get("style_tags", []))
-        pair_count = len(style_result.get("pairwise_arbitrations", []))
-        if pair_count != tag_count * (tag_count - 1) // 2:
-            errors.append("example pairwise_arbitrations must contain exactly C(n,2) records")
+        errors.append("examples must include at least one valid multi-candidate result")
 
     model_schema = _load_json("schemas/design-dna-model-output.schema.json", errors)
     if isinstance(model_schema, dict):
@@ -208,7 +202,7 @@ def _check_examples_and_evals(errors: list[str]) -> None:
             style_result = payload.get("style_result", {})
             style_ids = [
                 item.get("style_id")
-                for item in style_result.get("style_tags", [])
+                for item in style_result.get("style_candidates", [])
                 if isinstance(item, dict)
             ]
             expected_derived = compute_derived_style_presets(style_ids, combination_presets)
@@ -257,7 +251,7 @@ def _check_examples_and_evals(errors: list[str]) -> None:
                 if forged["style_result"]["derived_style_presets"] != compute_derived_style_presets(
                     [
                         item.get("style_id")
-                        for item in forged["style_result"].get("style_tags", [])
+                        for item in forged["style_result"].get("style_candidates", [])
                         if isinstance(item, dict)
                     ],
                     combination_presets,
@@ -293,35 +287,17 @@ def _check_examples_and_evals(errors: list[str]) -> None:
                 errors.append(
                     f"evals/cases.jsonl:{line_number}: legacy expected fields {forbidden_expected} are forbidden"
                 )
-            classification = expected.get("classification_status")
-            if classification not in {"confirmed", "unclassified"}:
-                errors.append(
-                    f"evals/cases.jsonl:{line_number}: classification_status must be confirmed/unclassified"
-                )
-            style_tag_ids = expected.get("style_tag_ids")
-            reject_style_ids = expected.get("reject_style_ids")
-            provisional_ids = expected.get("provisional_candidate_ids", [])
-            for key, values in (
-                ("style_tag_ids", style_tag_ids),
-                ("reject_style_ids", reject_style_ids),
-                ("provisional_candidate_ids", provisional_ids),
+            style_candidate_ids = expected.get("style_candidate_ids")
+            if (
+                not isinstance(style_candidate_ids, list)
+                or len(style_candidate_ids) > 5
+                or not all(isinstance(item, str) for item in style_candidate_ids)
             ):
-                if not isinstance(values, list) or not all(isinstance(item, str) for item in values):
-                    errors.append(f"evals/cases.jsonl:{line_number}: {key} must be a string array")
-            if isinstance(style_tag_ids, list):
-                if classification == "confirmed" and not 1 <= len(style_tag_ids) <= 3:
-                    errors.append(
-                        f"evals/cases.jsonl:{line_number}: confirmed expects 1..3 style_tag_ids"
-                    )
-                if classification == "unclassified" and style_tag_ids:
-                    errors.append(
-                        f"evals/cases.jsonl:{line_number}: unclassified requires style_tag_ids=[]"
-                    )
-                referenced_styles.extend(style_tag_ids)
-            if isinstance(reject_style_ids, list):
-                referenced_styles.extend(reject_style_ids)
-            if isinstance(provisional_ids, list):
-                referenced_styles.extend(provisional_ids)
+                errors.append(
+                    f"evals/cases.jsonl:{line_number}: style_candidate_ids must contain 0..5 strings"
+                )
+            else:
+                referenced_styles.extend(style_candidate_ids)
         unknown_styles = sorted({item for item in referenced_styles if item not in active_style_ids})
         if unknown_styles:
             errors.append(f"evals/cases.jsonl:{line_number}: unknown active styles {unknown_styles}")
@@ -356,14 +332,9 @@ def _check_examples_and_evals(errors: list[str]) -> None:
         errors.append(f"evals missing confusion coverage: {missing_coverage}")
     red_car = next((item for item in cases if item.get("id") == "CG-05-boundary-red-mini-car"), None)
     red_expected = red_car.get("expected", {}) if isinstance(red_car, dict) else {}
-    red_rejects = set(red_expected.get("reject_style_ids", []))
-    if red_expected.get("style_tag_ids") != ["SaturatedBold"] or not {
-        "KineticEnergy",
-        "NeoRetro",
-        "BiomorphicForm",
-    }.issubset(red_rejects):
+    if red_expected.get("style_candidate_ids") != ["SaturatedBold"]:
         errors.append(
-            "red mini-car regression must confirm only SaturatedBold and reject KineticEnergy/NeoRetro/BiomorphicForm"
+            "red mini-car regression must output only the visually supported SaturatedBold candidate"
         )
 
     # 两个定向变异防止值域和派生依赖校验在后续维护中静默失效。

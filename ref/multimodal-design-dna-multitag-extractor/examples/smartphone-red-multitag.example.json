@@ -1,5 +1,5 @@
 {
-  "schema_version": "design_dna_multitag_extraction_v1.1",
+  "schema_version": "design_dna_multitag_extraction_v1.2",
   "knowledge_base_version": "4.1",
   "target_object": {
     "object_id": "main_object_01",
@@ -96,105 +96,7 @@
     "rule_adaptations": []
   },
   "style_result": {
-    "classification_status": "confirmed",
-    "style_tags": [
-      {
-        "style_id": "SaturatedBold",
-        "label_en": "Saturated Bold",
-        "label_zh": "个性鲜彩",
-        "aliases": [],
-        "tag_kind": "atomic",
-        "facet_ids": [
-          "color_optics"
-        ],
-        "match_score": 90,
-        "confidence": 0.91,
-        "dominance": 0.58,
-        "regions": [
-          "back_cover"
-        ],
-        "hard_rule_passed": true,
-        "rule_coverage": {
-          "applicable_rule_count": 6,
-          "passed_rule_count": 6,
-          "failed_rule_count": 0,
-          "unknown_rule_count": 0,
-          "not_applicable_rule_count": 0
-        },
-        "color_requirement": {
-          "status": "pass",
-          "evidence_refs": [
-            "EV-003"
-          ]
-        },
-        "core_feature_hits": [
-          "CLR-01、CLR-04、CLR-09、CLR-10：高饱和红色覆盖背板主要面积"
-        ],
-        "auxiliary_feature_hits": [
-          "CMP-13：红色背板与黑色相机构件形成明度和彩度对比"
-        ],
-        "missing_required_items": [],
-        "exclusion_hits": [],
-        "evidence_refs": [
-          "EV-002",
-          "EV-003"
-        ]
-      },
-      {
-        "style_id": "RefinedMinimalism",
-        "label_en": "Refined Restraint",
-        "label_zh": "精致克制",
-        "aliases": [
-          "Refined Minimalism",
-          "现代简致",
-          "静奢简雅"
-        ],
-        "tag_kind": "atomic",
-        "facet_ids": [
-          "composition_order",
-          "form_structure",
-          "material_surface"
-        ],
-        "match_score": 88,
-        "confidence": 0.87,
-        "dominance": 0.42,
-        "regions": [
-          "back_cover",
-          "camera_island",
-          "lens_ring"
-        ],
-        "hard_rule_passed": true,
-        "rule_coverage": {
-          "applicable_rule_count": 6,
-          "passed_rule_count": 6,
-          "failed_rule_count": 0,
-          "unknown_rule_count": 0,
-          "not_applicable_rule_count": 0
-        },
-        "color_requirement": {
-          "status": "not_applicable",
-          "evidence_refs": []
-        },
-        "core_feature_hits": [
-          "DEV-03、DEV-05：低对比独立相机岛与细窄镜头环形成受控精致增量"
-        ],
-        "auxiliary_feature_hits": [
-          "CMP-09：背板保持大面积无信息留白",
-          "CMF-07：背板表面统一且局部高光柔和"
-        ],
-        "missing_required_items": [],
-        "exclusion_hits": [],
-        "evidence_refs": [
-          "EV-001",
-          "EV-002",
-          "EV-003",
-          "EV-004",
-          "EV-005"
-        ]
-      }
-    ],
-    "derived_style_presets": [],
-    "candidate_ranking": [
+    "style_candidates": [
       {
         "rank": 1,
         "style_id": "SaturatedBold",
@@ -207,12 +109,9 @@
         ],
         "match_score": 90,
         "confidence": 0.91,
-        "dominance": 0.58,
         "regions": [
           "back_cover"
         ],
-        "candidate_status": "confirmed",
-        "hard_rule_passed": true,
         "main_support": [
           "高饱和红色覆盖背板主要面积",
           "红色背板与黑色相机构件形成明度和彩度对比"
@@ -237,93 +136,19 @@
         ],
         "match_score": 88,
         "confidence": 0.87,
-        "dominance": 0.42,
         "regions": [
           "back_cover",
           "camera_island",
           "lens_ring"
         ],
-        "candidate_status": "confirmed",
-        "hard_rule_passed": true,
         "main_support": [
           "简洁基础上存在受控相机岛与镜头环增量",
           "背板信息密度低且表面统一"
         ],
         "main_conflicts": []
-      },
-      {
-        "rank": 3,
-        "style_id": "PureMinimalism",
-        "label_en": "Pure Minimalism",
-        "label_zh": "纯粹极简",
-        "aliases": [],
-        "tag_kind": "atomic",
-        "facet_ids": [
-          "composition_order",
-          "color_optics",
-          "material_surface"
-        ],
-        "match_score": 55,
-        "confidence": 0.82,
-        "dominance": 0.0,
-        "regions": [
-          "whole_object"
-        ],
-        "candidate_status": "rejected",
-        "hard_rule_passed": false,
-        "main_support": [
-          "大面积留白",
-          "低信息构图"
-        ],
-        "main_conflicts": [
-          "高饱和红色主导且存在可见相机岛增量"
-        ]
-      },
-      {
-        "rank": 4,
-        "style_id": "PrecisionMinimalism",
-        "label_en": "Precision Order",
-        "label_zh": "精密秩序",
-        "aliases": [
-          "精工极简"
-        ],
-        "tag_kind": "atomic",
-        "facet_ids": [
-          "composition_order",
-          "form_structure",
-          "material_surface"
-        ],
-        "match_score": 48,
-        "confidence": 0.8,
-        "dominance": 0.0,
-        "regions": [
-          "lens_ring"
-        ],
-        "candidate_status": "rejected",
-        "hard_rule_passed": false,
-        "main_support": [
-          "镜头环具有冷金属感亮边"
-        ],
-        "main_conflicts": [
-          "冷金属视觉未覆盖主体"
-        ]
       }
     ],
-    "pairwise_arbitrations": [
-      {
-        "style_id_a": "RefinedMinimalism",
-        "style_id_b": "SaturatedBold",
-        "relation": "compatible",
-        "scope": "cross_region_or_mechanism",
-        "decision": "coexist",
-        "reason": "个性鲜彩由背板高饱和主色确认，精致克制由相机岛、镜头环与留白秩序确认；两套决定字段和主要机制独立。",
-        "evidence_refs": [
-          "EV-001",
-          "EV-002",
-          "EV-003"
-        ]
-      }
-    ],
+    "derived_style_presets": [],
     "composition_summary": "高饱和红色主导背板色彩，低对比相机岛与细窄镜头环在局部形成克制精致增量；色彩机制与构成细节机制独立共存。"
   },
   "design_elements": {

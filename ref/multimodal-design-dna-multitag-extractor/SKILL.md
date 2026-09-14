@@ -1,11 +1,11 @@
 ---
 name: multimodal-design-dna-multitag-extractor
-description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格标签与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
+description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格候选与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "1.6.4"
+  version: "2.0.0"
   language: "zh-CN"
-  schema-version: "design_dna_multitag_extraction_v1.1"
+  schema-version: "design_dna_multitag_extraction_v1.2"
   knowledge-base-version: "4.1"
 ---
 
@@ -13,17 +13,17 @@ metadata:
 
 ## 任务边界
 
-本 Skill 从恰好一张图片中选择一个主物品，先提取适用品类的规范 DNA，再输出零到三个可共存的扁平风格标签及其强度、证据和组合关系，并发现知识库外新 DNA 候选。
+本 Skill 从恰好一张图片中选择一个主物品，先提取适用品类的规范 DNA，再输出零到五个有真实视觉支持的扁平风格候选及组合预设，并发现知识库外的新 DNA 候选。
 
 不要用于多物品比较、多图聚合、图片生成或纯文本设计咨询。不得从像素断言真实尺寸、成分、重量、触感或耐久性；图片缺失或不可读时停止。
 
 ## 执行前加载
 
-若宿主已把本 Skill、执行协议、模型参考包、知识库、适配规则和模型 Schema 作为带版本的完整系统前缀注入，则直接使用该快照，不再通过工具逐文件重复读取；未预装时按下列顺序读取。
+若宿主已把本 Skill、执行协议、模型参考包、知识库、适配规则和模型 Schema 作为带版本的完整系统前缀注入，则直接使用该快照，不再通过工具逐文件读取；未预装时按下列顺序读取。
 
-1. 模型阶段只读取 `references/extraction-protocol.zh-CN.md`；`references/output-contract.zh-CN.md` 供宿主后处理和最终校验使用。
-2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`，只输出 `design_dna_multitag_observation_v1` 精简观察结构；最终结果由宿主编译并按 `schemas/design-dna-output.schema.json` 校验。
-3. 模型读取 `references/model-reference-bundle.json` 中的全部活动候选、字段 allowlist、关系、依赖及规范字段类型；不得重复读取宿主专用的完整 `style-registry.json`、`tag-relations.json`、`field-registry.json`，也不得读取组合预设。用 `references/knowledge-index.zh-CN.md` 定位品类字段值域、全部候选规则及相关混淆记录。
+1. 模型阶段读取 `references/extraction-protocol.zh-CN.md`；`references/output-contract.zh-CN.md` 供宿主后处理和最终校验使用。
+2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`，只输出 `design_dna_multitag_observation_v2`；最终结果由宿主编译并按 `schemas/design-dna-output.schema.json` 校验。
+3. 模型读取 `references/model-reference-bundle.json` 中的活动风格、字段 allowlist 与规范字段类型，不读取宿主专用组合预设。用 `references/knowledge-index.zh-CN.md` 定位品类字段值域和候选规则。
 4. 跨品类时读取 `references/category-adaptation.zh-CN.md`；出现知识库外元素时再读取 `references/novel-dna-governance.zh-CN.md`。
 
 ## 核心工作流
@@ -36,56 +36,48 @@ metadata:
 
 ### 2. 先提取可观察 DNA
 
-先确定品类、视角与 `active_profiles`，再调用宿主字段准入工具取得当前图片可用的 canonical 字段集合。当前单图只允许 `core` 与有对象依据的单视图 profile，不激活 multi-face、reference 或 trend profile；模型只提取准入集合内且实际可观察、风格判定需要或用户明确关注的字段，不穷举全部语义维度。
+先确定品类、视角与 `active_profiles`，再调用宿主字段准入工具取得当前图片可用的 canonical 字段。当前单图只允许 `core` 与有对象依据的单视图 profile，不激活 multi-face、reference 或 trend profile。
 
-- `applicability_status` 只表示品类适用性；
-- `observability` 只表示输入是否可见；
-- `evidence_mode` 固定说明结论来源；
-- `computation_status` 只表示计算状态；
-- 确认不存在时使用字段值域内的“无”或空列表，不借用状态表达。
+模型只提取准入集合内且图片实际可观察、风格判断需要或用户明确关注的字段，不穷举全部语义维度。确认不存在时使用字段值域内的“无”或空列表，不借用状态表达。
 
-先完成规范 DNA，再用决定锚点召回风格；当前模型固定输出空的旧兼容维度槽。
+### 3. 输出真实风格候选
 
-### 3. 独立判定扁平风格标签
+结果不输出一级、二级、主风格、次风格或“已确认风格”。所有 `style_id` 都是同层候选。模型从 KB 4.1 的活动风格中选择零到五个图片中确有可见支持的候选，并为每个已输出候选填写：
 
-结果不输出一级、二级、主风格或次风格。每个 `style_id` 都是同层标签，只有同时满足以下条件才可进入 `style_tags`：
+- `style_id`：只使用活动稳定 ID；
+- `match_score`：规则与当前物品的匹配程度，0～100；
+- `confidence`：该候选判断正确的概率，0～1；
+- `regions`：风格实际作用区域，只能来自主体可见区域；
+- `main_support`：至少一条图片中直接可见的主要支持；
+- `main_conflicts`：可见但削弱候选的因素，没有时返回空数组。
 
-1. 硬门槛通过；
-2. 命中至少一个决定锚点；
-3. 命中至少一个不同字段、区域或视觉机制的辅助证据；
-4. 未命中硬排除；
-5. required 颜色通过；
-6. `confidence >= 0.75`；
-7. `applicable_rule_count>=1` 且 `passed_rule_count>=1`；
-8. 与其他返回标签完成成对关系核对。
+候选不需要达到 `confidence>=0.75`，也不需要满足旧版 confirmed 的决定字段、独立辅助字段、颜色门槛、完整规则覆盖或成对仲裁。确无候选时返回空数组；不得输出仅因名称相似而没有像素支持的风格，也不得把明确不匹配的风格当作“拒绝候选”加入列表。
 
-`style_tags` 只包含已确认标签，数量为 0～3；多标签不是目标，不得为凑数添加。每个新增标签须有自身决定证据，不能仅重复另一标签的同一物理现象。
+`TribeIdentity` 已废弃，不得进入候选。可见文字、图标和身份显性度记录到 IDG 字段，身份信息不产生风格候选。
 
-KB 4.1 有 38 个活动标签：37 个 `atomic`，仅 `MysticOrganic` 为 `composite`。`TribeIdentity` 已废弃，不得进入标签或候选；可见文字/图标、身份显性度和经参考确认的实体分别记录到 `IDG-05`、`IDG-07`、`IDG-09`，身份信息不产生风格标签。
+宿主根据 `(-match_score, style_id)` 稳定排序并生成连续 rank；模型不输出 rank、静态名称、facet、确认状态、主导占比、硬规则状态、规则计数或两两仲裁。
 
-`match_score` 表示规则匹配度，`confidence` 表示结论正确概率，`dominance` 表示已确认标签之间的相对视觉主导度，三者不得混用。单标签 dominance 固定为 1；多标签之和应约为 1。`style_tags` 严格按 `(-dominance, -match_score, style_id)` 排序。
+### 4. 组合摘要、不确定项与新 DNA
 
-对每一对返回标签写入 `pairwise_arbitrations`，并按字典序满足 `style_id_a < style_id_b`；关系与作用域取 `tag-relations.json`，最终决策必须为 `coexist`。硬冲突或排他关系成立时不能同时返回；边界不可观察时，相关风格只进入 `candidate_ranking`。导航分组、检索 facet 与混淆组属于注册表元数据，不进入结果层级。
+`composition_summary` 概括这些候选分别由哪些区域和视觉机制支持，不得创造候选列表之外的新标签。
 
-`conditional` 同区冲突 facet 按 `same_region_coexistence` 仲裁：`forbidden` 必拒；`independent_evidence` 仅在双方有独占核心字段、独占字段证据且仲裁同时引用两侧独占证据时共存。
+`derived_style_presets` 不由模型生成。宿主只根据最终 `style_candidates[].style_id` 与组合注册表做确定性集合匹配；候选分数和文字不参与计算，派生组合也不反向修改候选或 DNA。
 
-关系依赖按 `target_quantifier="any|all"` 检查：`requires` 必须由相应数量的已确认目标满足；`implies` 只召回相应目标进入完整候选排序，目标仍须独立硬判。
-
-### 4. 组合摘要、候选与不确定项
-
-`composition_summary` 只概括已确认标签如何分布于主体区域及如何共同构成视觉，不得创造新标签或替代规则证据。没有已确认标签时说明未分类或暂定原因。
-
-最终 `candidate_ranking` 由宿主完成排序并加入 confirmed 镜像；模型只输出 provisional/rejected 候选。若非 confirmed 候选仍通过自身门槛，表示因标签对冲突而降级，`main_conflicts` 必须非空。置信度低于 0.75、决定边界不可见或字段不可计算时写入 `uncertainties`，并携带可观察性、置信度和原始证据；宿主可据此生成缺失的低置信设计字段，模型无需在两个数组重复维护同一记录。
-
-完成既有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`；候选必须可观察、可复用、可参数化，并与已有字段去重。
+置信度低于 0.75、字段存在合理竞争、视角不足或不可计算时写入 `uncertainties`。完成既有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`；新候选必须可观察、可复用、可参数化并与已有字段去重。
 
 ### 5. 证据与输出
 
-证据必须位于主体框内并只描述可见事实。证据、设计元素及风格 `regions` 只能使用 `target_object.visible_regions` 中的值或 `whole_object`。每个观察字段至少引用一条证据；已计算推断字段至少引用两条独立观察证据；每个风格标签必须引用其硬判所用的规范字段与证据。
+证据必须位于主体框内并只描述可见事实。证据、设计元素及风格候选的 `regions` 只能使用 `target_object.visible_regions` 中的值或 `whole_object`。每个观察字段至少引用一条证据；已计算推断字段至少引用两条独立观察证据。
 
-模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、规则计数、排序、confirmed 候选镜像以及 core/auxiliary 证据链均不得重复生成。宿主先运行 `scripts/compile_model_output.py` 编译完整结构：合法 enum 若被模型写成仅含字符串 `label` 的单键对象，宿主先验证值域再展开为字符串；证据框仅因坐标取整而超出主体框不超过 0.05 时，可将主体框扩至该证据边界；若一条证据随后已同时提供非空区域、主体框内坐标与可见描述，但该区域漏记于 `visible_regions`，宿主可将这个已有区域补入声明，不得根据字段名猜测新区域。随后按 profile/视角移除不适用字段，依据 `references/value-normalization.json` 归一化显式别名、关系词和离散刻度，重建低置信镜像，并依据宿主专用 `references/style-evidence-rules.json` 从强字段值自动挂接可确定的风格证据。无法由值级规则安全判断但存在强候选字段时，宿主只提交当前风格、相关知识库段落和少量候选字段执行一次窄范围语义复核，不重新分析图片或生成完整 JSON。最终校验错误必须通过编译报告映射回精简观察 JSON Pointer 后再修复；推断字段证据不足时不得补造证据，局部补证失败后可保守移除对应的低置信观察。弱引用只从证据链剔除，原 DNA 与不确定项继续保留；只有复核后仍缺少决定锚点、独立辅助证据、区域闭环、规则门槛或注册表特殊硬门槛时，风格才降级为 provisional。随后由 `scripts/save_result.py` 写入 `derived_style_presets` 并按最终 Schema 校验。宿主不得利用编译或复核步骤发明视觉事实、放宽特殊硬门槛或改变仍有完整证据支持的视觉结论。
+模型只返回符合 `design-dna-model-output.schema.json` 的精简观察 JSON。字段与风格静态元数据、模块清单、统计值、排序和组合预设均不得重复生成。宿主运行 `scripts/compile_model_output.py`：
 
-最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。
+- 补全注册表静态元数据并稳定排序候选；
+- 按 profile 和视角移除不适用字段；
+- 依据 `references/value-normalization.json` 归一化显式别名、关系词和离散刻度；
+- 重建低置信镜像并计算统计值；
+- 不新增视觉事实，不把候选升级或降级为确认状态。
+
+随后 `scripts/save_result.py` 根据候选 ID 写入 `derived_style_presets`，再执行最终 Schema 与语义校验。最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。
 
 ## 确定性校验
 
@@ -95,12 +87,6 @@ python scripts/derive_style_presets.py compiled_result.json --output result.json
 python scripts/validate_output.py result.json
 ```
 
-传统宿主需要合并上下文时运行：
-
-```bash
-python scripts/build_prompt_bundle.py --output prompt_bundle.txt
-```
-
 校验失败时只修复结构或语义错误，不改变有证据支持的视觉事实。
 
 ## 支持文件
@@ -108,10 +94,9 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 - 执行协议：`references/extraction-protocol.zh-CN.md`
 - 输出合同：`references/output-contract.zh-CN.md`
 - 知识库：`references/design-dna-knowledge-base.zh-CN.md`
-- 宿主校验使用的完整风格、关系与字段：`references/style-registry.json`、`references/tag-relations.json`、`references/field-registry.json`
+- 完整风格与字段注册表：`references/style-registry.json`、`references/field-registry.json`
 - 宿主值域归一化规则：`references/value-normalization.json`
-- 宿主值级风格证据规则：`references/style-evidence-rules.json`
-- 模型精简召回与关系索引：`references/model-reference-bundle.json`
+- 模型精简索引：`references/model-reference-bundle.json`
 - 宿主专用组合派生规则：`references/style-combination-presets.json`
 - 品类适配与新 DNA：`references/category-adaptation.zh-CN.md`、`references/novel-dna-governance.zh-CN.md`
 - 模型/最终 JSON Schema：`schemas/design-dna-model-output.schema.json`、`schemas/design-dna-output.schema.json`

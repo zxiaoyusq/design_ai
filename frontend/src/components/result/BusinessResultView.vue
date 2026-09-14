@@ -18,20 +18,22 @@ const props = defineProps<{ data: DataRecord }>()
 
 const objectInfo = computed(() => asRecord(props.data.object))
 const style = computed(() => asRecord(props.data.style))
-const styleTags = computed(() => asRecordList(style.value.tags))
+const styleCandidates = computed(() => {
+  const current = asRecordList(style.value.style_candidates)
+  if (current.length) return current
+  // 历史多标签业务视图使用 tags；只读回退可避免升级后旧结果显示为空。
+  const legacyTags = asRecordList(style.value.tags)
+  return legacyTags.length ? legacyTags : asRecordList(style.value.candidates)
+})
 const derivedPresets = computed(() => asRecordList(style.value.derived_presets))
-const arbitrations = computed(() => asRecordList(style.value.pairwise_arbitrations))
-const candidates = computed(() => asRecordList(style.value.candidates))
 const extraStyleFields = computed(() =>
   omitFields(style.value, [
-    'status',
+    'style_candidates',
     'tags',
+    'candidates',
     'derived_presets',
     'composition_summary',
     'keywords',
-    'evidence',
-    'pairwise_arbitrations',
-    'candidates',
   ]),
 )
 const keyDna = computed(() => asRecordList(props.data.key_dna))
@@ -96,42 +98,41 @@ function itemBody(item: DataRecord, headingKeys: string[]) {
 
     <section class="result-section-card style-card">
       <div class="result-section-heading">
-        <div><span>02</span><div><h4>同层风格标签</h4><p>每个标签独立满足规则，不区分主风格和次要风格</p></div></div>
-        <span class="status-pill">{{ displayScalar(style.status) }}</span>
+        <div><span>02</span><div><h4>风格候选</h4><p>按图片中的实际视觉支持排序，不区分确认、主风格或次要风格</p></div></div>
+        <b class="count-badge">{{ styleCandidates.length }} 项</b>
       </div>
 
-      <div v-if="styleTags.length" class="style-tag-grid">
-        <article v-for="tag in styleTags" :key="String(tag.style_id)" class="style-tag-card">
+      <div v-if="styleCandidates.length" class="style-tag-grid">
+        <article v-for="candidate in styleCandidates" :key="String(candidate.style_id)" class="style-tag-card">
           <div class="style-tag-head">
             <div>
-              <span>{{ tag.style_id }}</span>
-              <strong>{{ tag.label_zh || tag.label_en || '未命名风格' }}</strong>
-              <small v-if="tag.label_en">{{ tag.label_en }}</small>
+              <span>#{{ candidate.rank }} · {{ candidate.style_id }}</span>
+              <strong>{{ candidate.label_zh || candidate.label_en || '未命名风格' }}</strong>
+              <small v-if="candidate.label_en">{{ candidate.label_en }}</small>
             </div>
-            <b>{{ toPercent(tag.dominance) }}% 占比</b>
           </div>
           <div class="style-score-row">
             <div class="confidence-meter">
               <span>匹配度</span>
-              <a-progress :percent="toPercent(tag.match_score)" :show-info="false" stroke-color="#8b79b9" />
-              <b>{{ toPercent(tag.match_score) }}%</b>
+              <a-progress :percent="toPercent(candidate.match_score)" :show-info="false" stroke-color="#8b79b9" />
+              <b>{{ toPercent(candidate.match_score) }}%</b>
             </div>
             <div class="confidence-meter">
-              <span>置信度 · {{ displayScalar(tag.confidence) }}</span>
-              <a-progress :percent="toPercent(tag.confidence_score)" :show-info="false" stroke-color="#c58f73" />
-              <b>{{ toPercent(tag.confidence_score) }}%</b>
+              <span>置信度 · {{ displayScalar(candidate.confidence) }}</span>
+              <a-progress :percent="toPercent(candidate.confidence_score)" :show-info="false" stroke-color="#c58f73" />
+              <b>{{ toPercent(candidate.confidence_score) }}%</b>
             </div>
           </div>
           <div class="result-inline-group compact-row">
             <span>作用区域</span>
             <div class="data-tags">
-              <span v-for="region in asStringList(tag.regions)" :key="region">{{ region }}</span>
+              <span v-for="region in asStringList(candidate.regions)" :key="region">{{ region }}</span>
             </div>
           </div>
-          <DataValue :value="itemBody(tag, ['style_id', 'label_zh', 'label_en', 'match_score', 'confidence', 'confidence_score', 'dominance', 'regions'])" />
+          <DataValue :value="itemBody(candidate, ['rank', 'style_id', 'label_zh', 'label_en', 'match_score', 'confidence', 'confidence_score', 'regions'])" />
         </article>
       </div>
-      <div v-else class="inline-empty">当前图片没有满足完整硬规则的已确认风格标签</div>
+      <div v-else class="inline-empty">当前图片没有可输出的风格候选</div>
 
       <div v-if="hasContent(style.composition_summary)" class="result-note">
         <span>组合说明</span><p>{{ displayScalar(style.composition_summary) }}</p>
@@ -145,11 +146,6 @@ function itemBody(item: DataRecord, headingKeys: string[]) {
         </div>
       </div>
 
-      <div v-if="asStringList(style.evidence).length" class="evidence-callout">
-        <span>判定依据</span>
-        <p v-for="item in asStringList(style.evidence)" :key="item">{{ item }}</p>
-      </div>
-
       <div v-if="derivedPresets.length" class="subsection-block">
         <h5>确定性派生的风格组合</h5>
         <div class="result-card-grid">
@@ -158,21 +154,6 @@ function itemBody(item: DataRecord, headingKeys: string[]) {
             <DataValue :value="item" />
           </article>
         </div>
-      </div>
-
-      <div v-if="arbitrations.length" class="subsection-block">
-        <h5>标签共存裁定</h5>
-        <div class="result-card-grid single-column">
-          <article v-for="(item, index) in arbitrations" :key="index" class="mini-data-card">
-            <strong>{{ item.style_id_a }} × {{ item.style_id_b }}</strong>
-            <DataValue :value="itemBody(item, ['style_id_a', 'style_id_b'])" />
-          </article>
-        </div>
-      </div>
-
-      <div v-if="candidates.length" class="subsection-block">
-        <h5>未分类候选</h5>
-        <DataValue :value="candidates" />
       </div>
 
       <DataValue v-if="hasContent(extraStyleFields)" :value="extraStyleFields" />

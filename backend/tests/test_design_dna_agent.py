@@ -43,7 +43,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
             [resolve_applicable_design_fields],
         )
         self.assertIn(BOUND_SKILL_NAME, AGENT_SYSTEM_PROMPT)
-        self.assertIn("design_dna_multitag_observation_v1", AGENT_SYSTEM_PROMPT)
+        self.assertIn("design_dna_multitag_observation_v2", AGENT_SYSTEM_PROMPT)
         self.assertIn("静态元数据、模块清单、统计值、排序", AGENT_SYSTEM_PROMPT)
         self.assertEqual(
             agent_factory.call_args.kwargs["name"],
@@ -71,7 +71,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         model_factory: Mock,
         _agent_factory: Mock,
     ) -> None:
-        create_design_dna_agent("gpt-5.6-sol-20260820")
+        create_design_dna_agent("gpt-5.6-sol")
 
         self.assertNotIn("max_tokens", model_factory.call_args.kwargs)
 
@@ -81,7 +81,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         self.assertIn('"field_id":"GEO-01"', context)
         self.assertIn('"value_type":"float"', context)
         self.assertIn('"style_id":"NordicCalm"', context)
-        self.assertIn("design_dna_multitag_observation_v1", context)
+        self.assertIn("design_dna_multitag_observation_v2", context)
 
     def test_field_gate_filters_view_and_profile_specific_fields(self) -> None:
         result = resolve_applicable_design_fields.invoke(

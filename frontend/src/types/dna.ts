@@ -90,7 +90,7 @@ export interface DesignDnaResultSummary {
   preview_url: string | null
   created_at: string
   category: string | null
-  style_tags: string[]
+  style_candidates: string[]
   summary: string | null
 }
 

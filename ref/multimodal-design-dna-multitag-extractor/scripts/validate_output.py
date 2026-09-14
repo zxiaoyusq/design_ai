@@ -96,19 +96,19 @@ def validate_semantics(
     value_spaces = extract_kb_value_spaces(kb_text)
 
     style_result = data.get("style_result", {})
-    confirmed_style_ids = [
+    candidate_style_ids = [
         item.get("style_id")
-        for item in style_result.get("style_tags", [])
+        for item in style_result.get("style_candidates", [])
         if isinstance(item, dict) and isinstance(item.get("style_id"), str)
     ]
     expected_presets = compute_derived_style_presets(
-        confirmed_style_ids,
+        candidate_style_ids,
         combination_presets,
     )
     if style_result.get("derived_style_presets") != expected_presets:
         errors.append(
             "style_result.derived_style_presets: must equal deterministic Python derivation "
-            "from confirmed style_tags"
+            "from style_candidates"
         )
 
     allowed_regions, target_view, evidence_regions = _validate_target_evidence(

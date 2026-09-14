@@ -70,11 +70,8 @@ def _check_schema(errors: list[str]) -> None:
         errors.append(f"schema retains legacy hierarchy definitions {present_forbidden}")
     style_result = definitions.get("styleResult", {})
     expected_result_fields = {
-        "classification_status",
-        "style_tags",
+        "style_candidates",
         "derived_style_presets",
-        "candidate_ranking",
-        "pairwise_arbitrations",
         "composition_summary",
     }
     if set(style_result.get("required", [])) != expected_result_fields:
@@ -101,7 +98,7 @@ def _check_schema(errors: list[str]) -> None:
     model_definitions = model_schema.get("$defs", {})
     if "styleResult" in model_definitions or "qualitySummary" in model_definitions:
         errors.append("model output schema must not retain host-compiled final result definitions")
-    confirmed_observation = model_definitions.get("confirmedStyleObservation", {})
+    candidate_observation = model_definitions.get("styleCandidateObservation", {})
     forbidden_model_fields = {
         "label_en",
         "label_zh",
@@ -111,178 +108,53 @@ def _check_schema(errors: list[str]) -> None:
         "evidence_refs",
         "rule_coverage",
     }
-    if forbidden_model_fields.intersection(confirmed_observation.get("properties", {})):
-        errors.append("confirmed style observations contain host-compiled metadata")
-    optional_host_fields = {
-        "applicable_rule_count",
-        "not_applicable_rule_count",
-        "core_feature_hits",
-        "auxiliary_feature_hits",
-    }
-    if optional_host_fields.intersection(confirmed_observation.get("required", [])):
-        errors.append(
-            "confirmed style observations must not require host-built rule counts or evidence links"
-        )
-    if set(result_properties.get("classification_status", {}).get("enum", [])) != {
-        "confirmed",
-        "unclassified",
+    if forbidden_model_fields.intersection(candidate_observation.get("properties", {})):
+        errors.append("style candidate observations contain host-compiled metadata")
+    if set(candidate_observation.get("required", [])) != {
+        "style_id",
+        "match_score",
+        "confidence",
+        "regions",
+        "main_support",
+        "main_conflicts",
     }:
-        errors.append("schema classification_status must only allow confirmed/unclassified")
-    if result_properties.get("style_tags", {}).get("maxItems") != 3:
-        errors.append("schema style_tags must cap confirmed labels at 3")
-    if result_properties.get("candidate_ranking", {}).get("minItems") != 1:
-        errors.append("schema candidate_ranking must contain at least one ranked candidate")
-    if result_properties.get("pairwise_arbitrations", {}).get("maxItems") != 3:
-        errors.append("schema pairwise_arbitrations must cap C(3,2) at 3")
+        errors.append("model style candidate observation fields are incomplete")
+    model_style_observations = model_definitions.get("styleObservations", {})
+    if set(model_style_observations.get("required", [])) != {
+        "candidate_tags",
+        "composition_summary",
+    }:
+        errors.append("model style observations must use the candidate-only contract")
+    candidate_tags_schema = model_style_observations.get("properties", {}).get(
+        "candidate_tags", {}
+    )
+    if candidate_tags_schema.get("maxItems") != 5:
+        errors.append("model candidate_tags must contain at most 5 items")
+    style_candidates_schema = result_properties.get("style_candidates", {})
+    if style_candidates_schema.get("maxItems") != 5:
+        errors.append("schema style_candidates must contain at most 5 ranked candidates")
     if result_properties.get("derived_style_presets", {}).get("maxItems") != 12:
         errors.append("schema derived_style_presets must cap registered presets at 12")
-    single_tag_rule = next(
-        (
-            rule
-            for rule in style_result.get("allOf", [])
-            if rule.get("if", {})
-            .get("properties", {})
-            .get("style_tags", {})
-            == {"minItems": 1, "maxItems": 1}
-        ),
-        {},
-    )
-    if (
-        single_tag_rule.get("then", {})
-        .get("properties", {})
-        .get("style_tags", {})
-        .get("items", {})
-        .get("properties", {})
-        .get("dominance", {})
-        .get("const")
-        != 1
-    ):
-        errors.append("schema single style tag must require dominance=1")
 
     identity_fields = {"style_id", "label_en", "label_zh", "aliases", "tag_kind", "facet_ids"}
     forbidden_hierarchy = {"parent_style_id", "level_1", "level_2"}
-    style_tag = definitions.get("styleTag", {})
-    style_tag_properties = set(style_tag.get("properties", {}))
-    if not identity_fields.issubset(style_tag_properties):
-        errors.append("schema styleTag is missing flat identity/facet fields")
-    if style_tag_properties.intersection(forbidden_hierarchy):
-        errors.append("schema styleTag must not expose parent/level hierarchy fields")
-    required_tag_fields = {
-        *identity_fields,
-        "match_score",
-        "confidence",
-        "dominance",
-        "regions",
-        "hard_rule_passed",
-        "rule_coverage",
-        "color_requirement",
-        "core_feature_hits",
-        "auxiliary_feature_hits",
-        "missing_required_items",
-        "exclusion_hits",
-        "evidence_refs",
-    }
-    if set(style_tag.get("required", [])) != required_tag_fields:
-        errors.append("schema styleTag required fields are incomplete or contain legacy fields")
-    if style_tag.get("properties", {}).get("confidence", {}).get("minimum") != 0.75:
-        errors.append("schema confirmed styleTag confidence must have minimum 0.75")
-    coverage_rules = (
-        style_tag.get("properties", {}).get("rule_coverage", {}).get("allOf", [])
-    )
-    confirmed_coverage = (
-        coverage_rules[1].get("properties", {})
-        if isinstance(coverage_rules, list)
-        and len(coverage_rules) > 1
-        and isinstance(coverage_rules[1], dict)
-        else {}
-    )
-    if (
-        confirmed_coverage.get("applicable_rule_count", {}).get("minimum") != 1
-        or confirmed_coverage.get("passed_rule_count", {}).get("minimum") != 1
-    ):
-        errors.append(
-            "schema confirmed styleTag must require applicable_rule_count>=1 and passed_rule_count>=1"
-        )
-
     candidate = definitions.get("styleCandidate", {})
     candidate_properties = set(candidate.get("properties", {}))
     if not identity_fields.issubset(candidate_properties) or candidate_properties.intersection(forbidden_hierarchy):
         errors.append("schema styleCandidate identity must be flat and facet-aware")
-    if "candidate_status" not in candidate.get("required", []):
-        errors.append("schema styleCandidate must require candidate_status")
-    candidate_rules = candidate.get("allOf", [])
-    confirmed_rule = next(
-        (
-            rule
-            for rule in candidate_rules
-            if rule.get("if", {}).get("properties", {}).get("candidate_status", {}).get("const")
-            == "confirmed"
-        ),
-        {},
-    )
-    confirmed_properties = confirmed_rule.get("then", {}).get("properties", {})
-    if (
-        confirmed_properties.get("confidence", {}).get("minimum") != 0.75
-        or confirmed_properties.get("hard_rule_passed", {}).get("const") is not True
-    ):
-        errors.append("schema confirmed candidate must require confidence>=0.75 and hard_rule_passed=true")
-    nonconfirmed_rule = next(
-        (
-            rule
-            for rule in candidate_rules
-            if set(
-                rule.get("if", {})
-                .get("properties", {})
-                .get("candidate_status", {})
-                .get("enum", [])
-            )
-            == {"provisional", "rejected"}
-            and "hard_rule_passed"
-            not in rule.get("if", {}).get("properties", {})
-        ),
-        {},
-    )
-    nonconfirmed_properties = nonconfirmed_rule.get("then", {}).get("properties", {})
-    if nonconfirmed_properties.get("dominance", {}).get("const") != 0:
-        errors.append("schema provisional/rejected candidate must require dominance=0")
-    if "hard_rule_passed" in nonconfirmed_properties:
-        errors.append("schema provisional/rejected candidate must allow either hard-rule boolean")
-    hard_conflict_rule = next(
-        (
-            rule
-            for rule in candidate_rules
-            if rule.get("if", {}).get("properties", {}).get("hard_rule_passed", {}).get("const")
-            is True
-            and set(
-                rule.get("if", {})
-                .get("properties", {})
-                .get("candidate_status", {})
-                .get("enum", [])
-            )
-            == {"provisional", "rejected"}
-        ),
-        {},
-    )
-    if (
-        hard_conflict_rule.get("then", {})
-        .get("properties", {})
-        .get("main_conflicts", {})
-        .get("minItems")
-        != 1
-    ):
-        errors.append("schema non-confirmed hard-pass candidate must require main_conflicts")
-    pairwise = definitions.get("pairwiseArbitration", {})
-    expected_pair_fields = {
-        "style_id_a",
-        "style_id_b",
-        "relation",
-        "scope",
-        "decision",
-        "reason",
-        "evidence_refs",
+    expected_candidate_fields = {
+        *identity_fields,
+        "rank",
+        "match_score",
+        "confidence",
+        "regions",
+        "main_support",
+        "main_conflicts",
     }
-    if set(pairwise.get("required", [])) != expected_pair_fields:
-        errors.append("schema pairwiseArbitration fields are incomplete")
+    if set(candidate.get("required", [])) != expected_candidate_fields:
+        errors.append("schema styleCandidate required fields are incomplete")
+    if candidate.get("properties", {}).get("main_support", {}).get("minItems") != 1:
+        errors.append("schema styleCandidate main_support must be non-empty")
 
 
 def _check_style_evidence_rules(
@@ -942,11 +814,8 @@ def _check_registries(errors: list[str]) -> None:
         ):
             errors.append("schema styleId enum must contain exactly the 38 active registry styles")
         style_result_schema = schema.get("$defs", {}).get("styleResult", {}).get("properties", {})
-        if style_result_schema.get("style_tags", {}).get("maxItems") != max_tags:
-            errors.append("schema style_tags maxItems differs from tag-relations max_confirmed_tags")
-        expected_pair_cap = max_tags * (max_tags - 1) // 2
-        if style_result_schema.get("pairwise_arbitrations", {}).get("maxItems") != expected_pair_cap:
-            errors.append("schema pairwise_arbitrations maxItems differs from C(max_confirmed_tags,2)")
+        if style_result_schema.get("style_candidates", {}).get("maxItems") != 5:
+            errors.append("schema style_candidates maxItems must be exactly 5")
     if not pair_relations:
         errors.append("tag-relations must define at least one explicit pair relation")
     if default_pair.get("same_region_coexistence") != "independent_evidence":

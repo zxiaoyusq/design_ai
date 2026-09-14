@@ -994,7 +994,7 @@ M15 仅由带来源版本的参考/趋势扩展工作流激活；当前单图 Sk
 | BRD-01～BRD-04、BRD-05、BRD-09 | IDG-01～IDG-04、IDG-06、IDG-07 | alias |
 | BRD-06～BRD-08 | IDG-08 | derived |
 | BRD-10、BRD-11、BRD-12 | REL-01、REL-02、REL-05 | alias |
-| IMG-01、IMG-02 | style_result.style_tags | 移入扁平标签集合（非字段 alias/compatibility_derived） |
+| IMG-01、IMG-02 | style_result.style_candidates | 移入扁平候选集合（非字段 alias/compatibility_derived） |
 | IMG-12 | IMG-03～IMG-10 | derived narrative，weight=0 |
 | IMG-13 | request_context.target_perception | 移出图片 DNA |
 | IMG-14 | evidence_refs | 移入通用证据结构 |

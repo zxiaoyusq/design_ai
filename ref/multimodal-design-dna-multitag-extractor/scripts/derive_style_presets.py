@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""从已确认原子风格中确定性派生组合预设，并写入最终结果 JSON。"""
+"""从真实风格候选中确定性派生组合预设，并写入最终结果 JSON。"""
 from __future__ import annotations
 
 import argparse
@@ -27,12 +27,12 @@ def _load_json(path: Path) -> Any:
 
 
 def compute_derived_style_presets(
-    confirmed_style_ids: Sequence[str],
+    candidate_style_ids: Sequence[str],
     preset_registry: dict[str, Any],
 ) -> list[dict[str, Any]]:
-    """按注册表顺序匹配全部子句，只使用已确认标签，不读取图像或候选分数。"""
+    """按注册表顺序匹配全部子句，只使用候选 ID，不读取分数或图片。"""
 
-    confirmed = {style_id for style_id in confirmed_style_ids if isinstance(style_id, str)}
+    candidates = {style_id for style_id in candidate_style_ids if isinstance(style_id, str)}
     derived: list[dict[str, Any]] = []
     presets = preset_registry.get("presets")
     if not isinstance(presets, list):
@@ -62,7 +62,7 @@ def compute_derived_style_presets(
                 or isinstance(minimum, bool)
             ):
                 raise ValueError(f"组合预设 {preset.get('preset_id')!r} 含无效子句")
-            matched = confirmed.intersection(style_ids)
+            matched = candidates.intersection(style_ids)
             if len(matched) < minimum:
                 all_clauses_passed = False
                 break
@@ -90,15 +90,15 @@ def write_derived_style_presets(
     style_result = data.get("style_result")
     if not isinstance(style_result, dict):
         raise ValueError("结果缺少 style_result 对象")
-    style_tags = style_result.get("style_tags")
-    if not isinstance(style_tags, list):
-        raise ValueError("style_result.style_tags 必须是数组")
-    confirmed_style_ids = [
+    style_candidates = style_result.get("style_candidates")
+    if not isinstance(style_candidates, list):
+        raise ValueError("style_result.style_candidates 必须是数组")
+    candidate_style_ids = [
         item.get("style_id")
-        for item in style_tags
+        for item in style_candidates
         if isinstance(item, dict) and isinstance(item.get("style_id"), str)
     ]
-    derived = compute_derived_style_presets(confirmed_style_ids, preset_registry)
+    derived = compute_derived_style_presets(candidate_style_ids, preset_registry)
     style_result["derived_style_presets"] = derived
     return derived
 

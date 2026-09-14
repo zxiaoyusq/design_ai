@@ -1,5 +1,5 @@
 {
-  "schema_version": "design_dna_multitag_extraction_v1.1",
+  "schema_version": "design_dna_multitag_extraction_v1.2",
   "knowledge_base_version": "4.1",
   "target_object": {
     "object_id": "main_object_01",
@@ -7,10 +7,24 @@
     "subcategory": "bar_phone",
     "selection_basis": "画面中仅有一台完整手机，位于中心且占据主要面积。",
     "selection_confidence": 0.99,
-    "bbox_norm": [0.1, 0.04, 0.9, 0.96],
+    "bbox_norm": [
+      0.1,
+      0.04,
+      0.9,
+      0.96
+    ],
     "view": "rear",
-    "visible_regions": ["back_cover", "frame", "camera_island", "lens_ring", "logo"],
-    "ignored_content": ["background", "ground_shadow"]
+    "visible_regions": [
+      "back_cover",
+      "frame",
+      "camera_island",
+      "lens_ring",
+      "logo"
+    ],
+    "ignored_content": [
+      "background",
+      "ground_shadow"
+    ]
   },
   "image_quality": {
     "overall_quality": 0.91,
@@ -23,7 +37,11 @@
     "lighting_bias": 0.14,
     "color_reliability": 0.85,
     "material_reliability": 0.68,
-    "notes": ["背面完整可见", "颜色未经标准光源校正", "真实材料成分不可由单图确认"]
+    "notes": [
+      "背面完整可见",
+      "颜色未经标准光源校正",
+      "真实材料成分不可由单图确认"
+    ]
   },
   "module_applicability": {
     "active_profiles": [
@@ -31,13 +49,41 @@
       "profile:imaging_device"
     ],
     "applicable_modules": [
-      {"module_id": "DNA-M01", "module_name": "比例、体量、姿态与接地", "reason": "手机背面轮廓完整，可观察表观比例。"},
-      {"module_id": "DNA-M02", "module_name": "轮廓、曲面与边界", "reason": "机身及相机岛轮廓清晰。"},
-      {"module_id": "DNA-M03", "module_name": "构图、层级与动势", "reason": "背板元素的留白与组织关系可见。"},
-      {"module_id": "DNA-M05", "module_name": "成像与屏幕设备 Profile", "reason": "背面成像模组完整可见。"},
-      {"module_id": "DNA-M06", "module_name": "OKLCH 色彩系统", "reason": "主体颜色区域可分离并估算占比。"},
-      {"module_id": "DNA-M07", "module_name": "视觉材质与表面关系", "reason": "背板和镜头环的表观材质与光泽差异可见。"},
-      {"module_id": "DNA-M13", "module_name": "感知语义坐标", "reason": "可在风格硬判后由多条观察证据计算语义坐标。"}
+      {
+        "module_id": "DNA-M01",
+        "module_name": "比例、体量、姿态与接地",
+        "reason": "手机背面轮廓完整，可观察表观比例。"
+      },
+      {
+        "module_id": "DNA-M02",
+        "module_name": "轮廓、曲面与边界",
+        "reason": "机身及相机岛轮廓清晰。"
+      },
+      {
+        "module_id": "DNA-M03",
+        "module_name": "构图、层级与动势",
+        "reason": "背板元素的留白与组织关系可见。"
+      },
+      {
+        "module_id": "DNA-M05",
+        "module_name": "成像与屏幕设备 Profile",
+        "reason": "背面成像模组完整可见。"
+      },
+      {
+        "module_id": "DNA-M06",
+        "module_name": "OKLCH 色彩系统",
+        "reason": "主体颜色区域可分离并估算占比。"
+      },
+      {
+        "module_id": "DNA-M07",
+        "module_name": "视觉材质与表面关系",
+        "reason": "背板和镜头环的表观材质与光泽差异可见。"
+      },
+      {
+        "module_id": "DNA-M13",
+        "module_name": "感知语义坐标",
+        "reason": "可在风格硬判后由多条观察证据计算语义坐标。"
+      }
     ],
     "excluded_modules": [
       {
@@ -50,90 +96,37 @@
     "rule_adaptations": []
   },
   "style_result": {
-    "classification_status": "confirmed",
-    "style_tags": [
-      {
-        "style_id": "RefinedMinimalism",
-        "label_en": "Refined Restraint",
-        "label_zh": "精致克制",
-        "aliases": ["Refined Minimalism", "现代简致", "静奢简雅"],
-        "tag_kind": "atomic",
-        "facet_ids": ["composition_order", "form_structure", "material_surface"],
-        "match_score": 88,
-        "confidence": 0.86,
-        "dominance": 1.0,
-        "regions": ["whole_object", "camera_island"],
-        "hard_rule_passed": true,
-        "rule_coverage": {
-          "applicable_rule_count": 6,
-          "passed_rule_count": 6,
-          "failed_rule_count": 0,
-          "unknown_rule_count": 0,
-          "not_applicable_rule_count": 0
-        },
-        "color_requirement": {"status": "not_applicable", "evidence_refs": []},
-        "core_feature_hits": ["DEV-03、DEV-05：低对比独立相机岛与细窄镜头环形成受控精致增量"],
-        "auxiliary_feature_hits": ["CMP-09：背板保持大面积无信息留白", "CMF-07：深灰表面统一且局部高光柔和"],
-        "missing_required_items": [],
-        "exclusion_hits": [],
-        "evidence_refs": ["EV-001", "EV-002", "EV-003"]
-      }
-    ],
-    "derived_style_presets": [],
-    "candidate_ranking": [
+    "style_candidates": [
       {
         "rank": 1,
         "style_id": "RefinedMinimalism",
         "label_en": "Refined Restraint",
         "label_zh": "精致克制",
-        "aliases": ["Refined Minimalism", "现代简致", "静奢简雅"],
+        "aliases": [
+          "Refined Minimalism",
+          "现代简致",
+          "静奢简雅"
+        ],
         "tag_kind": "atomic",
-        "facet_ids": ["composition_order", "form_structure", "material_surface"],
+        "facet_ids": [
+          "composition_order",
+          "form_structure",
+          "material_surface"
+        ],
         "match_score": 88,
         "confidence": 0.86,
-        "dominance": 1.0,
-        "regions": ["whole_object", "camera_island"],
-        "candidate_status": "confirmed",
-        "hard_rule_passed": true,
-        "main_support": ["简洁基础上存在受控相机岛与镜头环增量", "深灰近单色且信息密度低"],
+        "regions": [
+          "whole_object",
+          "camera_island"
+        ],
+        "main_support": [
+          "简洁基础上存在受控相机岛与镜头环增量",
+          "深灰近单色且信息密度低"
+        ],
         "main_conflicts": []
-      },
-      {
-        "rank": 2,
-        "style_id": "PureMinimalism",
-        "label_en": "Pure Minimalism",
-        "label_zh": "纯粹极简",
-        "aliases": [],
-        "tag_kind": "atomic",
-        "facet_ids": ["composition_order", "color_optics", "material_surface"],
-        "match_score": 63,
-        "confidence": 0.78,
-        "dominance": 0.0,
-        "regions": ["whole_object"],
-        "candidate_status": "rejected",
-        "hard_rule_passed": false,
-        "main_support": ["近单色", "大面积留白"],
-        "main_conflicts": ["存在可见独立相机岛和局部金属感增量"]
-      },
-      {
-        "rank": 3,
-        "style_id": "PrecisionMinimalism",
-        "label_en": "Precision Order",
-        "label_zh": "精密秩序",
-        "aliases": ["精工极简"],
-        "tag_kind": "atomic",
-        "facet_ids": ["composition_order", "form_structure", "material_surface"],
-        "match_score": 48,
-        "confidence": 0.8,
-        "dominance": 0.0,
-        "regions": ["lens_ring"],
-        "candidate_status": "rejected",
-        "hard_rule_passed": false,
-        "main_support": ["镜头环具有冷金属感亮边"],
-        "main_conflicts": ["冷金属视觉未覆盖主体"]
       }
     ],
-    "pairwise_arbitrations": [],
+    "derived_style_presets": [],
     "composition_summary": "低信息背板上仅有小面积、低对比的相机岛与细窄镜头环增量，当前只有精致克制完整通过硬门槛。"
   },
   "design_elements": {
@@ -144,9 +137,22 @@
         "module_name": "比例、体量、姿态与接地",
         "elements": [
           {
-            "field_id": "GEO-01", "field_name": "表观长宽比", "source_path": "DNA-M01/GEO-01", "schema_source": "md_extension",
-            "value": 2.08, "raw_visual_description": "背面投影高度约为宽度的两倍。", "value_type": "float", "evidence_mode": "direct", "region": "whole_object",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.92, "evidence_refs": ["EV-001"]
+            "field_id": "GEO-01",
+            "field_name": "表观长宽比",
+            "source_path": "DNA-M01/GEO-01",
+            "schema_source": "md_extension",
+            "value": 2.08,
+            "raw_visual_description": "背面投影高度约为宽度的两倍。",
+            "value_type": "float",
+            "evidence_mode": "direct",
+            "region": "whole_object",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.92,
+            "evidence_refs": [
+              "EV-001"
+            ]
           }
         ]
       },
@@ -155,9 +161,22 @@
         "module_name": "轮廓、曲面与边界",
         "elements": [
           {
-            "field_id": "FORM-12", "field_name": "轮廓原型", "source_path": "DNA-M02/FORM-12", "schema_source": "md_extension",
-            "value": "几何", "raw_visual_description": "相机岛外边界接近方形，四角为中等圆角。", "value_type": "enum", "evidence_mode": "direct", "region": "camera_island",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.93, "evidence_refs": ["EV-002"]
+            "field_id": "FORM-12",
+            "field_name": "轮廓原型",
+            "source_path": "DNA-M02/FORM-12",
+            "schema_source": "md_extension",
+            "value": "几何",
+            "raw_visual_description": "相机岛外边界接近方形，四角为中等圆角。",
+            "value_type": "enum",
+            "evidence_mode": "direct",
+            "region": "camera_island",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.93,
+            "evidence_refs": [
+              "EV-002"
+            ]
           }
         ]
       },
@@ -166,9 +185,23 @@
         "module_name": "构图、层级与动势",
         "elements": [
           {
-            "field_id": "CMP-09", "field_name": "留白比例", "source_path": "DNA-M03/CMP-09", "schema_source": "md_extension",
-            "value": 0.64, "raw_visual_description": "除左上相机模组和下部小型标识外，背板大部分区域无高信息元素。", "value_type": "float", "evidence_mode": "direct", "region": "back_cover",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.84, "evidence_refs": ["EV-001", "EV-002"]
+            "field_id": "CMP-09",
+            "field_name": "留白比例",
+            "source_path": "DNA-M03/CMP-09",
+            "schema_source": "md_extension",
+            "value": 0.64,
+            "raw_visual_description": "除左上相机模组和下部小型标识外，背板大部分区域无高信息元素。",
+            "value_type": "float",
+            "evidence_mode": "direct",
+            "region": "back_cover",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.84,
+            "evidence_refs": [
+              "EV-001",
+              "EV-002"
+            ]
           }
         ]
       },
@@ -177,14 +210,42 @@
         "module_name": "成像与屏幕设备 Profile",
         "elements": [
           {
-            "field_id": "DEV-03", "field_name": "镜头排列", "source_path": "DNA-M05/DEV-03", "schema_source": "md_extension",
-            "value": "纵", "raw_visual_description": "多个圆形镜头沿相机岛纵向组织。", "value_type": "enum", "evidence_mode": "direct", "region": "camera_island",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.91, "evidence_refs": ["EV-002"]
+            "field_id": "DEV-03",
+            "field_name": "镜头排列",
+            "source_path": "DNA-M05/DEV-03",
+            "schema_source": "md_extension",
+            "value": "纵",
+            "raw_visual_description": "多个圆形镜头沿相机岛纵向组织。",
+            "value_type": "enum",
+            "evidence_mode": "direct",
+            "region": "camera_island",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.91,
+            "evidence_refs": [
+              "EV-002"
+            ]
           },
           {
-            "field_id": "DEV-05", "field_name": "镜头环语言", "source_path": "DNA-M05/DEV-05", "schema_source": "md_extension",
-            "value": ["细窄"], "raw_visual_description": "镜头外围存在细窄金属感亮边，与哑光背板形成局部光泽差。", "value_type": "multi_label", "evidence_mode": "direct", "region": "lens_ring",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.83, "evidence_refs": ["EV-002"]
+            "field_id": "DEV-05",
+            "field_name": "镜头环语言",
+            "source_path": "DNA-M05/DEV-05",
+            "schema_source": "md_extension",
+            "value": [
+              "细窄"
+            ],
+            "raw_visual_description": "镜头外围存在细窄金属感亮边，与哑光背板形成局部光泽差。",
+            "value_type": "multi_label",
+            "evidence_mode": "direct",
+            "region": "lens_ring",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.83,
+            "evidence_refs": [
+              "EV-002"
+            ]
           }
         ]
       },
@@ -193,9 +254,22 @@
         "module_name": "OKLCH 色彩系统",
         "elements": [
           {
-            "field_id": "CLR-04", "field_name": "主色面积占比", "source_path": "DNA-M06/CLR-04", "schema_source": "md_extension",
-            "value": 0.82, "raw_visual_description": "深灰背板覆盖可见产品面积的大部分，黑色镜头和边框占比较小。", "value_type": "float", "evidence_mode": "direct", "region": "whole_object",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.8, "evidence_refs": ["EV-003"]
+            "field_id": "CLR-04",
+            "field_name": "主色面积占比",
+            "source_path": "DNA-M06/CLR-04",
+            "schema_source": "md_extension",
+            "value": 0.82,
+            "raw_visual_description": "深灰背板覆盖可见产品面积的大部分，黑色镜头和边框占比较小。",
+            "value_type": "float",
+            "evidence_mode": "direct",
+            "region": "whole_object",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.8,
+            "evidence_refs": [
+              "EV-003"
+            ]
           }
         ]
       },
@@ -204,15 +278,54 @@
         "module_name": "视觉材质与表面关系",
         "elements": [
           {
-            "field_id": "CMF-01", "field_name": "区域视觉材质候选", "source_path": "DNA-M07/CMF-01", "schema_source": "md_extension",
-            "value": {"region": "back_cover", "candidates": [{"label": "哑光玻璃感", "probability": 0.62}, {"label": "哑光聚合物感", "probability": 0.38}]},
-            "raw_visual_description": "背板高光较宽且边界柔和，表面没有明显颗粒或方向纹。", "value_type": "object", "evidence_mode": "direct", "region": "back_cover",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.68, "evidence_refs": ["EV-003", "EV-004"]
+            "field_id": "CMF-01",
+            "field_name": "区域视觉材质候选",
+            "source_path": "DNA-M07/CMF-01",
+            "schema_source": "md_extension",
+            "value": {
+              "region": "back_cover",
+              "candidates": [
+                {
+                  "label": "哑光玻璃感",
+                  "probability": 0.62
+                },
+                {
+                  "label": "哑光聚合物感",
+                  "probability": 0.38
+                }
+              ]
+            },
+            "raw_visual_description": "背板高光较宽且边界柔和，表面没有明显颗粒或方向纹。",
+            "value_type": "object",
+            "evidence_mode": "direct",
+            "region": "back_cover",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.68,
+            "evidence_refs": [
+              "EV-003",
+              "EV-004"
+            ]
           },
           {
-            "field_id": "CMF-07", "field_name": "表观光泽", "source_path": "DNA-M07/CMF-07", "schema_source": "md_extension",
-            "value": 0.25, "raw_visual_description": "背板反射轮廓模糊，高光宽且过渡柔和。", "value_type": "float", "evidence_mode": "direct", "region": "back_cover",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "not_requested", "confidence": 0.76, "evidence_refs": ["EV-003", "EV-004"]
+            "field_id": "CMF-07",
+            "field_name": "表观光泽",
+            "source_path": "DNA-M07/CMF-07",
+            "schema_source": "md_extension",
+            "value": 0.25,
+            "raw_visual_description": "背板反射轮廓模糊，高光宽且过渡柔和。",
+            "value_type": "float",
+            "evidence_mode": "direct",
+            "region": "back_cover",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "not_requested",
+            "confidence": 0.76,
+            "evidence_refs": [
+              "EV-003",
+              "EV-004"
+            ]
           }
         ]
       },
@@ -221,9 +334,24 @@
         "module_name": "感知语义坐标",
         "elements": [
           {
-            "field_id": "SEM-01", "field_name": "极简—装饰", "source_path": "DNA-M13/SEM-01", "schema_source": "md_extension",
-            "value": 25, "raw_visual_description": "低信息密度、统一深灰表面与相机区的小面积细节共同支持偏极简端。", "value_type": "integer", "evidence_mode": "inferred", "region": "whole_object",
-            "applicability_status": "applicable", "observability": "observed", "computation_status": "computed", "confidence": 0.82, "evidence_refs": ["EV-001", "EV-002", "EV-003"]
+            "field_id": "SEM-01",
+            "field_name": "极简—装饰",
+            "source_path": "DNA-M13/SEM-01",
+            "schema_source": "md_extension",
+            "value": 25,
+            "raw_visual_description": "低信息密度、统一深灰表面与相机区的小面积细节共同支持偏极简端。",
+            "value_type": "integer",
+            "evidence_mode": "inferred",
+            "region": "whole_object",
+            "applicability_status": "applicable",
+            "observability": "observed",
+            "computation_status": "computed",
+            "confidence": 0.82,
+            "evidence_refs": [
+              "EV-001",
+              "EV-002",
+              "EV-003"
+            ]
           }
         ]
       }
@@ -241,11 +369,31 @@
       "applicability_status": "applicable",
       "observability": "observed",
       "computation_status": "not_requested",
-      "best_estimate": {"region": "back_cover", "candidate": "哑光玻璃感"},
+      "best_estimate": {
+        "region": "back_cover",
+        "candidate": "哑光玻璃感"
+      },
       "confidence": 0.68,
       "candidate_values": [
-        {"value": "哑光玻璃感", "probability": 0.62, "supporting_evidence_refs": ["EV-003", "EV-004"], "contradicting_evidence_refs": []},
-        {"value": "哑光聚合物感", "probability": 0.38, "supporting_evidence_refs": ["EV-003"], "contradicting_evidence_refs": ["EV-004"]}
+        {
+          "value": "哑光玻璃感",
+          "probability": 0.62,
+          "supporting_evidence_refs": [
+            "EV-003",
+            "EV-004"
+          ],
+          "contradicting_evidence_refs": []
+        },
+        {
+          "value": "哑光聚合物感",
+          "probability": 0.38,
+          "supporting_evidence_refs": [
+            "EV-003"
+          ],
+          "contradicting_evidence_refs": [
+            "EV-004"
+          ]
+        }
       ],
       "recommended_additional_view_or_info": "补充近距离侧光图、边缘断面图或真实 CMF 资料。"
     }
@@ -254,35 +402,74 @@
   "evidence": [
     {
       "evidence_id": "EV-001",
-      "bbox_norm": [0.1, 0.04, 0.9, 0.96],
+      "bbox_norm": [
+        0.1,
+        0.04,
+        0.9,
+        0.96
+      ],
       "region": "whole_object",
       "view": "rear",
       "description": "单台纵向圆角矩形手机完整位于画面中心，背面大区域无附加结构。",
-      "visual_cues": ["外轮廓", "圆角", "表观长宽比例", "整体留白"]
+      "visual_cues": [
+        "外轮廓",
+        "圆角",
+        "表观长宽比例",
+        "整体留白"
+      ]
     },
     {
       "evidence_id": "EV-002",
-      "bbox_norm": [0.13, 0.09, 0.48, 0.37],
+      "bbox_norm": [
+        0.13,
+        0.09,
+        0.48,
+        0.37
+      ],
       "region": "camera_island",
       "view": "rear",
       "description": "左上有独立圆角方形相机底座，多个圆形镜头纵向排列，镜头外围有细窄亮边。",
-      "visual_cues": ["模组边界", "镜头排列", "局部高光", "轻层叠"]
+      "visual_cues": [
+        "模组边界",
+        "镜头排列",
+        "局部高光",
+        "轻层叠"
+      ]
     },
     {
       "evidence_id": "EV-003",
-      "bbox_norm": [0.16, 0.06, 0.86, 0.93],
+      "bbox_norm": [
+        0.16,
+        0.06,
+        0.86,
+        0.93
+      ],
       "region": "back_cover",
       "view": "rear",
       "description": "背板大面积呈偏冷深灰，颜色分布均匀，没有独立图案，整体反射较弱。",
-      "visual_cues": ["深灰主色", "大面积覆盖", "无图案", "弱反射"]
+      "visual_cues": [
+        "深灰主色",
+        "大面积覆盖",
+        "无图案",
+        "弱反射"
+      ]
     },
     {
       "evidence_id": "EV-004",
-      "bbox_norm": [0.49, 0.2, 0.8, 0.82],
+      "bbox_norm": [
+        0.49,
+        0.2,
+        0.8,
+        0.82
+      ],
       "region": "back_cover",
       "view": "rear",
       "description": "背板中右部可见宽而柔和的高光过渡，反射轮廓不清晰。",
-      "visual_cues": ["宽高光", "柔和边界", "低反射清晰度"]
+      "visual_cues": [
+        "宽高光",
+        "柔和边界",
+        "低反射清晰度"
+      ]
     }
   ],
   "quality_summary": {
@@ -290,8 +477,14 @@
     "mean_confidence": 0.83,
     "style_confidence": 0.86,
     "low_confidence_field_count": 1,
-    "missing_critical_fields": ["正面显示区域", "侧面表观厚度"],
-    "warnings": ["材质仅输出视觉候选", "颜色未经标准光源校正"],
+    "missing_critical_fields": [
+      "正面显示区域",
+      "侧面表观厚度"
+    ],
+    "warnings": [
+      "材质仅输出视觉候选",
+      "颜色未经标准光源校正"
+    ],
     "concise_summary": "主物品为深灰近单色直板手机，背板留白高，独立圆角相机岛与细窄镜头环构成小面积受控增量，确认归为精致克制。"
   }
 }
