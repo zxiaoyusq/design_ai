@@ -21,8 +21,8 @@ def call(action, *args):
 
 
 @router.get("/catalog")
-def catalog():
-    return call(high_trend_manager.catalog)
+def catalog(dataset: Literal["original", "article_table_2_selected_5"] = "original"):
+    return call(high_trend_manager.catalog, dataset)
 
 
 @router.post("/preview")
@@ -57,10 +57,14 @@ def resume(task_id: str, request: HighTrendResumeRequest, background_tasks: Back
 @router.get("/tasks/{task_id}/images/{image_index}")
 def image(task_id: str, image_index: int):
     path = call(high_trend_manager.image, task_id, image_index)
-    return FileResponse(path, content_disposition_type="inline", headers={"X-Content-Type-Options": "nosniff"})
+    return FileResponse(path, content_disposition_type="inline", headers={
+        "X-Content-Type-Options": "nosniff",
+        # 图片 URL 带文件身份版本；同一路径只在内容未变时长期缓存。
+        "Cache-Control": "private, max-age=31536000, immutable",
+    })
 
 
 @router.get("/tasks/{task_id}/download")
-def download(task_id: str, format: Literal["json", "markdown"] = "json"):
+def download(task_id: str, format: Literal["json", "markdown", "images_markdown", "performance"] = "json"):
     path = call(high_trend_manager.download, task_id, format)
     return FileResponse(path, filename=path.name)

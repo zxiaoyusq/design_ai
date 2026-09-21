@@ -117,7 +117,7 @@ def build_records(snapshot: dict[str, Any]) -> tuple[list[dict], list[dict], dic
     source_users = _by_bid(snapshot["users"])
     users = {
         bid: {
-            "id": str(row["id"]), "bid": bid,
+            "id": str(row["id"]), "bid": bid, "name": row.get("name"),
             "profile": {field: _normalise(row.get(field)) for field in PROFILE_FIELDS},
             "aesthetic_research": [], "demand_research": [], "image_preferences": [],
         }
@@ -270,13 +270,13 @@ def fetch_source(
         "schema_version": SCHEMA_VERSION,
         "source": {
             "host": host, "port": port, "database": database, "tables": TABLES,
-            "fetched_at": datetime.now(UTC).isoformat(), "query_version": "user_research_queries_v1",
+            "fetched_at": datetime.now(UTC).isoformat(), "query_version": "user_research_queries_v2",
             "transaction": "REPEATABLE READ, READ ONLY, WITH CONSISTENT SNAPSHOT",
             "image_response_scope": "nondeleted_users_and_nonempty_emotion_tag",
         },
     }
     fields = {
-        "users": ("id", "bid", "delete_flag", *PROFILE_FIELDS),
+        "users": ("id", "bid", "delete_flag", "name", *PROFILE_FIELDS),
         "aesthetic_research": ("id", "bid", "delete_flag", *AESTHETIC_FIELDS),
         "demands": ("id", "bid", "delete_flag", *DEMAND_FIELDS),
         "image_responses": ("id", "bid", "delete_flag", "id_user_bid", "survey_pic_bid", "name", "url", "emotion_tag"),
@@ -318,6 +318,53 @@ def fetch_source(
         finally:
             connection.close()
     return snapshot
+
+
+def fetch_user_names(
+    env_file: Path, host: str = "10.205.244.130", port: int = 3306,
+    database: str = "tim_configcenter_pro",
+) -> list[dict[str, Any]]:
+    """仅查询有效用户的身份键与姓名，供旧快照定向刷新，不读取其他变化。"""
+    config = dotenv_values(env_file)
+    if not config.get("USRDB_NAME") or not config.get("USRDB_PASS"):
+        raise ValueError("凭据文件缺少 USRDB_NAME 或 USRDB_PASS")
+    connection = pymysql.connect(
+        host=host, port=port, user=config["USRDB_NAME"], password=config["USRDB_PASS"],
+        database=database, charset="utf8mb4", cursorclass=pymysql.cursors.DictCursor,
+        connect_timeout=10, read_timeout=60, write_timeout=10, autocommit=False,
+    )
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ")
+            cursor.execute("SET SESSION TRANSACTION READ ONLY")
+            cursor.execute("START TRANSACTION WITH CONSISTENT SNAPSHOT")
+            cursor.execute(
+                "SELECT id, bid, name FROM transcend_model_id_user_data"
+                " WHERE delete_flag=0 ORDER BY id"
+            )
+            return cursor.fetchall()
+    finally:
+        try:
+            connection.rollback()
+        finally:
+            connection.close()
+
+
+def merge_user_names(snapshot: dict[str, Any], current_users: list[dict[str, Any]]) -> None:
+    """只改同一用户的姓名；用户集合不一致时拒绝混合不同时间的快照。"""
+    identity = lambda row: (str(row["id"]), str(row["bid"]))
+    original = {identity(row): row for row in snapshot["users"] if _active(row)}
+    refreshed = {identity(row): row for row in current_users}
+    if (len(original) != sum(_active(row) for row in snapshot["users"])
+            or len(refreshed) != len(current_users) or original.keys() != refreshed.keys()):
+        raise ValueError("源库与旧快照的有效用户 ID/BID 不一致，不能只同步用户名")
+    for key, row in original.items():
+        row["name"] = refreshed[key]["name"]
+    # 其他白名单表仍属于原快照；姓名来源时间单独记录，避免误称整批资料已刷新。
+    snapshot.setdefault("source", {})["user_name_sync"] = {
+        "fetched_at": datetime.now(UTC).isoformat(),
+        "table": TABLES["users"], "query_version": "user_names_v1",
+    }
 
 
 def _dumps(value: Any, *, pretty: bool = False) -> str:
@@ -384,7 +431,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--host", default="10.205.244.130")
     parser.add_argument("--port", type=int, default=3306)
     parser.add_argument("--database", default="tim_configcenter_pro")
-    parser.add_argument("--input-snapshot", type=Path, help="使用已导出的 source_snapshot.json，不连接数据库")
+    parser.add_argument("--input-snapshot", type=Path, help="使用已导出的 source_snapshot.json；仅配合 --refresh-user-names 时连接数据库")
+    parser.add_argument("--refresh-user-names", action="store_true",
+                        help="与 --input-snapshot 合用：只从数据库更新同一批用户的姓名，保留其他旧快照资料")
     parser.add_argument("--output", type=Path, default=PROJECT_ROOT / "data" / "userreseach_data")
     parser.add_argument("--workers", type=int, default=12)
     parser.add_argument("--timeout", type=float, default=30)
@@ -393,6 +442,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--resolve", action="append", default=[], metavar="HOST=IP", help="仅本次下载使用已核实的域名解析地址，可重复传入；不改变原 URL 或证书校验")
     parser.add_argument("--dry-run", action="store_true", help="只检查数据与关联，不下载或写文件")
     args = parser.parse_args(argv)
+    if args.refresh_user_names and not args.input_snapshot:
+        parser.error("--refresh-user-names 须与 --input-snapshot 合用")
     if args.workers < 1 or args.timeout <= 0 or args.retries < 0 or args.max_image_mb < 1:
         parser.error("workers、timeout、max-image-mb 必须大于 0，retries 必须不小于 0")
     resolutions = {}
@@ -414,6 +465,17 @@ def main(argv: list[str] | None = None) -> int:
     if args.input_snapshot:
         snapshot_text = args.input_snapshot.read_text(encoding="utf-8")
         snapshot = json.loads(snapshot_text)
+        if args.refresh_user_names:
+            try:
+                current_users = fetch_user_names(args.env_file, args.host, args.port, args.database)
+            except pymysql.MySQLError as exc:
+                print(f"数据库连接或读取失败（错误码 {exc.args[0] if exc.args else 'unknown'}）", file=sys.stderr)
+                return 1
+            merge_user_names(snapshot, current_users)
+            snapshot["source"]["user_name_sync"].update({
+                "host": args.host, "port": args.port, "database": args.database,
+            })
+            snapshot_text = _dumps(snapshot, pretty=True) + "\n"
     else:
         try:
             snapshot = fetch_source(args.env_file, args.host, args.port, args.database)

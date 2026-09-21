@@ -40,7 +40,8 @@ class HighTrendTests(unittest.TestCase):
             {"id": 2, "title_zh": "旧趋势", "summary_zh": "旧内容", "release_time": "2026-01-01", "images": []}]})
         self.write("data/userreseach_data/users.json", {"users": [
             {"id": 1, "profile": {"profession": "设计师"},
-             "image_preferences": [{"ref_pic_code": "P1", "image_id": 1, "local_path": "images/P1.png"}],
+             "image_preferences": [{"ref_pic_code": "P1", "image_id": 1,
+                                    "local_path": "images/P1.png", "emotion_tag": "ENJOY"}],
              "aesthetic_research": [{"id": 11, "question": "喜欢哪种表面？", "ai_analysis": "P1 的柔和哑光表面很好。"}],
              "demand_research": []},
             {"id": 2, "profile": {}, "aesthetic_research": [
@@ -83,6 +84,7 @@ class HighTrendTests(unittest.TestCase):
             card = task["result"]["trends"][0]
             self.assertEqual(card["mention_statistics"]["unique_mentioned_users"], 2)
             self.assertIn("哑光", card["source_records"][1]["excerpt"])
+            self.assertRegex(card["image_refs"][0]["url"], r"/images/\d+\?v=[a-f0-9]{16}$")
             self.assertEqual(client.get(card["image_refs"][0]["url"]).status_code, 200)
             self.assertEqual(client.get(f"/api/v1/high-trends/tasks/{task_id}/download?format=markdown").status_code, 200)
             self.assertEqual(task["performance"]["actual_model_calls"], 1)
@@ -108,6 +110,18 @@ class HighTrendTests(unittest.TestCase):
             task = self.manager.get(response.json()["id"])
             self.assertEqual(task["status"], "empty")
             model.assert_not_called()
+
+    def test_background_excerpt_is_visible_without_affecting_core_count(self):
+        task = self.manager.create(self.request)
+        with patch("app.services.high_trends.tasks.run_trend_step", return_value={
+            "text": "## 哑光\n核心交集。[T00001 U000001]\n背景参考：其他用户的意见。[U000002]",
+            "seconds": .01, "input_tokens": 10, "output_tokens": 5, "truncated": False,
+        }):
+            self.manager.run(task["id"])
+        card = self.manager.get(task["id"])["result"]["trends"][0]
+        self.assertEqual(card["cited_user_ids"], ["1"])
+        self.assertEqual(card["background_source_records"][0]["excerpt"], "喜欢哑光。")
+        self.assertEqual(len(card["image_refs"]), 1)
 
     def test_active_guard_and_restart_marks_interrupted(self):
         task = self.manager.create(self.request)
@@ -154,7 +168,7 @@ class HighTrendTests(unittest.TestCase):
         self.write("data/trend_data/trends.json", trends)
 
         def tiny_budget(*args, **kwargs):
-            kwargs["overhead"] = 46000
+            kwargs["overhead"] = 45000
             return real_prepare(*args, **kwargs)
 
         def fake_step(model, job, skill_text):
@@ -297,6 +311,35 @@ class HighTrendTests(unittest.TestCase):
         restarted = HighTrendManager(self.root)
         queued = restarted.resume(task["id"], HighTrendResumeRequest())
         self.assertEqual(queued["status"], "queued")
+
+    def test_new_dataset_all_dates_and_user_gallery(self):
+        trends = read(self.root/"data/trend_data/trends.json")
+        trends["trends"][0].update(release_time=None, clustering_label="材料美学")
+        self.write("data/trend_data/article_table_2/trends.json", trends)
+        users = read(self.root/"data/userreseach_data/users.json")
+        users["users"][0]["ppt_images"] = [{"local_path": "images/P1.png", "emotion_tag": "ENJOY"}]
+        self.write("data/userreseach_data/users_selected_5.json", users)
+        request = self.request.model_copy(update={"dataset": "article_table_2_selected_5", "all_dates": True})
+        preview = self.manager.preview(request)
+        self.assertEqual(preview["counts"]["selected_trends"], 2)
+        self.assertIsNone(preview["selection"]["start_date"])
+        self.assertEqual(preview["selection"]["undated_policy"], "include")
+        task = self.manager.create(request)
+        with patch("app.services.high_trends.tasks.run_trend_step", return_value={
+            "text": "## 柔和触感\n结合趋势与用户诉求。[T00001 U000001]", "seconds": .01,
+            "input_tokens": 10, "output_tokens": 5, "truncated": False,
+        }):
+            self.manager.run(task["id"])
+        with patch("app.api.high_trends.high_trend_manager", self.manager):
+            client = TestClient(app)
+            result = client.get(f"/api/v1/high-trends/tasks/{task['id']}").json()
+            photo = result["result"]["user_images"][0]
+            self.assertTrue(photo["file_exists"])
+            self.assertRegex(photo["url"], r"/images/\d+\?v=[a-f0-9]{16}$")
+            self.assertEqual(client.get(photo["url"]).status_code, 200)
+            for kind in ("images_markdown", "performance"):
+                self.assertEqual(client.get(f"/api/v1/high-trends/tasks/{task['id']}/download?format={kind}").status_code, 200)
+            self.assertEqual(client.get("/api/v1/high-trends/catalog?dataset=arbitrary").status_code, 422)
 
 
 if __name__ == "__main__":

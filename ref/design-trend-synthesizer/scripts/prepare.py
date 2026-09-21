@@ -26,11 +26,13 @@ def required_id(row):
     return value
 
 
-def image_ref(row, root, source_id, code=None, emotion=None):
+def image_ref(row, root, source_id, code=None, emotion=None, allowed_root=None):
+    """建立本地图片引用；路径相对来源文件解析，并限制在明确素材根目录内。"""
     local = row.get("local_path")
     if local:
         path = (root / local).resolve()
-        if Path(local).is_absolute() or not path.is_relative_to(root.resolve()):
+        boundary = Path(allowed_root or root).resolve()
+        if Path(local).is_absolute() or not path.is_relative_to(boundary):
             raise ValueError(f"图片路径必须位于来源数据目录内：{local}")
     else:
         path = None

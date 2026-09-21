@@ -35,6 +35,7 @@ EXPECTED_DESCRIPTION_FIELDS = (
     "release_time",
     "clust_status",
     "local_vl_info",
+    "clustering_label",
 )
 
 
@@ -79,6 +80,7 @@ class TrendWorkbookTestCase(unittest.TestCase):
             "release_time": datetime(2026, 9, 1, 10, 20, 30),
             "clust_status": 1,
             "local_vl_info": '{"主色":"绿色","置信度":0.9}',
+            "clustering_label": "可持续材料与再生美学",
         }
 
     def write_workbook(self, rows: list[dict], headers: list[str] | None = None) -> None:
@@ -113,6 +115,7 @@ class TrendWorkbookTestCase(unittest.TestCase):
         self.assertIsInstance(record["clust_status"], int)
         self.assertEqual(record["release_time"], "2026-09-01")
         self.assertEqual(record["local_vl_info"], {"主色": "绿色", "置信度": 0.9})
+        self.assertEqual(record["clustering_label"], self.row["clustering_label"])
         expected_urls = [
             "https://example.test/a.png",
             "https://example.test/b.png",
@@ -136,6 +139,21 @@ class TrendWorkbookTestCase(unittest.TestCase):
         self.assertEqual(records[0]["local_vl_info"], "原始非 JSON 描述")
         self.assertTrue(records[0]["warnings"])
         self.assertEqual(records[0]["images"], [])
+
+    def test_clustering_label_is_optional_and_preserves_original_value(self) -> None:
+        self.write_workbook([self.row], [field for field in self.headers if field != "clustering_label"])
+        self.assertIsNone(read_trends(self.source)[0][0]["clustering_label"])
+        for label in (None, "材料,触感，色彩\n原始标签", 0):
+            with self.subTest(label=label):
+                self.write_workbook([{**self.row, "clustering_label": label, "image_url": None}])
+                output = self.source.parent / "export"
+                with redirect_stdout(io.StringIO()):
+                    self.assertEqual(main(["--input", str(self.source), "--output", str(output)]), 0)
+                package = json.loads((output / "trends.json").read_text())
+                record = json.loads((output / "trends.jsonl").read_text())
+                self.assertEqual(package["trends"][0]["clustering_label"], label)
+                self.assertEqual(record["clustering_label"], label)
+                self.assertIn("clustering_label", package["source"]["description_fields"])
 
     def test_missing_description_header_is_rejected(self) -> None:
         self.write_workbook([self.row], [field for field in self.headers if field != "summary_zh"])
@@ -228,6 +246,28 @@ class TrendImageDownloadTestCase(unittest.TestCase):
             "local_path": None,
             "status": "pending",
         }
+
+    def test_existing_json_downloads_to_shared_images_and_resumes(self) -> None:
+        from scripts.download_trend_images import main as download_existing
+
+        output = self.output_dir / "article_table_2"
+        output.mkdir()
+        path = output / "trends.json"
+        document = {"source": {"file": "fixture.xlsx"}, "trends": [
+            {"id": "0012", "summary_zh": "保留原文", "images": [self.entry("/original.png")]}]}
+        path.write_text(json.dumps(document))
+        args = ["--json", str(path), "--images-dir", str(self.output_dir / "images"),
+                "--workers", "1", "--retries", "0"]
+        with redirect_stdout(io.StringIO()):
+            self.assertEqual(download_existing(args), 0)
+            result = json.loads(path.read_text())
+            image = result["trends"][0]["images"][0]
+            self.assertTrue(image["local_path"].startswith("../images/"))
+            self.assertTrue((output / image["local_path"]).is_file())
+            self.assertEqual(result["trends"][0]["summary_zh"], "保留原文")
+            self.assertEqual(download_existing(args), 0)
+        self.assertEqual(json.loads(path.read_text())["counts"]["cached"], 1)
+        self.assertEqual(len(list((output / "backups").glob("*/trends.json"))), 2)
 
     def test_download_metadata_and_cache_reuse_then_corruption_recovery(self) -> None:
         entry = self.entry("/cache.png")

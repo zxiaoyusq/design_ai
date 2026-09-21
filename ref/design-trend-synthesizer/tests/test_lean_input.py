@@ -39,10 +39,13 @@ class LeanInputTests(unittest.TestCase):
              "demand_research": [{"id": "d-1", "scenario": self.scenario,
                                   "ai_index": "需要 P25 低反光，但边界清晰。", "ref_pic": "P25",
                                   "ref_pic_links": [{"code": "P25", "image_ids": ["d-image"],
-                                                     "local_paths": ["images/demand.jpg"]}]}],
+                                                     "local_paths": ["images/demand.jpg"],
+                                                     "emotion_tag": "LIKE"}]}],
              "image_preferences": [
-                 {"image_id": "qa-image", "ref_pic_code": "P25", "local_path": "images/qa.jpg"},
-                 {"image_id": "not-mentioned", "ref_pic_code": "P2", "local_path": "images/no.jpg"}]},
+                 {"image_id": "qa-image", "ref_pic_code": "P25", "local_path": "images/qa.jpg",
+                  "emotion_tag": "ENJOY"},
+                 {"image_id": "not-mentioned", "ref_pic_code": "P2", "local_path": "images/no.jpg",
+                  "emotion_tag": "DISLIKE"}]},
             {"id": "user-a", "profile": {"profession": "工程师"}, "aesthetic_research": [
                 {"id": "qa-4", "question": self.question, "ai_analysis": "喜欢清晰硬边。"}],
              "demand_research": [{"id": "d-2", "scenario": self.scenario, "ai_index": " \n "}]},
@@ -143,6 +146,26 @@ class LeanInputTests(unittest.TestCase):
             pack_sources(single, exact - 1)
         with self.assertRaisesRegex(ValueError, "正整数"):
             self.build(user_limit=0)
+
+    def test_shared_trend_image_directory_is_allowed_without_general_path_escape(self):
+        shared_root = self.root / "data/trend_data"
+        table = shared_root / "article_table_2"
+        image = shared_root / "images/one.jpg"
+        table.mkdir(parents=True)
+        image.parent.mkdir(parents=True)
+        image.write_bytes(b"fixture")
+        trends = {"trends": [{"id": "one", "release_time": "2026-01-01",
+                              "summary_zh": "共享图片目录。",
+                              "images": [{"image_id": "one-image", "local_path": "../images/one.jpg"}]}]}
+        trend_path = table / "trends.json"
+        trend_path.write_text(json.dumps(trends), encoding="utf-8")
+        result = build_sources(trend_path, self.user_path, self.root)
+        self.assertEqual(result["sources"]["T00001"]["image_refs"][0]["local_path"],
+                         "../images/one.jpg")
+        trends["trends"][0]["images"][0]["local_path"] = "../../../outside.jpg"
+        trend_path.write_text(json.dumps(trends), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "来源数据目录内"):
+            build_sources(trend_path, self.user_path, self.root)
 
 
 if __name__ == "__main__":

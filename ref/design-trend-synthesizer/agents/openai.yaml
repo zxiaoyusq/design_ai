@@ -1,4 +1,4 @@
 interface:
   display_name: "通用设计趋势归纳"
-  short_description: "按时间筛选趋势，以少量调用发现用研重合方向，代码关联来源与图片路径"
-  default_prompt: "使用 $design-trend-synthesizer，按指定日期范围结合趋势与用户调研，走轻量流程提炼明显重合的设计方向并关联图片路径。"
+  short_description: "按时间筛选趋势，以少量调用发现用研重合方向，只关联用户喜欢的图片"
+  default_prompt: "使用 $design-trend-synthesizer，按指定日期范围结合趋势与用户调研，走轻量流程提炼明显重合的设计方向，并只关联用户明确 LIKE / ENJOY 的图片。"

@@ -1,5 +1,7 @@
 /** 高潜趋势接口保留来源和统计口径，供人工复核，不把提及人数解释为偏好率。 */
 export interface HighTrendRequest {
+  dataset?: 'original' | 'article_table_2_selected_5'
+  all_dates?: boolean
   start_date: string
   end_date: string
   model_id: string
@@ -55,10 +57,14 @@ export interface TrendImage {
 }
 
 export interface HighTrendCard {
+  clustering_labels?: string[]
   id: string
   title: string
   description: string
   source_records: TrendSource[]
+  /** 背景资料仅供追溯，不参与主卡图片关联；旧结果可能没有这些字段。 */
+  background_source_records?: TrendSource[]
+  background_source_ids?: string[]
   image_refs: TrendImage[]
   mention_statistics: { unique_mentioned_users: number; population_count: number; note: string }
   trend_coverage_note?: string
@@ -66,6 +72,10 @@ export interface HighTrendCard {
 }
 
 export interface HighTrendResult {
+  trend_categories?: { clustering_label: string; article_count: number; trend_ids: string[] }[]
+  user_images?: UserResearchImage[]
+  user_image_filter?: 'like_or_enjoy'
+  user_images_scope_note?: string
   trends: HighTrendCard[]
   user_research_gaps: { directions: HighTrendCard[]; scope_note?: string; count_note?: string }
   warnings: string[]
@@ -77,6 +87,17 @@ export interface HighTrendResult {
 }
 
 export type HighTrendStatus = 'queued' | 'running' | 'completed' | 'partial' | 'empty' | 'failed'
+
+/** 新结果只包含 LIKE / ENJOY；旧历史结果可能仍包含未标注附件。 */
+export interface UserResearchImage {
+  path: string
+  file_exists: boolean
+  user_ids: (string | number)[]
+  image_ids: string[]
+  emotion_tags?: string[]
+  linked_to_result: boolean
+  url?: string | null
+}
 
 export interface HighTrendTask {
   id: string

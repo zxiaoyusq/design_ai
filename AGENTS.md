@@ -19,7 +19,7 @@
 
 ### 后端
 
-* Python 3.14：使用 **314** 这个conda 环境
+* Python 3.14：使用 **base** 这个conda 环境
 * FastAPI + Pydantic
 * SQLAlchemy + Alembic
 * PostgreSQL 保存业务数据与结构化 DNA

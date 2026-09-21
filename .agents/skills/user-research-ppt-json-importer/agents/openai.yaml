@@ -1,0 +1,4 @@
+interface:
+  display_name: "用户调研 PPT 补录"
+  short_description: "把单个用户的已填写调研 PPT 补录到 JSON 并提取图片"
+  default_prompt: "Use $user-research-ppt-json-importer to import one completed user-research PPT into the selected-users JSON."

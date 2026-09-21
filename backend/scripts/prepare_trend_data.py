@@ -33,8 +33,10 @@ SCHEMA_VERSION = "trend_data_v1"
 DESCRIPTION_FIELDS = (
     "title_zh", "summary_zh", "image_url", "image_width", "image_height",
     "primary_category", "subcategory", "tags", "confidence", "language_original",
-    "release_time", "clust_status", "local_vl_info",
+    "release_time", "clust_status", "local_vl_info", "clustering_label",
 )
+# 新表新增的聚类标签原样输出；旧表可缺列，统一补 null，原有必填字段仍严格校验。
+OPTIONAL_DESCRIPTION_FIELDS = frozenset({"clustering_label"})
 IMAGE_EXTENSIONS = {
     "JPEG": ".jpg", "PNG": ".png", "WEBP": ".webp", "GIF": ".gif",
     "TIFF": ".tiff", "BMP": ".bmp", "AVIF": ".avif",
@@ -102,7 +104,7 @@ def read_trends(
         names = [name for name in headers if name]
         if len(names) != len(set(names)):
             raise ValueError("表头有重复字段")
-        missing = set(("id", *DESCRIPTION_FIELDS)) - set(headers)
+        missing = set(("id", *DESCRIPTION_FIELDS)) - OPTIONAL_DESCRIPTION_FIELDS - set(headers)
         if missing:
             raise ValueError(f"缺少字段：{', '.join(sorted(missing))}")
         records: list[dict[str, Any]] = []
@@ -176,7 +178,7 @@ def _image_metadata(path: Path) -> dict[str, Any]:
     }
 
 
-def _image_stem(image: dict[str, Any], output_dir: Path) -> Path:
+def _image_stem(image: dict[str, Any], output_dir: Path, images_dir: Path | None = None) -> Path:
     """普通 ID 保持可读；其他 ID 加哈希避免路径穿越与清理后重名。"""
     trend_id = image["trend_id"]
     if re.fullmatch(r"[A-Za-z0-9_-]{1,100}", trend_id):
@@ -184,7 +186,7 @@ def _image_stem(image: dict[str, Any], output_dir: Path) -> Path:
     else:
         directory = "id_" + hashlib.sha256(trend_id.encode()).hexdigest()[:24]
     url_hash = hashlib.sha256(image["url"].encode()).hexdigest()[:20]
-    return output_dir / "images" / directory / f"{image['index']:03d}_{url_hash}"
+    return (images_dir or output_dir / "images") / directory / f"{image['index']:03d}_{url_hash}"
 
 
 def _download_url(url: str) -> str:
@@ -203,8 +205,12 @@ def download_image(
     image: dict[str, Any], output_dir: Path, timeout: float = 30,
     retries: int = 2, max_bytes: int = 50 * 1024 * 1024,
     opener: Callable[..., Any] | None = None,
+    images_dir: Path | None = None,
 ) -> dict[str, Any]:
-    """下载并校验原图；可选 opener 仅替换连接方式，缓存和图片校验规则不变。"""
+    """下载并校验原图；images_dir 可分离存储位置，返回路径仍相对 output_dir。
+
+    可选 opener 仅替换连接方式，缓存和图片校验规则不变。
+    """
     result = {**image, "status": "failed", "local_path": None}
     url = image["url"]
     try:
@@ -213,7 +219,7 @@ def download_image(
         return {**result, "error": str(exc)}
     image = {**image, "download_url": request_url}
     result["download_url"] = request_url
-    stem = _image_stem(image, output_dir)
+    stem = _image_stem(image, output_dir, images_dir)
     stem.parent.mkdir(parents=True, exist_ok=True)
     for extension in IMAGE_EXTENSIONS.values():
         cached = stem.with_suffix(extension)
@@ -226,7 +232,7 @@ def download_image(
             return {
                 **image, **metadata, "status": "downloaded", "cached": True,
                 "download_url": None, "resolved_url": None,
-                "local_path": cached.relative_to(output_dir).as_posix(),
+                "local_path": Path(os.path.relpath(cached, output_dir)).as_posix(),
                 "downloaded_at": datetime.fromtimestamp(cached.stat().st_mtime, UTC).isoformat(),
             }
         except (OSError, ValueError, UnidentifiedImageError, Image.DecompressionBombError):
@@ -256,7 +262,7 @@ def download_image(
             os.replace(temporary_path, destination)
             return {
                 **image, **metadata, "status": "downloaded", "cached": False,
-                "local_path": destination.relative_to(output_dir).as_posix(),
+                "local_path": Path(os.path.relpath(destination, output_dir)).as_posix(),
                 "resolved_url": resolved_url, "downloaded_at": datetime.now(UTC).isoformat(),
             }
         except (HTTPError, URLError, HTTPException, OSError, ValueError, UnidentifiedImageError, Image.DecompressionBombError) as exc:
@@ -358,7 +364,8 @@ def main(argv: list[str] | None = None) -> int:
 - `download_report.json`：下载统计、失败 URL 与错误、字段解析提醒。
 - `source/`：原始 Excel 副本；JSON 的 source 保留工作表名称和 SHA-256。
 
-每条趋势保留原 id、Excel 行号 source_row 及全部 13 个指定描述字段。
+每条趋势保留原 id、Excel 行号 source_row 及全部 14 个指定描述字段。
+clustering_label 保留源单元格原值，不拆分或重新聚类；旧表缺列或空单元格输出 null。
 tags / subcategory 按中英文逗号转为数组，confidence 转为数值，clust_status
 及可解析的源宽高转为整数，local_vl_info 解析为 JSON；解析失败保留原文。
 空单元格保留 null，空标签为 []，release_time 只保留 YYYY-MM-DD，不转换时区。
@@ -377,7 +384,7 @@ url 保留表内链接，download_url 为请求地址，resolved_url 为本次�
 仅在文本 Prompt 中放本地路径不会让远程模型读取该图片。按趋势分批输入，避免一次塞入全部数据。
 整理过程不调用模型，源 local_vl_info 及 confidence 仅为表格已有数据，不代表重新验证的结论。
 
-项目根目录执行 `conda run -n base python backend/scripts/prepare_trend_data.py` 可重新整理。
+项目根目录执行 `conda run -n 314 python backend/scripts/prepare_trend_data.py` 可重新整理。
 已完成且校验有效的图片会复用，失败或损坏图片重试。--dry-run 仅预览；--limit N 可试跑，
 试跑建议同时指定独立 --output 目录，以免用子集覆盖全量索引。
 运行过程中每完成 100 张保存一次索引。重新运行会重建索引，不会删除旧图片。

@@ -14,7 +14,7 @@ from uuid import uuid4
 from app.agents.design_trend_synthesizer import (
     AGENT_PROMPT_VERSION, agent_messages, prompt_prefix, run_trend_step, user_request_message,
 )
-from app.services.high_trends.skill import PROJECT_ROOT, SKILL_ROOT, lean, prepare
+from app.services.high_trends.skill import PROJECT_ROOT, SKILL_ROOT, lean, prepare, dataset_paths
 from app.services.high_trends.errors import error_detail
 from app.services.high_trends.scope import resolve_user_scope
 from app.services.llm.catalog import get_model
@@ -55,9 +55,10 @@ class HighTrendManager:
             raise FileNotFoundError("任务不存在")
         return folder
 
-    def catalog(self):
-        trends = read(self.root / "data/trend_data/trends.json")["trends"]
-        users = read(self.root / "data/userreseach_data/users.json")["users"]
+    def catalog(self, dataset="original"):
+        trends_path, users_path = dataset_paths(self.root, dataset)
+        trends = read(trends_path)["trends"]
+        users = read(users_path)["users"]
         dates = sorted(str(x["release_time"])[:10] for x in trends if x.get("release_time"))
         return {"trend_count": len(trends), "user_count": len(users),
                 "min_date": dates[0] if dates else None, "max_date": dates[-1] if dates else None,
@@ -73,7 +74,8 @@ class HighTrendManager:
                            overhead=overhead)
         manifest["plan"]["agent_context_chars_per_call"] = overhead
         return {"counts": manifest["counts"], "plan": manifest["plan"],
-                "selection": manifest["selection"], "settings": manifest["settings"], "scope": scope}
+                "selection": manifest["selection"], "settings": manifest["settings"], "scope": scope,
+                "trend_categories": manifest.get("trend_categories", [])}
 
     def create(self, request):
         get_model(request.model_id)
@@ -93,7 +95,7 @@ class HighTrendManager:
             created = now()
             task = {"id": task_id, "status": "queued", "stage": "queued", "message": "资料已整理，等待开始",
                     "created_at": created, "updated_at": created, "request": original_request,
-                    "scope": scope, "selection": manifest["selection"],
+                    "scope": scope, "selection": manifest["selection"], "source_inputs": manifest["inputs"],
                     "completed_jobs": 0, "total_jobs": manifest["plan"]["planned_calls"],
                     "counts": manifest["counts"], "plan": manifest["plan"], "events": [],
                     "skill_version": manifest["skill_version"], "agent_prompt_version": AGENT_PROMPT_VERSION,
@@ -178,6 +180,13 @@ class HighTrendManager:
             return None
         return path
 
+    @staticmethod
+    def _image_url(folder, index, path):
+        """索引会随结果重编译变化，用目标文件身份生成查询版本，避免浏览器复用旧图。"""
+        stat = path.stat()
+        version = sha256(f"{path}:{stat.st_size}:{stat.st_mtime_ns}".encode()).hexdigest()[:16]
+        return f"/api/v1/high-trends/tasks/{folder.name}/images/{index}?v={version}"
+
     def _result(self, folder, *, excerpts=True):
         result = read(folder / "high_potential_trends.json")
         sources = read(folder / "sources.json") if excerpts else {}
@@ -187,13 +196,21 @@ class HighTrendManager:
                 index = len(images)
                 path = self._safe_image(ref.get("absolute_path"))
                 images.append(path)
-                ref["url"] = f"/api/v1/high-trends/tasks/{folder.name}/images/{index}" if path else None
+                ref["url"] = self._image_url(folder, index, path) if path else None
                 ref["file_exists"] = bool(path)
             if excerpts:
-                for source in card["source_records"]:
+                # 背景可查看原文，但不进入上方图片索引或核心来源统计。
+                for source in card["source_records"] + card.get("background_source_records", []):
                     original = sources.get(source["short_id"], {}).get("fields", {})
                     source["excerpt"] = original.get("summary_zh", original.get("ai_analysis", original.get("ai_index", "")))
                     source["question"] = original.get("question", original.get("scenario"))
+        # 与卡片图片共用同一安全路由，用户附件仅展示路径关系，不作为结论依据。
+        for ref in result.get("user_images", []):
+            path = self._safe_image(ref.get("path"))
+            index = len(images)
+            images.append(path)
+            ref["url"] = self._image_url(folder, index, path) if path else None
+            ref["file_exists"] = bool(path)
         return result, images
 
     def get(self, task_id):
@@ -209,14 +226,24 @@ class HighTrendManager:
 
     def image(self, task_id, index):
         folder = self._folder(task_id)
-        _, images = self._result(folder, excerpts=False)
-        if index < 0 or index >= len(images) or images[index] is None:
+        result = read(folder / "high_potential_trends.json")
+        # 与详情接口保持相同顺序，但单图请求只检查目标文件，避免每次遍历图库做磁盘校验。
+        images = [ref.get("absolute_path")
+                  for card in result["trends"] + result["user_research_gaps"]["directions"]
+                  for ref in card["image_refs"]]
+        images.extend(ref.get("path") for ref in result.get("user_images", []))
+        path = self._safe_image(images[index]) if 0 <= index < len(images) else None
+        if path is None:
             raise FileNotFoundError("关联图片不存在或不在研究图片目录内")
-        return images[index]
+        return path
 
     def download(self, task_id, format):
         folder = self._folder(task_id)
-        path = folder / ("report.md" if format == "markdown" else "high_potential_trends.json")
+        names = {"markdown": "report.md", "json": "high_potential_trends.json",
+                 "images_markdown": "image_paths.md", "performance": "performance_report.json"}
+        if format not in names:
+            raise ValueError("不支持的下载格式")
+        path = folder / names[format]
         if not path.is_file():
             raise FileNotFoundError("结果尚未生成")
         return path
@@ -255,8 +282,11 @@ class HighTrendManager:
                 job["user_prompt"] = task["request"].get("prompt", "")
                 stage = job["stage"]
                 count = progress["accepted_jobs"]
+                step_number = list(read(folder / "state.json")["jobs"]).index(jid) + 1
                 label = "综合设计趋势" if stage == "synthesize" else "归纳趋势资料" if job["source_ids"][0].startswith("T") else "归纳用户调研"
-                self._update(task_id, stage=stage, message=f"{label} · 第 {count+1}/{task['total_jobs']} 步", completed_jobs=count)
+                category = "、".join(job.get("clustering_labels", [])) if stage == "digest" else ""
+                label += f" · {category}" if category else ""
+                self._update(task_id, stage=stage, message=f"{label} · 第 {step_number}/{task['total_jobs']} 步", completed_jobs=count)
                 state = read(folder / "state.json")
                 if len(state["calls"]) >= task["request"]["max_calls"]:
                     raise RuntimeError("已达到本次调用上限，未继续调用模型")

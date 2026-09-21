@@ -9,6 +9,7 @@ import threading
 import unittest
 from collections import Counter
 from contextlib import redirect_stdout
+from copy import deepcopy
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from unittest.mock import MagicMock, patch
@@ -18,7 +19,9 @@ from scripts.prepare_user_research_data import (
     build_records,
     download_research_image,
     fetch_source,
+    fetch_user_names,
     main,
+    merge_user_names,
 )
 from tests.test_trend_data_preparation import make_png
 
@@ -103,7 +106,7 @@ class UserResearchRecordsTestCase(unittest.TestCase):
     def test_profile_and_research_fields_preserve_structured_json_and_plain_text(self) -> None:
         source = snapshot(
             users=[user(
-                1, country="中国", profession='["设计师", "研究员"]', age=32,
+                1, name="李小明", country="中国", profession='["设计师", "研究员"]', age=32,
                 using_mobile_phone_prices="4000–6000元", using_mobile_phone_brand="A，B",
                 academic_qualification="本科", purchase_drivers='{"外观":true}',
                 user_group_tags='["设计敏感"]', gender="女",
@@ -121,6 +124,7 @@ class UserResearchRecordsTestCase(unittest.TestCase):
         self.assertEqual(len(users), 1)
         self.assertEqual(users[0]["id"], "1")
         self.assertEqual(users[0]["bid"], "user-1")
+        self.assertEqual(users[0]["name"], "李小明")
         profile = users[0]["profile"]
         self.assertEqual(set(profile), set(EXPECTED_PROFILE_FIELDS))
         self.assertEqual(profile["profession"], ["设计师", "研究员"])
@@ -171,6 +175,24 @@ class UserResearchRecordsTestCase(unittest.TestCase):
         self.assertEqual(len(indexed["1"]["demand_research"]), 2)
         self.assertEqual(indexed["2"]["demand_research"], [])
         self.assertEqual(diagnostics["duplicate_relation_count"], 2)
+
+    def test_missing_name_stays_null_without_affecting_user_links(self) -> None:
+        source = snapshot(users=[user(1)], aesthetic_research=[question(11)],
+                          aesthetic_links=[link(101, 1, "question-11")])
+        users, _, _ = build_records(source)
+        self.assertIsNone(users[0]["name"])
+        self.assertEqual(users[0]["aesthetic_research"][0]["id"], "11")
+
+    def test_name_refresh_preserves_other_snapshot_rows_and_rejects_identity_drift(self) -> None:
+        source = snapshot(users=[user(1, country="Pakistan"), user(2, country="Indonesia")],
+                          aesthetic_research=[question(11)])
+        original_research = deepcopy(source["aesthetic_research"])
+        merge_user_names(source, [user(1, name="M Aqib"), user(2, name="Irwanita")])
+        self.assertEqual([row["name"] for row in source["users"]], ["M Aqib", "Irwanita"])
+        self.assertEqual(source["aesthetic_research"], original_research)
+        self.assertEqual(source["source"]["user_name_sync"]["query_version"], "user_names_v1")
+        with self.assertRaisesRegex(ValueError, "ID/BID 不一致"):
+            merge_user_names(source, [user(1, name="M Aqib"), user(3, name="Irwanita")])
 
     def test_deleted_users_source_records_and_relations_do_not_leak_into_output(self) -> None:
         source = snapshot(
@@ -503,6 +525,21 @@ class UserResearchImageDownloadTestCase(unittest.TestCase):
         fetcher.assert_not_called()
         downloader.assert_not_called()
 
+    def test_snapshot_name_refresh_dry_run_reads_names_without_writing(self) -> None:
+        source = self.write_source_snapshot()
+        destination = self.output_dir / "name-refresh-preview"
+        with (
+            patch("scripts.prepare_user_research_data.fetch_user_names", return_value=[user(1, name="Irwanita")]) as fetcher,
+            patch("scripts.prepare_user_research_data.download_research_image") as downloader,
+            redirect_stdout(io.StringIO()),
+        ):
+            exit_code = main(["--input-snapshot", str(source), "--refresh-user-names",
+                              "--output", str(destination), "--dry-run"])
+        self.assertEqual(exit_code, 0)
+        self.assertFalse(destination.exists())
+        fetcher.assert_called_once()
+        downloader.assert_not_called()
+
 
 class UserResearchDatabaseReadTestCase(unittest.TestCase):
     def setUp(self) -> None:
@@ -543,6 +580,8 @@ class UserResearchDatabaseReadTestCase(unittest.TestCase):
         self.assertEqual(connect.call_args.kwargs["password"], "fixture_private_password")
         self.assertFalse(connect.call_args.kwargs["autocommit"])
         statements = self.assert_read_only_transaction_precedes_queries()
+        user_select = next(statement for statement in statements if "FROM TRANSCEND_MODEL_ID_USER_DATA R" in statement)
+        self.assertIn("R.NAME", user_select)
         image_select = next(statement for statement in statements if "FROM TRANSCEND_MODEL_IDUSERREFPIC " in statement and "COUNT(*)" not in statement)
         self.assertIn("EMOTION_TAG", image_select)
         self.assertIn("TRIM(", image_select)
@@ -567,6 +606,19 @@ class UserResearchDatabaseReadTestCase(unittest.TestCase):
                 fetch_source(self.env_file)
 
         self.assert_read_only_transaction_precedes_queries()
+        self.connection.rollback.assert_called_once_with()
+        self.connection.close.assert_called_once_with()
+        self.connection.commit.assert_not_called()
+
+    def test_fetch_user_names_reads_only_id_bid_name(self) -> None:
+        self.cursor.fetchall.return_value = [user(1, name="Qasim Raza")]
+        with patch("scripts.prepare_user_research_data.pymysql.connect", return_value=self.connection):
+            rows = fetch_user_names(self.env_file)
+        statements = self.assert_read_only_transaction_precedes_queries()
+        selects = [statement for statement in statements if statement.startswith("SELECT")]
+        self.assertEqual(len(selects), 1)
+        self.assertIn("SELECT ID, BID, NAME FROM TRANSCEND_MODEL_ID_USER_DATA", selects[0])
+        self.assertEqual(rows[0]["name"], "Qasim Raza")
         self.connection.rollback.assert_called_once_with()
         self.connection.close.assert_called_once_with()
         self.connection.commit.assert_not_called()

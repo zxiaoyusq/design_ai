@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { computed, h, onMounted, onUnmounted, ref, watch } from 'vue'
 import { Modal } from 'ant-design-vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ArrowRightOutlined, BulbOutlined, MessageOutlined, RobotOutlined, ReloadOutlined } from '@ant-design/icons-vue'
 import { fetchModels } from '@/api/dna'
 import { createTrendTask, fetchTrendCatalog, fetchTrendTask, fetchTrendTasks, previewTrends, resumeTrendTask, trendDownloadUrl } from '@/api/highTrends'
 import HighTrendCard from '@/components/HighTrendCard.vue'
+import HighTrendUserGallery from '@/components/HighTrendUserGallery.vue'
 import SafeMarkdown from '@/components/SafeMarkdown.vue'
 import type { ModelInfo } from '@/types/dna'
 import type { HighTrendCatalog, HighTrendPreview, HighTrendRequest, HighTrendStatus, HighTrendTask } from '@/types/highTrends'
@@ -18,6 +20,11 @@ const earlier = new Date(today)
 earlier.setDate(1)
 earlier.setMonth(earlier.getMonth() - 2)
 earlier.setDate(Math.min(today.getDate(), new Date(earlier.getFullYear(), earlier.getMonth() + 1, 0).getDate()))
+const route = useRoute()
+const router = useRouter()
+const dataset = ref<NonNullable<HighTrendRequest['dataset']>>('article_table_2_selected_5')
+const allDates = ref(false)
+const category = ref('')
 const startDate = ref(localDate(earlier))
 const endDate = ref(localDate(today))
 const modelId = ref('')
@@ -50,10 +57,14 @@ const statusLabels: Record<HighTrendStatus, string> = {
 const isActive = (item: HighTrendTask | null) => item?.status === 'queued' || item?.status === 'running'
 const running = computed(() => isActive(task.value))
 const anyRunning = computed(() => history.value.some(isActive) || running.value)
-const validRange = computed(() => Boolean(startDate.value && endDate.value && startDate.value <= endDate.value))
+const validRange = computed(() => allDates.value || Boolean(startDate.value && endDate.value && startDate.value <= endDate.value))
 const validRequest = computed(() => validRange.value && (userScope.value !== 'first' || (Number.isInteger(userLimit.value) && (userLimit.value ?? 0) > 0)) && Boolean(modelId.value) && Number.isInteger(maxCalls.value) && (maxCalls.value ?? 0) >= 1 && (maxCalls.value ?? 0) <= 100)
 const result = computed(() => task.value?.result)
 const cards = computed(() => result.value?.trends ?? [])
+const categories = computed(() => result.value?.trend_categories ?? [])
+const filteredCards = computed(() => !category.value ? cards.value : cards.value.filter(card => card.clustering_labels?.includes(category.value)))
+const missingImageWarnings = computed(() => (result.value?.warnings ?? []).filter(warning => /来源 trend:.*图片.*不可用/.test(warning)))
+const otherWarnings = computed(() => (result.value?.warnings ?? []).filter(warning => !/来源 trend:.*图片.*不可用/.test(warning)))
 const gaps = computed(() => result.value?.user_research_gaps?.directions ?? [])
 const percent = computed(() => {
   const current = task.value
@@ -62,7 +73,13 @@ const percent = computed(() => {
 })
 
 function requestBody(): HighTrendRequest {
-  return { start_date: startDate.value, end_date: endDate.value, model_id: modelId.value, max_calls: maxCalls.value ?? 24, prompt: prompt.value.trim(), user_scope: userScope.value, user_limit: userScope.value === 'first' ? userLimit.value : null }
+  return { dataset: dataset.value, all_dates: allDates.value, start_date: startDate.value, end_date: endDate.value, model_id: modelId.value, max_calls: maxCalls.value ?? 24, prompt: prompt.value.trim(), user_scope: userScope.value, user_limit: userScope.value === 'first' ? userLimit.value : null }
+}
+function datasetLabel(value: HighTrendRequest['dataset']) {
+  return value === 'article_table_2_selected_5' ? '文章信息表 2 × 精选 5 位用户' : '原版趋势 × 全部用户资料'
+}
+function dateScope(request: HighTrendRequest) {
+  return request.all_dates ? '全部日期（含无日期资料）' : `${request.start_date} — ${request.end_date}`
 }
 /** 历史任务只展示冻结的实际数量，不能按原提示词重新推算范围。 */
 function taskScope(current: HighTrendTask) {
@@ -88,10 +105,21 @@ function updateHistory(current: HighTrendTask) {
   else history.value[index] = current
 }
 
-watch([startDate, endDate, modelId, maxCalls, prompt, userScope, userLimit], () => {
+watch([startDate, endDate, modelId, maxCalls, prompt, userScope, userLimit, dataset, allDates], () => {
   previewVersion++
   preview.value = null
   previewLoading.value = false
+})
+
+watch(dataset, async value => {
+  catalog.value = null
+  try {
+    const next = await fetchTrendCatalog(value)
+    if (!disposed && dataset.value === value) catalog.value = next
+  } catch (cause) { if (dataset.value === value) error.value = readError(cause, '资料目录读取失败') }
+})
+watch(() => route.query.task, value => {
+  if (typeof value === 'string' && value !== selectedId.value) void selectTask(value)
 })
 
 async function estimate() {
@@ -123,6 +151,8 @@ async function selectTask(id: string) {
   clearTimeout(pollingTimer)
   const version = ++selectionVersion
   selectedId.value = id
+  category.value = ''
+  if (route.query.task !== id) void router.replace({ query: { ...route.query, task: id } })
   task.value = null
   taskLoading.value = true
   pollError.value = ''
@@ -174,7 +204,8 @@ function confirmStart() {
   Modal.confirm({
     title: '确认生成高潜趋势洞察？',
     content: h('div', { class: 'confirm-copy' }, [
-      h('p', `趋势日期：${body.start_date} 至 ${body.end_date}`),
+      h('p', `数据来源：${datasetLabel(body.dataset)}`),
+      h('p', `趋势日期：${dateScope(body)}`),
       h('p', `模型：${modelName}`),
       body.prompt ? h('p', { style: 'white-space: pre-wrap; max-height: 160px; overflow: auto;' }, `你的要求：${body.prompt}`) : null,
       h('p', `用户范围：${preview.value.scope.label}；实际选中 ${preview.value.counts.selected_users} 位。`),
@@ -199,7 +230,7 @@ function confirmStart() {
 }
 
 onMounted(async () => {
-  const loaded = await Promise.allSettled([fetchModels(), fetchTrendCatalog(), fetchTrendTasks()])
+  const loaded = await Promise.allSettled([fetchModels(), fetchTrendCatalog(dataset.value), fetchTrendTasks()])
   if (disposed) return
   const [modelResponse, catalogResponse, historyResponse] = loaded
   const problems: string[] = []
@@ -212,8 +243,9 @@ onMounted(async () => {
   if (historyResponse.status === 'fulfilled') {
     history.value = historyResponse.value
     const latest = history.value.find(isActive) ?? history.value[0]
-    if (latest) void selectTask(latest.id)
+    if (typeof route.query.task !== 'string' && latest) void selectTask(latest.id)
   } else problems.push(readError(historyResponse.reason, '历史任务读取失败'))
+  if (typeof route.query.task === 'string') void selectTask(route.query.task)
   error.value = problems.join('；')
 })
 onUnmounted(() => {
@@ -239,11 +271,12 @@ onUnmounted(() => {
       </section>
       <div v-if="error" class="page-alert"><a-alert type="error" show-icon :message="error" closable @close="error = ''" /></div>
       <section class="workspace-card scope-panel">
-        <div class="section-heading"><div><span class="eyebrow">01 / 选择观察范围</span><p>日期筛选趋势资料；用户范围可在下方选择，也可从文字要求中识别。</p></div><span class="range-badge">默认近两个月</span></div>
+        <div class="section-heading"><div><span class="eyebrow">01 / 选择观察范围</span><p>日期筛选趋势资料；用户范围可在下方选择，也可从文字要求中识别。</p></div><span class="range-badge">按已有趋势大类归纳</span></div>
+        <div class="dataset-controls"><label for="trend-dataset">资料来源</label><a-select id="trend-dataset" v-model:value="dataset" :options="[{ value: 'article_table_2_selected_5', label: '文章信息表 2 × 精选 5 位用户' }, { value: 'original', label: '原版趋势 × 全部用户资料' }]" /><a-checkbox v-model:checked="allDates">全部日期（含无日期资料）</a-checkbox></div>
         <div class="scope-form">
-          <div class="date-field"><label for="trend-start">开始日期 <span>*</span></label><input id="trend-start" v-model="startDate" type="date" required :max="endDate || undefined" /></div>
+          <div class="date-field"><label for="trend-start">开始日期 <span>*</span></label><input id="trend-start" v-model="startDate" type="date" :disabled="allDates" :required="!allDates" :max="endDate || undefined" /></div>
           <ArrowRightOutlined class="date-arrow" />
-          <div class="date-field"><label for="trend-end">结束日期 <span>*</span></label><input id="trend-end" v-model="endDate" type="date" required :min="startDate || undefined" /></div>
+          <div class="date-field"><label for="trend-end">结束日期 <span>*</span></label><input id="trend-end" v-model="endDate" type="date" :disabled="allDates" :required="!allDates" :min="startDate || undefined" /></div>
           <div class="model-field"><label for="trend-model">推理模型 <span>*</span></label><a-select id="trend-model" v-model:value="modelId" size="large" placeholder="选择模型" :options="models.map(model => ({ value: model.id, label: model.name }))" /></div>
           <a-button :loading="previewLoading" :disabled="!validRequest" size="large" @click="estimate">预估范围</a-button>
         </div>
@@ -255,7 +288,7 @@ onUnmounted(() => {
         </div>
         <p v-if="!validRange" class="field-error">请填写完整日期，开始日期不能晚于结束日期。</p>
         <details class="advanced-options"><summary>高级选项</summary><label for="trend-max-calls">模型调用上限</label><a-input-number id="trend-max-calls" v-model:value="maxCalls" :min="1" :max="100" :precision="0" /><p>默认 24 次，可设为 1–100 次；提高上限可能增加模型用量。</p></details>
-        <p v-if="catalog" class="catalog-note">资料库：{{ catalog.trend_count }} 条趋势 · {{ catalog.user_count }} 位用户<span v-if="catalog.min_date"> · 趋势日期 {{ catalog.min_date }} — {{ catalog.max_date }}</span><span v-if="catalog.undated_count"> · {{ catalog.undated_count }} 条无日期趋势不纳入筛选</span></p>
+        <p v-if="catalog" class="catalog-note">资料库：{{ catalog.trend_count }} 条趋势 · {{ catalog.user_count }} 位用户<span v-if="catalog.min_date"> · 趋势日期 {{ catalog.min_date }} — {{ catalog.max_date }}</span><span v-if="catalog.undated_count"> · {{ catalog.undated_count }} 条无日期趋势{{ allDates ? '纳入本轮' : '不纳入筛选' }}</span></p>
         <div class="chat-box trend-chat">
           <div class="agent-avatar"><RobotOutlined /></div>
           <div class="chat-content">
@@ -280,15 +313,15 @@ onUnmounted(() => {
           <div class="history-head"><h2>历史任务</h2><a-button type="text" aria-label="刷新历史任务" :loading="historyLoading" @click="refreshHistory"><ReloadOutlined /></a-button></div>
           <p v-if="!history.length" class="empty-copy">生成后，洞察与执行记录会保留在这里。</p>
           <button v-for="entry in history" :key="entry.id" class="history-item" :class="{ selected: selectedId === entry.id }" @click="selectTask(entry.id)">
-            <span class="history-date">{{ entry.request.start_date }}<br />— {{ entry.request.end_date }}</span><a-tag :color="entry.status === 'completed' ? 'green' : entry.status === 'failed' ? 'red' : 'purple'">{{ statusLabels[entry.status] }}</a-tag><small>{{ taskScope(entry) }}</small><small>{{ dateTime(entry.created_at) }}</small>
+            <span class="history-date">{{ dateScope(entry.request) }}</span><a-tag :color="entry.status === 'completed' ? 'green' : entry.status === 'failed' ? 'red' : 'purple'">{{ statusLabels[entry.status] }}</a-tag><small>{{ datasetLabel(entry.request.dataset) }}</small><small>{{ taskScope(entry) }}</small><small>{{ dateTime(entry.created_at) }}</small>
           </button>
         </aside>
         <div class="insights-content">
           <a-alert v-if="pollError" type="warning" :message="pollError" description="正在自动重试读取任务，不会重复启动模型。" show-icon />
           <a-spin v-if="taskLoading" class="task-spinner" tip="正在读取任务…" />
           <section v-if="task" class="workspace-card task-overview" aria-live="polite">
-            <div class="section-heading"><div><span class="eyebrow">02 / 洞察档案</span><h2>{{ statusLabels[task.status] }}</h2><p>{{ task.message }}</p></div><div v-if="result" class="downloads"><a :href="trendDownloadUrl(task.id, 'markdown')" download>Markdown ↓</a><a :href="trendDownloadUrl(task.id, 'json')" download>JSON ↓</a></div></div>
-            <p class="resolved-scope">{{ taskScope(task) }}</p>
+            <div class="section-heading"><div><span class="eyebrow">02 / 洞察档案</span><h2>{{ statusLabels[task.status] }}</h2><p>{{ task.message }}</p></div><div v-if="result" class="downloads"><a :href="trendDownloadUrl(task.id, 'markdown')" download>Markdown ↓</a><a :href="trendDownloadUrl(task.id, 'json')" download>JSON ↓</a><a :href="trendDownloadUrl(task.id, 'images_markdown')" download>图片路径 ↓</a><a :href="trendDownloadUrl(task.id, 'performance')" download>用量记录 ↓</a></div></div>
+            <p class="resolved-scope">{{ datasetLabel(task.request.dataset) }} · {{ dateScope(task.request) }}<br />{{ taskScope(task) }}</p>
             <template v-if="running"><a-progress :percent="percent" :show-info="false" status="active" stroke-color="#6257d8" /><p class="catalog-note">已完成 {{ task.completed_jobs }} / {{ task.total_jobs }} 项 · 每 2 秒更新</p></template>
             <a-alert v-if="task.status === 'partial'" type="warning" message="本轮部分完成，已保留可用结果。请结合下方提示与来源判断。" show-icon />
             <a-alert v-if="task.status === 'empty'" type="info" message="本轮没有可交付的研究正文，可以查看执行记录或调整范围重新生成。" show-icon />
@@ -302,20 +335,22 @@ onUnmounted(() => {
               <p v-if="(resumeMaxCalls ?? 0) < task.resume.minimum_max_calls" class="field-error">完成剩余流程，累计调用上限至少需要 {{ task.resume.minimum_max_calls }} 次。</p>
             </div>
             <details v-if="task.events?.length" class="execution-details"><summary>执行记录 · {{ task.events.length }} 条</summary><ol><li v-for="(event, index) in task.events" :key="index"><time>{{ dateTime(event.time) }}</time><span>{{ event.message }}</span></li></ol></details>
-            <details v-if="task.performance" class="execution-details"><summary>调用与用量记录</summary><p>实际模型调用 {{ performanceValue('actual_model_calls') }} 次 · 调用耗时 {{ performanceValue('call_seconds') }} 秒</p><p>已知输入 {{ performanceValue('input_tokens_known') }} tokens · 已知输出 {{ performanceValue('output_tokens_known') }} tokens · 缺少用量记录 {{ performanceValue('missing_usage_calls') }} 次</p><p>仅统计本任务中服务商返回的用量，缺失部分不估算。</p></details>
-            <p class="task-meta">{{ task.request.start_date }} — {{ task.request.end_date }} · {{ models.find(model => model.id === task?.request.model_id)?.name || task.request.model_id }} · {{ dateTime(task.created_at) }}</p>
+            <details v-if="task.performance" class="execution-details"><summary>调用与用量记录</summary><p v-if="task.performance.engine">执行方式：{{ task.performance.engine }}<span v-if="task.performance.host_analysis_steps"> · 归纳步骤 {{ task.performance.host_analysis_steps }}</span></p><p>实际模型调用 {{ performanceValue('actual_model_calls') }} 次 · 调用耗时 {{ performanceValue('call_seconds') }} 秒</p><p>已知输入 {{ performanceValue('input_tokens_known') }} tokens · 已知输出 {{ performanceValue('output_tokens_known') }} tokens · 缺少用量记录 {{ performanceValue('missing_usage_calls') }} 次</p><p>仅统计已取得的用量。宿主模型或服务商未返回用量时显示“未提供”，不记作 0。</p></details>
+            <p class="task-meta">{{ dateScope(task.request) }} · {{ models.find(model => model.id === task?.request.model_id)?.name || task.request.model_id }} · {{ dateTime(task.created_at) }}</p>
             <div v-if="task.request.prompt" class="task-prompt"><span><MessageOutlined /> 你的要求</span><p>{{ task.request.prompt }}</p></div>
           </section>
           <div v-if="!task && !taskLoading" class="welcome-empty"><BulbOutlined /><h2>下一份灵感，从交集开始</h2><p>选好日期并预估范围，或打开一份历史洞察。</p></div>
           <template v-if="result">
             <div v-if="task" class="image-review-entry"><div><strong>整理这份结果的图片</strong><p>按趋势与用户来源浏览，选择保留或排除，并下载保留的图片与来源清单。</p></div><RouterLink :to="{ name: 'high-trend-image-review', query: { task: task.id } }">整理结果图片 <ArrowRightOutlined /></RouterLink></div>
-            <details v-if="result.warnings?.length" class="warnings-panel" open><summary>本轮提示 · {{ result.warnings.length }} 项</summary><ul><li v-for="warning in result.warnings" :key="warning">{{ warning }}</li></ul></details>
+            <div v-if="missingImageWarnings.length" class="warnings-panel">{{ missingImageWarnings.length }} 条趋势图片引用没有可用本地文件。趋势文字仍参与分析，下方用户图片资料可正常查看。<details><summary>查看缺图提示示例</summary><ul><li v-for="warning in missingImageWarnings.slice(0, 3)" :key="warning">{{ warning }}</li></ul><p>完整提示保留在下载的 JSON 中。</p></details></div><details v-if="otherWarnings.length" class="warnings-panel"><summary>其他提示 · {{ otherWarnings.length }} 项</summary><ul><li v-for="warning in otherWarnings.slice(0, 20)" :key="warning">{{ warning }}</li></ul><p v-if="otherWarnings.length > 20">更多提示见下载的 JSON。</p></details>
             <div class="result-section-heading"><h2>趋势与用户共同方向 <span>{{ cards.length }}</span></h2><p>{{ result.scope_note }}</p></div>
-            <div v-if="cards.length" class="trend-card-grid"><HighTrendCard v-for="(card, index) in cards" :key="card.id" :card="card" :index="index" /></div>
-            <p v-else class="section-empty">本轮未形成同时关联趋势与用户来源的主方向。</p>
+            <div v-if="categories.length" class="category-filters"><button :class="{ active: !category }" @click="category = ''">全部方向 <strong>{{ cards.length }}</strong></button><button v-for="item in categories" :key="item.clustering_label" :class="{ active: category === item.clustering_label }" @click="category = item.clustering_label"><span>{{ item.clustering_label }}</span><small>{{ item.article_count }} 篇文章 · {{ item.trend_ids.length }} 个方向</small></button></div>
+            <div v-if="filteredCards.length" class="trend-card-grid"><HighTrendCard v-for="(card, index) in filteredCards" :key="card.id" :card="card" :index="index" /></div>
+            <p v-else class="section-empty">{{ category ? '该大类本轮没有形成同时关联趋势与用户来源的方向。' : '本轮未形成同时关联趋势与用户来源的主方向。' }}</p>
             <div class="result-section-heading"><h2>用研补充 <span>{{ gaps.length }}</span></h2><p>{{ result.user_research_gaps?.scope_note }}</p></div>
             <div v-if="gaps.length" class="trend-card-grid"><HighTrendCard v-for="(card, index) in gaps" :key="card.id" :card="card" :index="index" supplement /></div>
             <p v-else class="section-empty">本轮没有已引用去重人数严格超过分母一半的用户补充方向。</p>
+            <HighTrendUserGallery v-if="result.user_images?.length" :key="task?.id" :images="result.user_images" :positive-only="result.user_image_filter === 'like_or_enjoy'" :scope-note="result.user_images_scope_note" />
             <details v-if="result.unlinked_notes?.length" class="notes-panel"><summary>未关联笔记 · {{ result.unlinked_notes.length }} 段</summary><p class="catalog-note">保留模型原文，但有效来源关联不完整。</p><section v-for="(note, index) in result.unlinked_notes" :key="index"><h3>{{ note.title }}</h3><SafeMarkdown :text="note.text" /></section></details>
           </template>
         </div>
@@ -331,6 +366,13 @@ onUnmounted(() => {
 .image-review-entry p { margin: 7px 0 0; font-size: 12px; line-height: 1.8; color: #907da1; }
 .image-review-entry a { flex-shrink: 0; padding: 10px 14px; border-radius: 10px; background: #fff; color: #695094; font-size: 12px; }
 @media (max-width: 600px) { .image-review-entry { align-items: start; flex-direction: column; } }
+.dataset-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; color: #76628e; font-size: 12px; }
+.dataset-controls :deep(.ant-select) { width: 290px; }
+.category-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 22px; }
+.category-filters button { display: flex; flex-direction: column; gap: 7px; justify-content: center; text-align: left; border: 1px solid #e5ddef; border-radius: 12px; padding: 13px 17px; background: #fcfafe; color: #826f97; cursor: pointer; font-size: 12px; }
+.category-filters button.active { color: #614a8b; border-color: #aa94cd; background: #eee7f8; }
+.category-filters small { font-size: 10px; opacity: .8; }
+.date-field input:disabled { opacity: .5; }
 .trend-hero { padding: 68px 0 44px; }
 .trend-hero h1 { font-size: clamp(38px, 5vw, 61px); }
 .trend-hero h1 em { font-style: normal; }

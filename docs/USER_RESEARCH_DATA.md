@@ -12,13 +12,24 @@ conda run -n base python backend/scripts/prepare_user_research_data.py --dry-run
 conda run -n base python backend/scripts/prepare_user_research_data.py
 ```
 
+若仅需给已有快照补齐或刷新用户名，而源库的其他调研数据已变化，可执行：
+
+```bash
+conda run -n base python backend/scripts/prepare_user_research_data.py \
+  --input-snapshot data/userreseach_data/source_snapshot.json \
+  --refresh-user-names
+```
+
+该模式先要求源库有效用户的 ID/BID 与快照完全一致，再只取 `name` 更新旧快照；问答、需求、关系和图片反馈仍保留旧快照版本。图片使用现有文件缓存，不需要模型调用。姓名单独记录同步时间，不能把它解读为整批研究资料已刷新。
+
 默认连接 `10.205.244.130:3306/tim_configcenter_pro`，用户名和密码分别读取 `backend/.env` 的 `USRDB_NAME`、`USRDB_PASS`。凭据不写入结果文件或日志。`--dry-run` 读取并检查数据，不写输出文件、不下载图片；实际运行整理命令表示确认写入本地结果。
 
 | 参数 | 默认值 / 用途 |
 | --- | --- |
 | `--env-file` | `backend/.env`，凭据文件 |
 | `--host`、`--port`、`--database` | 上述 MySQL 地址、端口和库名 |
-| `--input-snapshot` | 从已有 `source_snapshot.json` 离线重建，不连接数据库 |
+| `--input-snapshot` | 从已有 `source_snapshot.json` 重建；单独使用时不连接数据库 |
+| `--refresh-user-names` | 配合旧快照从数据库只更新同一批用户的姓名 |
 | `--output` | `data/userreseach_data` |
 | `--workers` | 12，图片下载并发数 |
 | `--timeout` | 30 秒，单次网络操作超时 |
@@ -54,7 +65,7 @@ conda run -n base python backend/scripts/prepare_user_research_data.py \
 
 每名用户包含：
 
-- `id`、`bid`：源用户的数据库 ID 和业务 BID。
+- `id`、`bid`、`name`：源用户的数据库 ID、业务 BID 和原始用户名。`name` 取自 `transcend_model_id_user_data.name`，空值保留为 `null`，不拆分或推断姓名。
 - `profile`：`country`、`profession`、`age`、`using_mobile_phone_prices`、`using_mobile_phone_brand`、`academic_qualification`、`purchase_drivers`、`user_group_tags`、`gender`、`mobile_function_usage_preferences`。需求中重复列出的 `academic_qualification` 仅输出一次。
 - `aesthetic_research`：问答数组，每条保留源 `id`、`bid`，以及 `answer_type`、`scenario_type`、`question_type`、`question`、`ai_analysis`。
 - `demand_research`：需求数组，每条保留源 `id`、`bid`，以及 `ai_index`、`scenario`、`ref_pic`；`ref_pic_links` 记录图片编码匹配结果。

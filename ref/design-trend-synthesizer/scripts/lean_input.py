@@ -11,6 +11,7 @@ from pathlib import Path
 from contracts import image_code_in_text
 from core import release_date
 from prepare import image_ref, required_id, text_value
+from lean_images import is_positive_user_image, linked_image_refs, selected_user_images
 
 
 def _compact(value):
@@ -47,6 +48,10 @@ def build_sources(trends_path, users_path, project_root, start_date=None, end_da
         raise ValueError("user_limit 必须为正整数或 None")
 
     paths = {"trends": Path(trends_path).resolve(), "users": Path(users_path).resolve()}
+    project_trend_root = (Path(project_root).resolve() / "data/trend_data").resolve()
+    # 新版索引位于 article_table_2，图片统一放在其同级公共 images 目录。
+    trend_image_boundary = (project_trend_root if paths["trends"].is_relative_to(project_trend_root)
+                            else paths["trends"].parent)
     raw = {side: path.read_bytes() for side, path in paths.items()}
     documents = {side: json.loads(content) for side, content in raw.items()}
     if any(not isinstance(document, dict) for document in documents.values()):
@@ -88,8 +93,11 @@ def build_sources(trends_path, users_path, project_root, start_date=None, end_da
                 "title_zh", "summary_zh", "primary_category", "subcategory", "tags")
                 if row.get(key) is not None},
             "release_time": day.isoformat() if day else None,
+            "clustering_label": (text_value(row["clustering_label"]).strip()
+                                 if row.get("clustering_label") is not None else "") or "未分类",
             "source_file": "trends", "json_pointer": f"/trends/{index}",
-            "image_refs": [image_ref(image, paths["trends"].parent, rid)
+            "image_refs": [image_ref(image, paths["trends"].parent, rid,
+                                     allowed_root=trend_image_boundary)
                            for image in row.get("images", [])],
         })
 
@@ -102,7 +110,7 @@ def build_sources(trends_path, users_path, project_root, start_date=None, end_da
         preferences = {}
         for preference in row.get("image_preferences", []):
             code = preference.get("ref_pic_code")
-            if code:
+            if code and is_positive_user_image(preference):
                 preferences.setdefault(code, []).append(image_ref(
                     preference, paths["users"].parent, f"user:{uid}", code,
                     preference.get("emotion_tag")))
@@ -124,18 +132,12 @@ def build_sources(trends_path, users_path, project_root, start_date=None, end_da
                 fields = {name: text_value(child[name]) for name in field_names
                           if child.get(name) is not None}
                 images = []
-                if kind == "user_demand":
-                    for link in child.get("ref_pic_links", []):
-                        identifiers, local_paths = link.get("image_ids", []), link.get("local_paths", [])
-                        if len(identifiers) != len(local_paths):
-                            raise ValueError(f"需求 {rid} 的图片 ID 与路径数量不一致")
-                        images.extend(image_ref({"image_id": identifier, "local_path": local},
-                                                paths["users"].parent, rid, link.get("code"))
-                                      for identifier, local in zip(identifiers, local_paths))
-                else:
-                    # 问答只关联回答中实际出现的图片编码，仍保留原图片的所属用户。
+                if kind == "user_qa":
+                    # 问答只关联回答中实际出现且明确 LIKE / ENJOY 的图片编码。
                     images = [ref for code, group in preferences.items()
                               if image_code_in_text(code, fields[answer_key]) for ref in group]
+                # 显式本地链接不要求复述编号，但同样必须明确标记 LIKE / ENJOY。
+                images.extend(linked_image_refs(child, paths["users"].parent, rid))
                 user_count += 1
                 add(f"U{user_count:06d}", {
                     "id": rid, "kind": kind, "source_id": cid, "user_id": uid,
@@ -146,9 +148,16 @@ def build_sources(trends_path, users_path, project_root, start_date=None, end_da
                 text_users.add(uid)
 
     orphan_count = len(_rows(documents["users"], "unlinked_demand_research"))
+    categories = {}
+    for alias, record in sources.items():
+        if record["kind"] == "trend":
+            categories.setdefault(record["clustering_label"], []).append(alias)
     return {
         "project_root": str(Path(project_root).resolve()),
         "sources": sources,
+        "user_image_inventory": selected_user_images(selected_users, paths["users"].parent),
+        "trend_categories": [{"label": label, "source_ids": ids, "article_count": len(ids)}
+                             for label, ids in categories.items()],
         "inputs": {side: {"path": str(path), "sha256": hashlib.sha256(raw[side]).hexdigest()}
                    for side, path in paths.items()},
         "selection": {"start_date": start_date, "end_date": end_date, "inclusive": True,
@@ -179,7 +188,7 @@ def _pack_text(side, items):
                 if original in fields:
                     row[compact] = fields[original]
             trends.append(row)
-        return _compact({"trends": trends})
+        return _compact({"clustering_label": items[0][1].get("clustering_label", "未分类"), "trends": trends})
 
     contexts, context_ids, profiles, rows = {}, {}, {}, []
     for alias, record in items:
@@ -201,28 +210,35 @@ def _pack_text(side, items):
 
 
 def pack_sources(sources, max_chars):
-    """趋势、用研分侧按完整 JSON 字符数贪心合包，允许跨用户合包。
+    """趋势先按聚类标签归组，类内按字符分包；用户材料单独去重合包，供各类共享。
 
     问题、需求场景和画像在包内去重，回答全文保留。路径和图片引用只存
     在来源索引，不进入模型文本。单条连同必要上下文超预算时明确报错。
     """
     if type(max_chars) is not int or max_chars < 1:
         raise ValueError("max_chars 必须为正整数")
-    partitions = {"trend": [], "user": []}
+    trend_groups, user_items = {}, []
     for alias, record in sources.items():
         kind = record["kind"]
         if kind not in {"trend", "user_qa", "user_demand"}:
             raise ValueError(f"来源 {alias} 的类型不受支持：{kind}")
-        partitions["trend" if kind == "trend" else "user"].append((alias, record))
+        if kind == "trend":
+            label = record.get("clustering_label", "未分类")
+            trend_groups.setdefault(label, []).append((alias, record))
+        else:
+            user_items.append((alias, record))
 
     packs = []
-    for side, items in partitions.items():
+    # 同类文章即使在原文件中不相邻，也先合在一起；不同大类绝不混进归纳包。
+    partitions = [("trend", label, items) for label, items in trend_groups.items()]
+    partitions.append(("user", None, user_items))
+    for side, label, items in partitions:
         current, current_text = [], ""
         for item in items:
             candidate = current + [item]
             text = _pack_text(side, candidate)
             if current and len(text) > max_chars:
-                packs.append({"side": side, "text": current_text,
+                packs.append({"side": side, "clustering_label": label, "text": current_text,
                               "source_ids": [alias for alias, _ in current]})
                 candidate = [item]
                 text = _pack_text(side, candidate)
@@ -231,6 +247,6 @@ def pack_sources(sources, max_chars):
                                  f"超过预算 {max_chars}；请增大字符预算，原文不会截断")
             current, current_text = candidate, text
         if current:
-            packs.append({"side": side, "text": current_text,
+            packs.append({"side": side, "clustering_label": label, "text": current_text,
                           "source_ids": [alias for alias, _ in current]})
     return packs

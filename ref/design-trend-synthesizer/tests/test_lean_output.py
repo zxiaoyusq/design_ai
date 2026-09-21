@@ -18,11 +18,12 @@ class LeanOutputTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         (self.root / "available.jpg").write_bytes(b"fixture; pixels are never read")
         (self.root / "question-only.jpg").write_bytes(b"question-only fixture")
+        (self.root / "disliked.jpg").write_bytes(b"disliked fixture")
         self.sources = {
             "T00001": {"id": "trend:one", "kind": "trend", "source_file": "trends",
                        "json_pointer": "/trends/0", "fields": {"summary_zh": "磨砂表面降低反光。"},
                        "image_refs": [self.image("trend-photo", "missing.jpg")]},
-            "U000001": self.user("u1", "q1", "P1比P2更低调；没有提到其他图片。", "/users/0/aesthetic_research/0"),
+            "U000001": self.user("u1", "q1", "P1比P2更低调；P5不符合偏好。", "/users/0/aesthetic_research/0"),
             "U000002": self.user("u1", "q2", "同一用户补充清洁诉求。", "/users/0/aesthetic_research/1"),
             "U000003": self.user("u2", "q1", "希望触感柔和。", "/users/1/aesthetic_research/0"),
         }
@@ -31,15 +32,16 @@ class LeanOutputTests(unittest.TestCase):
             self.image("P1", "available.jpg", "P1"),
             self.image("P2", "available.jpg", "P2"),
             self.image("P3", "question-only.jpg", "P3"),
+            self.image("P5", "disliked.jpg", "P5", "DISLIKE"),
         ]
         self.manifest = {"project_root": str(self.root), "selection": {"start_date": "2026-01-01"},
                          "counts": {"users_with_text": 2, "selected_trends": 1},
                          "inputs": {"trends": {"path": str(self.root / "trends.json")},
                                     "users": {"path": str(self.root / "users.json")}}}
 
-    def image(self, identifier, path, code=None):
+    def image(self, identifier, path, code=None, emotion="ENJOY"):
         return {"image_id": identifier, "local_path": path, "source_root": str(self.root),
-                "code": code, "status": "available"}
+                "code": code, "status": "available", "emotion_tag": emotion}
 
     @staticmethod
     def user(uid, question, answer, pointer):
@@ -99,7 +101,7 @@ class LeanOutputTests(unittest.TestCase):
         self.assertEqual(self.read(run, "validation_report.json")["result_image_paths"], 2)
         self.assertEqual(self.read(run, "validation_report.json")["additional_user_image_paths"], 1)
         image_paths = (run / "image_paths.md").read_text(encoding="utf-8")
-        result_section, user_section = image_paths.split("## 用户提及的其他图片路径")
+        result_section, user_section = image_paths.split("## 其他用户喜欢的关联图片路径")
         self.assertIn("## 与结果相关的所有图片路径", result_section)
         self.assertIn("available.jpg", result_section)
         self.assertIn("missing.jpg", result_section)
@@ -107,6 +109,8 @@ class LeanOutputTests(unittest.TestCase):
         self.assertIn("other-user.jpg", user_section)
         self.assertNotIn("available.jpg", user_section)
         self.assertNotIn("question-only.jpg", image_paths)
+        self.assertNotIn("disliked.jpg", image_paths)
+        self.assertEqual(self.read(run)["user_image_filter"], "like_or_enjoy")
         self.assertEqual(self.read(run)["image_path_report_file"], "image_paths.md")
         self.assertEqual(self.read(run, "completion.json"), summary)
 
@@ -142,6 +146,37 @@ class LeanOutputTests(unittest.TestCase):
         self.assertTrue(empty["warnings"])
         heading_only = publish(self.root / "heading-only", self.manifest, self.sources, "# 只有标题")
         self.assertFalse(heading_only["has_content"])
+
+    def test_background_does_not_supply_core_images_counts_or_categories(self):
+        self.sources["T00001"]["clustering_label"] = "几何图案"
+        self.sources["T00002"] = {**self.sources["T00001"], "id": "trend:background",
+                                   "clustering_label": "可更换结构", "image_refs": []}
+        aliases = {"N0001": ["T00001", "U000001"], "N0002": ["T00002", "U000003"]}
+        text = ("## 几何细节\n围绕图案的交集。[N0001]\n"
+                "**背景参考：** 可更换结构是另一个设计问题。[N0002]\n"
+                "## 可更换偏好\n仅用研明确提出。[U000003]\n背景参考：图案文章不能补齐双侧。[T00001]")
+        run = self.root / "background"
+        publish(run, self.manifest, self.sources, text, aliases)
+        result = self.read(run)
+        self.assertEqual(len(result["trends"]), 1)
+        card = result["trends"][0]
+        self.assertEqual(card["source_ids"], ["T00001", "U000001"])
+        self.assertEqual(card["background_source_ids"], ["T00002", "U000003"])
+        self.assertEqual(card["clustering_labels"], ["几何图案"])
+        self.assertEqual(card["cited_user_ids"], ["u1"])
+        self.assertNotIn("N0002", card["description"])
+        self.assertEqual({ref["source_record_id"] for ref in card["image_refs"]},
+                         {"trend:one", self.sources["U000001"]["id"]})
+        self.assertEqual(result["diagnostics"][0]["source_ids"], ["U000003"])
+        self.assertFalse(result["diagnostics"][0]["clustering_labels"])
+        self.assertIn("背景参考", (run / "report.md").read_text())
+
+    def test_core_wins_overlap_and_unknown_background_does_not_retry(self):
+        notes, warnings = parse_notes("## 图案\n已有核心。[T00001 U000001]\n"
+                                      "背景参考：重复来源和未知编号。[T00001 U000003 N9999]", self.sources)
+        self.assertEqual(notes[0]["background_source_ids"], ["U000003"])
+        self.assertEqual(len(warnings), 1)
+        self.assertIn("N9999", warnings[0])
 
 
 if __name__ == "__main__":
