@@ -38,7 +38,6 @@ const extraStyleFields = computed(() =>
 )
 const keyDna = computed(() => asRecordList(props.data.key_dna))
 const semanticProfile = computed(() => Object.entries(asRecord(props.data.semantic_profile)))
-const uncertainFields = computed(() => asRecordList(props.data.uncertain_fields))
 const novelDna = computed(() => (Array.isArray(props.data.novel_dna) ? props.data.novel_dna : []))
 const quality = computed(() => asRecord(props.data.quality))
 const extraRootFields = computed(() =>
@@ -197,28 +196,7 @@ function itemBody(item: DataRecord, headingKeys: string[]) {
 
     <section class="result-section-card">
       <div class="result-section-heading">
-        <div><span>05</span><div><h4>不确定项</h4><p>仍需更多视角或信息才能确认的字段</p></div></div>
-        <b class="count-badge warning">{{ uncertainFields.length }} 项</b>
-      </div>
-      <div v-if="uncertainFields.length" class="uncertain-list">
-        <article v-for="(item, index) in uncertainFields" :key="index" class="uncertain-card">
-          <div>
-            <span>{{ item.field_name || `不确定项 ${index + 1}` }}</span>
-            <div class="uncertain-estimate"><DataValue :value="item.best_estimate" /></div>
-          </div>
-          <div class="uncertain-score">
-            <small>{{ displayScalar(item.confidence) }}</small>
-            <b>{{ toPercent(item.confidence_score) }}%</b>
-          </div>
-          <DataValue :value="itemBody(item, ['field_name', 'best_estimate', 'confidence', 'confidence_score'])" />
-        </article>
-      </div>
-      <div v-else class="inline-empty positive">未发现需要特别确认的不确定项</div>
-    </section>
-
-    <section class="result-section-card">
-      <div class="result-section-heading">
-        <div><span>06</span><div><h4>新 DNA 候选</h4><p>知识库外、值得进一步沉淀的设计特征</p></div></div>
+        <div><span>05</span><div><h4>新 DNA 候选</h4><p>知识库外、值得进一步沉淀的设计特征</p></div></div>
       </div>
       <DataValue v-if="novelDna.length" :value="novelDna" />
       <div v-else class="inline-empty">本次未发现知识库外的新 DNA 候选</div>
@@ -226,7 +204,7 @@ function itemBody(item: DataRecord, headingKeys: string[]) {
 
     <section class="result-section-card">
       <div class="result-section-heading">
-        <div><span>07</span><div><h4>结果质量</h4><p>本次提取的可靠性与完整性</p></div></div>
+        <div><span>06</span><div><h4>结果质量</h4><p>本次提取的可靠性与完整性</p></div></div>
       </div>
       <DataValue :value="quality" />
     </section>

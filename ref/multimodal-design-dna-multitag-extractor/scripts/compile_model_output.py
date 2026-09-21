@@ -17,7 +17,6 @@ from compile_fields import (
     FORBIDDEN_SINGLE_IMAGE_PROFILES,
     _normalize_elements,
     _normalize_modules,
-    _normalize_uncertainties,
 )
 from compile_styles import _normalize_styles
 
@@ -30,8 +29,8 @@ TAG_RELATIONS_PATH = ROOT / "references" / "tag-relations.json"
 KNOWLEDGE_BASE_PATH = ROOT / "references" / "design-dna-knowledge-base.zh-CN.md"
 VALUE_NORMALIZATION_PATH = ROOT / "references" / "value-normalization.json"
 MODEL_OUTPUT_SCHEMA_PATH = ROOT / "schemas" / "design-dna-model-output.schema.json"
-FINAL_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.2"
-OBSERVATION_SCHEMA_VERSION = "design_dna_multitag_observation_v2"
+FINAL_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.3"
+OBSERVATION_SCHEMA_VERSION = "design_dna_multitag_observation_v3"
 KNOWLEDGE_BASE_VERSION = "4.1"
 MAX_NEARBY_EVIDENCE_EXPANSION = 0.05
 MODULE_HEADING_PATTERN = re.compile(r"^### (DNA-M(?:0[1-9]|1[0-5]))｜(.+)$", re.M)
@@ -40,12 +39,25 @@ VALID_VIEWS = {
     "rear",
     "left",
     "right",
+    "side",
     "top",
     "bottom",
     "three_quarter",
     "detail",
     "unknown",
 }
+OBSERVATION_ROOT_ALIASES = (
+    ("schemaVersion", "schema_version"),
+    ("knowledgeBaseVersion", "knowledge_base_version"),
+    ("targetObject", "target_object"),
+    ("imageQuality", "image_quality"),
+    ("activeProfiles", "active_profiles"),
+    ("ruleAdaptations", "rule_adaptations"),
+    ("styleObservations", "style_observations"),
+    ("designObservations", "design_observations"),
+    ("novelDnaElements", "novel_dna_elements"),
+    ("qualityNotes", "quality_notes"),
+)
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -55,76 +67,62 @@ def _load_json(path: Path) -> dict[str, Any]:
     return data
 
 
-def _normalize_observation_contract(
+def _normalize_observation_root_aliases(
     observation: dict[str, Any], report: dict[str, Any]
 ) -> None:
-    """在严格模型 Schema 前修复不需要视觉判断的置信度归类矛盾。"""
+    """无损接收模型偶发生成的驼峰顶层键；冲突值仍交给 Schema 拒绝。"""
 
-    uncertainties = observation.get("uncertainties")
-    design_observations = observation.get("design_observations")
-    if not isinstance(uncertainties, list) or not isinstance(design_observations, list):
+    normalizations = report.setdefault("property_alias_normalizations", [])
+    for alias, canonical in OBSERVATION_ROOT_ALIASES:
+        if alias not in observation:
+            continue
+        alias_value = observation[alias]
+        if canonical in observation and observation[canonical] != alias_value:
+            continue
+
+        action = "removed_duplicate_alias"
+        observation.pop(alias)
+        _record_change(report, f"/{alias}")
+        if canonical not in observation:
+            observation[canonical] = alias_value
+            _record_change(report, f"/{canonical}")
+            action = "renamed_to_canonical"
+        normalizations.append(
+            {
+                "source_pointer": f"/{alias}",
+                "target_pointer": f"/{canonical}",
+                "action": action,
+            }
+        )
+
+
+def _fill_observation_descriptions(
+    observation: dict[str, Any], report: dict[str, Any]
+) -> None:
+    """仅复制已有的 value.description，补齐缺失的观察描述。"""
+
+    items = observation.get("design_observations")
+    if not isinstance(items, list):
         return
-    existing_keys = {
-        (item.get("field_id"), item.get("region"))
-        for item in design_observations
-        if isinstance(item, dict)
-    }
-    retained: list[Any] = []
-    normalizations = report.setdefault("observation_contract_normalizations", [])
-    for index, item in enumerate(uncertainties):
-        if not isinstance(item, dict):
-            retained.append(item)
+    normalizations = report.setdefault("observation_description_normalizations", [])
+    for index, item in enumerate(items):
+        if not isinstance(item, dict) or "raw_visual_description" in item:
             continue
-        confidence = item.get("confidence")
-        if (
-            isinstance(confidence, (int, float))
-            and not isinstance(confidence, bool)
-            and confidence >= 0.75
-            and item.get("best_estimate") is not None
-            and item.get("observability") == "observed"
-        ):
-            key = (item.get("field_id"), item.get("region"))
-            if key not in existing_keys:
-                design_observations.append(
-                    {
-                        "field_id": item.get("field_id"),
-                        "value": copy.deepcopy(item.get("best_estimate")),
-                        "raw_visual_description": item.get("reason", ""),
-                        "region": item.get("region"),
-                        "observability": "observed",
-                        "confidence": confidence,
-                        "evidence_refs": copy.deepcopy(item.get("evidence_refs", [])),
-                    }
-                )
-                existing_keys.add(key)
-                _record_change(report, "/design_observations/-")
-            _record_change(report, f"/uncertainties/{index}")
-            normalizations.append(
-                {
-                    "source_pointer": f"/uncertainties/{index}",
-                    "field_id": item.get("field_id"),
-                    "action": "promoted_to_design_observation",
-                    "reason": "confidence >= 0.75 且存在已观察的最佳估计",
-                }
-            )
+        value = item.get("value")
+        description = value.get("description") if isinstance(value, dict) else None
+        if not isinstance(description, str) or not description.strip():
             continue
-        if (
-            isinstance(confidence, (int, float))
-            and not isinstance(confidence, bool)
-            and confidence > 0.749999
-        ):
-            item["confidence"] = 0.749999
-            _record_change(report, f"/uncertainties/{index}/confidence")
-            normalizations.append(
-                {
-                    "source_pointer": f"/uncertainties/{index}",
-                    "field_id": item.get("field_id"),
-                    "action": "clamped_uncertainty_confidence",
-                    "reason": "不确定项没有可提升为已确认观察的最佳估计",
-                }
-            )
-        retained.append(item)
-    observation["uncertainties"] = retained
+        item["raw_visual_description"] = description
+        target_pointer = f"/design_observations/{index}/raw_visual_description"
+        _record_change(report, target_pointer)
+        normalizations.append(
+            {
+                "source_pointer": f"/design_observations/{index}/value/description",
+                "target_pointer": target_pointer,
+                "field_id": item.get("field_id"),
+                "action": "copied_existing_description",
+            }
+        )
 
 
 def _valid_normalized_bbox(value: Any) -> bool:
@@ -308,34 +306,6 @@ def _expand_observation(
         copied = copy.deepcopy(item)
         copied["_source_pointer"] = f"/design_observations/{index}"
         design_observation_items.append(copied)
-    existing_observation_keys = {
-        (str(item.get("field_id") or ""), str(item.get("region") or ""))
-        for item in design_observation_items
-    }
-    for uncertainty_index, uncertainty in enumerate(observation.get("uncertainties", [])):
-        if not isinstance(uncertainty, dict):
-            continue
-        key = (
-            str(uncertainty.get("field_id") or ""),
-            str(uncertainty.get("region") or ""),
-        )
-        if key in existing_observation_keys:
-            continue
-        design_observation_items.append(
-            {
-                "field_id": uncertainty.get("field_id"),
-                "value": uncertainty.get("best_estimate"),
-                "raw_visual_description": uncertainty.get("reason", ""),
-                "region": uncertainty.get("region"),
-                "observability": uncertainty.get("observability"),
-                "confidence": uncertainty.get("confidence"),
-                "evidence_refs": copy.deepcopy(
-                    uncertainty.get("evidence_refs", [])
-                ),
-                "_source_pointer": f"/uncertainties/{uncertainty_index}",
-            }
-        )
-        existing_observation_keys.add(key)
 
     modules: dict[str, list[dict[str, Any]]] = {}
     for item in design_observation_items:
@@ -373,18 +343,6 @@ def _expand_observation(
             f"/style_observations/candidate_tags/{source_index}"
         )
         style_candidates.append(candidate)
-
-    expanded_uncertainties = []
-    for source_index, item in enumerate(observation.get("uncertainties", [])):
-        if not isinstance(item, dict):
-            continue
-        expanded = {
-            key: copy.deepcopy(value)
-            for key, value in item.items()
-            if key != "evidence_refs"
-        }
-        expanded["_source_pointer"] = f"/uncertainties/{source_index}"
-        expanded_uncertainties.append(expanded)
 
     expanded_evidence = []
     for source_index, item in enumerate(observation.get("evidence", [])):
@@ -429,7 +387,6 @@ def _expand_observation(
                 for module_id, elements in sorted(modules.items())
             ],
         },
-        "uncertain_fields": expanded_uncertainties,
         "novel_dna_elements": copy.deepcopy(
             observation.get("novel_dna_elements", [])
         ),
@@ -549,17 +506,6 @@ def _finalize_source_map(data: dict[str, Any], report: dict[str, Any]) -> None:
                         "source_pointer": pointer,
                         "style_id": item.get("style_id"),
                     }
-    uncertainties = data.get("uncertain_fields")
-    for index, item in enumerate(uncertainties if isinstance(uncertainties, list) else []):
-        if not isinstance(item, dict):
-            continue
-        pointer = item.get("_source_pointer")
-        if isinstance(pointer, str):
-            source_map[f"uncertain_fields[{index}]"] = {
-                "source_pointer": pointer,
-                "field_id": item.get("field_id"),
-                "region": item.get("region"),
-            }
     evidence_items = data.get("evidence")
     for index, item in enumerate(
         evidence_items if isinstance(evidence_items, list) else []
@@ -601,7 +547,9 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     styles = _active_style_records(style_registry)
     module_names = _module_names(knowledge_base)
     value_spaces = _value_spaces(knowledge_base)
-    source_contract = str(data.get("schema_version") or "unknown")
+    source_contract = str(
+        data.get("schema_version") or data.get("schemaVersion") or "unknown"
+    )
     result = copy.deepcopy(data)
     report: dict[str, Any] = {
         "source_contract": source_contract,
@@ -611,7 +559,8 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     if source_contract == OBSERVATION_SCHEMA_VERSION:
         from jsonschema import Draft202012Validator
 
-        _normalize_observation_contract(result, report)
+        _normalize_observation_root_aliases(result, report)
+        _fill_observation_descriptions(result, report)
         _synchronize_target_bbox(result, report)
         _synchronize_evidence_regions(result, report)
         observation_schema = _load_json(MODEL_OUTPUT_SCHEMA_PATH)
@@ -629,6 +578,10 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
     else:
         _synchronize_target_bbox(result, report)
         _synchronize_evidence_regions(result, report)
+    if "uncertain_fields" in result:
+        # 兼容读取旧结果时可以接收 v1.1/v1.2，但重新编译后不再传播旧字段。
+        result.pop("uncertain_fields", None)
+        _record_change(report, "/uncertain_fields")
     _replace_if_changed(result, "schema_version", FINAL_SCHEMA_VERSION, "", report)
     _replace_if_changed(
         result,
@@ -655,7 +608,6 @@ def compile_model_output(data: dict[str, Any]) -> tuple[dict[str, Any], dict[str
         element_index,
         report,
     )
-    _normalize_uncertainties(result, fields, element_index, report)
     _normalize_quality(result, element_index, report)
     _finalize_source_map(result, report)
     report["deterministic_correction_count"] = len(report["changed_paths"])

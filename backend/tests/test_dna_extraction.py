@@ -149,7 +149,6 @@ class DnaExtractionTestCase(unittest.TestCase):
     def test_safe_degradation_removes_field_and_invalid_candidate(self) -> None:
         observation = {
             "design_observations": [{"field_id": "PRT-08"}],
-            "uncertainties": [],
             "style_observations": {
                 "candidate_tags": [
                     {
@@ -182,113 +181,79 @@ class DnaExtractionTestCase(unittest.TestCase):
         style = degraded["style_observations"]
         self.assertEqual(style["candidate_tags"], [])
 
-    def test_transient_stream_disconnect_is_retried_once(self) -> None:
+    def test_transient_stream_disconnect_is_not_retried(self) -> None:
         transient_error = type("APIError", (RuntimeError,), {"__module__": "openai"})
         agent = Mock()
-        expected = {"messages": []}
-        agent.invoke.side_effect = [
-            transient_error("stream disconnected before completion"),
-            expected,
-        ]
+        agent.invoke.side_effect = transient_error("stream disconnected before completion")
         metrics = {
             "agent_invocation_count": 0,
             "application_network_retry_count": 0,
         }
 
-        result = _invoke_agent(agent, [], ModelCallTelemetry(), metrics)
+        with self.assertRaisesRegex(transient_error, "stream disconnected"):
+            _invoke_agent(agent, [], ModelCallTelemetry(), metrics)
 
-        self.assertIs(result, expected)
-        self.assertEqual(agent.invoke.call_count, 2)
-        self.assertEqual(metrics["agent_invocation_count"], 2)
-        self.assertEqual(metrics["application_network_retry_count"], 1)
+        self.assertEqual(agent.invoke.call_count, 1)
+        self.assertEqual(metrics["agent_invocation_count"], 1)
+        self.assertEqual(metrics["application_network_retry_count"], 0)
 
-    @patch("app.services.dna.extraction.save_result_trace")
-    @patch("app.services.dna.extraction.save_result_image")
-    @patch("app.services.dna.extraction.save_business_view_model")
-    @patch("app.services.dna.extraction._create_business_view")
+    @patch("app.services.dna.extraction.save_failure_trace")
     @patch("app.services.dna.extraction._save_validated_result")
     @patch("app.services.dna.extraction._compile_model_result")
     @patch("app.services.dna.extraction.create_design_dna_agent")
-    def test_semantic_failure_uses_patch_before_full_fallback(
+    def test_semantic_failure_is_recorded_without_model_retry(
         self,
         create_agent: Mock,
         compile_result: Mock,
         save_result: Mock,
-        create_business_view: Mock,
-        _save_model: Mock,
-        _save_image: Mock,
-        save_trace: Mock,
+        save_failure: Mock,
     ) -> None:
         initial = {"schema_version": "design_dna_multitag_observation_v1", "value": "bad"}
-        patched = {"schema_version": "design_dna_multitag_observation_v1", "value": "good"}
         agent = Mock()
-        agent.invoke.side_effect = [
-            {"messages": [SimpleNamespace(content=json.dumps(initial))]},
-            {
-                "messages": [
-                    SimpleNamespace(
-                        content=(
-                            '{"updates":[{"op":"replace","path":"/value",'
-                            '"value":"good"}]}'
-                        )
-                    )
-                ]
-            },
-        ]
+        agent.invoke.return_value = {
+            "messages": [SimpleNamespace(content=json.dumps(initial))]
+        }
         create_agent.return_value = agent
-        compile_result.side_effect = [
-            (
-                {"schema_version": "compiled", "value": "bad"},
-                {"deterministic_correction_count": 1, "changed_paths": ["/x"]},
-            ),
-            (
-                {"schema_version": "compiled", "value": "good"},
-                {"deterministic_correction_count": 0, "changed_paths": []},
-            ),
-        ]
+        compile_result.return_value = (
+            {"schema_version": "compiled", "value": "bad"},
+            {"deterministic_correction_count": 1, "changed_paths": ["/x"]},
+        )
+        save_failure.return_value = ("failure-001", Path("failure-001.json"))
 
         with TemporaryDirectory() as temporary_directory:
             image_path = Path(temporary_directory) / "image.png"
             image_path.write_bytes(b"image")
-            full_path = Path(temporary_directory) / "result.json"
-            business_path = Path(temporary_directory) / "result_business_view.json"
-            save_result.side_effect = [
-                DesignDnaExtractionError("- style tag lacks usable visual evidence"),
-                full_path,
-            ]
-            create_business_view.return_value = business_path
-
-            output = run_design_dna_extraction(
-                image_path,
-                "image/png",
-                "gpt-5.6-terra-20260820",
-                "关注构图",
+            save_result.side_effect = DesignDnaExtractionError(
+                "- style tag lacks usable visual evidence"
             )
 
-        self.assertEqual(output.full_result_path, full_path)
-        self.assertEqual(agent.invoke.call_count, 2)
-        self.assertEqual(compile_result.call_args_list[1].args[0], patched)
-        trace = save_trace.call_args.args[1]
-        self.assertEqual(trace["execution_metrics"]["agent_invocation_count"], 2)
-        self.assertEqual(trace["execution_metrics"]["semantic_patch_attempt_count"], 1)
+            with self.assertRaisesRegex(DesignDnaExtractionError, "failure-001"):
+                run_design_dna_extraction(
+                    image_path,
+                    "image/png",
+                    "gpt-5.6-terra-20260820",
+                    "关注构图",
+                )
+
+        self.assertEqual(agent.invoke.call_count, 1)
+        self.assertEqual(compile_result.call_count, 1)
+        self.assertEqual(save_result.call_count, 1)
+        trace = save_failure.call_args.args[0]
+        self.assertEqual(trace["execution_metrics"]["agent_invocation_count"], 1)
+        self.assertEqual(trace["execution_metrics"]["retry_policy"], "disabled")
+        self.assertEqual(trace["execution_metrics"]["semantic_patch_attempt_count"], 0)
         self.assertEqual(trace["execution_metrics"]["full_fallback_attempt_count"], 0)
 
-    @patch("app.services.dna.extraction.save_result_trace")
-    @patch("app.services.dna.extraction.save_result_image")
-    @patch("app.services.dna.extraction.save_business_view_model")
-    @patch("app.services.dna.extraction._create_business_view")
+    @patch("app.services.dna.extraction.save_failure_trace")
     @patch("app.services.dna.extraction._save_validated_result")
     @patch("app.services.dna.extraction._compile_model_result")
     @patch("app.services.dna.extraction.create_design_dna_agent")
-    def test_invalid_patch_path_keeps_original_issue_for_safe_degradation(
+    def test_validation_failure_records_source_mapping_without_retry(
         self,
         create_agent: Mock,
         compile_result: Mock,
         save_result: Mock,
-        create_business_view: Mock,
-        _save_model: Mock,
-        _save_image: Mock,
-        save_trace: Mock,
+        save_failure: Mock,
     ) -> None:
         observation = {
             "schema_version": "design_dna_multitag_observation_v1",
@@ -299,32 +264,11 @@ class DnaExtractionTestCase(unittest.TestCase):
                     "evidence_refs": ["EV-06"],
                 }
             ],
-            "uncertainties": [],
         }
-        invalid_final_path = (
-            "/design_elements/extended_dna_modules/9/elements/0/evidence_refs"
-        )
         agent = Mock()
-        agent.invoke.side_effect = [
-            {"messages": [SimpleNamespace(content=json.dumps(observation))]},
-            {
-                "messages": [
-                    SimpleNamespace(
-                        content=json.dumps(
-                            {
-                                "updates": [
-                                    {
-                                        "op": "replace",
-                                        "path": invalid_final_path,
-                                        "value": ["EV-06", "EV-05"],
-                                    }
-                                ]
-                            }
-                        )
-                    )
-                ]
-            },
-        ]
+        agent.invoke.return_value = {
+            "messages": [SimpleNamespace(content=json.dumps(observation))]
+        }
         create_agent.return_value = agent
         source_map = {
             "design_elements.extended_dna_modules.9.elements.0": {
@@ -344,68 +288,42 @@ class DnaExtractionTestCase(unittest.TestCase):
                 ]
             },
         }
-        compiled_valid = {
-            "schema_version": "compiled",
-            "design_elements": {"extended_dna_modules": []},
-        }
-        compile_result.side_effect = [
-            (
-                compiled_invalid,
-                {
-                    "deterministic_correction_count": 1,
-                    "changed_paths": ["/design_elements"],
-                    "source_map": source_map,
-                },
-            ),
-            (
-                compiled_valid,
-                {
-                    "deterministic_correction_count": 1,
-                    "changed_paths": ["/design_elements"],
-                    "source_map": {},
-                },
-            ),
-        ]
+        compile_result.return_value = (
+            compiled_invalid,
+            {
+                "deterministic_correction_count": 1,
+                "changed_paths": ["/design_elements"],
+                "source_map": source_map,
+            },
+        )
+        save_result.side_effect = DesignDnaExtractionError(
+            "结果未通过校验：\n"
+            "- schema design_elements.extended_dna_modules.9.elements.0."
+            "evidence_refs: ['EV-06'] is too short"
+        )
+        save_failure.return_value = ("failure-002", Path("failure-002.json"))
 
         with TemporaryDirectory() as temporary_directory:
             image_path = Path(temporary_directory) / "image.png"
             image_path.write_bytes(b"image")
-            full_path = Path(temporary_directory) / "result.json"
-            business_path = Path(temporary_directory) / "result_business_view.json"
-            save_result.side_effect = [
-                DesignDnaExtractionError(
-                    "结果未通过校验：\n"
-                    "- schema design_elements.extended_dna_modules.9.elements.0."
-                    "evidence_refs: ['EV-06'] is too short"
-                ),
-                full_path,
-            ]
-            create_business_view.return_value = business_path
 
-            output = run_design_dna_extraction(
-                image_path,
-                "image/png",
-                "claude-opus-5-20260820",
-                "",
-            )
+            with self.assertRaisesRegex(DesignDnaExtractionError, "failure-002"):
+                run_design_dna_extraction(
+                    image_path,
+                    "image/png",
+                    "claude-opus-5-20260820",
+                    "",
+                )
 
-        self.assertEqual(output.full_result_path, full_path)
-        self.assertEqual(agent.invoke.call_count, 2)
-        second_prompt = agent.invoke.call_args_list[1].args[0]["messages"][-1][
-            "content"
-        ]
-        self.assertIn('"source_pointer": "/design_observations/0"', second_prompt)
-        self.assertIn("禁止使用 final_path", second_prompt)
+        self.assertEqual(agent.invoke.call_count, 1)
+        self.assertEqual(compile_result.call_count, 1)
+        trace = save_failure.call_args.args[0]
         self.assertEqual(
-            compile_result.call_args_list[1].args[0]["design_observations"],
-            [],
+            trace["issues"][0]["source_pointer"],
+            "/design_observations/0",
         )
-        trace = save_trace.call_args.args[1]
-        self.assertEqual(trace["execution_metrics"]["safe_degradation_count"], 1)
-        self.assertIn(
-            "修复补丁路径不存在",
-            trace["execution_metrics"]["validation_failure_summaries"][1],
-        )
+        self.assertEqual(trace["issues"][0]["field_id"], "IMG-08")
+        self.assertEqual(trace["execution_metrics"]["safe_degradation_count"], 0)
 
     @patch("app.services.dna.extraction.save_result_trace")
     @patch("app.services.dna.extraction.save_result_image")
@@ -427,7 +345,7 @@ class DnaExtractionTestCase(unittest.TestCase):
         save_trace: Mock,
     ) -> None:
         observation = {
-            "schema_version": "design_dna_multitag_observation_v2",
+            "schema_version": "design_dna_multitag_observation_v3",
             "style_observations": {
                 "candidate_tags": [
                     {

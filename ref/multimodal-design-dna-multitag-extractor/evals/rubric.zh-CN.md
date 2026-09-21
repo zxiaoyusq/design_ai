@@ -1,4 +1,4 @@
-# KB 4.1 / Multitag Schema v1.2 回归评测量表
+# KB 4.1 / Multitag Schema v1.3 回归评测量表
 
 每例按 100 分评分；先检查一票否决，再按维度计分。`cases.jsonl` 的 `expected.style_candidate_ids` 是图片中应输出的同层候选集合，顺序不表达主次；空数组表示没有足够可见支持的候选。
 
@@ -10,7 +10,7 @@
 
 命中任一项，本例最高 40 分：
 
-- 输出不可解析 JSON、版本不是 `design_dna_multitag_extraction_v1.2 / 4.1`，或引用不存在的证据；
+- 输出不可解析 JSON、版本不是 `design_dna_multitag_extraction_v1.3 / 4.1`，或引用不存在的证据；
 - 任一数字为 NaN、Infinity 或其他非有限值；
 - 输出 `parent_style_id`、`level_1`、`level_2`、`primary_style`、`secondary_styles`、`classification_status`、`style_tags`、`candidate_ranking` 或 `pairwise_arbitrations`；
 - `style_candidates` 超过 5 个、出现重复 ID，或为凑数输出没有可见支持的候选；
@@ -33,7 +33,7 @@
 | 候选解释 | 12 | score/confidence 分工清晰，支持、冲突、区域和组合摘要一致 |
 | 组合派生 | 8 | 仅按候选 ID 进行确定性派生，不反向补足候选或 DNA |
 | 证据追溯 | 10 | 字段引用有效主体证据，区域一致 |
-| 不确定性 | 5 | 低可信、不可见和不可计算字段均有登记 |
+| 低置信处理 | 5 | 有可用值时如实降低 confidence；无值、不可见和不可计算字段不进入结果 |
 | 新 DNA | 3 | 先去重，再提出可观察、可复用、可参数化候选 |
 | JSON 完整性 | 2 | 结构、枚举、统计、引用和版本均合法 |
 
@@ -71,9 +71,9 @@
 
 ## 规范字段与证据
 
-- direct：`observed|not_observable|unknown + not_requested`；
-- derived/inferred：依赖充分时 `observed + computed`，不足时 `not_computable`；
-- reference-computed 缺参考集时为 `not_computable`；当前单图不激活 multi-face/reference/trend；
+- 最终 direct 字段只保留 `observed + not_requested` 且有有效值的结果；
+- 最终 derived/inferred 字段只保留依赖充分的 `observed + computed` 结果；
+- reference-computed 缺参考集时不输出；当前单图不激活 multi-face/reference/trend；
 - 确认不存在用类型内“无”或空列表并保持 observed；
 - multi_label 只含登记字符串，list 用于结构化条目；
 - 每个 observed 字段至少一条证据，computed inferred 至少两条独立观察证据；

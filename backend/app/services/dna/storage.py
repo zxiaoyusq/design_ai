@@ -32,16 +32,18 @@ ALLOWED_FORMATS = {
 }
 RESULT_ID_PATTERN = re.compile(r"^[\w-]+$", re.UNICODE)
 BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_business_view_v1.1"
-MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.1"
+MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.2"
 LEGACY_MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.0"
 BUSINESS_VIEW_SCHEMA_VERSIONS = {
     BUSINESS_VIEW_SCHEMA_VERSION,
     MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION,
+    "design_dna_multitag_business_view_v1.1",
     LEGACY_MULTITAG_BUSINESS_VIEW_SCHEMA_VERSION,
 }
 MULTITAG_SOURCE_SCHEMA_VERSIONS = {
     "design_dna_multitag_extraction_v1.1",
     "design_dna_multitag_extraction_v1.2",
+    "design_dna_multitag_extraction_v1.3",
 }
 
 

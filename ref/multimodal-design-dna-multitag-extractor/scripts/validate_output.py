@@ -50,7 +50,6 @@ from validate_fields import (
     _validate_target_evidence,
     _validate_modules,
     _validate_elements,
-    _validate_uncertainties,
     _validate_novel_dna,
 )
 from validate_styles import _validate_styles
@@ -122,7 +121,7 @@ def validate_semantics(
         errors=errors,
     )
 
-    canonical_elements, element_by_key, uncertainty_items = _validate_elements(
+    canonical_elements = _validate_elements(
         active_profile_set=active_profile_set,
         alias_to_field=alias_to_field,
         allowed_regions=allowed_regions,
@@ -130,16 +129,6 @@ def validate_semantics(
         data=data,
         fields=fields,
         target_view=target_view,
-        value_spaces=value_spaces,
-        errors=errors,
-    )
-
-    _validate_uncertainties(
-        alias_to_field=alias_to_field,
-        compatibility_derived=compatibility_derived,
-        element_by_key=element_by_key,
-        fields=fields,
-        uncertainty_items=uncertainty_items,
         value_spaces=value_spaces,
         errors=errors,
     )

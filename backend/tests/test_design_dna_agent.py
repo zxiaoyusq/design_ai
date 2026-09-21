@@ -34,7 +34,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
             max_tokens=128_000,
             streaming=True,
             timeout=300,
-            max_retries=1,
+            max_retries=0,
         )
         self.assertEqual(agent_factory.call_args.kwargs["model"], model)
         self.assertEqual(agent_factory.call_args.kwargs["skills"], [SKILLS_SOURCE])
@@ -43,7 +43,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
             [resolve_applicable_design_fields],
         )
         self.assertIn(BOUND_SKILL_NAME, AGENT_SYSTEM_PROMPT)
-        self.assertIn("design_dna_multitag_observation_v2", AGENT_SYSTEM_PROMPT)
+        self.assertIn("design_dna_multitag_observation_v3", AGENT_SYSTEM_PROMPT)
         self.assertIn("静态元数据、模块清单、统计值、排序", AGENT_SYSTEM_PROMPT)
         self.assertEqual(
             agent_factory.call_args.kwargs["name"],
@@ -81,7 +81,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         self.assertIn('"field_id":"GEO-01"', context)
         self.assertIn('"value_type":"float"', context)
         self.assertIn('"style_id":"NordicCalm"', context)
-        self.assertIn("design_dna_multitag_observation_v2", context)
+        self.assertIn("design_dna_multitag_observation_v3", context)
 
     def test_field_gate_filters_view_and_profile_specific_fields(self) -> None:
         result = resolve_applicable_design_fields.invoke(

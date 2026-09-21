@@ -4,7 +4,7 @@
 将单标签或 multimodal-design-dna-multitag-extractor Skill 的完整结果 JSON，转换为适合设计业务人员展示的精简 JSON。
 
 兼容输入：design_dna_extraction_v3.1、design_dna_extraction_v4.0、
-design_dna_multitag_extraction_v1.1、design_dna_multitag_extraction_v1.2
+design_dna_multitag_extraction_v1.1、v1.2、v1.3
 依赖：仅 Python 标准库，Python 3.9+
 
 单文件用法：
@@ -41,14 +41,17 @@ from typing import Any, Dict, Iterable, List, Mapping, MutableMapping, Optional,
 
 
 BUSINESS_SCHEMA_VERSION = "design_dna_business_view_v1.1"
-MULTITAG_BUSINESS_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.1"
-MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.2"
-LEGACY_MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.1"
+MULTITAG_BUSINESS_SCHEMA_VERSION = "design_dna_multitag_business_view_v1.2"
+MULTITAG_SOURCE_SCHEMA = "design_dna_multitag_extraction_v1.3"
+LEGACY_MULTITAG_SOURCE_SCHEMAS = {
+    "design_dna_multitag_extraction_v1.1",
+    "design_dna_multitag_extraction_v1.2",
+}
 SUPPORTED_SOURCE_SCHEMAS = {
     "design_dna_extraction_v3.1",
     "design_dna_extraction_v4.0",
     MULTITAG_SOURCE_SCHEMA,
-    LEGACY_MULTITAG_SOURCE_SCHEMA,
+    *LEGACY_MULTITAG_SOURCE_SCHEMAS,
 }
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "result"
@@ -62,7 +65,6 @@ class BusinessViewConfig:
     max_key_dna: int = 15
     max_secondary_styles: int = 2
     max_style_evidence: int = 3
-    max_uncertain_fields: int = 3
     max_novel_dna: int = 3
     max_style_keywords: int = 5
     max_warnings: int = 5
@@ -79,6 +81,7 @@ VIEW_LABELS = {
     "rear": "背面",
     "left": "左侧",
     "right": "右侧",
+    "side": "侧面",
     "top": "顶部",
     "bottom": "底部",
     "three_quarter": "四分之三视角",
@@ -1079,48 +1082,6 @@ def _extract_semantic_profile(data: Mapping[str, Any], config: BusinessViewConfi
     return profile
 
 
-def _uncertain_importance(item: Mapping[str, Any]) -> float:
-    field_name = str(item.get("field_name") or "")
-    source_path = str(item.get("source_path") or "")
-    confidence = _clamp(item.get("confidence"))
-    score = (1.0 - confidence) * 20.0
-    if any(keyword in field_name for keyword in HIGH_VALUE_NAME_KEYWORDS):
-        score += 15.0
-    if any(token in field_name + source_path for token in ("材质", "颜色", "轮廓", "构图", "相机", "版型", "面料", "纹理")):
-        score += 12.0
-    if item.get("reason_type") == "not_observable":
-        score -= 5.0
-    return score
-
-
-def _extract_uncertain_fields(data: Mapping[str, Any], config: BusinessViewConfig) -> List[Dict[str, Any]]:
-    items = [item for item in (data.get("uncertain_fields", []) or []) if isinstance(item, dict)]
-    items.sort(key=_uncertain_importance, reverse=True)
-    output: List[Dict[str, Any]] = []
-    for item in items[: config.max_uncertain_fields]:
-        confidence = _clamp(item.get("confidence"))
-        best_estimate = item.get("best_estimate")
-        result: Dict[str, Any] = {
-            "field_name": item.get("field_name"),
-            "best_estimate": _normalize_business_value(best_estimate) if best_estimate is not None else "暂无法判断",
-            "confidence": _confidence_label(confidence, config),
-            "confidence_score": _round_score(confidence),
-            "reason": item.get("reason"),
-            "needed_view": item.get("recommended_additional_view_or_info") or "补充更清晰或更多视角图片",
-        }
-        if config.include_source_trace:
-            result.update(
-                {
-                    "source_field_id": item.get("field_id"),
-                    "source_path": item.get("source_path"),
-                    "reason_type": item.get("reason_type"),
-                    "observability": item.get("observability"),
-                }
-            )
-        output.append(result)
-    return output
-
-
 def _novel_priority(item: Mapping[str, Any]) -> Tuple[int, float]:
     priority_order = {"P0": 0, "P1": 1, "observe_more": 2}
     return (priority_order.get(str(item.get("suggested_priority")), 3), -_clamp(item.get("confidence")))
@@ -1242,7 +1203,7 @@ def extract_business_view(
     object_view = _extract_object_view(data, config)
     is_multitag = source_schema in {
         MULTITAG_SOURCE_SCHEMA,
-        LEGACY_MULTITAG_SOURCE_SCHEMA,
+        *LEGACY_MULTITAG_SOURCE_SCHEMAS,
     }
     style_view = (
         _extract_multitag_style_view(data, evidence_map, config)
@@ -1251,7 +1212,6 @@ def extract_business_view(
     )
     key_dna = _extract_key_dna(data, evidence_map, config)
     semantic_profile = _extract_semantic_profile(data, config)
-    uncertain_fields = _extract_uncertain_fields(data, config)
     novel_dna = _extract_novel_dna(data, config)
     quality = _extract_quality_view(data, config)
 
@@ -1274,7 +1234,6 @@ def extract_business_view(
         "style": style_view,
         "key_dna": key_dna,
         "semantic_profile": semantic_profile,
-        "uncertain_fields": uncertain_fields,
         "novel_dna": novel_dna,
         "quality": quality,
     }
@@ -1287,8 +1246,6 @@ def extract_business_view(
         result["selection_stats"] = {
             "full_element_count": len(_flatten_elements(data)),
             "selected_key_dna_count": len(key_dna),
-            "full_uncertain_count": len(data.get("uncertain_fields", []) or []),
-            "selected_uncertain_count": len(uncertain_fields),
             "full_novel_dna_count": len(data.get("novel_dna_elements", []) or []),
             "selected_novel_dna_count": len(novel_dna),
         }
@@ -1324,7 +1281,6 @@ def _build_config(args: argparse.Namespace) -> BusinessViewConfig:
         max_key_dna=args.max_key_dna,
         max_secondary_styles=args.max_secondary_styles,
         max_style_evidence=args.max_style_evidence,
-        max_uncertain_fields=args.max_uncertain,
         max_novel_dna=args.max_novel,
         min_dna_confidence=args.min_dna_confidence,
         high_confidence_threshold=args.high_threshold,
@@ -1364,7 +1320,6 @@ def _parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     parser.add_argument("--max-key-dna", type=int, default=15, help="核心 DNA 最大数量，默认 15")
     parser.add_argument("--max-secondary-styles", type=int, default=2, help="次风格最大数量，默认 2")
     parser.add_argument("--max-style-evidence", type=int, default=3, help="风格证据最大数量，默认 3")
-    parser.add_argument("--max-uncertain", type=int, default=3, help="不确定字段最大数量，默认 3")
     parser.add_argument("--max-novel", type=int, default=3, help="新 DNA 最大数量，默认 3")
     parser.add_argument("--min-dna-confidence", type=float, default=0.55, help="进入核心 DNA 的最低置信度，默认 0.55")
     parser.add_argument("--high-threshold", type=float, default=0.80, help="高置信度阈值，默认 0.80")

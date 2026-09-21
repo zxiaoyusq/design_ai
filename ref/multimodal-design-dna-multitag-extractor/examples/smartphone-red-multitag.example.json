@@ -1,5 +1,5 @@
 {
-  "schema_version": "design_dna_multitag_extraction_v1.2",
+  "schema_version": "design_dna_multitag_extraction_v1.3",
   "knowledge_base_version": "4.1",
   "target_object": {
     "object_id": "main_object_01",
@@ -504,47 +504,6 @@
       }
     ]
   },
-  "uncertain_fields": [
-    {
-      "field_id": "CMF-01",
-      "field_name": "区域视觉材质候选",
-      "source_path": "DNA-M07/CMF-01",
-      "region": "back_cover",
-      "reason_type": "multiple_candidates",
-      "reason": "单张背面图只能区分表观材质候选，无法确认真实材料成分。",
-      "evidence_mode": "direct",
-      "applicability_status": "applicable",
-      "observability": "observed",
-      "computation_status": "not_requested",
-      "best_estimate": {
-        "region": "back_cover",
-        "candidate": "哑光玻璃感"
-      },
-      "confidence": 0.68,
-      "candidate_values": [
-        {
-          "value": "哑光玻璃感",
-          "probability": 0.62,
-          "supporting_evidence_refs": [
-            "EV-003",
-            "EV-004"
-          ],
-          "contradicting_evidence_refs": []
-        },
-        {
-          "value": "哑光聚合物感",
-          "probability": 0.38,
-          "supporting_evidence_refs": [
-            "EV-003"
-          ],
-          "contradicting_evidence_refs": [
-            "EV-004"
-          ]
-        }
-      ],
-      "recommended_additional_view_or_info": "补充近距离侧光图、边缘断面图或真实 CMF 资料。"
-    }
-  ],
   "novel_dna_elements": [],
   "evidence": [
     {

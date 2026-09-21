@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.internal/schemas/design-dna-multitag-observation-v2.json",
+  "$id": "https://example.internal/schemas/design-dna-multitag-observation-v3.json",
   "title": "Multimodal Design DNA Multi-tag Model Observation",
   "description": "Lean model-authored visual and semantic observations; the host compiles deterministic metadata, statistics, ordering, references, and final result fields.",
   "type": "object",
@@ -14,23 +14,23 @@
     "rule_adaptations",
     "style_observations",
     "design_observations",
-    "uncertainties",
     "novel_dna_elements",
     "evidence",
     "quality_notes"
   ],
   "properties": {
     "schema_version": {
-      "const": "design_dna_multitag_observation_v2"
+      "const": "design_dna_multitag_observation_v3"
     },
     "knowledge_base_version": {
       "const": "4.1"
     },
     "target_object": {
-      "$ref": "#/$defs/targetObject"
+      "$ref": "#/$defs/target_object"
     },
     "image_quality": {
-      "$ref": "#/$defs/imageQuality"
+      "description": "顶层键名固定使用 snake_case 的 image_quality。",
+      "$ref": "#/$defs/image_quality"
     },
     "active_profiles": {
       "type": "array",
@@ -54,29 +54,23 @@
     "rule_adaptations": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/ruleAdaptation"
+        "$ref": "#/$defs/rule_adaptation"
       }
     },
     "style_observations": {
-      "$ref": "#/$defs/styleObservations"
+      "$ref": "#/$defs/style_observations"
     },
     "design_observations": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/designObservation"
+        "$ref": "#/$defs/design_observation"
       },
       "minItems": 1
-    },
-    "uncertainties": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/uncertaintyObservation"
-      }
     },
     "novel_dna_elements": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/novelDna"
+        "$ref": "#/$defs/novel_dna"
       }
     },
     "evidence": {
@@ -87,11 +81,12 @@
       "minItems": 1
     },
     "quality_notes": {
-      "$ref": "#/$defs/qualityNotes"
+      "description": "顶层键名固定使用 snake_case 的 quality_notes。",
+      "$ref": "#/$defs/quality_notes"
     }
   },
   "$defs": {
-    "targetObject": {
+    "target_object": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -162,6 +157,7 @@
             "rear",
             "left",
             "right",
+            "side",
             "top",
             "bottom",
             "three_quarter",
@@ -186,7 +182,7 @@
         }
       }
     },
-    "imageQuality": {
+    "image_quality": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -262,40 +258,6 @@
         }
       }
     },
-    "candidateValue": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "value",
-        "probability",
-        "supporting_evidence_refs",
-        "contradicting_evidence_refs"
-      ],
-      "properties": {
-        "value": {},
-        "probability": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "supporting_evidence_refs": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^EV-[A-Za-z0-9_-]+$"
-          },
-          "uniqueItems": true
-        },
-        "contradicting_evidence_refs": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^EV-[A-Za-z0-9_-]+$"
-          },
-          "uniqueItems": true
-        }
-      }
-    },
     "evidence": {
       "type": "object",
       "additionalProperties": false,
@@ -349,6 +311,7 @@
             "rear",
             "left",
             "right",
+            "side",
             "top",
             "bottom",
             "three_quarter",
@@ -370,7 +333,7 @@
         }
       }
     },
-    "novelDna": {
+    "novel_dna": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -650,7 +613,7 @@
         }
       ]
     },
-    "ruleAdaptation": {
+    "rule_adaptation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -717,7 +680,7 @@
         }
       ]
     },
-    "designObservation": {
+    "design_observation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -764,7 +727,7 @@
         }
       }
     },
-    "styleCandidateObservation": {
+    "style_candidate_observation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -858,7 +821,7 @@
         }
       }
     },
-    "styleObservations": {
+    "style_observations": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -869,7 +832,7 @@
         "candidate_tags": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/styleCandidateObservation"
+            "$ref": "#/$defs/style_candidate_observation"
           },
           "maxItems": 5
         },
@@ -879,85 +842,7 @@
         }
       }
     },
-    "uncertaintyObservation": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "field_id",
-        "region",
-        "reason_type",
-        "reason",
-        "observability",
-        "confidence",
-        "evidence_refs",
-        "best_estimate",
-        "candidate_values",
-        "recommended_additional_view_or_info"
-      ],
-      "properties": {
-        "field_id": {
-          "type": "string",
-          "pattern": "^[A-Z][A-Z0-9_]*-[0-9]{2,3}$"
-        },
-        "region": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reason_type": {
-          "enum": [
-            "low_confidence",
-            "low_visibility",
-            "occlusion",
-            "blur",
-            "lighting",
-            "reflection",
-            "perspective",
-            "multiple_candidates",
-            "not_observable",
-            "missing_reference",
-            "not_computable",
-            "definition_gap",
-            "other"
-          ]
-        },
-        "reason": {
-          "type": "string",
-          "minLength": 1
-        },
-        "observability": {
-          "enum": [
-            "observed",
-            "not_observable",
-            "unknown"
-          ]
-        },
-        "confidence": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 0.749999
-        },
-        "evidence_refs": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^EV-[A-Za-z0-9_-]+$"
-          },
-          "uniqueItems": true
-        },
-        "best_estimate": {},
-        "candidate_values": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/candidateValue"
-          },
-          "maxItems": 3
-        },
-        "recommended_additional_view_or_info": {
-          "type": "string"
-        }
-      }
-    },
-    "qualityNotes": {
+    "quality_notes": {
       "type": "object",
       "additionalProperties": false,
       "required": [

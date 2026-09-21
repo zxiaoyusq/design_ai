@@ -14,8 +14,11 @@
 - 当前有 38 个活动标签：37 个 atomic 参与相似检索，只有 MysticOrganic 为零权重 composite。
 - 组合预设不交给模型判断；Python 仅根据候选 ID 确定性写入最终 `derived_style_presets`。
 - 模型只输出视觉与语义观察；Python 从注册表补全静态元数据、排序和统计。
+- `side` 表示可确认是纯侧视、但无法从单图可靠区分左右方向；Python 保留该语义，不猜写 `left` 或 `right`。
 - 证据已有明确区域、有效坐标和可见描述而主体清单漏登记时，Python 只同步这个已有区域，不要求模型重生成结果。
 - 合法 enum 的单键 `label` 包装由 Python 校验值域后展开；证据框与主体框每边不超过 0.05 的取整偏差由 Python 合并，更大的越界继续交给严格校验。
+- 不可见、无有效值、基础类型不匹配或缺少完整注册依赖的字段由 Python 从最终结果中省略，并在内部编译报告记录原因。`ordinal_strength` 仅作为 `strength` 的明确键名别名，并继续按离散档位归一。
+- 低置信但有可用值的观察仍保留字段自身 `confidence`；模型和最终结果都不再生成单独的不确定项数组。
 - 最终模块路径通过编译报告映射回精简观察路径；局部补证无效时保留原始问题，并保守移除无法闭环的低置信推断观察。
 - `facet_ids` 只用于后台导航；TribeIdentity 已废弃，身份只写入 IDG-05/07/09，不再生成风格标签。
 - 规范 DNA 继续约束 profile、必要视角、派生依赖、值域和证据状态。
@@ -62,8 +65,8 @@ python scripts/build_prompt_bundle.py --output prompt_bundle.txt
 
 ## 版本
 
-- Skill：`2.0.0`
-- 输出 Schema：`design_dna_multitag_extraction_v1.2`
+- Skill：`3.0.2`
+- 输出 Schema：`design_dna_multitag_extraction_v1.3`
 - 设计 DNA 知识库：`4.1`
 
 本 Skill 独立维护，不依赖外部 Excel 或旧 Skill 运行时。

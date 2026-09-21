@@ -88,16 +88,6 @@ def collect_refs(data: dict[str, Any]) -> list[tuple[str, str]]:
         add(f"style_result.pairwise_arbitrations[{i}].evidence_refs", item.get("evidence_refs"))
     for i, (_, _, element) in enumerate(iter_elements(data)):
         add(f"design_element[{i}].evidence_refs", element.get("evidence_refs"))
-    for i, item in enumerate(data.get("uncertain_fields", [])):
-        for j, candidate in enumerate(item.get("candidate_values", [])):
-            add(
-                f"uncertain_fields[{i}].candidate_values[{j}].supporting_evidence_refs",
-                candidate.get("supporting_evidence_refs"),
-            )
-            add(
-                f"uncertain_fields[{i}].candidate_values[{j}].contradicting_evidence_refs",
-                candidate.get("contradicting_evidence_refs"),
-            )
     for i, item in enumerate(data.get("novel_dna_elements", [])):
         add(f"novel_dna_elements[{i}].evidence_refs", item.get("evidence_refs"))
     return refs

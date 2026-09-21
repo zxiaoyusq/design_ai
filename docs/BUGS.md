@@ -1,5 +1,10 @@
 # 已知问题
 
+## 2026-09-14：项目固定 pnpm 版本与服务器 Node.js 版本不兼容
+
+- `frontend/package.json` 固定 `pnpm@11.19.0`，但当前服务器为 Node.js 20.20.0；执行 `pnpm build` 会因缺少 `node:sqlite` 失败，并提示 pnpm 至少需要 Node.js 22.13。
+- 本轮直接使用现有 `node_modules/.bin` 完成 Vue TypeScript 检查和 Vite 生产构建，证明本次前端文案修改可编译；但 `start.sh` / `site.sh` 仍通过 pnpm 启动，服务下次重启前应升级 Node.js，或另行确认并固定兼容 Node 20 的 pnpm 版本。
+
 ## 2026-09-10：`tests.test_llm_api` 的 TestClient 请求超时
 
 - 在当前 Python 3.14 / `314` 环境执行 `python -m unittest tests.test_llm_api -v` 时，首个 `TestClient(app).get("/api/v1/llm/models")` 超过 90 秒未返回；该问题未由本次 CORS 变更引入，仍需单独定位 TestClient 或其运行时依赖。

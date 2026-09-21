@@ -1,5 +1,5 @@
 {
-  "schema_version": "design_dna_multitag_extraction_v1.2",
+  "schema_version": "design_dna_multitag_extraction_v1.3",
   "knowledge_base_version": "4.1",
   "target_object": {
     "object_id": "main_object_01",
@@ -387,57 +387,6 @@
       }
     ]
   },
-  "uncertain_fields": [
-    {
-      "field_id": "CMF-01",
-      "field_name": "区域视觉材质候选",
-      "source_path": "DNA-M07/CMF-01",
-      "region": "skirt",
-      "reason_type": "multiple_candidates",
-      "reason": "单张正面图只能区分表观面料候选，人体姿态也会影响褶线和垂落。",
-      "evidence_mode": "direct",
-      "applicability_status": "applicable",
-      "observability": "observed",
-      "computation_status": "not_requested",
-      "best_estimate": {
-        "region": "skirt",
-        "candidate": "轻薄哑光梭织感"
-      },
-      "confidence": 0.66,
-      "candidate_values": [
-        {
-          "value": "轻薄哑光梭织感",
-          "probability": 0.6,
-          "supporting_evidence_refs": [
-            "EV-004",
-            "EV-005"
-          ],
-          "contradicting_evidence_refs": []
-        },
-        {
-          "value": "低弹针织感",
-          "probability": 0.25,
-          "supporting_evidence_refs": [
-            "EV-005"
-          ],
-          "contradicting_evidence_refs": [
-            "EV-004"
-          ]
-        },
-        {
-          "value": "哑光仿真丝感",
-          "probability": 0.15,
-          "supporting_evidence_refs": [
-            "EV-004"
-          ],
-          "contradicting_evidence_refs": [
-            "EV-005"
-          ]
-        }
-      ],
-      "recommended_additional_view_or_info": "补充面料近景、侧光动态视频、成分或工艺资料。"
-    }
-  ],
   "novel_dna_elements": [
     {
       "temp_id": "NEW-001",

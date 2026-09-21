@@ -41,7 +41,6 @@ const extraStyleFields = computed(() =>
 const designElements = computed(() => asRecord(props.data.design_elements))
 const dimensions = computed(() => asRecordList(designElements.value.original_md_dimensions))
 const extendedModules = computed(() => asRecordList(designElements.value.extended_dna_modules))
-const uncertainFields = computed(() => asRecordList(props.data.uncertain_fields))
 const evidence = computed(() => asRecordList(props.data.evidence))
 const novelDna = computed(() => (Array.isArray(props.data.novel_dna_elements) ? props.data.novel_dna_elements : []))
 const quality = computed(() => asRecord(props.data.quality_summary))
@@ -246,24 +245,7 @@ function without(record: DataRecord, keys: string[]) {
 
     <section class="result-section-card">
       <div class="result-section-heading">
-        <div><span>06</span><div><h4>不确定字段</h4><p>候选判断、概率与补充信息建议</p></div></div>
-        <b class="count-badge warning">{{ uncertainFields.length }} 项</b>
-      </div>
-      <div v-if="uncertainFields.length" class="result-card-grid single-column">
-        <article v-for="(item, index) in uncertainFields" :key="index" class="mini-data-card uncertain-detail-card">
-          <div class="element-card-title">
-            <span>{{ item.field_name || `不确定字段 ${index + 1}` }}</span>
-            <small>{{ displayScalar(item.confidence) }}</small>
-          </div>
-          <DataValue :value="item" />
-        </article>
-      </div>
-      <div v-else class="inline-empty positive">没有需要补充确认的不确定字段</div>
-    </section>
-
-    <section class="result-section-card">
-      <div class="result-section-heading">
-        <div><span>07</span><div><h4>新 DNA 候选</h4><p>尚未收录进知识库的视觉特征候选</p></div></div>
+        <div><span>06</span><div><h4>新 DNA 候选</h4><p>尚未收录进知识库的视觉特征候选</p></div></div>
       </div>
       <DataValue v-if="novelDna.length" :value="novelDna" />
       <div v-else class="inline-empty">本次未发现知识库外的新 DNA 候选</div>
@@ -271,7 +253,7 @@ function without(record: DataRecord, keys: string[]) {
 
     <section class="result-section-card">
       <div class="result-section-heading">
-        <div><span>08</span><div><h4>可定位证据</h4><p>连接图片区域与提取结论的证据记录</p></div></div>
+        <div><span>07</span><div><h4>可定位证据</h4><p>连接图片区域与提取结论的证据记录</p></div></div>
         <b class="count-badge">{{ evidence.length }} 条</b>
       </div>
       <div v-if="evidence.length" class="evidence-card-list">
@@ -288,7 +270,7 @@ function without(record: DataRecord, keys: string[]) {
 
     <section class="result-section-card">
       <div class="result-section-heading">
-        <div><span>09</span><div><h4>质量汇总</h4><p>结果完整度、低置信字段与质量提醒</p></div></div>
+        <div><span>08</span><div><h4>质量汇总</h4><p>结果完整度、低置信字段与质量提醒</p></div></div>
       </div>
       <DataValue :value="quality" />
     </section>

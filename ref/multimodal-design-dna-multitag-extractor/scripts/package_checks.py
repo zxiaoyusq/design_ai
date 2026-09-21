@@ -64,6 +64,12 @@ def _check_schema(errors: list[str]) -> None:
         errors.append("single-image schema profiles must include core and exclude multi-face/reference/trend profiles")
 
     definitions = schema.get("$defs", {})
+    if (
+        "uncertain_fields" in schema.get("properties", {})
+        or "uncertain_fields" in schema.get("required", [])
+        or {"uncertainField", "candidateValue"}.intersection(definitions)
+    ):
+        errors.append("final schema must not retain the removed uncertainty contract")
     forbidden_defs = {"parentStyleId", "styleAssessment", "secondaryStyleAssessment"}
     present_forbidden = sorted(forbidden_defs.intersection(definitions))
     if present_forbidden:
@@ -89,16 +95,34 @@ def _check_schema(errors: list[str]) -> None:
         "rule_adaptations",
         "style_observations",
         "design_observations",
-        "uncertainties",
         "novel_dna_elements",
         "evidence",
         "quality_notes",
     }:
         errors.append("model output schema must expose only the lean observation fields")
     model_definitions = model_schema.get("$defs", {})
+    if {"uncertaintyObservation", "candidateValue"}.intersection(model_definitions):
+        errors.append("model output schema must not retain uncertainty definitions")
+    expected_model_definitions = {
+        "target_object",
+        "image_quality",
+        "evidence",
+        "novel_dna",
+        "rule_adaptation",
+        "design_observation",
+        "style_candidate_observation",
+        "style_observations",
+        "quality_notes",
+    }
+    if set(model_definitions) != expected_model_definitions:
+        errors.append("model schema definitions must use only canonical snake_case names")
+    if model_properties.get("image_quality", {}).get("$ref") != "#/$defs/image_quality":
+        errors.append("model image_quality property must reference the snake_case definition")
+    if model_properties.get("quality_notes", {}).get("$ref") != "#/$defs/quality_notes":
+        errors.append("model quality_notes property must reference the snake_case definition")
     if "styleResult" in model_definitions or "qualitySummary" in model_definitions:
         errors.append("model output schema must not retain host-compiled final result definitions")
-    candidate_observation = model_definitions.get("styleCandidateObservation", {})
+    candidate_observation = model_definitions.get("style_candidate_observation", {})
     forbidden_model_fields = {
         "label_en",
         "label_zh",
@@ -119,7 +143,7 @@ def _check_schema(errors: list[str]) -> None:
         "main_conflicts",
     }:
         errors.append("model style candidate observation fields are incomplete")
-    model_style_observations = model_definitions.get("styleObservations", {})
+    model_style_observations = model_definitions.get("style_observations", {})
     if set(model_style_observations.get("required", [])) != {
         "candidate_tags",
         "composition_summary",
@@ -711,6 +735,7 @@ def _check_registries(errors: list[str]) -> None:
     aliases = value_normalization.get("field_value_aliases")
     relation_fields = value_normalization.get("relation_token_fields")
     ordinal_buckets = value_normalization.get("ordinal_buckets")
+    ordinal_strength_aliases = value_normalization.get("ordinal_strength_aliases")
     if not isinstance(aliases, dict) or any(
         field_id not in field_ids or not isinstance(mapping, dict)
         for field_id, mapping in aliases.items()
@@ -724,6 +749,8 @@ def _check_registries(errors: list[str]) -> None:
         errors.append("value-normalization relation fields are invalid")
     if ordinal_buckets != [0, 25, 50, 75, 100]:
         errors.append("value-normalization ordinal buckets must be 0/25/50/75/100")
+    if ordinal_strength_aliases != {"low": 25, "medium": 50, "high": 75}:
+        errors.append("value-normalization ordinal strength aliases are invalid")
 
     if "parents" in style_registry:
         errors.append("flat style registry must not contain parents")

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from copy import deepcopy
 from datetime import UTC, datetime
 from threading import Lock
@@ -17,16 +18,24 @@ from app.services.dna.extraction import run_design_dna_extraction
 from app.services.dna.storage import get_uploaded_image
 
 
+MAX_CONCURRENT_IMAGE_EXTRACTIONS = 4
+
+
 class ExtractionTaskNotFoundError(KeyError):
     """任务不存在或进程重启后状态已失效。"""
 
 
 class ExtractionTaskManager:
-    """串行处理任务内图片，保证每次 Skill 激活只接收一张图。"""
+    """并行处理独立图片，所有批次共享最多四个单图执行槽位。"""
 
     def __init__(self) -> None:
         self._tasks: dict[str, dict] = {}
         self._lock = Lock()
+        # 共享线程池使并发量随待处理图片数自然变化，同时约束多个批次的进程级总并发。
+        self._executor = ThreadPoolExecutor(
+            max_workers=MAX_CONCURRENT_IMAGE_EXTRACTIONS,
+            thread_name_prefix="dna-extraction",
+        )
 
     def create(self, image_ids: list[str], model_id: str, prompt: str) -> dict:
         now = datetime.now(UTC)
@@ -182,8 +191,68 @@ class ExtractionTaskManager:
             self._recalculate_task_progress(task)
             task["updated_at"] = now
 
+    def _run_item(
+        self,
+        task_id: str,
+        item_index: int,
+        image_id: str,
+        model_id: str,
+        prompt: str,
+    ) -> None:
+        """执行一个固定索引的单图任务；失败只记录，不重新提交。"""
+
+        self._update_item(task_id, item_index, status=ImageTaskStatus.RUNNING)
+        try:
+            self._report_item_progress(
+                task_id,
+                item_index,
+                ExtractionStage.PREPARING,
+                "正在读取图片并准备模型与 Skill",
+                4,
+            )
+            stored, image_path = get_uploaded_image(image_id)
+
+            def report_progress(
+                stage: ExtractionStage,
+                message: str,
+                progress: int,
+                level: ProgressEventLevel,
+            ) -> None:
+                # 固定 item_index，避免并行任务把过程事件写入其他图片。
+                self._report_item_progress(
+                    task_id,
+                    item_index,
+                    stage,
+                    message,
+                    progress,
+                    level,
+                )
+
+            output = run_design_dna_extraction(
+                image_path=image_path,
+                content_type=stored.content_type,
+                model_id=model_id,
+                user_prompt=prompt,
+                progress_callback=report_progress,
+            )
+            self._update_item(
+                task_id,
+                item_index,
+                status=ImageTaskStatus.COMPLETED,
+                result_id=output.result_id,
+            )
+        except Exception as exc:  # 单图失败不阻塞同批次其他图片，也不重试。
+            self._update_item(
+                task_id,
+                item_index,
+                status=ImageTaskStatus.FAILED,
+                error=str(exc),
+                diagnostic_id=getattr(exc, "diagnostic_id", None),
+                diagnostics=getattr(exc, "issues", []),
+            )
+
     def run(self, task_id: str) -> None:
-        """由 FastAPI 后台线程执行一个已确认任务。"""
+        """由 FastAPI 后台线程提交一个已确认任务中的全部图片。"""
 
         with self._lock:
             task = self._tasks[task_id]
@@ -193,48 +262,19 @@ class ExtractionTaskManager:
             prompt = task["prompt"]
             image_ids = [item["image_id"] for item in task["items"]]
 
-        for index, image_id in enumerate(image_ids):
-            self._update_item(task_id, index, status=ImageTaskStatus.RUNNING)
-            try:
-                self._report_item_progress(
-                    task_id,
-                    index,
-                    ExtractionStage.PREPARING,
-                    "正在读取图片并准备模型与 Skill",
-                    4,
-                )
-                stored, image_path = get_uploaded_image(image_id)
-                output = run_design_dna_extraction(
-                    image_path=image_path,
-                    content_type=stored.content_type,
-                    model_id=model_id,
-                    user_prompt=prompt,
-                    progress_callback=lambda stage, message, progress, level: (
-                        self._report_item_progress(
-                            task_id,
-                            index,
-                            stage,
-                            message,
-                            progress,
-                            level,
-                        )
-                    ),
-                )
-                self._update_item(
-                    task_id,
-                    index,
-                    status=ImageTaskStatus.COMPLETED,
-                    result_id=output.result_id,
-                )
-            except Exception as exc:  # 单图失败不阻塞同批次其他图片。
-                self._update_item(
-                    task_id,
-                    index,
-                    status=ImageTaskStatus.FAILED,
-                    error=str(exc),
-                    diagnostic_id=getattr(exc, "diagnostic_id", None),
-                    diagnostics=getattr(exc, "issues", []),
-                )
+        futures = [
+            self._executor.submit(
+                self._run_item,
+                task_id,
+                index,
+                image_id,
+                model_id,
+                prompt,
+            )
+            for index, image_id in enumerate(image_ids)
+        ]
+        for future in as_completed(futures):
+            future.result()
 
         with self._lock:
             task = self._tasks[task_id]

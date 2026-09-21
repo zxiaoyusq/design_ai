@@ -19,9 +19,9 @@ from package_checks import _check_schema, _check_registries, _load_json, _reject
 
 
 ROOT = Path(__file__).resolve().parents[1]
-EXPECTED_SKILL_VERSION = "2.0.0"
-EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.2"
-EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v2"
+EXPECTED_SKILL_VERSION = "3.0.2"
+EXPECTED_SCHEMA_VERSION = "design_dna_multitag_extraction_v1.3"
+EXPECTED_MODEL_SCHEMA_VERSION = "design_dna_multitag_observation_v3"
 EXPECTED_KNOWLEDGE_BASE_VERSION = "4.1"
 REQUIRED = [
     "SKILL.md",
@@ -141,7 +141,7 @@ def _check_versions(errors: list[str]) -> None:
         or model_schema.get("properties", {}).get("knowledge_base_version", {}).get("const")
         != manifest.get("knowledge_base_version")
     ):
-        errors.append("model output schema must use observation v2 and the manifest KB version")
+        errors.append("model output schema must use the current observation contract and manifest KB version")
     kb = (ROOT / "references/design-dna-knowledge-base.zh-CN.md").read_text(encoding="utf-8")
     version_match = re.search(r"知识库版本\*\*：\s*([^\s]+)", kb)
     kb_version = version_match.group(1) if version_match else None

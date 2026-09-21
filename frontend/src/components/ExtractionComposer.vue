@@ -39,7 +39,7 @@ const canStart = computed(
 const taskStatusText = computed(() => {
   const labels: Record<string, string> = {
     queued: '任务已进入队列',
-    running: 'DeepAgent 正在提取设计 DNA',
+    running: 'DeepAgent 正在并行提取设计 DNA',
     completed: '全部图片提取完成',
     partial: '任务完成，部分图片需要检查',
     failed: '任务未能完成',
@@ -166,7 +166,7 @@ function errorSummary(item: ExtractionTaskItem) {
     <div class="run-bar">
       <div class="selection-summary">
         <span>{{ selectedCount }}</span>
-        张图片将逐张提取
+        张图片将并行提取，最多同时 4 张
       </div>
       <a-button
         type="primary"

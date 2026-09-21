@@ -1,4 +1,4 @@
-"""规范字段适用性、受控值、模块与不确定项整理。"""
+"""规范字段适用性、受控值与模块整理。"""
 from __future__ import annotations
 
 import copy
@@ -13,6 +13,24 @@ def _nearest_bucket(value: int | float, buckets: list[int]) -> int:
     """按距离就近离散化；等距时向更高档位归一。"""
 
     return min(buckets, key=lambda bucket: (abs(float(value) - bucket), -bucket))
+
+
+def _value_shape_matches(value_type: str, value: Any) -> bool:
+    """只判断注册表基础类型，不尝试解释结构化值内部的视觉语义。"""
+
+    if value_type == "float":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if value_type == "integer":
+        return isinstance(value, int) and not isinstance(value, bool)
+    if value_type == "boolean":
+        return isinstance(value, bool)
+    if value_type in {"string", "text", "enum"}:
+        return isinstance(value, str)
+    if value_type in {"list", "multi_label"}:
+        return isinstance(value, list)
+    if value_type == "object":
+        return isinstance(value, dict)
+    return False
 
 
 def _normalized_controlled_value(
@@ -79,6 +97,7 @@ def _normalized_controlled_value(
         for item in normalization.get("ordinal_buckets", [0, 25, 50, 75, 100])
         if isinstance(item, (int, float)) and not isinstance(item, bool)
     ]
+    strength_aliases = normalization.get("ordinal_strength_aliases", {})
     if (
         unit == "ordinal_0_25_50_75_100"
         and isinstance(value, (int, float))
@@ -93,7 +112,20 @@ def _normalized_controlled_value(
         for item in value:
             if not isinstance(item, dict):
                 continue
+            if (
+                "strength" not in item
+                and "ordinal_strength" in item
+            ):
+                original_strength = item.pop("ordinal_strength")
+                item["strength"] = original_strength
+                notes.append("键名 ordinal_strength → strength")
             strength = item.get("strength")
+            if isinstance(strength, str):
+                normalized_alias = strength_aliases.get(strength.strip().casefold())
+                if normalized_alias in buckets:
+                    notes.append(f"强度别名 {strength!r} → {normalized_alias!r}")
+                    item["strength"] = normalized_alias
+                    strength = normalized_alias
             if isinstance(strength, (int, float)) and not isinstance(strength, bool):
                 normalized_strength = _nearest_bucket(strength, buckets)
                 if normalized_strength != strength:
@@ -225,6 +257,13 @@ def _normalize_elements(
                 value_spaces,
                 normalization,
             )
+            if normalized_value is not None and not _value_shape_matches(
+                str(record.get("value_type") or ""), normalized_value
+            ):
+                notes.append(
+                    f"值类型与 {record.get('value_type')!r} 不匹配，已保守置空"
+                )
+                normalized_value = None
             if notes:
                 normalized_values.append(
                     {
@@ -240,7 +279,6 @@ def _normalize_elements(
                 )
             invalid_value = original_value is not None and normalized_value is None
             if invalid_value:
-                element["_compiler_uncertainty_reason"] = notes[-1]
                 confidence = element.get("confidence")
                 if isinstance(confidence, (int, float)) and not isinstance(confidence, bool):
                     _replace_if_changed(
@@ -250,18 +288,6 @@ def _normalize_elements(
                         source_path,
                         report,
                     )
-            confidence = element.get("confidence")
-            if (
-                isinstance(confidence, (int, float))
-                and not isinstance(confidence, bool)
-                and float(confidence) < 0.30
-                and element.get("value") is not None
-            ):
-                element["_compiler_uncertainty_reason"] = (
-                    "置信度低于 0.30，不能保留确定值"
-                )
-                _replace_if_changed(element, "value", None, source_path, report)
-
             for key, metadata_value in {
                 "field_name": record.get("name"),
                 "source_path": f"{canonical_module_id}/{field_id}",
@@ -275,6 +301,11 @@ def _normalize_elements(
             evidence_mode = record.get("evidence_mode")
             value = element.get("value")
             if evidence_mode == "direct":
+                if element.get("observability") != "observed" and value is not None:
+                    _replace_if_changed(
+                        element, "value", None, source_path, report
+                    )
+                    value = None
                 _replace_if_changed(
                     element, "computation_status", "not_requested", source_path, report
                 )
@@ -305,13 +336,56 @@ def _normalize_elements(
             refs = element.get("evidence_refs")
             if not isinstance(refs, list):
                 refs = []
+            normalized_refs = _ordered_unique(refs)
             _replace_if_changed(
                 element,
                 "evidence_refs",
-                _ordered_unique(refs),
+                normalized_refs,
                 source_path,
                 report,
             )
+            insufficient_inferred_evidence = (
+                evidence_mode == "inferred" and len(normalized_refs) < 2
+            )
+            if insufficient_inferred_evidence:
+                # 不能由代码判断哪条额外证据支持推断字段；证据不足时只省略该字段。
+                _replace_if_changed(
+                    element,
+                    "computation_status",
+                    "not_computable",
+                    source_path,
+                    report,
+                )
+
+            # 最终结果只保留具有可用值的字段；无值、不可见和不可计算状态仅进入编译报告。
+            unavailable = (
+                element.get("value") is None
+                or element.get("observability") != "observed"
+                or (
+                    evidence_mode != "direct"
+                    and element.get("computation_status") != "computed"
+                )
+            )
+            if unavailable:
+                filtered_reason = "no_usable_value"
+                filtered_details = (
+                    notes[-1] if notes else "字段不可见、无有效值或不可计算"
+                )
+                if insufficient_inferred_evidence:
+                    filtered_reason = "insufficient_inferred_evidence"
+                    filtered_details = (
+                        "推断字段至少需要两条独立证据，宿主不能补造证据引用"
+                    )
+                filtered.append(
+                    {
+                        "field_id": field_id,
+                        "source_pointer": element.get("_source_pointer"),
+                        "reason": filtered_reason,
+                        "details": filtered_details,
+                    }
+                )
+                _record_change(report, f"{source_path}/filtered")
+                continue
 
             region = str(element.get("region") or "")
             key = (field_id, region)
@@ -338,6 +412,98 @@ def _normalize_elements(
             element_index[key] = element
             canonical_elements.setdefault(canonical_module_id, []).append(element)
 
+    def usable_source(element: dict[str, Any]) -> bool:
+        if element.get("value") is None or element.get("observability") != "observed":
+            return False
+        if element.get("evidence_mode") == "direct":
+            return element.get("computation_status") == "not_requested"
+        return element.get("computation_status") == "computed"
+
+    def dependency_candidates(
+        dependency: str, region: str
+    ) -> list[dict[str, Any]]:
+        return [
+            source
+            for (source_id, source_region), source in element_index.items()
+            if source_id == dependency
+            and usable_source(source)
+            and (
+                source_region == region
+                or source_region.startswith("whole_object")
+                or region.startswith("whole_object")
+            )
+        ]
+
+    # 缺少任一规范源字段时逐层降级，避免下游派生字段继续引用不可用的中间值。
+    while True:
+        degraded = False
+        for (field_id, region), element in list(element_index.items()):
+            record = fields.get(field_id, {})
+            if (
+                record.get("evidence_mode") != "derived"
+                or element.get("computation_status") != "computed"
+            ):
+                continue
+            dependencies = [
+                dependency
+                for dependency in record.get("derived_from", [])
+                if dependency in fields
+            ]
+            missing = [
+                dependency
+                for dependency in dependencies
+                if not dependency_candidates(dependency, region)
+            ]
+            if not missing:
+                continue
+            canonical_module_id = str(record.get("module_id") or "")
+            canonical_elements.get(canonical_module_id, []).remove(element)
+            element_index.pop((field_id, region), None)
+            filtered.append(
+                {
+                    "field_id": field_id,
+                    "source_pointer": element.get("_source_pointer"),
+                    "reason": "missing_derived_dependencies",
+                    "missing_dependencies": missing,
+                }
+            )
+            _record_change(report, f"/design_elements/{field_id}@{region}/filtered")
+            report.setdefault("derived_field_degradations", []).append(
+                {
+                    "field_id": field_id,
+                    "region": region,
+                    "missing_dependencies": missing,
+                    "action": "omitted_from_result",
+                }
+            )
+            degraded = True
+        if not degraded:
+            break
+
+    # 仍可计算的派生字段只合并已存在源字段的证据，不创造视觉事实。
+    for (field_id, region), element in element_index.items():
+        record = fields.get(field_id, {})
+        if (
+            record.get("evidence_mode") != "derived"
+            or element.get("computation_status") != "computed"
+        ):
+            continue
+        source_refs: list[str] = []
+        for dependency in record.get("derived_from", []):
+            candidates = dependency_candidates(dependency, region)
+            if candidates:
+                source_refs.extend(candidates[0].get("evidence_refs") or [])
+        merged_refs = _ordered_unique(
+            [*(element.get("evidence_refs") or []), *source_refs]
+        )
+        _replace_if_changed(
+            element,
+            "evidence_refs",
+            merged_refs,
+            f"/design_elements/{field_id}@{region}",
+            report,
+        )
+
     rebuilt_modules = [
         {
             "module_id": module_id,
@@ -354,41 +520,6 @@ def _normalize_elements(
         "/design_elements",
         report,
     )
-
-    # 派生字段的证据闭环完全由注册依赖和已存在的源字段证据计算，不创造视觉事实。
-    for (field_id, region), element in element_index.items():
-        record = fields.get(field_id, {})
-        if (
-            record.get("evidence_mode") != "derived"
-            or element.get("computation_status") != "computed"
-        ):
-            continue
-        source_refs: list[str] = []
-        for dependency in record.get("derived_from", []):
-            candidates = [
-                source
-                for (source_id, source_region), source in element_index.items()
-                if source_id == dependency
-                and source.get("value") is not None
-                and source.get("observability") == "observed"
-                and (
-                    source_region == region
-                    or source_region.startswith("whole_object")
-                    or region.startswith("whole_object")
-                )
-            ]
-            if candidates:
-                source_refs.extend(candidates[0].get("evidence_refs") or [])
-        merged_refs = _ordered_unique(
-            [*(element.get("evidence_refs") or []), *source_refs]
-        )
-        _replace_if_changed(
-            element,
-            "evidence_refs",
-            merged_refs,
-            f"/design_elements/{field_id}@{region}",
-            report,
-        )
     return element_index
 
 
@@ -471,163 +602,3 @@ def _normalize_modules(
             "/module_applicability",
             report,
         )
-
-
-def _normalize_uncertainties(
-    data: dict[str, Any],
-    fields: dict[str, dict[str, Any]],
-    element_index: dict[tuple[str, str], dict[str, Any]],
-    report: dict[str, Any],
-) -> None:
-    """从最终字段状态单向重建不确定项镜像，避免模型维护重复结构。"""
-
-    raw_items = data.get("uncertain_fields")
-    if not isinstance(raw_items, list):
-        raw_items = []
-    existing: dict[tuple[str, str], dict[str, Any]] = {}
-    for item in raw_items:
-        if not isinstance(item, dict):
-            continue
-        field_id = str(item.get("field_id") or "")
-        region = str(item.get("region") or "")
-        key = (field_id, region)
-        if key not in element_index:
-            same_field = [
-                element_region
-                for candidate_field_id, element_region in element_index
-                if candidate_field_id == field_id
-            ]
-            if len(same_field) == 1:
-                region = same_field[0]
-                key = (field_id, region)
-                item["region"] = region
-        existing.setdefault(key, item)
-
-    rebuilt: list[dict[str, Any]] = []
-    for (field_id, region), element in element_index.items():
-        evidence_mode = str(element.get("evidence_mode") or "")
-        observability = str(element.get("observability") or "unknown")
-        computation_status = str(element.get("computation_status") or "")
-        confidence = element.get("confidence")
-        low_confidence = (
-            isinstance(confidence, (int, float))
-            and not isinstance(confidence, bool)
-            and float(confidence) < 0.75
-        )
-        unavailable = (
-            evidence_mode == "direct" and observability != "observed"
-        ) or (
-            evidence_mode != "direct" and computation_status != "computed"
-        )
-        compiler_reason = element.get("_compiler_uncertainty_reason")
-        if not (low_confidence or unavailable or compiler_reason):
-            continue
-
-        item = copy.deepcopy(existing.get((field_id, region), {}))
-        item.setdefault("field_id", field_id)
-        item.setdefault("region", region)
-        if compiler_reason and not unavailable:
-            reason_type = "definition_gap"
-            reason = str(compiler_reason)
-        elif evidence_mode == "reference_computed":
-            reason_type = "missing_reference"
-            reason = "当前单图任务缺少该字段所需的批准参考集。"
-        elif unavailable and evidence_mode != "direct":
-            reason_type = "not_computable"
-            reason = "当前可用观察不足以完成该非直接字段计算。"
-        elif unavailable:
-            reason_type = "not_observable"
-            reason = "当前图片没有提供该字段所需的清晰可见信息。"
-        else:
-            reason_type = "low_confidence"
-            reason = "字段置信度低于确认阈值 0.75。"
-        item["reason_type"] = reason_type
-        item["reason"] = item.get("reason") or reason
-        item["best_estimate"] = None if unavailable else element.get("value")
-        item.setdefault("candidate_values", [])
-        item.setdefault(
-            "recommended_additional_view_or_info",
-            "补充更清晰或覆盖相应区域与视角的图片。",
-        )
-        item.setdefault("_source_pointer", element.get("_source_pointer"))
-        rebuilt.append(item)
-
-    _replace_if_changed(
-        data,
-        "uncertain_fields",
-        rebuilt,
-        "",
-        report,
-    )
-
-    for index, item in enumerate(rebuilt):
-        if not isinstance(item, dict):
-            continue
-        path = f"/uncertain_fields/{index}"
-        field_id = str(item.get("field_id") or "")
-        region = str(item.get("region") or "")
-        element = element_index.get((field_id, region))
-        if element is None:
-            same_field = [
-                (element_region, candidate)
-                for (candidate_field_id, element_region), candidate in element_index.items()
-                if candidate_field_id == field_id
-            ]
-            if len(same_field) == 1:
-                region, element = same_field[0]
-                _replace_if_changed(item, "region", region, path, report)
-        record = fields.get(field_id)
-        if record is not None:
-            _replace_if_changed(item, "field_name", record.get("name"), path, report)
-            _replace_if_changed(
-                item,
-                "source_path",
-                f"{record.get('module_id')}/{field_id}",
-                path,
-                report,
-            )
-        if element is not None:
-            for key in (
-                "evidence_mode",
-                "applicability_status",
-                "observability",
-                "computation_status",
-                "confidence",
-            ):
-                _replace_if_changed(item, key, element.get(key), path, report)
-        if (
-            element is not None
-            and item.get("best_estimate") is None
-            and element.get("value") is not None
-            and (
-                element.get("observability") == "observed"
-                if element.get("evidence_mode") == "direct"
-                else element.get("computation_status") == "computed"
-            )
-        ):
-            _replace_if_changed(
-                item, "best_estimate", element.get("value"), path, report
-            )
-        candidates = item.get("candidate_values")
-        if isinstance(candidates, list) and candidates:
-            probabilities = [
-                candidate.get("probability") if isinstance(candidate, dict) else None
-                for candidate in candidates
-            ]
-            if all(
-                isinstance(value, (int, float))
-                and not isinstance(value, bool)
-                and float(value) >= 0
-                for value in probabilities
-            ):
-                total = sum(float(value) for value in probabilities)
-                if total > 0:
-                    normalized = [round(float(value) / total, 6) for value in probabilities[:-1]]
-                    normalized.append(round(1 - sum(normalized), 6))
-                    if any(
-                        candidate.get("probability") != probability
-                        for candidate, probability in zip(candidates, normalized, strict=True)
-                    ):
-                        for candidate, probability in zip(candidates, normalized, strict=True):
-                            candidate["probability"] = probability
-                        _record_change(report, f"{path}/candidate_values/*/probability")

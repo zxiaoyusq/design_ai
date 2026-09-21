@@ -1,10 +1,10 @@
 # 扁平多标签设计 DNA 提取执行协议
 
-> 最终结果适用于 `schema_version="design_dna_multitag_extraction_v1.2"` 与 `knowledge_base_version="4.1"`；模型阶段只输出 `design_dna_multitag_observation_v2`。
+> 最终结果适用于 `schema_version="design_dna_multitag_extraction_v1.3"` 与 `knowledge_base_version="4.1"`；模型阶段只输出 `design_dna_multitag_observation_v3`。
 
 ## 一、任务
 
-从图片中选择唯一主物品，先提取可追溯的规范设计 DNA，再输出零到五个有真实视觉支持的扁平风格候选、组合摘要、不确定项和知识库外新 DNA 候选。
+从图片中选择唯一主物品，先提取可追溯的规范设计 DNA，再输出零到五个有真实视觉支持的扁平风格候选、组合摘要和知识库外新 DNA 候选。
 
 知识库与机器注册表决定已有标签、字段、值域和边界。模型通过 `model-reference-bundle.json` 读取活动风格、字段 allowlist 与字段类型；完整注册表由宿主编译和校验使用。通用设计知识只能帮助识别视觉事实和发现知识库缺口，不得改写已有枚举或稳定 ID。
 
@@ -71,9 +71,9 @@
 
 模型不输出 `derived_style_presets`。宿主直接用最终 `style_candidates[].style_id` 匹配组合注册表；候选分数、置信度和文字不参与组合计算，派生结果也不反向补足候选或 DNA。
 
-### 步骤 F：不确定项与新 DNA
+### 步骤 F：低置信观察与新 DNA
 
-字段置信度低于 0.75、存在合理竞争、视角不足、图片受干扰或无法计算时，写入 `uncertainties`。完成已有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`。新 DNA 必须位于主体上、可观察、可复用、可参数化并与现有字段去重。
+有可用值但置信度低于 0.75 时，保留在 `design_observations` 并如实降低 `confidence`；没有可用值、不可见或不可计算的字段不输出，可在 `quality_notes.missing_critical_fields` 或 `warnings` 中概括缺口。完成已有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`。新 DNA 必须位于主体上、可观察、可复用、可参数化并与现有字段去重。
 
 ## 四、证据与置信度
 
@@ -88,13 +88,13 @@
 
 ## 五、输出
 
-- `schema_version="design_dna_multitag_observation_v2"`；
+- `schema_version="design_dna_multitag_observation_v3"`；
 - `knowledge_base_version="4.1"`；
 - 结果只包含 JSON，不含 Markdown、解释、注释、路径、NaN、Infinity 或尾逗号；
-- 空集合使用 `[]`，单值不可得使用 `null`；
+- 空集合使用 `[]`；无可用字段值时省略整项观察，不输出 `null` 占位；
 - 稳定 ID、英文标签和标准枚举保持原样。
 
-宿主使用 `compile_model_output.py` 生成 `design_dna_multitag_extraction_v1.2`，补全静态元数据、字段状态、候选 rank、统计值与低置信镜像。宿主不得新增视觉事实，也不得把候选升级或降级为确认状态。`save_result.py` 只根据候选 ID 派生组合并完成最终校验。
+宿主使用 `compile_model_output.py` 生成 `design_dna_multitag_extraction_v1.3`，补全静态元数据、字段状态、候选 rank 与统计值，并过滤无有效值、不可见或不可计算字段。宿主不得新增视觉事实，也不得把候选升级或降级为确认状态。`save_result.py` 只根据候选 ID 派生组合并完成最终校验。
 
 ## 六、输出前自检
 
@@ -106,5 +106,5 @@
 6. 没有 TribeIdentity 等废弃 ID，也没有只为凑数的拒绝项；
 7. 证据、设计元素和候选区域只使用可见区域或 `whole_object`；
 8. 组合摘要没有创造结论，组合预设留给宿主生成；
-9. 低置信、不可见或不可计算字段已登记；
-10. 所有数字有限，版本固定为 observation v2 / KB 4.1，并通过模型阶段 Schema。
+9. 低置信但有值的观察保留 `confidence`，无值、不可见或不可计算字段未输出；
+10. 所有数字有限，版本固定为 observation v3 / KB 4.1，并通过模型阶段 Schema。

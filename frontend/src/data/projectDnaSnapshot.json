@@ -1,0 +1,263 @@
+{
+  "id": "demo-20260902_221302_20260901-171711_design_dna_business_view",
+  "image_name": "20260901-171711",
+  "category": "智能手机",
+  "summary": "银白近无彩封闭机背，三角三摄凸台带金属环，背板细密几何直线切面，整体为冷金属视觉与精确几何秩序主导的精密极简风格。",
+  "content": {
+    "model_id": "claude-opus-5-20260820",
+    "style": {
+      "status": "未分类",
+      "tags": [],
+      "derived_presets": [],
+      "composition_summary": "候选风格的决定字段、辅助字段或区域证据未形成完整闭环，已降级为未分类。",
+      "keywords": [],
+      "evidence": [],
+      "pairwise_arbitrations": [],
+      "candidates": [
+        {
+          "rank": 1,
+          "style_id": "PrecisionMinimalism",
+          "label_zh": "精密秩序",
+          "label_en": "Precision Order",
+          "candidate_status": "provisional",
+          "match_score": 84.0,
+          "confidence_score": 0.82,
+          "main_support": [],
+          "main_conflicts": [
+            "缺少注册表允许的决定字段",
+            "缺少注册表允许且可用的辅助字段",
+            "可用风格证据少于两条"
+          ]
+        },
+        {
+          "rank": 2,
+          "style_id": "RefinedMinimalism",
+          "label_zh": "精致克制",
+          "label_en": "Refined Restraint",
+          "candidate_status": "provisional",
+          "match_score": 76.0,
+          "confidence_score": 0.7,
+          "main_support": [
+            "DET-16 细线装饰为克制化设计增量",
+            "CMF-01 相机环为局部金属增量"
+          ],
+          "main_conflicts": []
+        },
+        {
+          "rank": 3,
+          "style_id": "TechComposition",
+          "label_zh": "技术图形",
+          "label_en": "Technical Graphics",
+          "candidate_status": "provisional",
+          "match_score": 60.0,
+          "confidence_score": 0.6,
+          "main_support": [
+            "DET-16 几何线图形",
+            "IDG-05 可见文字"
+          ],
+          "main_conflicts": [
+            "线图形与品牌文字未构成可读的刻度/编号/标签技术信息关系"
+          ]
+        }
+      ]
+    },
+    "key_dna": [
+      {
+        "group": "形态与体量",
+        "name": "主导线性",
+        "value": "直曲混合",
+        "design_role": "基础造型",
+        "confidence": "高",
+        "confidence_score": 0.85,
+        "evidence": "背板覆盖细密直线构成的几何切面图案，成组平行线与三角/菱形面交错，单色银灰。；机身侧边为利落的直边，轮廓完整。",
+        "region": "back_surface"
+      },
+      {
+        "group": "形态与体量",
+        "name": "边缘锐度",
+        "value": "利落",
+        "design_role": "基础造型",
+        "confidence": "高",
+        "confidence_score": 0.82,
+        "evidence": "机身侧边为利落的直边，轮廓完整。",
+        "region": "edge"
+      },
+      {
+        "group": "形态与体量",
+        "name": "边界语法",
+        "value": "封闭",
+        "design_role": "基础造型",
+        "confidence": "高",
+        "confidence_score": 0.82,
+        "evidence": "主体为银白光亮玻璃背板，带柔和高光与镜面反射，近无彩。；机身侧边为利落的直边，轮廓完整。",
+        "region": "edge"
+      },
+      {
+        "group": "构图与秩序",
+        "name": "对称类型",
+        "value": "非对称",
+        "design_role": "视觉秩序",
+        "confidence": "中",
+        "confidence_score": 0.78,
+        "evidence": "背板覆盖细密直线构成的几何切面图案，成组平行线与三角/菱形面交错，单色银灰。",
+        "region": "camera_island"
+      },
+      {
+        "group": "组件与负空间",
+        "name": "组件角色",
+        "value": [
+          "功能"
+        ],
+        "design_role": "结构关系",
+        "confidence": "高",
+        "confidence_score": 0.88,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。",
+        "region": "camera_island"
+      },
+      {
+        "group": "色彩",
+        "name": "主色",
+        "value": {
+          "label": "银白",
+          "oklch": {
+            "L": 0.92,
+            "C": 0.02,
+            "H": 235
+          },
+          "hex": "#E9EBEE",
+          "region": "back_surface"
+        },
+        "design_role": "整体基调",
+        "confidence": "高",
+        "confidence_score": 0.88,
+        "evidence": "主体为银白光亮玻璃背板，带柔和高光与镜面反射，近无彩。",
+        "region": "back_surface"
+      },
+      {
+        "group": "CMF",
+        "name": "表观光泽",
+        "value": 0.85,
+        "design_role": "品质表达",
+        "confidence": "中",
+        "confidence_score": 0.78,
+        "evidence": "主体为银白光亮玻璃背板，带柔和高光与镜面反射，近无彩。",
+        "region": "back_surface"
+      },
+      {
+        "group": "CMF",
+        "name": "反射行为",
+        "value": "清晰高光",
+        "design_role": "品质表达",
+        "confidence": "中",
+        "confidence_score": 0.78,
+        "evidence": "主体为银白光亮玻璃背板，带柔和高光与镜面反射，近无彩。",
+        "region": "back_surface"
+      },
+      {
+        "group": "CMF",
+        "name": "区域视觉材质候选",
+        "value": {
+          "back_surface": {
+            "cool_metallic_glass": 0.7,
+            "pearl_white_ceramic": 0.2,
+            "polished_metal": 0.1
+          },
+          "camera_island": {
+            "metal_ring": 0.6,
+            "black_glass": 0.4
+          }
+        },
+        "design_role": "品质表达",
+        "confidence": "中",
+        "confidence_score": 0.72,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。；主体为银白光亮玻璃背板，带柔和高光与镜面反射，近无彩。",
+        "region": "back_surface"
+      },
+      {
+        "group": "纹理与图案",
+        "name": "纹理家族",
+        "value": "几何",
+        "design_role": "表面语言",
+        "confidence": "高",
+        "confidence_score": 0.85,
+        "evidence": "背板覆盖细密直线构成的几何切面图案，成组平行线与三角/菱形面交错，单色银灰。",
+        "region": "back_surface"
+      },
+      {
+        "group": "设计细节",
+        "name": "线条角色",
+        "value": [
+          "装饰",
+          "结构边界"
+        ],
+        "design_role": "识别细节",
+        "confidence": "中",
+        "confidence_score": 0.72,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。；背板覆盖细密直线构成的几何切面图案，成组平行线与三角/菱形面交错，单色银灰。",
+        "region": "back_surface"
+      },
+      {
+        "group": "品类专属",
+        "name": "成像模组中心",
+        "value": {
+          "region": "camera_island",
+          "xy": [
+            0.15,
+            0.17
+          ]
+        },
+        "design_role": "主导识别",
+        "confidence": "高",
+        "confidence_score": 0.9,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。",
+        "region": "camera_island"
+      },
+      {
+        "group": "品类专属",
+        "name": "镜头排列",
+        "value": "三角",
+        "design_role": "主导识别",
+        "confidence": "高",
+        "confidence_score": 0.9,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。",
+        "region": "camera_island"
+      },
+      {
+        "group": "品类专属",
+        "name": "镜头尺寸层级",
+        "value": "一主多辅",
+        "design_role": "主导识别",
+        "confidence": "高",
+        "confidence_score": 0.88,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。",
+        "region": "camera_island"
+      },
+      {
+        "group": "品类专属",
+        "name": "主要镜头数量",
+        "value": 3,
+        "design_role": "主导识别",
+        "confidence": "高",
+        "confidence_score": 0.92,
+        "evidence": "左上角三角排列的三摄模组，中央主镜较大并带金属环，外框为圆角三角形凸台。",
+        "region": "camera_island"
+      }
+    ],
+    "quality": {
+      "overall_confidence": "高",
+      "overall_confidence_score": 0.83,
+      "style_confidence": "低",
+      "visible_coverage": 0.98,
+      "image_usability": "高",
+      "warnings": [
+        "背板高光泽反光与几何线图形可能影响色彩与材质判定精度",
+        "是否为冷金属视觉与精密秩序、或精致克制的边界存在竞争，已列入不确定项",
+        "宿主因证据闭环不足降级了 1 个风格标签。",
+        "有 1 个风格的强字段需要窄范围语义复核，复核前保持 provisional。",
+        "小范围风格语义复核未完成，候选保持保守降级。"
+      ],
+      "missing_critical_fields": []
+    },
+    "design_summary": "银白近无彩封闭机背，三角三摄凸台带金属环，背板细密几何直线切面，整体为冷金属视觉与精确几何秩序主导的精密极简风格。"
+  }
+}

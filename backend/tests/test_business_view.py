@@ -81,10 +81,30 @@ class BusinessViewCompatibilityTestCase(unittest.TestCase):
         self.assertNotIn("secondary", business["style"])
         self.assertNotIn("status", business["style"])
         self.assertNotIn("pairwise_arbitrations", business["style"])
+        self.assertNotIn("uncertain_fields", business)
         self.assertEqual(
             business["source_schema_version"],
-            "design_dna_multitag_extraction_v1.2",
+            "design_dna_multitag_extraction_v1.3",
         )
+
+    def test_legacy_multitag_uncertainty_is_read_but_not_displayed(self) -> None:
+        """v1.2 历史结果继续可读，但废弃字段不传播到新版业务视图。"""
+
+        full_result = {
+            "schema_version": "design_dna_multitag_extraction_v1.2",
+            "knowledge_base_version": "4.1",
+            "target_object": {"category": "phone", "view": "rear"},
+            "style_result": {"style_candidates": [], "composition_summary": "无候选。"},
+            "design_elements": {"extended_dna_modules": []},
+            "uncertain_fields": [{"field_name": "历史字段"}],
+            "novel_dna_elements": [],
+            "quality_summary": {"concise_summary": "历史结果。"},
+        }
+
+        business = extract_business_view(full_result)
+
+        self.assertEqual(business["schema_version"], MULTITAG_BUSINESS_SCHEMA_VERSION)
+        self.assertNotIn("uncertain_fields", business)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://example.internal/schemas/design-dna-multitag-output-v1.2.json",
+  "$id": "https://example.internal/schemas/design-dna-multitag-output-v1.3.json",
   "title": "Multimodal Design DNA Multi-tag Extraction Output",
   "description": "Single-primary-object design DNA extraction result with ranked flat style candidates.",
   "type": "object",
@@ -13,14 +13,13 @@
     "module_applicability",
     "style_result",
     "design_elements",
-    "uncertain_fields",
     "novel_dna_elements",
     "evidence",
     "quality_summary"
   ],
   "properties": {
     "schema_version": {
-      "const": "design_dna_multitag_extraction_v1.2"
+      "const": "design_dna_multitag_extraction_v1.3"
     },
     "knowledge_base_version": {
       "const": "4.1"
@@ -39,12 +38,6 @@
     },
     "design_elements": {
       "$ref": "#/$defs/designElements"
-    },
-    "uncertain_fields": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/uncertainField"
-      }
     },
     "novel_dna_elements": {
       "type": "array",
@@ -135,6 +128,7 @@
             "rear",
             "left",
             "right",
+            "side",
             "top",
             "bottom",
             "three_quarter",
@@ -1140,292 +1134,6 @@
         }
       }
     },
-    "candidateValue": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "value",
-        "probability",
-        "supporting_evidence_refs",
-        "contradicting_evidence_refs"
-      ],
-      "properties": {
-        "value": {},
-        "probability": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "supporting_evidence_refs": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^EV-[A-Za-z0-9_-]+$"
-          },
-          "uniqueItems": true
-        },
-        "contradicting_evidence_refs": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "pattern": "^EV-[A-Za-z0-9_-]+$"
-          },
-          "uniqueItems": true
-        }
-      }
-    },
-    "uncertainField": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "field_id",
-        "field_name",
-        "source_path",
-        "region",
-        "reason_type",
-        "reason",
-        "evidence_mode",
-        "applicability_status",
-        "observability",
-        "computation_status",
-        "best_estimate",
-        "confidence",
-        "candidate_values",
-        "recommended_additional_view_or_info"
-      ],
-      "properties": {
-        "field_id": {
-          "type": "string",
-          "pattern": "^[A-Z][A-Z0-9_]*-[0-9]{2,3}$"
-        },
-        "field_name": {
-          "type": "string",
-          "minLength": 1
-        },
-        "source_path": {
-          "type": "string",
-          "minLength": 1
-        },
-        "region": {
-          "type": "string",
-          "minLength": 1
-        },
-        "reason_type": {
-          "enum": [
-            "low_confidence",
-            "low_visibility",
-            "occlusion",
-            "blur",
-            "lighting",
-            "reflection",
-            "perspective",
-            "multiple_candidates",
-            "not_observable",
-            "missing_reference",
-            "not_computable",
-            "definition_gap",
-            "other"
-          ]
-        },
-        "reason": {
-          "type": "string",
-          "minLength": 1
-        },
-        "evidence_mode": {
-          "enum": [
-            "direct",
-            "derived",
-            "inferred",
-            "reference_computed"
-          ]
-        },
-        "applicability_status": {
-          "const": "applicable"
-        },
-        "observability": {
-          "enum": [
-            "observed",
-            "not_observable",
-            "unknown"
-          ]
-        },
-        "computation_status": {
-          "enum": [
-            "computed",
-            "not_computable",
-            "not_requested"
-          ]
-        },
-        "best_estimate": {},
-        "confidence": {
-          "type": "number",
-          "minimum": 0,
-          "maximum": 1
-        },
-        "candidate_values": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/candidateValue"
-          },
-          "maxItems": 3
-        },
-        "recommended_additional_view_or_info": {
-          "type": "string"
-        }
-      },
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "evidence_mode": {
-                "const": "direct"
-              }
-            },
-            "required": [
-              "evidence_mode"
-            ]
-          },
-          "then": {
-            "properties": {
-              "computation_status": {
-                "const": "not_requested"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "evidence_mode": {
-                "enum": [
-                  "derived",
-                  "inferred",
-                  "reference_computed"
-                ]
-              }
-            },
-            "required": [
-              "evidence_mode"
-            ]
-          },
-          "then": {
-            "properties": {
-              "computation_status": {
-                "enum": [
-                  "computed",
-                  "not_computable"
-                ]
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "evidence_mode": {
-                "const": "direct"
-              },
-              "observability": {
-                "enum": [
-                  "not_observable",
-                  "unknown"
-                ]
-              }
-            },
-            "required": [
-              "evidence_mode",
-              "observability"
-            ]
-          },
-          "then": {
-            "properties": {
-              "best_estimate": {
-                "type": "null"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "evidence_mode": {
-                "enum": [
-                  "derived",
-                  "inferred",
-                  "reference_computed"
-                ]
-              },
-              "computation_status": {
-                "const": "computed"
-              }
-            },
-            "required": [
-              "evidence_mode",
-              "computation_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "observability": {
-                "const": "observed"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "computation_status": {
-                "enum": [
-                  "not_computable",
-                  "not_requested"
-                ]
-              },
-              "evidence_mode": {
-                "enum": [
-                  "derived",
-                  "inferred",
-                  "reference_computed"
-                ]
-              }
-            },
-            "required": [
-              "computation_status",
-              "evidence_mode"
-            ]
-          },
-          "then": {
-            "properties": {
-              "best_estimate": {
-                "type": "null"
-              }
-            }
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "computation_status": {
-                "const": "not_computable"
-              }
-            },
-            "required": [
-              "computation_status"
-            ]
-          },
-          "then": {
-            "properties": {
-              "reason_type": {
-                "enum": [
-                  "missing_reference",
-                  "not_computable"
-                ]
-              }
-            }
-          }
-        }
-      ]
-    },
     "novelDna": {
       "type": "object",
       "additionalProperties": false,
@@ -1759,6 +1467,7 @@
             "rear",
             "left",
             "right",
+            "side",
             "top",
             "bottom",
             "three_quarter",

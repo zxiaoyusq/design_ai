@@ -16,5 +16,10 @@
     50,
     75,
     100
-  ]
+  ],
+  "ordinal_strength_aliases": {
+    "low": 25,
+    "medium": 50,
+    "high": 75
+  }
 }

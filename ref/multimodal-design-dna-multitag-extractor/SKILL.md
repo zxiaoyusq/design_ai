@@ -3,9 +3,9 @@ name: multimodal-design-dna-multitag-extractor
 description: 仅在用户点名本 Skill，或明确要求扁平、多标签、无主次或组合风格时，从单张图片提取可追溯的同层风格候选与设计 DNA；普通设计 DNA 提取继续使用原版 Skill。
 metadata:
   author: "AI审美洞察项目"
-  version: "2.0.0"
+  version: "3.0.2"
   language: "zh-CN"
-  schema-version: "design_dna_multitag_extraction_v1.2"
+  schema-version: "design_dna_multitag_extraction_v1.3"
   knowledge-base-version: "4.1"
 ---
 
@@ -22,7 +22,7 @@ metadata:
 若宿主已把本 Skill、执行协议、模型参考包、知识库、适配规则和模型 Schema 作为带版本的完整系统前缀注入，则直接使用该快照，不再通过工具逐文件读取；未预装时按下列顺序读取。
 
 1. 模型阶段读取 `references/extraction-protocol.zh-CN.md`；`references/output-contract.zh-CN.md` 供宿主后处理和最终校验使用。
-2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`，只输出 `design_dna_multitag_observation_v2`；最终结果由宿主编译并按 `schemas/design-dna-output.schema.json` 校验。
+2. 模型阶段读取 `schemas/design-dna-model-output.schema.json`，只输出 `design_dna_multitag_observation_v3`；最终结果由宿主编译并按 `schemas/design-dna-output.schema.json` 校验。
 3. 模型读取 `references/model-reference-bundle.json` 中的活动风格、字段 allowlist 与规范字段类型，不读取宿主专用组合预设。用 `references/knowledge-index.zh-CN.md` 定位品类字段值域和候选规则。
 4. 跨品类时读取 `references/category-adaptation.zh-CN.md`；出现知识库外元素时再读取 `references/novel-dna-governance.zh-CN.md`。
 
@@ -32,7 +32,7 @@ metadata:
 
 按视觉焦点、面积、完整度和展示意图选择一个主物品，输出归一化包围框。背景、人物、支架、包装、UI、水印、倒影及其他物品不得进入主体 DNA。
 
-记录视角、可见区域及图像干扰；颜色和材质可靠度属于输入质量，不属于产品 DNA。
+记录视角、可见区域及图像干扰；纯侧视但无法可靠区分左右方向时使用 `side`，不得猜成 `left` 或 `right`。颜色和材质可靠度属于输入质量，不属于产品 DNA。
 
 ### 2. 先提取可观察 DNA
 
@@ -57,13 +57,13 @@ metadata:
 
 宿主根据 `(-match_score, style_id)` 稳定排序并生成连续 rank；模型不输出 rank、静态名称、facet、确认状态、主导占比、硬规则状态、规则计数或两两仲裁。
 
-### 4. 组合摘要、不确定项与新 DNA
+### 4. 组合摘要与新 DNA
 
 `composition_summary` 概括这些候选分别由哪些区域和视觉机制支持，不得创造候选列表之外的新标签。
 
 `derived_style_presets` 不由模型生成。宿主只根据最终 `style_candidates[].style_id` 与组合注册表做确定性集合匹配；候选分数和文字不参与计算，派生组合也不反向修改候选或 DNA。
 
-置信度低于 0.75、字段存在合理竞争、视角不足或不可计算时写入 `uncertainties`。完成既有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`；新候选必须可观察、可复用、可参数化并与已有字段去重。
+有可用值但置信度低于 0.75 时，仍写入 `design_observations` 并如实降低 `confidence`。没有可用值、不可见或不可计算的字段不输出，可在 `quality_notes.missing_critical_fields` 或 `warnings` 中概括缺口。完成既有字段映射后，才可提出 `new_module`、`new_field`、`new_enum_value` 或 `new_relation_rule`；新候选必须可观察、可复用、可参数化并与已有字段去重。
 
 ### 5. 证据与输出
 
@@ -74,7 +74,7 @@ metadata:
 - 补全注册表静态元数据并稳定排序候选；
 - 按 profile 和视角移除不适用字段；
 - 依据 `references/value-normalization.json` 归一化显式别名、关系词和离散刻度；
-- 重建低置信镜像并计算统计值；
+- 过滤无有效值、不可见或不可计算字段，并计算低置信字段等统计值；
 - 不新增视觉事实，不把候选升级或降级为确认状态。
 
 随后 `scripts/save_result.py` 根据候选 ID 写入 `derived_style_presets`，再执行最终 Schema 与语义校验。最终结果只包含 JSON，不附加 Markdown、解释、路径或思考过程，禁止 `NaN` 与 `Infinity`。

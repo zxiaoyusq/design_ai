@@ -153,6 +153,7 @@ button {
 .topbar nav {
   display: flex;
   gap: 34px;
+  flex-wrap: wrap;
 }
 
 .topbar nav a {
@@ -1796,54 +1797,9 @@ main {
   font-size: 8px;
 }
 
-.uncertain-list,
 .evidence-card-list {
   display: grid;
   gap: 8px;
-}
-
-.uncertain-card {
-  display: grid;
-  grid-template-columns: minmax(120px, 0.7fr) 65px minmax(0, 1.5fr);
-  gap: 10px;
-  align-items: start;
-  padding: 12px;
-  background: #fbf8f6;
-  border: 1px solid rgba(157, 105, 72, 0.09);
-  border-radius: 11px;
-}
-
-.uncertain-card > div:first-child {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-}
-
-.uncertain-card > div:first-child span {
-  color: #9c887d;
-  font-size: 8px;
-}
-
-.uncertain-card > div:first-child strong {
-  margin-top: 5px;
-  color: #65574f;
-  font-size: 10px;
-}
-
-.uncertain-estimate {
-  margin-top: 5px;
-}
-
-.uncertain-score {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  color: #957866;
-  font-size: 8px;
-}
-
-.uncertain-score b {
-  font-family: 'DM Mono', monospace;
 }
 
 .inline-empty {
@@ -1995,6 +1951,19 @@ footer {
   border-top: 1px solid var(--line);
 }
 
+@media (max-width: 1050px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 14px;
+    padding: 17px 0;
+  }
+
+  .topbar .system-state {
+    display: none;
+  }
+}
+
 @media (max-width: 980px) {
   .workspace-grid {
     grid-template-columns: 1fr;
@@ -2013,14 +1982,17 @@ footer {
 
 @media (max-width: 760px) {
   .topbar {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr;
     width: min(100% - 28px, 1180px);
+    height: auto;
+    gap: 15px;
+    padding: 17px 0;
   }
 
   .topbar nav {
     display: flex;
     gap: 18px;
-    justify-content: end;
+    justify-content: start;
   }
 
   .topbar .system-state {
@@ -2126,8 +2098,7 @@ footer {
   .result-card-grid,
   .dna-card-grid,
   .semantic-grid,
-  .module-columns,
-  .uncertain-card {
+  .module-columns {
     grid-template-columns: 1fr;
   }
 

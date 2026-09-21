@@ -1,4 +1,4 @@
-"""主体、规范字段、不确定项和新 DNA 的只读语义校验。"""
+"""主体、规范字段和新 DNA 的只读语义校验。"""
 from __future__ import annotations
 
 from typing import Any
@@ -147,16 +147,9 @@ def _validate_elements(
     target_view: str,
     value_spaces: dict[str, tuple[str, set[str]]],
     errors: list[str],
-) -> tuple[dict[tuple[str, str], dict[str, Any]], dict[tuple[str, str, str, str], dict[str, Any]], list[dict[str, Any]]]:
+) -> dict[tuple[str, str], dict[str, Any]]:
     """校验规范字段状态、值域、派生依赖及字段质量统计。"""
-    uncertainty_items = data.get("uncertain_fields", [])
-    uncertainty_key_list = [field_key(item) for item in uncertainty_items]
-    duplicate_uncertainty = sorted({key for key in uncertainty_key_list if uncertainty_key_list.count(key) > 1})
-    if duplicate_uncertainty:
-        errors.append(f"uncertain_fields: duplicate field/region records {duplicate_uncertainty}")
-    uncertainty_keys = set(uncertainty_key_list)
     element_keys: set[tuple[str, str, str, str]] = set()
-    element_by_key: dict[tuple[str, str, str, str], dict[str, Any]] = {}
     confidences: list[float] = []
     low_count = 0
     canonical_elements: dict[tuple[str, str], dict[str, Any]] = {}
@@ -169,7 +162,6 @@ def _validate_elements(
         if key4 in element_keys:
             errors.append(f"design_element[{i}]: duplicate field/region {key4}")
         element_keys.add(key4)
-        element_by_key[key4] = element
         observability = element.get("observability")
         computation_status = element.get("computation_status")
         evidence_mode = element.get("evidence_mode")
@@ -182,7 +174,6 @@ def _validate_elements(
             )
         if element.get("applicability_status") != "applicable":
             errors.append(f"design_element[{i}]: design_elements only accepts applicable fields")
-        unavailable = False
         if evidence_mode == "direct":
             if computation_status != "not_requested":
                 errors.append(f"design_element[{i}]: direct field requires computation_status=not_requested")
@@ -190,9 +181,9 @@ def _validate_elements(
                 if value is None or not refs:
                     errors.append(f"design_element[{i}]: observed direct field requires value and evidence")
             else:
-                unavailable = True
-                if value is not None:
-                    errors.append(f"design_element[{i}]: unavailable direct field must have null value")
+                errors.append(
+                    f"design_element[{i}]: design_elements only accepts observed fields with usable values"
+                )
         elif evidence_mode in {"derived", "inferred", "reference_computed"}:
             if computation_status not in {"computed", "not_computable"}:
                 errors.append(
@@ -209,9 +200,9 @@ def _validate_elements(
                         f"design_element[{i}]: computed {evidence_mode} field requires value and {minimum_refs}+ evidence refs"
                     )
             else:
-                unavailable = True
-                if value is not None:
-                    errors.append(f"design_element[{i}]: uncomputed field must have null value")
+                errors.append(
+                    f"design_element[{i}]: design_elements only accepts computed fields with usable values"
+                )
         value_type = element.get("value_type")
         if isinstance(value_type, str) and not value_matches(value_type, value):
             errors.append(f"design_element[{i}]: value does not match value_type={value_type!r}")
@@ -220,23 +211,6 @@ def _validate_elements(
             confidences.append(float(confidence))
             if confidence < 0.75:
                 low_count += 1
-                if field_key(element) not in uncertainty_keys:
-                    errors.append(
-                        f"design_element[{i}]: confidence {confidence:.2f} < 0.75 but no matching uncertain_fields record"
-                    )
-            if confidence < 0.30:
-                has_definite_value = (
-                    evidence_mode == "direct" and observability == "observed"
-                ) or (
-                    evidence_mode != "direct" and computation_status == "computed"
-                )
-                if has_definite_value:
-                    errors.append(
-                        f"design_element[{i}]: confidence below 0.30 cannot carry a definite value"
-                    )
-        if unavailable and field_key(element) not in uncertainty_keys:
-            errors.append(f"design_element[{i}]: unavailable field requires uncertain_fields record")
-
         if schema_source == "md_extension":
             field_id = element.get("field_id")
             if field_id in alias_to_field:
@@ -360,101 +334,7 @@ def _validate_elements(
             f"quality_summary.mean_confidence={reported_mean}, expected about {expected_mean:.3f} from extracted fields"
         )
 
-    return canonical_elements, element_by_key, uncertainty_items
-
-
-def _validate_uncertainties(
-    alias_to_field: dict[str, str],
-    compatibility_derived: dict[str, dict[str, Any]],
-    element_by_key: dict[tuple[str, str, str, str], dict[str, Any]],
-    fields: dict[str, dict[str, Any]],
-    uncertainty_items: list[dict[str, Any]],
-    value_spaces: dict[str, tuple[str, set[str]]],
-    errors: list[str],
-) -> None:
-    """校验不确定项与规范字段镜像及概率、可计算状态。"""
-    for i, item in enumerate(uncertainty_items):
-        key4 = field_key(item)
-        matching_element = element_by_key.get(key4)
-        if matching_element is None:
-            errors.append(f"uncertain_fields[{i}]: must match a design_elements field and region")
-        else:
-            for key in (
-                "evidence_mode",
-                "applicability_status",
-                "observability",
-                "computation_status",
-                "confidence",
-            ):
-                if item.get(key) != matching_element.get(key):
-                    errors.append(f"uncertain_fields[{i}].{key}: must match design_elements")
-        field_id = item.get("field_id")
-        if field_id in alias_to_field:
-            errors.append(
-                f"uncertain_fields[{i}]: field_id {field_id!r} is an alias; use {alias_to_field[field_id]!r}"
-            )
-        if field_id in compatibility_derived:
-            errors.append(f"uncertain_fields[{i}]: field_id {field_id!r} is compatibility-derived, not canonical")
-        record = fields.get(field_id)
-        if record is None:
-            errors.append(f"uncertain_fields[{i}]: unknown canonical field_id {field_id!r}")
-        elif item.get("evidence_mode") != record.get("evidence_mode"):
-            errors.append(f"uncertain_fields[{i}]: evidence_mode differs from field registry")
-        if record is not None:
-            errors.extend(
-                validate_value_domain(
-                    f"uncertain_fields[{i}].best_estimate",
-                    record,
-                    item.get("best_estimate"),
-                    value_spaces,
-                )
-            )
-            controlled = value_spaces.get(str(field_id))
-            if controlled and controlled[0] == "enum":
-                allowed = controlled[1]
-                for candidate_index, candidate in enumerate(item.get("candidate_values", [])):
-                    candidate_value = candidate.get("value")
-                    if isinstance(candidate_value, str) and candidate_value not in allowed:
-                        errors.append(
-                            f"uncertain_fields[{i}].candidate_values[{candidate_index}]: "
-                            f"value {candidate_value!r} is outside the enum domain"
-                        )
-        if item.get("evidence_mode") == "direct" and item.get("computation_status") != "not_requested":
-            errors.append(f"uncertain_fields[{i}]: direct field requires computation_status=not_requested")
-        if item.get("evidence_mode") != "direct" and item.get("computation_status") not in {
-            "computed",
-            "not_computable",
-        }:
-            errors.append(f"uncertain_fields[{i}]: non-direct field requires computed/not_computable")
-        if (
-            item.get("evidence_mode") != "direct"
-            and item.get("computation_status") == "computed"
-            and item.get("observability") != "observed"
-        ):
-            errors.append(f"uncertain_fields[{i}]: computed non-direct field requires observability=observed")
-        candidates = item.get("candidate_values", [])
-        if candidates:
-            probabilities = [candidate.get("probability") for candidate in candidates]
-            if all(isinstance(value, (int, float)) and not isinstance(value, bool) for value in probabilities):
-                total = sum(probabilities)
-                if not 0.97 <= total <= 1.03:
-                    errors.append(
-                        f"uncertain_fields[{i}]: candidate probabilities sum to {total:.4f}, expected about 1"
-                    )
-        if item.get("computation_status") == "not_computable" and item.get("reason_type") not in {
-            "missing_reference",
-            "not_computable",
-        }:
-            errors.append(
-                f"uncertain_fields[{i}]: not_computable requires reason_type missing_reference/not_computable"
-            )
-        unavailable = (
-            item.get("evidence_mode") == "direct" and item.get("observability") != "observed"
-        ) or (
-            item.get("evidence_mode") != "direct" and item.get("computation_status") != "computed"
-        )
-        if unavailable and item.get("best_estimate") is not None:
-            errors.append(f"uncertain_fields[{i}]: unavailable field requires best_estimate=null")
+    return canonical_elements
 
 
 def _validate_novel_dna(

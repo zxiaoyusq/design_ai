@@ -14,6 +14,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 from typing import Any
 
 from app.agents.design_dna_extractor import (
@@ -64,9 +65,8 @@ STYLE_KNOWLEDGE_BASE_PATH = (
     / "design-dna-knowledge-base.zh-CN.md"
 )
 BUSINESS_VIEW_SCRIPT = PROJECT_ROOT / "extract_design_dna_business_view.py"
-MAX_PATCH_REPAIR_ATTEMPTS = 1
-MAX_FULL_FALLBACK_ATTEMPTS = 1
-MAX_AGENT_NETWORK_RETRIES = 1
+# 保存脚本使用秒级文件名并自行选择序号；进程内串行分配可避免并行图片争用同一路径。
+_RESULT_SAVE_LOCK = Lock()
 _DETERMINISTIC_ERROR_MARKERS = (
     "quality_summary.mean_confidence",
     "quality_summary.style_confidence",
@@ -86,7 +86,6 @@ _DETERMINISTIC_ERROR_MARKERS = (
     "requires active profile",
     "requires view in",
     "ordinal value must be one of",
-    "but no matching uncertain_fields record",
 )
 
 _ISSUE_CODE_PATTERNS = (
@@ -94,7 +93,6 @@ _ISSUE_CODE_PATTERNS = (
     ("FIELD_PROFILE_NOT_APPLICABLE", "requires active profile"),
     ("FIELD_VIEW_NOT_APPLICABLE", "requires view in"),
     ("FIELD_ORDINAL_OUT_OF_DOMAIN", "ordinal value must be one of"),
-    ("FIELD_UNCERTAINTY_MISSING", "no matching uncertain_fields record"),
     ("STYLE_AUXILIARY_FIELD_NOT_ALLOWED", "auxiliary_field_ids"),
     ("STYLE_DECISIVE_FIELD_NOT_ALLOWED", "decisive_field_ids"),
     ("STYLE_FIELD_UNAVAILABLE", "has no observed/computed value"),
@@ -170,9 +168,10 @@ def _task_text(user_prompt: str) -> str:
     return (
         f"请只使用 {BOUND_SKILL_NAME} Skill 分析随消息提供的单张图片。"
         "严格完成单一主物品锁定、品类适用性、可观察设计 DNA、0～5 个真实同层风格候选、"
-        "证据、不确定字段和新 DNA 检查。"
+        "证据、低置信观察和新 DNA 检查。"
         "先确定视角与 active_profiles，并调用字段准入工具；只提取工具允许且图片实际可观察、"
         "风格判定需要或用户明确关注的字段，不要穷举全部语义字段。"
+        "有可用值但证据较弱时降低 confidence；无值、不可见或不可计算字段不要输出。"
         "最终只返回符合精简模型观察 Schema 的 JSON；字段和风格静态元数据、模块清单、"
         "统计值、排序与组合预设均由宿主编译，不要重复输出。\n\n"
         "每个候选必须有图片可见的主要支持项；有削弱因素时如实写入冲突项，不输出确认、"
@@ -585,12 +584,9 @@ def _contextualize_validation_error(
     if compiled is None or model_data is None:
         return error
     design_observations = model_data.get("design_observations")
-    uncertainties = model_data.get("uncertainties")
     style_observations = model_data.get("style_observations")
     if not isinstance(design_observations, list):
         design_observations = []
-    if not isinstance(uncertainties, list):
-        uncertainties = []
     if not isinstance(style_observations, dict):
         style_observations = {}
 
@@ -627,13 +623,6 @@ def _contextualize_validation_error(
                     f"{compiled_path} -> "
                     f"/design_observations/{candidates[0]} ({field_id}@{region})"
                 )
-
-    for index, item in enumerate(uncertainties):
-        if isinstance(item, dict) and f"uncertain_fields[{index}]" in error_text:
-            mappings.append(
-                f"uncertain_fields.{index} -> /uncertainties/{index} "
-                f"({item.get('field_id')}@{item.get('region')})"
-            )
 
     candidate_tags = style_observations.get("candidate_tags")
     if isinstance(candidate_tags, list):
@@ -724,7 +713,6 @@ def _safely_degrade_invalid_observations(
 
     result = deepcopy(data)
     design_indices: set[int] = set()
-    uncertainty_indices: set[int] = set()
     style_indices: set[int] = set()
     for issue in issues:
         pointer = issue.get("source_pointer")
@@ -733,10 +721,6 @@ def _safely_degrade_invalid_observations(
         match = re.fullmatch(r"/design_observations/(\d+)", pointer)
         if match:
             design_indices.add(int(match.group(1)))
-            continue
-        match = re.fullmatch(r"/uncertainties/(\d+)", pointer)
-        if match:
-            uncertainty_indices.add(int(match.group(1)))
             continue
         match = re.fullmatch(r"/style_observations/candidate_tags/(\d+)", pointer)
         if match:
@@ -747,12 +731,6 @@ def _safely_degrade_invalid_observations(
         for index in sorted(design_indices, reverse=True):
             if 0 <= index < len(design_observations):
                 design_observations.pop(index)
-    uncertainties = result.get("uncertainties")
-    if isinstance(uncertainties, list):
-        for index in sorted(uncertainty_indices, reverse=True):
-            if 0 <= index < len(uncertainties):
-                uncertainties.pop(index)
-
     style_observations = result.get("style_observations")
     if isinstance(style_observations, dict):
         candidate_tags = style_observations.get("candidate_tags")
@@ -762,7 +740,7 @@ def _safely_degrade_invalid_observations(
                     candidate_tags.pop(index)
 
     action_count = (
-        len(design_indices) + len(uncertainty_indices) + len(style_indices)
+        len(design_indices) + len(style_indices)
     )
     return result, action_count
 
@@ -832,92 +810,40 @@ def _invoke_agent(
     *,
     invocation_metric: str = "agent_invocation_count",
     recursion_limit: int = 120,
-    on_retry: Callable[[int], None] | None = None,
 ) -> dict[str, Any]:
-    for network_attempt in range(MAX_AGENT_NETWORK_RETRIES + 1):
-        metrics[invocation_metric] = metrics.get(invocation_metric, 0) + 1
-        try:
-            result = agent.invoke(
-                {"messages": messages},
-                config={
-                    "recursion_limit": recursion_limit,
-                    "callbacks": [telemetry],
-                },
-            )
-            if not isinstance(result, dict):
-                raise DesignDnaExtractionError("DeepAgent 返回结构不合法")
-            return result
-        except Exception as exc:
-            if (
-                isinstance(exc, DesignDnaExtractionError)
-                or network_attempt >= MAX_AGENT_NETWORK_RETRIES
-                or not _is_transient_model_error(exc)
-            ):
-                raise
-            metrics["application_network_retry_count"] += 1
-            if on_retry is not None:
-                try:
-                    on_retry(network_attempt + 2)
-                except Exception:
-                    pass
-    raise DesignDnaExtractionError("DeepAgent 网络重试后仍未返回结果")  # pragma: no cover
+    """调用一次 Agent；任何异常都直接交给单图任务记录。"""
 
-
-def _is_transient_model_error(error: Exception) -> bool:
-    """识别 SDK 未自动覆盖的断流、超时与网关瞬时错误。"""
-
-    module_name = type(error).__module__.lower()
-    type_name = type(error).__name__.lower()
-    message = str(error).lower()
-    provider_error = module_name.startswith(
-        (
-            "openai",
-            "anthropic",
-            "langchain_openai",
-            "langchain_anthropic",
-            "httpx",
-            "httpcore",
-        )
+    metrics[invocation_metric] = metrics.get(invocation_metric, 0) + 1
+    result = agent.invoke(
+        {"messages": messages},
+        config={
+            "recursion_limit": recursion_limit,
+            "callbacks": [telemetry],
+        },
     )
-    transient_type = any(
-        marker in type_name
-        for marker in ("apierror", "connection", "timeout", "internalserver")
-    )
-    transient_message = any(
-        marker in message
-        for marker in (
-            "stream disconnected",
-            "stream closed",
-            "timed out",
-            "timeout",
-            "connection reset",
-            "connection closed",
-            "502",
-            "503",
-            "504",
-            "524",
-        )
-    )
-    return provider_error and (transient_type or transient_message)
+    if not isinstance(result, dict):
+        raise DesignDnaExtractionError("DeepAgent 返回结构不合法")
+    return result
 
 
 def _save_validated_result(image_path: Path, data: dict[str, Any]) -> Path:
-    process = subprocess.run(
-        [
-            sys.executable,
-            str(SAVE_RESULT_SCRIPT),
-            "--compiled",
-            "--image",
-            str(image_path),
-            "-",
-        ],
-        input=json.dumps(data, ensure_ascii=False),
-        text=True,
-        capture_output=True,
-        cwd=PROJECT_ROOT,
-        timeout=60,
-        check=False,
-    )
+    with _RESULT_SAVE_LOCK:
+        process = subprocess.run(
+            [
+                sys.executable,
+                str(SAVE_RESULT_SCRIPT),
+                "--compiled",
+                "--image",
+                str(image_path),
+                "-",
+            ],
+            input=json.dumps(data, ensure_ascii=False),
+            text=True,
+            capture_output=True,
+            cwd=PROJECT_ROOT,
+            timeout=60,
+            check=False,
+        )
     if process.returncode != 0:
         details = (process.stderr or process.stdout).strip()
         raise DesignDnaExtractionError(details or "设计 DNA 结果未通过校验")
@@ -1005,15 +931,6 @@ def run_design_dna_extraction(
     ) -> None:
         model_phase.update(stage=stage, label=label, progress=progress)
 
-    def report_retry(attempt: int) -> None:
-        _emit_progress(
-            progress_callback,
-            model_phase["stage"],
-            f"{model_phase['label']}连接异常，正在进行第 {attempt} 次尝试",
-            model_phase["progress"],
-            ProgressEventLevel.WARNING,
-        )
-
     telemetry = ModelCallTelemetry(on_event=report_model_event)
     metrics: dict[str, Any] = {
         "agent_invocation_count": 0,
@@ -1038,9 +955,9 @@ def run_design_dna_extraction(
         "validation_failure_kinds": [],
         "validation_failure_summaries": [],
         "validation_issues": [],
+        "retry_policy": "disabled",
         "application_network_retry_count": 0,
-        # provider SDK 内部重试仍不可观测；流式断连由上面的应用层计数覆盖。
-        "provider_internal_retry_count_observable": False,
+        "provider_max_retries": 0,
         "preloaded_context_version": PRELOADED_CONTEXT_VERSION,
         "preloaded_context_chars": preloaded_skill_context_size(),
     }
@@ -1129,7 +1046,6 @@ def run_design_dna_extraction(
             messages,
             telemetry,
             metrics,
-            on_retry=report_retry,
         )
     except Exception as exc:
         raise persist_failure(exc) from exc
@@ -1155,201 +1071,7 @@ def run_design_dna_extraction(
             "structural" if model_data is None else _validation_failure_kind(exc)
         )
         _record_validation_failure(metrics, failure_kind, last_error, last_issues)
-        compiler_issues = [
-            issue for issue in last_issues if issue.get("repair_owner") == "compiler"
-        ]
-        if compiler_issues:
-            host_error = DesignDnaExtractionError(
-                "确定性编译后仍存在机械一致性错误，请检查宿主编译器：\n"
-                f"{exc}"
-            )
-            raise persist_failure(host_error) from exc
-
-    if full_result_path is None and model_data is not None:
-        for _attempt in range(MAX_PATCH_REPAIR_ATTEMPTS):
-            metrics["semantic_patch_attempt_count"] += 1
-            _emit_progress(
-                progress_callback,
-                ExtractionStage.REPAIRING,
-                "发现需要视觉或语义判断的问题，正在请求局部修复",
-                87,
-                ProgressEventLevel.WARNING,
-            )
-            semantic_issues = [
-                issue
-                for issue in last_issues
-                if issue.get("repair_owner") == "model"
-            ]
-            patch_messages = [
-                *result.get("messages", messages),
-                {
-                    "role": "user",
-                    "content": (
-                        "宿主已完成统计、排序、静态元数据和可推导证据的确定性整理，"
-                        "但仍有必须由视觉或语义判断修复的错误。只返回局部 JSON 补丁，"
-                        "不要重复完整结果。格式为 "
-                        '{"updates":[{"op":"add|replace|remove",'
-                        '"path":"/JSON/Pointer","value":...}]}。'
-                        "remove 操作省略 value；数组可用数字下标或 add 到 /-。"
-                        "补丁 path 必须使用错误对象中的 source_pointer，它对应模型精简观察；"
-                        "禁止使用 final_path 或 design_elements 等编译后路径。"
-                        "无法安全补证时，可 remove 对应的低置信 design_observations 记录。"
-                        "错误如下：\n"
-                        f"{json.dumps(semantic_issues, ensure_ascii=False)[:12000]}"
-                    ),
-                },
-            ]
-            select_model_phase(ExtractionStage.REPAIRING, "局部语义修复", 87)
-            patch_result = _invoke_agent(
-                agent,
-                patch_messages,
-                telemetry,
-                metrics,
-                on_retry=report_retry,
-            )
-            try:
-                repair_data = _parse_json_response(patch_result)
-                if isinstance(repair_data.get("updates"), list):
-                    repaired_model_data = _apply_json_patch(model_data, repair_data)
-                else:
-                    # 某些模型可能忽略补丁要求；若返回了完整契约，直接作为兜底候选。
-                    repaired_model_data = repair_data
-            except DesignDnaExtractionError as repair_error:
-                # 修复响应自身无效时保留原始校验问题，供后续保守整理准确定位。
-                repair_issues = _validation_issues(
-                    repair_error,
-                    compilation_report,
-                )
-                _record_validation_failure(
-                    metrics,
-                    "semantic",
-                    repair_error,
-                    repair_issues,
-                )
-                _emit_progress(
-                    progress_callback,
-                    ExtractionStage.REPAIRING,
-                    "局部补丁无法应用，将保留原问题进行保守整理",
-                    88,
-                    ProgressEventLevel.WARNING,
-                )
-                result = patch_result
-                continue
-            model_data = repaired_model_data
-            try:
-                full_result_path, compiled_data = compile_and_save(model_data)
-                result = patch_result
-                break
-            except DesignDnaExtractionError as exc:
-                last_issues = _validation_issues(exc, compilation_report)
-                last_error = _contextualize_validation_error(
-                    exc,
-                    compiled_data,
-                    model_data,
-                    compilation_report,
-                )
-                failure_kind = _validation_failure_kind(exc)
-                _record_validation_failure(
-                    metrics, failure_kind, last_error, last_issues
-                )
-                result = patch_result
-                compiler_issues = [
-                    issue
-                    for issue in last_issues
-                    if issue.get("repair_owner") == "compiler"
-                ]
-                if compiler_issues:
-                    host_error = DesignDnaExtractionError(
-                        "局部修复经确定性编译后仍存在机械一致性错误，请检查宿主编译器：\n"
-                        f"{exc}"
-                    )
-                    raise persist_failure(host_error) from exc
-
-    if full_result_path is None and model_data is not None:
-        _emit_progress(
-            progress_callback,
-            ExtractionStage.COMPILING,
-            "局部修复仍未闭合，正在执行不新增视觉事实的保守整理",
-            89,
-            ProgressEventLevel.WARNING,
-        )
-        degraded_data, action_count = _safely_degrade_invalid_observations(
-            model_data,
-            last_issues,
-        )
-        if action_count:
-            metrics["safe_degradation_count"] += action_count
-            try:
-                model_data = degraded_data
-                full_result_path, compiled_data = compile_and_save(model_data)
-            except DesignDnaExtractionError as exc:
-                last_issues = _validation_issues(exc, compilation_report)
-                last_error = _contextualize_validation_error(
-                    exc,
-                    compiled_data,
-                    model_data,
-                    compilation_report,
-                )
-                _record_validation_failure(
-                    metrics,
-                    _validation_failure_kind(exc),
-                    last_error,
-                    last_issues,
-                )
-
-    if full_result_path is None and model_data is None:
-        for _attempt in range(MAX_FULL_FALLBACK_ATTEMPTS):
-            metrics["full_fallback_attempt_count"] += 1
-            _emit_progress(
-                progress_callback,
-                ExtractionStage.REPAIRING,
-                "模型响应无法解析，正在进行最后一次完整结构修复",
-                89,
-                ProgressEventLevel.WARNING,
-            )
-            fallback_messages = [
-                *result.get("messages", messages),
-                {
-                    "role": "user",
-                    "content": (
-                        "局部补丁未能形成有效结果。最后兜底一次：保留已有图片证据支持的"
-                        "视觉事实，返回一份符合精简模型观察 Schema 的完整 JSON。不要输出"
-                        "静态元数据、统计、排序、候选镜像或组合预设。仍需修复的错误如下：\n"
-                        f"{str(last_error)[:8000]}"
-                    ),
-                },
-            ]
-            select_model_phase(ExtractionStage.REPAIRING, "完整结构修复", 89)
-            fallback_result = _invoke_agent(
-                agent,
-                fallback_messages,
-                telemetry,
-                metrics,
-                on_retry=report_retry,
-            )
-            try:
-                model_data = _parse_json_response(fallback_result)
-                full_result_path, compiled_data = compile_and_save(model_data)
-                result = fallback_result
-                break
-            except DesignDnaExtractionError as exc:
-                last_issues = _validation_issues(exc, compilation_report)
-                last_error = _contextualize_validation_error(
-                    exc,
-                    compiled_data,
-                    model_data,
-                    compilation_report,
-                )
-                _record_validation_failure(
-                    metrics,
-                    _validation_failure_kind(exc),
-                    last_error,
-                    last_issues,
-                )
-
-    if full_result_path is None or compiled_data is None or model_data is None:
-        failure = last_error or DesignDnaExtractionError("设计 DNA 提取失败")
-        raise persist_failure(failure)
+        raise persist_failure(last_error) from exc
 
     _emit_progress(
         progress_callback,

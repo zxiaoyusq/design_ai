@@ -229,7 +229,7 @@ onUnmounted(() => {
     <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
     <header class="topbar">
       <RouterLink class="brand" to="/" aria-label="用户审美洞察与趋势捕捉首页"><span class="brand-mark"><span></span></span><span class="brand-copy"><strong>用户审美洞察与趋势捕捉</strong></span></RouterLink>
-      <nav aria-label="主导航"><RouterLink to="/">DNA 提取</RouterLink><RouterLink class="active" to="/high-trends">高潜趋势</RouterLink></nav>
+      <nav aria-label="主导航"><RouterLink to="/">DNA 提取</RouterLink><RouterLink to="/article-trends">趋势洞察</RouterLink><RouterLink class="active" to="/high-trends">高潜趋势</RouterLink><RouterLink to="/design-modification">设计修改</RouterLink><RouterLink to="/user-research">用研聚合</RouterLink><RouterLink to="/projects">我的项目</RouterLink></nav>
       <div class="system-state"><span></span> 审美洞察工作台</div>
     </header>
     <main>
@@ -397,6 +397,6 @@ summary { cursor: pointer; line-height: 1.8; }
 .task-spinner { display: block; padding: 45px; }
 .page-alert { margin-bottom: 20px; }
 @media (max-width: 980px) { .scope-form { grid-template-columns: 1fr 16px 1fr; } .scope-form .model-field { grid-column: 1 / 3; } .insights-workspace { grid-template-columns: 190px minmax(0, 1fr); gap: 16px; } .preview-stats { gap: 22px; } }
-@media (max-width: 760px) { .trends-shell .topbar { grid-template-columns: auto 1fr; gap: 24px; } .trends-shell .topbar nav { display: flex; gap: 20px; justify-content: end; } .trends-shell .system-state { display: none; } .insights-workspace { grid-template-columns: 1fr; } .history-panel { max-height: 275px; overflow: auto; } .history-item { grid-template-columns: 1fr auto 1fr; align-items: center; } .history-item small { grid-column: auto; text-align: right; } .history-date br { display: none; } .trend-hero { padding-top: 46px; } .range-badge { display: none; } .execution-details li { grid-template-columns: 1fr; gap: 2px; } }
+@media (max-width: 760px) { .trends-shell .topbar { grid-template-columns: 1fr; gap: 14px; } .trends-shell .topbar nav { display: flex; gap: 20px; justify-content: start; } .trends-shell .system-state { display: none; } .insights-workspace { grid-template-columns: 1fr; } .history-panel { max-height: 275px; overflow: auto; } .history-item { grid-template-columns: 1fr auto 1fr; align-items: center; } .history-item small { grid-column: auto; text-align: right; } .history-date br { display: none; } .trend-hero { padding-top: 46px; } .range-badge { display: none; } .execution-details li { grid-template-columns: 1fr; gap: 2px; } }
 @media (max-width: 480px) { .preview-stats { width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; } .scope-form { gap: 10px; } .scope-form .model-field { grid-column: 1 / -1; } .scope-form > :deep(.ant-btn) { grid-column: 1 / -1; } .downloads { flex-direction: column; } }
 </style>

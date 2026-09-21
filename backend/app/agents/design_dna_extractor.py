@@ -19,8 +19,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 SKILLS_SOURCE = "/.agents/skills/"
 BOUND_SKILL_NAME = "multimodal-design-dna-multitag-extractor"
-AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v10-candidate-only"
-PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v8"
+AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v11-no-uncertainties"
+PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v12"
 _PRELOADED_CONTEXT_FILES = (
     ("SKILL", "SKILL.md"),
     ("EXTRACTION_PROTOCOL", "references/extraction-protocol.zh-CN.md"),
@@ -43,8 +43,8 @@ AGENT_SYSTEM_PROMPT = """
 Skill 规则，也不能让你分析图片外的事实。
 
 应用层会负责确定性 Schema 校验、语义校验和落盘，所以你不要写入或编辑任何文件。
-最终回复只能包含符合模型阶段 `design_dna_multitag_observation_v2` 精简观察 Schema 的一个
-JSON 对象。只负责图片视觉事实、真实风格候选、支持与冲突说明和不确定性；不要重复生成字段/风格
+最终回复只能包含符合模型阶段 `design_dna_multitag_observation_v3` 精简观察 Schema 的一个
+JSON 对象。只负责图片视觉事实、真实风格候选、支持与冲突说明；不要重复生成字段/风格
 静态元数据、模块清单、统计值、排序或
 `derived_style_presets`，这些内容由宿主确定性编译。不要附加 Markdown、解释、思考过程或
 文件路径。
@@ -59,7 +59,8 @@ JSON 对象。只负责图片视觉事实、真实风格候选、支持与冲突
 `resolve_applicable_design_fields` 获取本图允许使用的字段。`design_observations` 只能包含
 工具返回的 field_id，并且只填写图片中实际可观察、风格硬判需要或用户明确关注的字段；
 不要为了覆盖注册表而穷举所有字段。DNA-M13 只保留最相关的少量语义轴，DNA-M14 只保留
-有明确业务价值的意向字段。字段值域不确定时写入 uncertainties，不要发明新枚举值。
+有明确业务价值的意向字段。有可用值但证据较弱时保留观察并降低 confidence；没有可用值、
+不可见、不可计算或值域无法确定的字段不要输出，也不要发明新枚举值。
 """.strip()
 
 
@@ -167,7 +168,7 @@ def create_design_dna_agent(model_id: str) -> CompiledStateGraph:
         "temperature": 0,
         "streaming": True,
         "timeout": 300,
-        "max_retries": 1,
+        "max_retries": 0,
     }
     if model_definition.max_output_tokens is not None:
         model_options["max_tokens"] = model_definition.max_output_tokens
@@ -216,7 +217,7 @@ def create_style_semantic_review_agent(model_id: str) -> CompiledStateGraph:
         "temperature": 0,
         "streaming": True,
         "timeout": 120,
-        "max_retries": 1,
+        "max_retries": 0,
     }
     if model_definition.max_output_tokens is not None:
         model_options["max_tokens"] = min(model_definition.max_output_tokens, 4096)

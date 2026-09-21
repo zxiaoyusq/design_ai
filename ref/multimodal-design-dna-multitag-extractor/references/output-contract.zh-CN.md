@@ -1,8 +1,8 @@
 # 扁平多标签输出协议
 
-适用于最终 `schema_version="design_dna_multitag_extraction_v1.2"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json` 输出 `design_dna_multitag_observation_v2`；宿主编译后的完整结果通过 `schemas/design-dna-output.schema.json`。
+适用于最终 `schema_version="design_dna_multitag_extraction_v1.3"` 与 `knowledge_base_version="4.1"`。模型阶段通过 `schemas/design-dna-model-output.schema.json` 输出 `design_dna_multitag_observation_v3`；宿主编译后的完整结果通过 `schemas/design-dna-output.schema.json`。
 
-模型只负责经过字段准入后的视觉值、证据、风格候选、支持与冲突说明、不确定性和摘要。字段/风格静态元数据、模块清单、统计、排序和组合预设由宿主生成。
+模型只负责经过字段准入后的视觉值、证据、风格候选、支持与冲突说明和摘要。字段/风格静态元数据、模块清单、统计、排序和组合预设由宿主生成。
 
 ## 1. 顶层结构
 
@@ -15,16 +15,15 @@
 - `module_applicability`
 - `style_result`
 - `design_elements`
-- `uncertain_fields`
 - `novel_dna_elements`
 - `evidence`
 - `quality_summary`
 
-禁止添加未定义顶层字段。空集合使用 `[]`，单值不可得使用 `null`。
+禁止添加未定义顶层字段。空集合使用 `[]`；无可用值的设计字段不进入结果。
 
 ## 2. 单主体与模块
 
-`target_object` 只描述一个对象。`bbox_norm` 各值位于 0～1，且最小坐标小于最大坐标。背景、人物、道具及其他物品不得混入主体 DNA。
+`target_object` 只描述一个对象。`bbox_norm` 各值位于 0～1，且最小坐标小于最大坐标。`view` 可取 `front`、`rear`、`left`、`right`、`side`、`top`、`bottom`、`three_quarter`、`detail` 或 `unknown`；`side` 专指可确认是纯侧视、但单图不足以可靠区分左右方向的情况。背景、人物、道具及其他物品不得混入主体 DNA。
 
 `active_profiles` 必须包含 `core`，只列有对象依据的单视图 profile。当前不得激活 multi-face、reference 或 trend profile；DNA-M15 必须以 `profile_not_applicable` 排除。
 
@@ -37,7 +36,7 @@
 
 只输出 canonical `field_id`。纯字符串标签集合使用 `multi_label`，结构化集合使用 `list`；派生字段必须具备全部注册依赖和源证据。当前 `original_md_dimensions` 固定为 `[]`。
 
-宿主再次检查字段准入，并按 `value-normalization.json` 处理显式别名、关系词和离散刻度。无法无损归一化的受控值不得猜测，必须转为未知或不确定。
+宿主再次检查字段准入，并按 `value-normalization.json` 处理显式别名、关系词和离散刻度。不可见的直接字段、基础类型不匹配字段或缺少完整注册依赖的派生字段不得猜测，也不进入最终 `design_elements`；过滤原因只保留在内部编译报告。
 
 ## 4. style_result
 
@@ -73,11 +72,11 @@
 
 只总结候选的空间分布、主要视觉支持和整体组合，不得隐式增加候选或恢复主/次结构。
 
-## 5. 证据、不确定项与新 DNA
+## 5. 证据、低置信观察与新 DNA
 
 所有 `evidence_refs` 必须指向存在的证据。`evidence.region`、设计元素区域及候选 `regions` 只能取 `target_object.visible_regions` 中的值或 `whole_object`。`direct + observed` 至少一条证据；`derived + computed` 覆盖源字段证据；`inferred + computed` 至少两条独立观察证据。
 
-置信度低于 0.75、存在竞争、视角不足或不可计算的字段进入模型观察的 `uncertainties`，由宿主编译成最终 `uncertain_fields`。`novel_dna_elements` 只容纳知识库不能充分表达、位于主体上且可复用、可参数化的内容。
+有可用值但置信度低于 0.75 的字段保留在 `design_elements`，其不确定程度由字段自身 `confidence` 表达，并计入宿主计算的 `low_confidence_field_count`。没有可用值、不可见或不可计算的字段不输出。`novel_dna_elements` 只容纳知识库不能充分表达、位于主体上且可复用、可参数化的内容。
 
 ## 6. JSON 与宿主职责
 
