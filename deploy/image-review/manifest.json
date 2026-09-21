@@ -4,7 +4,7 @@
   "created_at": "2026-09-21T13:19:42.237162+00:00",
   "repository": "zxiaoyusq/design_ai",
   "release_tag": "image-review-20260921",
-  "encrypted": true,
+  "encrypted": false,
   "collections": {
     "image_review": {
       "revision": 42,
@@ -35016,34 +35016,34 @@
   ],
   "assets": [
     {
-      "name": "images-001.tar.gz.enc",
-      "size": 391502608,
-      "sha256": "7022374274954d44c7b64b8bcae7c04d34f6233a9231d6183671e75a8f349787"
+      "name": "images-001.tar.gz",
+      "size": 391502584,
+      "sha256": "dc008a120683596564f8bb3d84fee90c7eb9e7801993b12a05646c60635c79ba"
     },
     {
-      "name": "images-002.tar.gz.enc",
-      "size": 414055376,
-      "sha256": "391af3c448f6e0d6997d5965a95be298c49814bf3dd0ca76a862467a48ea3b27"
+      "name": "images-002.tar.gz",
+      "size": 414055349,
+      "sha256": "66412fd3457e3b4d1e2efaade2c3878f787b695c63ef1a72e6cb4ea45687d528"
     },
     {
-      "name": "images-003.tar.gz.enc",
-      "size": 408097344,
-      "sha256": "c354fbcd11f8384034a8606bb16a94b11462fcaa9fe23dda764e81a53228645c"
+      "name": "images-003.tar.gz",
+      "size": 408097324,
+      "sha256": "9622a85d466750310e34e406510246f706281b6a8fbac7075448a5eadfb4706f"
     },
     {
-      "name": "images-004.tar.gz.enc",
-      "size": 417693904,
-      "sha256": "a7a8328d040dea89c860e4f2f9b7b356faf033e12bffe7d94e8fd98e742fd7d1"
+      "name": "images-004.tar.gz",
+      "size": 417693872,
+      "sha256": "16f178e1b2165dbdc4504c56852925afb6585380d915b4bdd3670a4cff21d065"
     },
     {
-      "name": "images-005.tar.gz.enc",
-      "size": 418279040,
-      "sha256": "685b60fd39b7daf3ac4c2200ce3c187f426aaf806c3b3a51438e9fd2017f6988"
+      "name": "images-005.tar.gz",
+      "size": 418279011,
+      "sha256": "2433c9a65f79a5701e6a69933fe4bca245f107cadb1b0a8dd7ae5183ed7c73ae"
     },
     {
-      "name": "images-006.tar.gz.enc",
-      "size": 46501840,
-      "sha256": "0d6b15c5a2149ae0aae46d413587bcd237e5f6de9c067e65bb6997c35058a8d2"
+      "name": "images-006.tar.gz",
+      "size": 46501817,
+      "sha256": "0056ebc58c50bf855d8795a2307242140d22c7d5981ef7c6063de4f54fd9818a"
     }
   ]
 }
