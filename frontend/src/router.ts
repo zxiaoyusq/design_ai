@@ -11,6 +11,11 @@ export default createRouter({
       component: () => import('@/views/ArticleTrendsView.vue'),
     },
     {
+      path: '/high-trends/image-review',
+      name: 'high-trend-image-review',
+      component: () => import('@/views/HighTrendImageReviewView.vue'),
+    },
+    {
       path: '/high-trends',
       name: 'high-trends',
       component: () => import('@/views/HighTrendsView.vue'),

@@ -308,6 +308,7 @@ onUnmounted(() => {
           </section>
           <div v-if="!task && !taskLoading" class="welcome-empty"><BulbOutlined /><h2>下一份灵感，从交集开始</h2><p>选好日期并预估范围，或打开一份历史洞察。</p></div>
           <template v-if="result">
+            <div v-if="task" class="image-review-entry"><div><strong>整理这份结果的图片</strong><p>按趋势与用户来源浏览，选择保留或排除，并下载保留的图片与来源清单。</p></div><RouterLink :to="{ name: 'high-trend-image-review', query: { task: task.id } }">整理结果图片 <ArrowRightOutlined /></RouterLink></div>
             <details v-if="result.warnings?.length" class="warnings-panel" open><summary>本轮提示 · {{ result.warnings.length }} 项</summary><ul><li v-for="warning in result.warnings" :key="warning">{{ warning }}</li></ul></details>
             <div class="result-section-heading"><h2>趋势与用户共同方向 <span>{{ cards.length }}</span></h2><p>{{ result.scope_note }}</p></div>
             <div v-if="cards.length" class="trend-card-grid"><HighTrendCard v-for="(card, index) in cards" :key="card.id" :card="card" :index="index" /></div>
@@ -325,6 +326,11 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+.image-review-entry { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 22px; padding: 20px 24px; border: 1px solid #d9ceec; border-radius: 16px; background: #f4effb; color: #645079; }
+.image-review-entry strong { font-size: 15px; }
+.image-review-entry p { margin: 7px 0 0; font-size: 12px; line-height: 1.8; color: #907da1; }
+.image-review-entry a { flex-shrink: 0; padding: 10px 14px; border-radius: 10px; background: #fff; color: #695094; font-size: 12px; }
+@media (max-width: 600px) { .image-review-entry { align-items: start; flex-direction: column; } }
 .trend-hero { padding: 68px 0 44px; }
 .trend-hero h1 { font-size: clamp(38px, 5vw, 61px); }
 .trend-hero h1 em { font-style: normal; }
