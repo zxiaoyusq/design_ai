@@ -1,0 +1,137 @@
+{
+  "id": "web_85176208a42140fd85b577116795cbba",
+  "status": "completed",
+  "stage": "finished",
+  "message": "Codex GPT-6 Astra 研究结果已导入",
+  "created_at": "2026-09-21T09:14:50.398897+00:00",
+  "updated_at": "2026-09-21T09:24:10.034658+00:00",
+  "request": {
+    "start_date": "1900-01-01",
+    "end_date": "2026-09-21",
+    "all_dates": true,
+    "dataset": "article_table_2_selected_5",
+    "model_id": "gpt-6-astra",
+    "max_calls": 24,
+    "user_scope": "all",
+    "user_limit": null,
+    "prompt": "按指定两个文件全量分析，以 clustering_label 聚合趋势大类，结合用研提炼高潜方向并展示用户本地图片。"
+  },
+  "scope": {
+    "user_limit": null,
+    "origin": "option",
+    "label": "指定文件中的全部用户",
+    "note": "Codex 宿主执行，使用冻结的指定数据文件。"
+  },
+  "selection": {
+    "start_date": null,
+    "end_date": null,
+    "inclusive": true,
+    "undated_policy": "include",
+    "undated_in_source": 0,
+    "user_limit": null,
+    "selected_user_ids": [
+      "75",
+      "56",
+      "52",
+      "49",
+      "47"
+    ],
+    "excluded": {
+      "empty_qa": 18
+    }
+  },
+  "source_inputs": {
+    "trends": {
+      "path": "/Users/zxy/dev/work/design_ai/data/trend_data/article_table_2/trends.json",
+      "sha256": "5cbf7c0ba9233b407fea57b5e299d32f87df26a81abaec6af9169d91ab73fb55"
+    },
+    "users": {
+      "path": "/Users/zxy/dev/work/design_ai/data/userreseach_data/users_selected_5.json",
+      "sha256": "991c03143674b0b6eb70346644abf8f83a334e92e1269de94c717d72c3a6014a"
+    }
+  },
+  "counts": {
+    "source_trends": 184,
+    "selected_trends": 184,
+    "source_users": 5,
+    "selected_users": 5,
+    "users": 5,
+    "users_with_text": 5,
+    "source_records": 730,
+    "trend_records": 184,
+    "user_records": 546,
+    "excluded_unmentioned_qa": 0,
+    "excluded_empty_qa": 18,
+    "excluded_empty_demand": 0,
+    "excluded_unlinked_demands": 0,
+    "excluded_users_by_limit": 0
+  },
+  "plan": {
+    "direct": false,
+    "map_jobs": 8,
+    "planned_calls": 9,
+    "input_source_chars": 211574,
+    "first_stage_message_chars": 218398,
+    "max_final_message_chars": 48000,
+    "planned_output_token_cap": null,
+    "note": "字符是代码统计，不等于实际token；缓存可减少新调用，失败重试同样计入总调用上限。"
+  },
+  "completed_jobs": 9,
+  "total_jobs": 9,
+  "skill_version": "3.3.1",
+  "agent_prompt_version": "codex-host-skill-3.3.1",
+  "skill_sha256": "87a844e248abd8e43b9680c8d997a4bcc0dcbebb7845a802a5424307df086f4e",
+  "error": null,
+  "events": [
+    {
+      "time": "2026-09-21T09:16:52.394187+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 1"
+    },
+    {
+      "time": "2026-09-21T09:18:29.077337+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 2"
+    },
+    {
+      "time": "2026-09-21T09:18:29.086037+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 3"
+    },
+    {
+      "time": "2026-09-21T09:18:29.071841+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 4"
+    },
+    {
+      "time": "2026-09-21T09:18:29.073625+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 5"
+    },
+    {
+      "time": "2026-09-21T09:18:29.075395+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 6"
+    },
+    {
+      "time": "2026-09-21T09:18:29.090803+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 7"
+    },
+    {
+      "time": "2026-09-21T09:19:21.780398+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 8"
+    },
+    {
+      "time": "2026-09-21T09:23:23.263817+00:00",
+      "stage": "host_analysis",
+      "message": "Codex 已完成资料步骤 9"
+    },
+    {
+      "time": "2026-09-21T09:24:10.034658+00:00",
+      "stage": "finished",
+      "message": "研究报告、分类与用户图片已导入网页"
+    }
+  ]
+}

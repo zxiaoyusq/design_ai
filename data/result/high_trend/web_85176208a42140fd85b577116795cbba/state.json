@@ -1,0 +1,43 @@
+{
+  "jobs": {
+    "digest-001": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-002": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-003": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-004": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-005": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-006": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-007": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "digest-008": {
+      "status": "accepted",
+      "attempts": 0
+    },
+    "synthesize-001": {
+      "status": "accepted",
+      "attempts": 0
+    }
+  },
+  "calls": [],
+  "warnings": [],
+  "status": "complete"
+}

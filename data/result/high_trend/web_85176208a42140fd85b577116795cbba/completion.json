@@ -1,0 +1,14 @@
+{
+  "status": "complete",
+  "has_content": true,
+  "partial": false,
+  "completed_at": "2026-09-21T09:23:23.288264+00:00",
+  "trends": 14,
+  "user_research_gaps": 0,
+  "diagnostics": 0,
+  "unlinked_notes": 0,
+  "warnings": [],
+  "source_scope": "核心来源用于分类、人数与图片关联；背景参考仅供查阅。来源须存在于索引中，未执行全量来源覆盖或额外语义审核。",
+  "report": "data/result/high_trend/web_85176208a42140fd85b577116795cbba/report.md",
+  "image_paths": "data/result/high_trend/web_85176208a42140fd85b577116795cbba/image_paths.md"
+}
