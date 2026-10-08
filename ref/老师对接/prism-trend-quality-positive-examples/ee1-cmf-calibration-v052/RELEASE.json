@@ -1,0 +1,29 @@
+{
+  "status": "CALIBRATED_ON_DESIGNER_POSITIVES",
+  "version": "cmf-reference-signal-gate-v0.5.2",
+  "model": "qwen3.8-flash",
+  "created_utc": "2026-09-26T09:19:32.080080+00:00",
+  "prompt": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\ee1-cmf-calibration-v052\\prompt-v0.5.txt",
+  "prompt_sha256": "e03e2ff9c3da9fcbbf38b78ba905a03c33494590b8283ce26fa885510bd01048",
+  "gate_module": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\ee1-cmf-calibration-v052\\gate.py",
+  "gate_sha256": "ae36295c7a573b4a7423803a05d56cf0b27389bfa4202f269549d743ae1ec39e",
+  "parameters": {
+    "enable_thinking": false,
+    "temperature": 0,
+    "max_tokens": 1400,
+    "response_format": {
+      "type": "json_object"
+    }
+  },
+  "report": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\ee1-cmf-calibration-v052\\report.html",
+  "designer_gold_labels": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\ee1-cmf-calibration-v052\\designer-labels.json",
+  "positive_calibration_recall": 1.0,
+  "positive_images": 138,
+  "negative_gold_available": false,
+  "negative_specificity_verified": false,
+  "unseen_generalization_verified": false,
+  "production_activated": false,
+  "timer_paused": true,
+  "actual_paid_model_requests_for_calibration": 150,
+  "extra_requests_for_schema_fixes": 0
+}

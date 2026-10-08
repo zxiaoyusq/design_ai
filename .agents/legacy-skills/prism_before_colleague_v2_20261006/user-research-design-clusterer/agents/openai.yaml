@@ -1,0 +1,4 @@
+interface:
+  display_name: "用户调研审美设计聚类"
+  short_description: "完整聚合用户调研文本，保留设计偏好、定位与限制，输出可追溯的趋势匹配输入"
+  default_prompt: "使用 $user-research-design-clusterer 整理 data/userreseach_data/users_selected_5.json 的全部文本调研信息，形成审美设计方向并保留完整来源和观点去向，不分析图片。"

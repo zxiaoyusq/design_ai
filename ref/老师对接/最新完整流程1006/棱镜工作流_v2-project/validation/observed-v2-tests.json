@@ -1,0 +1,36 @@
+{
+  "scope": "Offline contract checks observed in the package author's execution",
+  "test_v2_contracts": {
+    "tests_run": 15,
+    "result": "OK",
+    "wall_seconds": 1.273
+  },
+  "test_future_consumer": {
+    "tests_run": 1,
+    "result": "OK",
+    "wall_seconds": 11.542
+  },
+  "checks_cover": [
+    "candidate pool and final board quantity remain separate",
+    "image SHA and ROI tampering rejected",
+    "ID cannot silently become surface comparison",
+    "unknown source identities preserved",
+    "display enhancement cannot create evidence",
+    "review bound to exact board and brief",
+    "PASS cannot hide a rejected member",
+    "synthetic review stays synthetic",
+    "duplicate projects and missing tiles detected",
+    "future-negative references preserve unresolved state and original data",
+    "optional native consumer only changes the original-reference guard",
+    "frozen config retains original relative-input identities",
+    "short archive filenames retain full SHA and reject altered-content collisions"
+  ],
+  "new_model_calls": 0,
+  "new_visual_accuracy_proven": false,
+  "post_repair_portable_helpers": {
+    "tests_run": 20,
+    "result": "OK",
+    "wall_seconds": 2.565,
+    "deep_windows_path": true
+  }
+}

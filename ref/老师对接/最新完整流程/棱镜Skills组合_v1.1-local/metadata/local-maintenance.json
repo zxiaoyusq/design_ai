@@ -1,0 +1,29 @@
+{
+  "schema": "prism.local-skill-maintenance.v1",
+  "suite_version": "1.1.0-local",
+  "upstream_archive": {
+    "path": "../棱镜_六卡流程_13个Skills组合_v1.0.zip",
+    "sha256": "6f5f37e536c3725fd94dcc4267c2877ece3b51a907f5d5fd79a90f9978aaac59"
+  },
+  "upstream_manifest_ref": {
+    "path": "upstream-bundle-manifest-v1.0.json",
+    "sha256": "5b5e57661b54c80be36dfdb74196786e98f0550090072bfbc647a2be334952fd"
+  },
+  "policy_path": "skills/prism_skill_support/references/budgeted-visual-selection.md",
+  "changed_upstream_files": [
+    "skills/prism-cmf-moodboard/SKILL.md",
+    "skills/prism-id-moodboard/SKILL.md",
+    "skills/prism-moodboard-delivery/SKILL.md",
+    "skills/prism-source-image-selection/SKILL.md",
+    "skills/prism-workflow/references/routing.md",
+    "skills/prism-workflow/SKILL.md",
+    "skills/prism_skill_support/references/contracts.md",
+    "skills/prism_skill_support/references/history-and-proposals.md",
+    "START-HERE.md",
+    "metadata/bundle-manifest.json"
+  ],
+  "change_scope": "仅Skill指导、共享预算说明、入口导航与本地完整性元数据；运行库、原生合同代码和冻结运行不变",
+  "current_execution_boundary": "保持全库文本结束后的暂停；本次维护无供应商模型调用",
+  "validation_report": "validation/local-maintenance-validation.json",
+  "model_calls": 0
+}

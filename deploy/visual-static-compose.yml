@@ -1,0 +1,9 @@
+services:
+  visual-static:
+    image: nginx:stable-alpine
+    container_name: design-ai-static-site
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ../frontend/dist:/usr/share/nginx/html:ro
+      - ./visual-static.nginx.conf:/etc/nginx/conf.d/default.conf:ro

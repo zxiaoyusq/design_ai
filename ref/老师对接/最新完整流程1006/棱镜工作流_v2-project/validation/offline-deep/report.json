@@ -1,0 +1,64 @@
+{
+  "status": "failed",
+  "results": [
+    {
+      "check": "native-doctor",
+      "exit_code": 0,
+      "wall_seconds": 0.968,
+      "stdout": "native-doctor.stdout.txt",
+      "stderr": "native-doctor.stderr.txt"
+    },
+    {
+      "check": "R5-replay",
+      "exit_code": 0,
+      "wall_seconds": 1.422,
+      "stdout": "R5-replay.stdout.txt",
+      "stderr": "R5-replay.stderr.txt"
+    },
+    {
+      "check": "research-boundaries",
+      "exit_code": 0,
+      "wall_seconds": 0.688,
+      "stdout": "research-boundaries.stdout.txt",
+      "stderr": "research-boundaries.stderr.txt"
+    },
+    {
+      "check": "H01-boundaries",
+      "exit_code": 0,
+      "wall_seconds": 1.812,
+      "stdout": "H01-boundaries.stdout.txt",
+      "stderr": "H01-boundaries.stderr.txt"
+    },
+    {
+      "check": "portable-glue",
+      "exit_code": 1,
+      "wall_seconds": 2.735,
+      "stdout": "portable-glue.stdout.txt",
+      "stderr": "portable-glue.stderr.txt"
+    },
+    {
+      "check": "v2-material-and-review-contracts",
+      "exit_code": 0,
+      "wall_seconds": 1.375,
+      "stdout": "v2-material-and-review-contracts.stdout.txt",
+      "stderr": "v2-material-and-review-contracts.stderr.txt"
+    },
+    {
+      "check": "future-reference-consumer",
+      "exit_code": 0,
+      "wall_seconds": 13.0,
+      "stdout": "future-reference-consumer.stdout.txt",
+      "stderr": "future-reference-consumer.stderr.txt"
+    },
+    {
+      "check": "native-ID-CMF-alias",
+      "exit_code": 0,
+      "wall_seconds": 232.437,
+      "stdout": "native-ID-CMF-alias.stdout.txt",
+      "stderr": "native-ID-CMF-alias.stderr.txt"
+    }
+  ],
+  "new_model_calls": 0,
+  "semantic_or_visual_accuracy_proven": false,
+  "recorded_at": "2026-10-06T02:50:03.060626+00:00"
+}

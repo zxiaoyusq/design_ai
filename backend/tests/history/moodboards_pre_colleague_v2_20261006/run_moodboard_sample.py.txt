@@ -1,0 +1,69 @@
+"""以最新高潜结果与最新去重 DNA 运行有明确范围的情绪版样本。"""
+
+import argparse
+import json
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.schemas.moodboards import MoodboardRequest
+from app.services.moodboards.tasks import moodboard_manager
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--trend-task-id", help="缺省使用最新有有效方向的趋势结果")
+    parser.add_argument("--direction-ids", nargs="+")
+    parser.add_argument("--resume-task-id", help="只继续该失败任务，复用其冻结范围")
+    parser.add_argument("--count", type=int, default=3, choices=range(1, 101), metavar="1..100")
+    parser.add_argument("--model-id", default="gpt-5.6-sol")
+    parser.add_argument("--confirm", action="store_true", help="确认所选范围并实际调用模型；缺省只显示计划")
+    args = parser.parse_args()
+    if args.resume_task_id:
+        if args.direction_ids or args.trend_task_id:
+            parser.error("继续任务不能重新选择趋势或方向")
+        task = moodboard_manager.get(args.resume_task_id)
+        print(json.dumps({"task_id": task["id"], "status": task["status"], "request": task["request"],
+                          "confirmed": args.confirm}, ensure_ascii=False), flush=True)
+        if args.confirm:
+            moodboard_manager.resume(task["id"])
+            moodboard_manager.run(task["id"])
+            task = moodboard_manager.get(task["id"])
+            print(json.dumps({"task_id": task["id"], "status": task["status"], "error": task["error"]}, ensure_ascii=False), flush=True)
+            if task["status"] != "completed":
+                sys.exit(1)
+        return
+    if not args.direction_ids:
+        parser.error("新建任务必须指定 --direction-ids")
+    catalog = moodboard_manager.catalog()
+    trends = catalog["trend_tasks"]
+    selected = next((t for t in trends if t["id"] == args.trend_task_id), None) if args.trend_task_id else (trends[0] if trends else None)
+    if selected is None:
+        parser.error("找不到可用高潜趋势结果")
+    if len(catalog["dna_results"]) < args.count:
+        parser.error("可用的去重 DNA 图片不足指定数量")
+    if set(args.direction_ids) - {d["id"] for d in selected["directions"]}:
+        parser.error("方向不属于选择的趋势结果")
+    request = MoodboardRequest(trend_task_id=selected["id"], direction_ids=args.direction_ids,
+                              result_ids=[x["id"] for x in catalog["dna_results"][:args.count]],
+                              model_id=args.model_id, confirmed=True)
+    print(json.dumps({"trend_task_id": selected["id"], "directions": [d for d in selected["directions"] if d["id"] in args.direction_ids],
+                      "dna_count": args.count, "selection": "最新成功 DNA，按来源图片身份去重，每图一个版本",
+                      "model_id": args.model_id, "confirmed": args.confirm}, ensure_ascii=False), flush=True)
+    if not args.confirm:
+        return
+    task = moodboard_manager.create(request)
+    print(json.dumps({"task_id": task["id"], "total_jobs": task["total_jobs"]}), flush=True)
+    moodboard_manager.run(task["id"])
+    task = moodboard_manager.get(task["id"])
+    result = task.get("result") or {}
+    print(json.dumps({"task_id": task["id"], "status": task["status"], "error": task["error"],
+                      "directions": [{"title": d["title"], "clusters": [{"name": c["name"], "count": len(c["result_ids"])} for c in d["clusters"]]} for d in result.get("directions", [])],
+                      "unmatched_count": len(result.get("unmatched_result_ids", []))}, ensure_ascii=False), flush=True)
+    if task["status"] != "completed":
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

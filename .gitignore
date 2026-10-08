@@ -46,5 +46,8 @@ data/trend_data/
 data/userreseach_data/
 data/design_trend_insights/
 
+# 从离线交付包生成的站点页面与原图，使用发布脚本重建。
+frontend/public/visual-workflow/
+
 # Local model conversation traces and attached media
 conversation_history/

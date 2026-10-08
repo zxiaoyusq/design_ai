@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-03",
+  "unique_originals": 582,
+  "new_originals": 500,
+  "reused_originals": 82,
+  "new_native_known_scope_available": 486,
+  "all_native_known_scope_available": 568,
+  "second_logical_confirmation_or_repair_images": 422,
+  "single_call_available_images": 77,
+  "final_unavailable_new_images": 14,
+  "actual_workflow_CLI_attempts": 1637,
+  "whole_board_native_acceptance_by_arm": {
+    "30": 0,
+    "100": 0
+  },
+  "definitions": [
+    "Known-scope availability is not visual accuracy.",
+    "R5 normally includes a conditional focus call; needing it is not equivalent to overall algorithm failure.",
+    "The 216-field dictionary is not a requirement to invent 216 visible values in each image."
+  ],
+  "source_completion_sha256": "2eb88acab911d8021d8a51b842b7d959cead15ff036bb50c56be775736c8392a",
+  "source_budget_audit_sha256": "3d6d66ebd89c470aa908c24b8e47c14ddad69b83144ee153b51950db5d609836"
+}

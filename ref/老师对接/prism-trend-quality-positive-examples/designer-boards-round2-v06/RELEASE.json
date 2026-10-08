@@ -1,0 +1,34 @@
+{
+  "version": "cmf-reference-signal-cascade-v0.6.0",
+  "status": "CALIBRATED_ON_POSITIVES_NOT_PRODUCTION_VALIDATED",
+  "model": "qwen3.8-flash",
+  "scope": "Local trend-quality experiments; source routing required; calibration exports never enter production.",
+  "primary": {
+    "version": "cmf-reference-signal-gate-v0.5.2",
+    "prompt": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\prompt-v0.5.txt",
+    "prompt_sha256": "e03e2ff9c3da9fcbbf38b78ba905a03c33494590b8283ce26fa885510bd01048",
+    "gate": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2-v06\\algorithm\\signal_gate.py"
+  },
+  "confirmation": {
+    "version": "cmf-reference-signal-confirm-v0.6.0",
+    "prompt": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2-v06\\prompt-v0.5.txt",
+    "prompt_sha256": "131ba739bc69ec09fe065e6237fc384fef8f89d6426b76bbc733462f922babc3",
+    "maximum_attempts": 1
+  },
+  "policy": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2-v06\\algorithm\\policy.py",
+  "policy_sha256": "088128d597fdebaa2f212bda45c4aacf03306fbb9b9e32c4d43d2e1cf84dc931",
+  "parameters": {
+    "enable_thinking": false,
+    "temperature": 0,
+    "max_tokens": 1400,
+    "response_format": {
+      "type": "json_object"
+    }
+  },
+  "report": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2-v06\\report.html",
+  "summary": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2-v06\\summary.json",
+  "production_activated": false,
+  "negative_gold_available": false,
+  "new_paid_calls_this_round": 124,
+  "model_calls_for_interface_adapter": 0
+}

@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "moved_to_new_unicode_and_spaces_path": true,
+  "results": [
+    {
+      "name": "doctor",
+      "exit": 0,
+      "seconds": 1.47
+    },
+    {
+      "name": "R5-replay",
+      "exit": 0,
+      "seconds": 1.59
+    },
+    {
+      "name": "new-contracts",
+      "exit": 0,
+      "seconds": 1.81
+    },
+    {
+      "name": "case",
+      "exit": 0,
+      "seconds": 2.38
+    }
+  ],
+  "new_model_calls": 0
+}

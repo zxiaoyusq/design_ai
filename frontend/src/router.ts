@@ -6,6 +6,16 @@ export default createRouter({
   history: createWebHistory(),
   routes: [
     {
+      path: '/trend-quality/review',
+      name: 'trend-quality-review',
+      component: () => import('@/views/TrendQualityReviewView.vue'),
+    },
+    {
+      path: '/dna-v2',
+      name: 'dna-v2',
+      component: () => import('@/views/DnaV2View.vue'),
+    },
+    {
       path: '/article-trends',
       name: 'article-trends',
       component: () => import('@/views/ArticleTrendsView.vue'),
@@ -19,6 +29,11 @@ export default createRouter({
       path: '/high-trends',
       name: 'high-trends',
       component: () => import('@/views/HighTrendsView.vue'),
+    },
+    {
+      path: '/moodboards',
+      name: 'moodboards',
+      component: () => import('@/views/MoodboardsView.vue'),
     },
     {
       path: '/design-modification',

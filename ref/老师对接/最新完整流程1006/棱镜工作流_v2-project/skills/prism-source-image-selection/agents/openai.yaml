@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜广候选池与素材计划"
+  short_description: "从选中方向的文章池召回多来源图片，记录当前对象、处理动作和解析候选池。用于素材筛选；最终约10张不限制候选解析数量。"
+  default_prompt: "使用 $prism-source-image-selection 完成本环节，保留实际输入输出、来源和未解决问题。"

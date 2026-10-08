@@ -1,0 +1,3 @@
+interface:
+  display_name: "单图参考准备"
+  short_description: "合并目标绑定、原生品质和实际裁片复核，输出可追溯单图候选"

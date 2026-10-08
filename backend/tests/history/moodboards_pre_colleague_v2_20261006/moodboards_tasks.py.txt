@@ -1,0 +1,463 @@
+"""冻结文本输入、唯一归属校验和情绪版任务持久化；沿用现有本地结果库。"""
+
+from collections import Counter
+from copy import deepcopy
+from datetime import UTC, datetime
+from hashlib import sha256
+import json
+import fcntl
+import os
+from pathlib import Path
+import re
+from threading import RLock
+from uuid import uuid4
+
+from app.agents.moodboard_generator import prompt_version, run_moodboard_step, skill_version, stage_prompt
+from app.schemas.moodboards import Assignments, Clusters, CuratedAssignments, CuratedClusters, CuratedClustersV3
+from app.services.dna import storage
+from app.services.llm.catalog import get_model
+
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
+SKILL_FILE = PROJECT_ROOT / "ref/moodboard-generator/SKILL.md"
+ACTIVE = {"queued", "running"}
+LEGACY_EXECUTION_STOP_REASON = "已切换同事 v2 原生视觉流程；旧 DNA 文本 4–8 张生成与续跑已停用。请使用原生设计转译、实际裁图、独立整板复核链，网页仅接收已校验的结果。"
+
+
+def now():
+    return datetime.now(UTC).isoformat()
+
+
+def read(path):
+    return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def encode(value):
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"), default=str)
+
+
+def write(path, value):
+    storage._atomic_write(path, (json.dumps(value, ensure_ascii=False, indent=2, default=str) + "\n").encode())
+
+
+def dna_projection(business):
+    """按字段投影语义信息，保留证据与不确定性；不截断字段值或载入图片。"""
+    style = business.get("style", {})
+    return {
+        "object": business.get("object", {}),
+        "style": {k: v for k, v in style.items() if k in {"composition_summary", "primary", "primary_style"}}
+        | {"style_candidates": [{k: v for k, v in candidate.items()
+                                  if k in {"style_id", "label_zh", "confidence_score", "main_conflicts",
+                                           "rank", "match_score", "main_support", "regions", "facet_ids"}}
+                                 for candidate in style.get("style_candidates", style.get("tags", []))]},
+        # 证据中的整体覆盖与局部限定是主导性判断依据，不能仅保留关键词和置信度。
+        "key_dna": [{k: v for k, v in item.items()
+                     if k in {"group", "name", "value", "confidence_score", "inference_note", "region", "evidence"}}
+                    for item in business.get("key_dna", [])],
+        "semantic_profile": business.get("semantic_profile", {}),
+        "novel_dna": business.get("novel_dna", []),
+        "quality": business.get("quality", {}),
+    }
+
+
+def resolve_pointer(value, pointer):
+    """证据必须指向模型实际收到的 DNA 字段，禁止空路径与虚构证据。"""
+    if not pointer.startswith("/") or re.search(r"~(?![01])", pointer):
+        raise ValueError(f"无效 DNA 证据路径：{pointer}")
+    try:
+        for part in pointer[1:].split("/"):
+            key = part.replace("~1", "/").replace("~0", "~")
+            if isinstance(value, list):
+                if not re.fullmatch(r"0|[1-9][0-9]*", key):
+                    raise ValueError("无效数组下标")
+                value = value[int(key)]
+            else:
+                value = value[key]
+    except (KeyError, IndexError, TypeError, ValueError) as exc:
+        raise ValueError(f"DNA 证据路径不存在：{pointer}") from exc
+    if value is None or value == "" or value == [] or value == {}:
+        raise ValueError(f"DNA 证据路径为空：{pointer}")
+    return value
+
+
+def validate_assignments(data, images, directions, version="v1"):
+    """每个输入恰好出现一次，方向与证据必须属于冻结输入。"""
+    schema = CuratedAssignments if version in {"v2", "v3"} else Assignments
+    parsed = schema.model_validate(data).model_dump()["assignments"]
+    known = {image["result_id"]: image["dna"] for image in images}
+    if Counter(x["result_id"] for x in parsed) != Counter(known.keys()):
+        raise ValueError("方向匹配输出存在重复、遗漏或未知图片")
+    allowed = {direction["id"] for direction in directions}
+    for item in parsed:
+        if item["direction_id"] is not None and item["direction_id"] not in allowed:
+            raise ValueError("模型返回未选择的趋势方向")
+        if any(did not in allowed for did in item.get("competing_direction_ids", [])):
+            raise ValueError("模型返回未选择的竞争方向")
+        for pointer in item["evidence_paths"]:
+            resolve_pointer(known[item["result_id"]], pointer)
+    return parsed
+
+
+def validate_clustering(data, result_ids, version="v1"):
+    """v1 全部分区；v2/v3 精选与未入选共同覆盖候选，按冻结版本校验成板下限。"""
+    schema = {"v2": CuratedClusters, "v3": CuratedClustersV3}.get(version, Clusters)
+    parsed = schema.model_validate(data).model_dump()
+    clusters = parsed["clusters"]
+    if len({c["id"] for c in clusters}) != len(clusters):
+        raise ValueError("类别 ID 不能重复")
+    if len({c["name"] for c in clusters}) != len(clusters):
+        raise ValueError("类别名称不能重复")
+    accounted = [rid for c in clusters for rid in c["result_ids"]]
+    accounted.extend(item["result_id"] for item in parsed.get("excluded", []))
+    if Counter(accounted) != Counter(result_ids):
+        raise ValueError("方向内分类存在重复、遗漏或跨方向图片")
+    return {"clusters": clusters, "excluded": parsed.get("excluded", [])}
+
+
+def validate_clusters(data, result_ids, version="v1"):
+    """兼容旧调用方的列表返回值；新流程通过 validate_clustering 保留排除原因。"""
+    return validate_clustering(data, result_ids, version)["clusters"]
+
+
+def assignment_batches(images):
+    """分包只限制匹配阶段，每包都与全部方向比较；不会改变方向内二次聚类范围。"""
+    batches, batch, size = [], [], 0
+    for image in images:
+        length = len(encode(image))
+        if length > 35_000:
+            raise ValueError("单张 DNA 文本过大，请选择其他结果")
+        if batch and (size + length > 35_000 or len(batch) >= 10):
+            batches.append(batch)
+            batch, size = [], 0
+        batch.append(image)
+        size += length
+    if batch:
+        batches.append(batch)
+    return batches
+
+
+class MoodboardManager:
+    """文件执行锁使网页与 CLI 共用一个任务队列，中断不自动重发付费请求。"""
+
+    def __init__(self, root=PROJECT_ROOT):
+        self.root = Path(root)
+        self.output = self.root / "data/result/moodboards"
+        self._lock = RLock()
+        self._active = set()
+        self._lease = None
+        if self.output.exists():
+            try:
+                self._acquire()
+            except RuntimeError:
+                pass  # 另一个存活进程持有执行锁；仅查看结果不会中断它。
+            else:
+                try:
+                    self._recover_interrupted()
+                finally:
+                    self._release()
+
+    def _acquire(self):
+        self.output.mkdir(parents=True, exist_ok=True)
+        lease = (self.output / ".execution.lock").open("a")
+        try:
+            fcntl.flock(lease, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            lease.close()
+            raise RuntimeError("已有情绪版任务正在执行，请等待完成") from exc
+        self._lease = lease
+
+    def _release(self):
+        if self._lease is not None:
+            fcntl.flock(self._lease, fcntl.LOCK_UN)
+            self._lease.close()
+            self._lease = None
+
+    def _recover_interrupted(self):
+        """持锁后才检查中断；owner_pid 兼容早期未持文件锁的本地运行任务。"""
+        for path in self.output.glob("mb_*/task.json"):
+            task = read(path)
+            if task["status"] not in ACTIVE:
+                continue
+            owner = task.get("owner_pid")
+            if isinstance(owner, int) and owner > 0:
+                try:
+                    os.kill(owner, 0)
+                    continue
+                except ProcessLookupError:
+                    pass
+            task.update(status="failed", stage="interrupted", updated_at=now(),
+                        message="执行进程已中断", error="已保存阶段文件；未自动重新调用模型")
+            write(path, task)
+
+    def _folder(self, task_id):
+        if not re.fullmatch(r"mb_[a-f0-9]{32}", task_id):
+            raise FileNotFoundError("情绪版任务不存在")
+        folder = self.output / task_id
+        if not (folder / "task.json").is_file():
+            raise FileNotFoundError("情绪版任务不存在")
+        return folder
+
+    def _trend(self, task_id):
+        if not re.fullmatch(r"web_[a-f0-9]{32}", task_id):
+            raise FileNotFoundError("趋势任务不存在")
+        folder = self.root / "data/result/high_trend" / task_id
+        task = read(folder / "web_task.json")
+        if task["status"] not in {"completed", "partial"}:
+            raise ValueError("请选择已有有效结果的高潜趋势任务")
+        result = read(folder / "high_potential_trends.json")
+        return task, result
+
+    def _dna_trace(self, result_id):
+        return storage._trace_data(result_id) or {}
+
+    @staticmethod
+    def _identity(result_id, trace):
+        source = trace.get("input_image", {})
+        # 同图多次提取按原始图片哈希归一；旧资料缺少哈希时使用稳定来源身份。
+        return (source.get("sha256") or trace.get("image_id") or source.get("path")
+                or result_id)
+
+    def catalog(self):
+        """只列出可选趋势及每个来源图片的最新成功 DNA。"""
+        trend_tasks = []
+        for path in (self.root / "data/result/high_trend").glob("web_*/web_task.json"):
+            try:
+                task, result = self._trend(path.parent.name)
+            except (FileNotFoundError, ValueError):
+                continue
+            directions = [{k: card.get(k, "") for k in ("id", "title", "description")}
+                          for card in result.get("trends", [])]
+            if directions:
+                trend_tasks.append({"id": task["id"], "created_at": task["created_at"], "directions": directions})
+        unique, images = set(), []
+        for item in storage.list_results():
+            identity = self._identity(item["id"], self._dna_trace(item["id"]))
+            if identity not in unique:
+                unique.add(identity)
+                images.append({**item, "created_at": str(item["created_at"])})
+        return {"trend_tasks": sorted(trend_tasks, key=lambda t: t["created_at"], reverse=True),
+                "dna_results": images,
+                "execution": {"supported": False, "workflow": "colleague_v2_native", "reason": LEGACY_EXECUTION_STOP_REASON}}
+
+    def create(self, request):
+        """用户已确认范围后保存不可变的输入文本与来源，原 DNA 结果保持原样。"""
+        raise RuntimeError(LEGACY_EXECUTION_STOP_REASON)
+        with self._lock:
+            if self._active:
+                raise RuntimeError("已有情绪版任务正在执行，请等待完成")
+            self._acquire()
+            try:
+                self._recover_interrupted()
+                if any(t["status"] in ACTIVE for t in self.list()):
+                    raise RuntimeError("已有情绪版任务正在执行，请等待完成")
+                return self._create(request)
+            except Exception:
+                self._release()
+                raise
+
+    def _create(self, request):
+        get_model(request.model_id)
+        with self._lock:
+            if self._active:
+                raise RuntimeError("已有情绪版任务正在执行，请等待完成")
+            trend_task, trend_result = self._trend(request.trend_task_id)
+            available = {d["id"]: d for d in trend_result["trends"]}
+            if any(did not in available for did in request.direction_ids):
+                raise ValueError("所选方向不属于该趋势结果")
+            directions = [{k: available[did].get(k, "") for k in ("id", "title", "description")}
+                          for did in request.direction_ids]
+            summaries = {item["id"]: item for item in storage.list_results()}
+            images, sources, seen = [], [], set()
+            for rid in request.result_ids:
+                if rid not in summaries:
+                    raise FileNotFoundError(f"DNA 结果不存在或未提取完成：{rid}")
+                business = storage.load_result(rid, "business")
+                trace = self._dna_trace(rid)
+                identity = self._identity(rid, trace)
+                if identity in seen:
+                    raise ValueError("同一张图片不能选择多个 DNA 结果")
+                seen.add(identity)
+                dna = dna_projection(business)
+                if not dna["key_dna"] and not any(dna["style"].values()):
+                    raise ValueError(f"结果缺少可分析的 DNA：{rid}")
+                images.append({"result_id": rid, "dna": dna})
+                sources.append({"result_id": rid, "image_identity": identity,
+                                "business_sha256": sha256(encode(business).encode()).hexdigest(),
+                                "business": business, "extraction_trace": trace})
+            batches = assignment_batches(images)
+            skill_text = SKILL_FILE.read_text()
+            # 先校验最坏情况下全部图归到一个方向的上下文，避免付费到第二阶段才发现超限。
+            maximum = len(stage_prompt("clustering", skill_text)) + len(encode({"images": images, "directions": directions}))
+            if maximum > 360_000:
+                raise ValueError("所选 DNA 文本超过方向内聚类预算，请减少图片数量")
+            task_id, created = "mb_" + uuid4().hex, now()
+            folder = self.output / task_id
+            inputs = {"directions": directions, "images": images, "sources": sources,
+                      "image_summaries": [summaries[rid] for rid in request.result_ids],
+                      "trend": {"task_id": trend_task["id"], "created_at": trend_task["created_at"],
+                                "result_sha256": sha256(encode(trend_result).encode()).hexdigest(),
+                                "directions": [available[did] for did in request.direction_ids]}}
+            write(folder / "inputs.json", inputs)
+            storage._atomic_write(folder / "skill.md", skill_text.encode())
+            task = {"id": task_id, "status": "queued", "stage": "queued", "message": "文本资料已冻结，等待开始",
+                    "created_at": created, "updated_at": created, "request": request.model_dump(),
+                    "completed_jobs": 0, "total_jobs": len(batches) + len(directions), "error": None,
+                    "prompt_version": prompt_version(skill_text), "skill_sha256": sha256(skill_text.encode()).hexdigest(),
+                    "owner_pid": os.getpid(),
+                    "inputs_sha256": sha256(encode(read(folder / "inputs.json")).encode()).hexdigest(),
+                    "events": [], "result": None}
+            write(folder / "task.json", task)
+            self._active.add(task_id)
+            return deepcopy(task)
+
+    def list(self):
+        with self._lock:
+            tasks = [read(path) for path in self.output.glob("mb_*/task.json")]
+        # 历史列表不重复发送每张图片的分析正文。
+        return sorted([{**task, "result": None} for task in tasks], key=lambda t: t["created_at"], reverse=True)
+
+    def get(self, task_id):
+        with self._lock:
+            return read(self._folder(task_id) / "task.json")
+
+    def _update(self, task_id, **values):
+        with self._lock:
+            path = self._folder(task_id) / "task.json"
+            task = read(path)
+            task.update(values, updated_at=now())
+            task["events"].append({"time": now(), "stage": task["stage"], "message": task["message"]})
+            write(path, task)
+
+    def resume(self, task_id):
+        """显式继续失败任务：复用冻结输入与已校验输出，每阶段最多一次格式修复。"""
+        raise RuntimeError(LEGACY_EXECUTION_STOP_REASON)
+        with self._lock:
+            if self._active:
+                raise RuntimeError("已有情绪版任务正在执行，请等待完成")
+            self._acquire()
+            try:
+                self._recover_interrupted()
+                task = self.get(task_id)
+                if task["status"] != "failed":
+                    raise ValueError("只有失败的情绪版任务可以继续")
+                if any(t["status"] in ACTIVE for t in self.list()):
+                    raise RuntimeError("已有情绪版任务正在执行，请等待完成")
+                self._active.add(task_id)
+                self._update(task_id, status="queued", stage="queued", error=None,
+                             owner_pid=os.getpid(), message="继续原任务，复用已完成阶段")
+                return self.get(task_id)
+            except Exception:
+                self._release()
+                raise
+
+    def run(self, task_id):
+        """匹配分包后统一校验，再用每个方向的全部 DNA 进行一次二次聚类。"""
+        raise RuntimeError(LEGACY_EXECUTION_STOP_REASON)
+        with self._lock:
+            task = self.get(task_id)
+            if task["status"] != "queued":
+                return
+            if self._lease is None:
+                self._acquire()
+            self._active.add(task_id)
+            self._update(task_id, status="running", stage="assignment", message="开始按趋势方向匹配 DNA")
+        folder = self._folder(task_id)
+        completed = 0
+        calls = [read(path) for path in sorted((folder / "calls").glob("*.json"))]
+        try:
+            inputs = read(folder / "inputs.json")
+            skill_text = (folder / "skill.md").read_text()
+            if sha256(skill_text.encode()).hexdigest() != task["skill_sha256"] or sha256(encode(inputs).encode()).hexdigest() != task["inputs_sha256"]:
+                raise ValueError("冻结输入或 Skill 已被修改，请新建任务")
+            version = skill_version(skill_text)
+            frozen_prompt_version = prompt_version(skill_text)
+
+            def call(stage, payload, label, validator, *, repair=True):
+                # 断点继续只复用完全相同的冻结请求，保留所有失败与修复调用的真实用量。
+                record = next((c for c in reversed(calls) if c["stage"] == stage and c["input"] == payload
+                               and c.get("text") is not None and not c.get("truncated")), None)
+                if record is None:
+                    path = folder / "calls" / f"{len(calls) + 1:03d}.json"
+                    record = {"stage": stage, "label": label, "started_at": now(), "model_id": task["request"]["model_id"],
+                              "prompt_version": frozen_prompt_version, "system": stage_prompt(stage, skill_text), "input": payload}
+                    write(path, record)
+                    try:
+                        response = run_moodboard_step(task["request"]["model_id"], stage, payload, skill_text)
+                        record.update(response, completed_at=now())
+                        write(path, record)
+                        calls.append(record)
+                    except Exception as exc:
+                        record.update(error=type(exc).__name__, completed_at=now())
+                        if hasattr(exc, "moodboard_telemetry"):
+                            record["telemetry"] = exc.moodboard_telemetry
+                        write(path, record)
+                        raise
+                if record.get("truncated"):
+                    raise ValueError("模型输出被截断，未发布不完整分类")
+                try:
+                    text = record["text"].strip()
+                    if text.startswith("```") and text.endswith("```"):
+                        text = re.sub(r"^```(?:json)?\s*", "", text)[:-3].strip()
+                    return validator(json.loads(text))
+                except ValueError as exc:
+                    if not repair:
+                        raise
+                    self._update(task_id, message=f"{label}输出校验未通过，仅修复本阶段一次")
+                    correction = {"validation_error": str(exc)[:1800], "previous_output": record["text"],
+                                  "instruction": "仅修复明确的输出错误，逐项核对输入ID和实际DNA路径；保留其余有效判断，返回本阶段完整JSON。"}
+                    return call(stage, {**payload, "correction": correction}, label + "修复", validator, repair=False)
+
+            assignments = []
+            for index, batch in enumerate(assignment_batches(inputs["images"]), 1):
+                self._update(task_id, stage="assignment", message=f"正在匹配第 {index} 包（{len(batch)} 张 DNA）")
+                parsed = call("assignment", {"directions": inputs["directions"], "images": batch}, f"匹配 {index}",
+                              lambda data: validate_assignments(data, batch, inputs["directions"], version))
+                assignments.extend(parsed)
+                completed += 1
+                write(folder / "assignments.json", assignments)
+                self._update(task_id, completed_jobs=completed)
+            validate_assignments({"assignments": assignments}, inputs["images"], inputs["directions"], version)
+            directions = []
+            for direction in inputs["directions"]:
+                ids = {a["result_id"] for a in assignments if a["direction_id"] == direction["id"]}
+                images = [item for item in inputs["images"] if item["result_id"] in ids]
+                classified = {"clusters": [], "excluded": []}
+                if images:
+                    self._update(task_id, stage="clustering", message=f"正在细分“{direction['title']}”（{len(images)} 张）")
+                    classified = call("clustering", {"direction": direction, "images": images}, direction["title"],
+                                      lambda data: validate_clustering(data, [image["result_id"] for image in images], version))
+                directions.append({**direction, "clusters": classified["clusters"],
+                                   **({"excluded": classified["excluded"]} if version in {"v2", "v3"} else {})})
+                completed += 1
+                write(folder / "directions.json", directions)
+                self._update(task_id, completed_jobs=completed)
+            dna_by_id = {image["result_id"]: image["dna"] for image in inputs["images"]}
+            for assignment in assignments:
+                assignment["evidence"] = [{"path": pointer, "value": resolve_pointer(dna_by_id[assignment["result_id"]], pointer)}
+                                          for pointer in assignment["evidence_paths"]]
+            result = {"directions": directions, "assignments": assignments, "images": inputs["image_summaries"],
+                      "unmatched_result_ids": [a["result_id"] for a in assignments if a["direction_id"] is None],
+                      "trace": {"model_id": task["request"]["model_id"], "prompt_version": frozen_prompt_version,
+                                "skill_sha256": task["skill_sha256"], "inputs_sha256": task["inputs_sha256"],
+                                "trend_task_id": task["request"]["trend_task_id"], "created_at": task["created_at"],
+                                "completed_at": now(), "image_input": False,
+                                "calls": [{k: c.get(k) for k in ("stage", "label", "started_at", "completed_at", "model_id", "model_name", "seconds", "telemetry", "error")}
+                                          for c in calls]}}
+            write(folder / "result.json", result)
+            self._update(task_id, status="completed", stage="completed", message="情绪版生成完成", result=result)
+        except Exception as exc:
+            # 第三方异常可能带连接详情，页面仅显示受控信息；完整响应保留在本地调用记录。
+            detail = str(exc) if isinstance(exc, (ValueError, FileNotFoundError)) else f"模型阶段执行失败（{type(exc).__name__}），未自动重试"
+            self._update(task_id, status="failed", stage="failed", message="生成中断，已保留完成的阶段", error=detail[:1800])
+        finally:
+            with self._lock:
+                self._active.discard(task_id)
+                self._release()
+
+    def download(self, task_id):
+        path = self._folder(task_id) / "result.json"
+        if not path.is_file():
+            raise FileNotFoundError("情绪版结果尚未生成")
+        return path
+
+
+moodboard_manager = MoodboardManager()

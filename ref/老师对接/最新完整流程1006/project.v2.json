@@ -1,0 +1,75 @@
+{
+  "project_id": "prism-project-v2-20261006",
+  "strategy_version": "prism-workflow-skills-v2.0.0-project-20261006",
+  "run_mode": "end_to_end",
+  "requested_direction_count": 13,
+  "h01_policy": {
+    "mode": "exploration",
+    "max_directions": 20,
+    "requested_selection_count": 13,
+    "legacy_inputs_need_native_contract_adaptation": true
+  },
+  "quantity_policy": {
+    "target": 10,
+    "native_minimum": 10,
+    "maximum": 10,
+    "hard_minimum": true
+  },
+  "source_policy": {
+    "independent_projects": 10,
+    "identity_evidence_required": true,
+    "maximum_per_article": 1,
+    "maximum_per_known_project": 1
+  },
+  "candidate_pool_policy": {
+    "target": null,
+    "basis": "由预览后的独立来源容量、异质性与本次预算登记；不是最终10图或固定30/100"
+  },
+  "execution_budget": {},
+  "execution_authorization": {
+    "allowed": false,
+    "maximum_attempts_per_request": 1
+  },
+  "model_calls_paused": true,
+  "model_policy": {
+    "model": "gpt-6-sol",
+    "reasoning_effort": "low",
+    "service_tier_requested": "default",
+    "fast_mode": false
+  },
+  "maximum_targeted_revisions_per_issue": 3,
+  "historical_proxy_permissions_inherited": false,
+  "status": "draft_prepare_only_pending_candidate_capacity_and_budget",
+  "history_result_policy": "旧13方向与4/5张板仅供溯源，不能当作新版原生结果",
+  "input_paths": {
+    "historical_handshake": "/root/dev/work/design_ai/data/result/semantic_handshake/astra_full_20261001/result.json",
+    "existing_dna_inventory": "/root/dev/work/design_ai/data/result/visual_workflow/h01_all13_20261005_expanded/inventory.json"
+  },
+  "human_confirmation": {
+    "actor_kind": "user_delegated_ai",
+    "AI_delegation_confirmed_for_this_project": true,
+    "basis": "本会话用户已要求各方向视觉条件由助手选择确认、后续也由助手确认；仅设计准备权限，模型暂停不解除。"
+  },
+  "skill_entry_layout": {
+    "version": "2.1.0-project",
+    "main_skill_count": 13,
+    "native_algorithm_versions_unchanged": true,
+    "merged_entries": {
+      "prism-visual-material-planning": [
+        "prism-visual-family",
+        "prism-source-image-selection"
+      ],
+      "prism-reference-image-preparation": [
+        "prism-target-view-binding",
+        "prism-target-quality",
+        "prism-crop-enhancement"
+      ],
+      "prism-visual-grouping": [
+        "prism-id-moodboard",
+        "prism-cmf-moodboard"
+      ]
+    },
+    "workflow_route": ".agents/skills/prism-workflow/references/routing.md",
+    "input_output_contract": ".agents/skills/prism-workflow/references/flow-input-output.md"
+  }
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "module": "h2_original_negative_future_ref_v1",
+    "source_consumer_sha256": "09cee7e039db8b192d231217e2415c3b7d82345053298263236787fe53de5431",
+    "packaged_consumer_sha256": "e8fa78afc426f4fc3403097ac22444c69e6bd27ec2c87cd2d414b6c67d9da44a",
+    "change": "Resolve dependency FileRefs relative to installed module; preserve hashes and all semantic/visual gates.",
+    "private_real_test_inputs_not_copied": true
+  }
+]

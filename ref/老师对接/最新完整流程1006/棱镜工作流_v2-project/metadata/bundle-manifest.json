@@ -1,0 +1,1375 @@
+{
+  "suite": "prism-workflow-small-skills",
+  "version": "2.0.0",
+  "date": "2026-10-06",
+  "skill_count": 17,
+  "shared_support_folders": 1,
+  "source_of_truth": "Current package files and scoped validation; historical manifests are provenance only",
+  "files": [
+    {
+      "path": "cases/expanded-30-100/metrics.json",
+      "sha256": "760b520ac72d87f15d044cd9decf21301394fe51e07d2c675babfea8d313e3dc",
+      "bytes": 946
+    },
+    {
+      "path": "cases/linear-relief/board-portable.json",
+      "sha256": "621b6ab915b10db6f923735a18eec73e7d2c890f094fd460e466d4a00df5bb76",
+      "bytes": 10400
+    },
+    {
+      "path": "cases/linear-relief/case-facts.json",
+      "sha256": "8a71b91a60a48899861267aebf8f83e3ce5bf4f5d58da4c111db659b915108ff",
+      "bytes": 752
+    },
+    {
+      "path": "cases/linear-relief/final-board.png",
+      "sha256": "64a9a0f88fb6456363b3b7eb3ca9312f20cdfdcc8055f8bf45f660661f138641",
+      "bytes": 764416
+    },
+    {
+      "path": "cases/linear-relief/first-board-revise.png",
+      "sha256": "5a367168ebd8f4302878f92b1c4c174a8147aace036041ba56858deaaee6c84f",
+      "bytes": 796764
+    },
+    {
+      "path": "cases/linear-relief/independent-board-review-v3.json",
+      "sha256": "d47ec78e18dcd3feaf041bec8e67dccda66511ef9327e2eec379e9bd19bfb052",
+      "bytes": 5372
+    },
+    {
+      "path": "cases/linear-relief/independent-board-review.json",
+      "sha256": "a6c81444bcb074430ca88aed455e43d2763468235e3f82228695b042b8103934",
+      "bytes": 5441
+    },
+    {
+      "path": "cases/linear-relief/originals/N001.jpg",
+      "sha256": "bd2905593cdaf4930970f3e40d1ac38d41e8d40c28ea755fb12be0905252a55e",
+      "bytes": 221410
+    },
+    {
+      "path": "cases/linear-relief/originals/N003.png",
+      "sha256": "b95dbdb053a1d090e20c22f371027b4406850c44d3c0829db98dbeeafe039ec0",
+      "bytes": 1009043
+    },
+    {
+      "path": "cases/linear-relief/originals/N008.jpg",
+      "sha256": "24cb5e524cdf5328a23c9b92b9454932edd01d44f04baf9e87e82e4ab01e4237",
+      "bytes": 484967
+    },
+    {
+      "path": "cases/linear-relief/originals/N016.jpg",
+      "sha256": "13cbb68812935c6affaa62ded0564d63ddffa58c83eaed45fffbb9e27aea028a",
+      "bytes": 29834
+    },
+    {
+      "path": "cases/linear-relief/originals/N025.jpg",
+      "sha256": "25b26ed17aa807049aeee5020cd0a7cef6c80aaf5aab1224be7d1b1ad1245090",
+      "bytes": 79408
+    },
+    {
+      "path": "cases/linear-relief/originals/N036.png",
+      "sha256": "0ffcefa6452459b63319c017969dcafc4604c39bdf42475a555616cafcdfe527",
+      "bytes": 1144409
+    },
+    {
+      "path": "cases/linear-relief/originals/N038.jpg",
+      "sha256": "20e4d6574837ccf5ade3ccaed48017adc40b113ca38c42207346664d9efe2076",
+      "bytes": 200888
+    },
+    {
+      "path": "cases/linear-relief/originals/N054.jpg",
+      "sha256": "4675339442b4621d0896b64c0cf082fe7790df35e1b2aa6744a07e4facc2aa7c",
+      "bytes": 181283
+    },
+    {
+      "path": "cases/linear-relief/originals/N062.png",
+      "sha256": "73973f7223b37bcd1730e26761f1f63c39027be53a80862e438dc82d34ef3606",
+      "bytes": 2181962
+    },
+    {
+      "path": "cases/linear-relief/originals/N080.jpg",
+      "sha256": "9e8b6db5c8819688357197b246d99c0cfe6991e44331bbab7e36aa74b5b57448",
+      "bytes": 51671
+    },
+    {
+      "path": "cases/linear-relief/selection-brief.json",
+      "sha256": "36f559b37c6cc6ec90644975d77125d451148f114f427027e4d62dac93895f93",
+      "bytes": 2935
+    },
+    {
+      "path": "cases/linear-relief/实际试板与取景.html",
+      "sha256": "7171310b3a9a738a6c508b6c90f57bdedfb859b578bffebeea5657a7dfec5d9e",
+      "bytes": 22361262
+    },
+    {
+      "path": "docs/history/20261002_实际六卡流程复盘.html",
+      "sha256": "139ff6aecde1d4a0ef26b4fea769a15e4f25f4c7c7489852698255cddade725d",
+      "bytes": 31160
+    },
+    {
+      "path": "docs/stage-detail.json",
+      "sha256": "a3835c1df5b774ec0205dccd67b6ef53788210ce62afee26d789eb18f76e933c",
+      "bytes": 21296
+    },
+    {
+      "path": "docs/完整工作流_同事接手手册.md",
+      "sha256": "96889e377ea9110a3df129e0f7273fb8a309ec1e0b4aa33cddcfe9b0b31398f4",
+      "bytes": 28192
+    },
+    {
+      "path": "examples/board-manifest.example.json",
+      "sha256": "c6ac0cf63fe9182367bb6d080eef97adce97b25983a9348ed56b3de85dbf4d89",
+      "bytes": 536
+    },
+    {
+      "path": "examples/historical-six.example.json",
+      "sha256": "84df661de4694a73a8ca20bdad4890f8a05f9523d436a3906141e9b6f6be2e3a",
+      "bytes": 465
+    },
+    {
+      "path": "examples/image-plan.example.json",
+      "sha256": "5d9135a7f104e38d96f5d3679807ca8d220ff0dd7301fa3e26fca28c62d382ce",
+      "bytes": 214
+    },
+    {
+      "path": "examples/intake.example.json",
+      "sha256": "1d7566e051eb744ce760434212082ee4bdb5f20995bc9d8a80c6d85780991af2",
+      "bytes": 231
+    },
+    {
+      "path": "examples/material-brief.example.json",
+      "sha256": "553fcd4a1cab9d059f38bc677ecd5b9e0bad2ae90a913db60dd6f28b9a93f8f9",
+      "bytes": 648
+    },
+    {
+      "path": "examples/material-candidates.example.json",
+      "sha256": "4fc9fdf548a8e712e5c26cb0216dfa56d83247d3533da057d417795e006cf78a",
+      "bytes": 888
+    },
+    {
+      "path": "examples/model-job.example.json",
+      "sha256": "b09937e7b6c46c7b25736d44d5fd88d2ed6357dcc593307ef6418ae791d15bb9",
+      "bytes": 403
+    },
+    {
+      "path": "examples/project.example.json",
+      "sha256": "7efd37c6af11c09002aa601c96be545c763eb320120a7ead528a1ab9bf8132a6",
+      "bytes": 1419
+    },
+    {
+      "path": "examples/recall.example.json",
+      "sha256": "5ad1bea0bbfa461522eb826be05db1d21e677888304d470f7c4f64cdb2744567",
+      "bytes": 327
+    },
+    {
+      "path": "metadata/base-release.json",
+      "sha256": "2f86ab3619a6200426b95511212f998b954cd837224452f2d20b972fd13e82cd",
+      "bytes": 280
+    },
+    {
+      "path": "metadata/history/v1-bundle-manifest.json",
+      "sha256": "5b5e57661b54c80be36dfdb74196786e98f0550090072bfbc647a2be334952fd",
+      "bytes": 41707
+    },
+    {
+      "path": "metadata/history/v1-portability-patches.json",
+      "sha256": "6789926e8bb0a8d9fd8c95e65e266ef701c13677127ea2eb133c5d0db27f2d48",
+      "bytes": 4170
+    },
+    {
+      "path": "metadata/history/v1-source-provenance.json",
+      "sha256": "5ca5ff3007d34db0b749ce32e3095883cebf3185e3027dde667414f8a9a08943",
+      "bytes": 76806
+    },
+    {
+      "path": "metadata/new-portability-patches.json",
+      "sha256": "cf8abce9c03b3e826e25e703baddcbb1519dd8cafeb10cc76aab002f24a93332",
+      "bytes": 441
+    },
+    {
+      "path": "metadata/portability-fixes-v2.json",
+      "sha256": "f1baa07db589ea8597e226543aeca7308363f5fabdf60f95933cf4fa56689197",
+      "bytes": 389
+    },
+    {
+      "path": "metadata/skill-map.json",
+      "sha256": "8d79b78eabe8732da5eeb3ad95d6345162cad192f7bbea5afd00853428be990e",
+      "bytes": 1858
+    },
+    {
+      "path": "metadata/test-portability-patches.json",
+      "sha256": "2d4cf3ede181814c764d1291c816901ae286b0e3d2320c246d8945703831f69e",
+      "bytes": 804
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "717069e8dff19e665bc98ce223d91b8df2cd4c5aba273a1c31fe1bef6627b093",
+      "bytes": 55
+    },
+    {
+      "path": "skills/prism-board-review/agents/openai.yaml",
+      "sha256": "5a613f2d107070b3595f7d432e7fbaf19ae0b759056215665643a803d23df152",
+      "bytes": 378
+    },
+    {
+      "path": "skills/prism-board-review/SKILL.md",
+      "sha256": "b5c5441d646ec520a7b0c71d2cae63ce6c82f8731b6986fcda678a1709735649",
+      "bytes": 2015
+    },
+    {
+      "path": "skills/prism-cmf-moodboard/agents/openai.yaml",
+      "sha256": "f379cee8fdd379a2043f3e0f80276aa595fc5321c2f1a353fd4749ea48340464",
+      "bytes": 383
+    },
+    {
+      "path": "skills/prism-cmf-moodboard/SKILL.md",
+      "sha256": "6a2be87d5513e4678957a4857284695e4a677cbdf3687c8c85f537acd99384f2",
+      "bytes": 1899
+    },
+    {
+      "path": "skills/prism-crop-enhancement/agents/openai.yaml",
+      "sha256": "349d1ce12d4acaa3c80a3bf2d46b32969dfc81f860d02a6d6a0e5b76130c1839",
+      "bytes": 385
+    },
+    {
+      "path": "skills/prism-crop-enhancement/SKILL.md",
+      "sha256": "7dbbb11f5a1d77f003d1f1479dcb062243ac349d52557d98abbb6c0f78c91682",
+      "bytes": 2038
+    },
+    {
+      "path": "skills/prism-direction-selection/agents/openai.yaml",
+      "sha256": "a7d4f5e6814fd55afebe3ec8a04560bad0bc3d086ad745cf9c0f7563fecddb50",
+      "bytes": 373
+    },
+    {
+      "path": "skills/prism-direction-selection/SKILL.md",
+      "sha256": "c56f6024d5d1e74bdc1893a7cae0870645ca422bee596449f0b110e3bd9107ff",
+      "bytes": 1822
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/agents/openai.yaml",
+      "sha256": "de8e5b8e0c49ea33f2aae07319a22e5201543cae867632e63bd7164f043c3a0b",
+      "bytes": 326
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/context.json",
+      "sha256": "e6bc175431ed20627bd8952833e83e9ebc98b4bf1982faffe8081f9c8102c01a",
+      "bytes": 9767
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/dictionary.json",
+      "sha256": "16c8ce855e8cd080b97fab7ed4c62b74e404436b25691101acd615f261fe9f50",
+      "bytes": 246315
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/primary.prompt.txt",
+      "sha256": "cc32895b670d1cc2f41a82ecf34db551f015ae4e328a3da07beaef74201c0dae",
+      "bytes": 26012
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/primary.schema.json",
+      "sha256": "2bcb2dabc6d8d81434eb8275a645e01c257b57dcc7d27abc6a7bfa5a0fd9c326",
+      "bytes": 119303
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/source-finalize.py",
+      "sha256": "2467fdee7182ee089c4701011ee307640f8b82da777f7ab93ca23ead43aba6bb",
+      "bytes": 4192
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/source-manifest.json",
+      "sha256": "74c23d424dc217c607dfd53a8c4a94b302352e115ef0f778beadbd92282c8443",
+      "bytes": 2712
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/source-r3.py",
+      "sha256": "f972c0d8ce662eff2acd1ec8d42fd3eaf1dba63b7d4c24f3bae2548ac26ee96d",
+      "bytes": 9391
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/source-r5.py",
+      "sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf",
+      "bytes": 14344
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/source-refine.py",
+      "sha256": "cd9c1bfa1115e0606886ad1574f3d3654355b86f1170ad22c38727c0e8c121aa",
+      "bytes": 5019
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/assets/vision-only.txt",
+      "sha256": "1482e474b19687b7c842d526a8f52822ec13860878240b2226b5c5c1f36337f0",
+      "bytes": 441
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H11/expected.json",
+      "sha256": "4fb72bbdf83e555f6e957c5466e77f60b1d02ce1b4c8b754a9cab181b85893d7",
+      "bytes": 20929
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H11/focus.json",
+      "sha256": "76ec737f2528e627f8b81336754512ea71b41c9b34b31e31c5336722457bdc58",
+      "bytes": 468
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H11/image.jpg",
+      "sha256": "9d1361c7869be2bddd7ad407d6e3ffefd87f3d91c6cc736c8eb8c82f3cb4e6d0",
+      "bytes": 252648
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H11/primary.json",
+      "sha256": "20d48bdc292366e1b5319a9e6730a5fc638f49e1625f0643badcf6f377d010ae",
+      "bytes": 4016
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H12/expected.json",
+      "sha256": "3969d7c57b560c017e9b41f44149a88ec945a238584773ba0f3f7be9c6c4d1fd",
+      "bytes": 10911
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H12/focus.json",
+      "sha256": "1ddbbefb5a129e71b56f32daaf2461bbe55dabb34c855ca23420a8b9c131f251",
+      "bytes": 176
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H12/image.jpg",
+      "sha256": "0780ca8586b2ecfec81db3bc6a8a7fa6a73ccfd2a65458c60160e9d865c2dda0",
+      "bytes": 57575
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/H12/primary.json",
+      "sha256": "ff1ef798ffed8b07376b8696901f1d84c55364be26f538fb413626b1cc50437f",
+      "bytes": 3312
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/HP01/expected.json",
+      "sha256": "33ca843371100556b4c9cde3ba0d13c502d268f5a8c9ee308bb39b47796885d3",
+      "bytes": 34721
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/HP01/focus.json",
+      "sha256": "67215f6628ea6f44f13f48877b979aa0ffac986e6fe47e13d58f9950397f7144",
+      "bytes": 1331
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/HP01/image.png",
+      "sha256": "5fcbfa4abcbc655eb0bf9fd1d8126bce97148423dca8a56419a90eb6eb82f808",
+      "bytes": 230412
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/HP01/primary.json",
+      "sha256": "317a84fdc00bcdf88b41ad775e0be3f7bdfb50ff209e0ff0a82b71dc06cb206d",
+      "bytes": 5054
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/HP01/refinement.json",
+      "sha256": "d7da4503ceaa9aedb48cc343f84f17fd54978d3703591985c99fbd372e03459a",
+      "bytes": 3919
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/index.json",
+      "sha256": "30895001ee0390beeb39a056dc0b44146bc4f265a23701ca957857090e74939a",
+      "bytes": 713
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/MC01/expected.json",
+      "sha256": "ad8e3006a7d65fc6f55363d7888c58951ab1d3d98e5999c2341b24dd33142237",
+      "bytes": 33514
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/MC01/focus.json",
+      "sha256": "bc13f555bc3797c344237c7c202cd4a0ee37ac8abc08f15eca6ba9a97b24e5d6",
+      "bytes": 277
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/MC01/image.png",
+      "sha256": "1a72e0c1ae47db5831d9b98fd5d8bc6ff3495ef3d104ae072311f12121a04e76",
+      "bytes": 191847
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/MC01/primary.json",
+      "sha256": "0e5c191bca13efa54405fad451cac3d8827748da16ebf162c016fb2de3fb012d",
+      "bytes": 6442
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/examples/MC01/refinement.json",
+      "sha256": "61349dc7e32ceddf5cbd9dcfbcf6efad857c09a8269ecff5bb1baeda3e423913",
+      "bytes": 2044
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/compact-wire.md",
+      "sha256": "3788c3c3495bb55ab2a01e9d5ecd47a90cbe3d8a1ed9b2a4c80783b13e233c2b",
+      "bytes": 1021
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/owner-baseline-selection.json",
+      "sha256": "e657fe69cabc55a7a0b697d482038cbe9c067d75879caf6285efea57fcdf80f8",
+      "bytes": 4428
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/owner-outcome.json",
+      "sha256": "cc90ea346b4e580fed33e8b9a9cf8c2bf7a4e432af8dcf3ac14b5e438c7d8b00",
+      "bytes": 3074
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/package-manifest.json",
+      "sha256": "1835db8d9aee4bed9063eb3aa0f850205cc5dc9a23ca60a155a43aa6757505fa",
+      "bytes": 6802
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/provenance.md",
+      "sha256": "bcafab1a478ec852fa311946445bbf5f3544ac089b26d9a082445b04f5581888",
+      "bytes": 1998
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/release-validation.json",
+      "sha256": "1f3d8046205d9a36da79f70a8396b55c624e9d97265fac35c0f2808390228c28",
+      "bytes": 1762
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/references/usage.md",
+      "sha256": "3d34472a0bebec3a5e970489dfd60fb34d32a595f5dd68e435f28f62c6cc4cf5",
+      "bytes": 3072
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/requirements.txt",
+      "sha256": "4eb9cfe0c3362dd936c342e18d06310a4046978fd002e96bb99bf68e7a9a532d",
+      "bytes": 133
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/scripts/bounded_process.py",
+      "sha256": "5f31758a08056dc0d80c01945faa9190cb91921142c0319b9e468a9bdd1a8a13",
+      "bytes": 1571
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/scripts/cli.py",
+      "sha256": "0931d6f77bc60554bffecb436fda984d630bc8916d766e0e75273c679be59168",
+      "bytes": 10835
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/scripts/engine.py",
+      "sha256": "f27a4d4c945b75d81d202e1101c0cc52bf329d82a3d7a343e60f411b6c722c2c",
+      "bytes": 10913
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/scripts/wire_adapter.py",
+      "sha256": "19198003df27ae4925cdf6f43a4ed81004725e3997c14c96db73633477242942",
+      "bytes": 17334
+    },
+    {
+      "path": "skills/prism-dna-sol-r5/SKILL.md",
+      "sha256": "7261874ff3c34201b4e922ffc4f8efd4866a74ef14a0592eb4bdb9e9f55a896f",
+      "bytes": 5129
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/agents/openai.yaml",
+      "sha256": "9b111652593ad8ca4c33991a214e5ef48551fe9c5d670844ce5a56ac02b058db",
+      "bytes": 318
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/choices.synthetic.json",
+      "sha256": "8288b5b3e2d059218eb4b55c807a08e6e96cb18ec4bb580374f4620fa116bfea",
+      "bytes": 82
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/config.synthetic.json",
+      "sha256": "8360b13a61646bdd652aeac6be88e069bdf1c0d8d4eeab759a4c798a8f5bce65",
+      "bytes": 516
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/proposal.synthetic.template.json",
+      "sha256": "f7fbe0e041f4db509785a49c0acad8f0918bc7142d15a541155e6bfe09c15c0f",
+      "bytes": 3528
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/concept-example-links.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/data-contract.json",
+      "sha256": "a52aee745b7fc9b74f28af0469df466893525c1d6aabef60b6020fe2e55d2031",
+      "bytes": 849
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/image-display-views.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/people.json",
+      "sha256": "7ea14e40de2b64d09a0857d6d33053713e4c4ffa5f69aa2c9c8c21c2d565cd73",
+      "bytes": 209
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/picture-contexts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/raw-evidence.jsonl",
+      "sha256": "da900af3e649cc91be38bde24dbba92d15a90b2d83936494b0dfcefa57ff8398",
+      "bytes": 1758
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/selection-groups.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/dataset/semantic-units.jsonl",
+      "sha256": "a04331f0b15b15e72a651841b97731e813c7930f5df7fd2184662f5be11ab5b0",
+      "bytes": 4724
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/analyst-proposal.json",
+      "sha256": "73ac8baf03e9139693a364e86d757eae74313a3c64744cb3a45cd5f6fe1bf0d0",
+      "bytes": 8280
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/clusters.json",
+      "sha256": "6826ee5ee671d846fb9ef277c053141a9f7a973b8bbdfde4b58e39400c707bab",
+      "bytes": 31632
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/coverage-ledger.jsonl",
+      "sha256": "451f9eff18de15d073bb7cbb810ef5ebfa1d1dab01defc1a528a7f45f2396a14",
+      "bytes": 5498
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/handoff.json",
+      "sha256": "08854398ee07b38bb3cd7250c99d2079953f66f8f4fe1a2231d890b9f5750f88",
+      "bytes": 1759
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/handshake-input.json",
+      "sha256": "3a293063ed233859e3a7183ec498415530a47b98e7476d13c17212e244e0a3ce",
+      "bytes": 8600
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/memberships.jsonl",
+      "sha256": "5e2e7804af700c330b45b8811b9bac8997f6b79a33e687892bfa51bac67f3307",
+      "bytes": 9244
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/summary.json",
+      "sha256": "85f5da5bee4ffae61eb031bc8300754a5922ade679ce1bb1e47b00e9e2538f9a",
+      "bytes": 645
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/research/run/聚类报告.md",
+      "sha256": "8aead7d342e5f592c99e6e26e2b971ac7b3acdce1cfc577d9ddb0400377b43b1",
+      "bytes": 3840
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/trend-catalogue.synthetic.json",
+      "sha256": "0c10cfd963f69e3c00ba7e4d5ccfa4acf9ab38061d89951715362916c596040c",
+      "bytes": 1133
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/examples/trend-clusters.synthetic.json",
+      "sha256": "9c362f454829cc949a4db11fd0f01253a6d69b0496c0eab75461cd0dad36dc6e",
+      "bytes": 1025
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/PACKAGE-MANIFEST.json",
+      "sha256": "66457097ada1db6250cd72dcbfbf00014b6d820b166c0ee21b8ac44520224460",
+      "bytes": 4477
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/references/contracts.md",
+      "sha256": "f160a76445959ae891fbecf74350d47dd312a3fcd9c058a40faa23324bfa442f",
+      "bytes": 5934
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/references/review.md",
+      "sha256": "61726b23f789974091ee111fe024e3ad5fb68dd19e500c013a98da97cc49f054",
+      "bytes": 1596
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/references/source-version.json",
+      "sha256": "a36923d69eb7675955fdbdc5aec49b1683711e1efeab7cb583c6c4f633924749",
+      "bytes": 3750
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/requirements.txt",
+      "sha256": "c8bd92abc4ca9d43d8a6d513d911c6cf8ef3cea16ba16a8f2d2bc4d09e68bb2b",
+      "bytes": 23
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/demo.py",
+      "sha256": "2068388a56f2cd8ae8aa2cea779438e69166ed3811b2957a8df9e484b155357d",
+      "bytes": 1235
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/h01_core/__init__.py",
+      "sha256": "52fbb95ef930fa8f6f914e1361fd97a36c5fd4f53c6f54ed7517f9bb9692e895",
+      "bytes": 81
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/h01_core/common.py",
+      "sha256": "0d2ebd2bf9b3d53f0b3b5ffd651f955b0c8d316a0ae50c7897dc61f43e61ab5a",
+      "bytes": 7338
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/h01_core/h01.py",
+      "sha256": "8769ad59114b6eef54bb86dcbad4f2808db0d28945c472f77097edb5d473dfa1",
+      "bytes": 21491
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/h01_core/research.py",
+      "sha256": "8727c78943e3f071c108ceec9d088f5a6151c4a362759d8d3a00a9065bf62e82",
+      "bytes": 6280
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/h01_core/trends.py",
+      "sha256": "275c17d924c005ba5461a00280324222f538518678087cabe3c256d98770599d",
+      "bytes": 4820
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/handshake.py",
+      "sha256": "176fb5251bcbac86529c578f5008b87c85dbd915cbbe90645e39f5b68f4b3bfe",
+      "bytes": 7414
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/research_core/compile.py",
+      "sha256": "212005d708a6469d8ed626d238a12c803c731e8f48c7a9c88d517a0604db3555",
+      "bytes": 16174
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/research_core/contract.json",
+      "sha256": "815452233ce925a0cd09350314cf086ae1087a90b0cdbea50cd99f802f38f27c",
+      "bytes": 1525
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/research_core/prepare.py",
+      "sha256": "1ddbb818c2093c34e8fecb0005f03e272351306a555c09a45f3367efff45764e",
+      "bytes": 2791
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/research_core/prompts/cluster.md",
+      "sha256": "4d9bdc112d5aae2d8b5831e0373ed074381b698619c779457e5f412b7efb6895",
+      "bytes": 1710
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/selftest.py",
+      "sha256": "d3132ba910fac641373c59ce79cba35794b1880a16120947611c65a488ec1b07",
+      "bytes": 5650
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/scripts/workflow_h01.py",
+      "sha256": "f9c603c076e1176e16399cc375cf46b56f14ac23a85a45136854d71bccbc9237",
+      "bytes": 8827
+    },
+    {
+      "path": "skills/prism-h01-semantic-handshake/SKILL.md",
+      "sha256": "bf9d0acd8bade0734469c883a7df5e14e7db03a78d015daa1bbe9575ceae480a",
+      "bytes": 5522
+    },
+    {
+      "path": "skills/prism-id-moodboard/agents/openai.yaml",
+      "sha256": "f2b35d29b77c63f6d187a4c5e5c38a61ee12489984d733f720e5a349668fbef6",
+      "bytes": 379
+    },
+    {
+      "path": "skills/prism-id-moodboard/SKILL.md",
+      "sha256": "c5c7749c1ee9fb8f2591172ee9b07a7e05caec98abb88bd8d77d1cb8f79b7fa3",
+      "bytes": 1954
+    },
+    {
+      "path": "skills/prism-independent-evaluation-loop/agents/openai.yaml",
+      "sha256": "4cb54bfa2e668d8b9ef6ae0160c61aa5becd337df979b8dd8bb026e7b11bb53d",
+      "bytes": 412
+    },
+    {
+      "path": "skills/prism-independent-evaluation-loop/SKILL.md",
+      "sha256": "a5009e752cfb03ec177ea440cd873a695746ce5935b36b2a5cd05e2ab7881274",
+      "bytes": 2294
+    },
+    {
+      "path": "skills/prism-moodboard-delivery/agents/openai.yaml",
+      "sha256": "c40bc47da039aa08385f63bfef3b10732a68569753c8fdd92e1876c670992473",
+      "bytes": 390
+    },
+    {
+      "path": "skills/prism-moodboard-delivery/SKILL.md",
+      "sha256": "48f71450b3afd1fd90cccaaa8667e386e07caf3ccbecc23b2d3f760639d36a60",
+      "bytes": 2141
+    },
+    {
+      "path": "skills/prism-research-intake/agents/openai.yaml",
+      "sha256": "4f4f10b5827fb73f1d66adbacac8bff8b809a663e9ba01f69982540dbb03405f",
+      "bytes": 361
+    },
+    {
+      "path": "skills/prism-research-intake/SKILL.md",
+      "sha256": "e25a32e5f42195486eb8f3887f1806ef86a9b89c31988097f72cb1880e02bee1",
+      "bytes": 1606
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/agents/openai.yaml",
+      "sha256": "10873900ea4d98c02e436a537658e678b1933ca1863da587edcd22c6a9b6ea67",
+      "bytes": 324
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/examples/proposal.synthetic.template.json",
+      "sha256": "0625f1f207e18cf7560d4a5fe2f82fb0c0b2e4fa0718eb364bdb389ff141e41f",
+      "bytes": 7406
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/examples/research-input.synthetic.json",
+      "sha256": "63972f418aa1d0ba4f5c1718231e7c7eae03a4af504198a3cf2664f0b788dabf",
+      "bytes": 4663
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/PACKAGE-MANIFEST.json",
+      "sha256": "6b2fab571538ba660fa65e613cedb32e315cfc5e5b136844c73585fa3f11c9f7",
+      "bytes": 1641
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/references/contracts.md",
+      "sha256": "5b11788e3930d6af862daa1e825e6122dde31d56ac8a7f0d605b8ad0150cfb84",
+      "bytes": 5845
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/references/semantic-review.md",
+      "sha256": "9d713d7384e005236237ec85eddd7ac7c0e4530ff50e7b7915aa536dc9be9da6",
+      "bytes": 1212
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/references/source-version.json",
+      "sha256": "92ddc133f4a3c70918167e2c2a7adabfc8ccf8c457a4a6b47c9890295226c4a4",
+      "bytes": 2672
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/references/upstream-method.md",
+      "sha256": "62a926fd9c70ec4157e0392a395d16d29b3a8f716d6701221aae4e8622f78e2d",
+      "bytes": 3841
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/demo.py",
+      "sha256": "09739022fbcab0419fa51ca77cc42765faa2ff63c2e066a1ee7777fc8478eba9",
+      "bytes": 734
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/research.py",
+      "sha256": "216c4340440d8e22eaa42bcaa04e835bd96ed50ca3277bc7bfc4183f21100e6a",
+      "bytes": 11549
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/research_core/compile.py",
+      "sha256": "212005d708a6469d8ed626d238a12c803c731e8f48c7a9c88d517a0604db3555",
+      "bytes": 16174
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/research_core/contract.json",
+      "sha256": "815452233ce925a0cd09350314cf086ae1087a90b0cdbea50cd99f802f38f27c",
+      "bytes": 1525
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/research_core/prepare.py",
+      "sha256": "1ddbb818c2093c34e8fecb0005f03e272351306a555c09a45f3367efff45764e",
+      "bytes": 2791
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/research_core/prompts/cluster.md",
+      "sha256": "4d9bdc112d5aae2d8b5831e0373ed074381b698619c779457e5f412b7efb6895",
+      "bytes": 1710
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/scripts/selftest.py",
+      "sha256": "467d6c4e5922c2dc3ddbd74ce874f859741f3c272fb5161c8f6edd821b391cbb",
+      "bytes": 3899
+    },
+    {
+      "path": "skills/prism-research-semantic-clustering/SKILL.md",
+      "sha256": "e49b9e2b826fd07290f18fdc8a54b40d5d61a9a77c70dfb2051da605248b8750",
+      "bytes": 5066
+    },
+    {
+      "path": "skills/prism-run-contract/agents/openai.yaml",
+      "sha256": "8b391d33a29ba8ecdd85bd6828396e93fe98a9a46610be03606dbf18b13beb26",
+      "bytes": 385
+    },
+    {
+      "path": "skills/prism-run-contract/SKILL.md",
+      "sha256": "c56469a9adbc96b26041d0304bbecc3b25487312bfd0b0d259467b8394388ae1",
+      "bytes": 2217
+    },
+    {
+      "path": "skills/prism-source-image-selection/agents/openai.yaml",
+      "sha256": "eb53b2e7df3b69b7cd1cb588c1f9e9f6286f6900a52517c7db091f19efe5fb15",
+      "bytes": 394
+    },
+    {
+      "path": "skills/prism-source-image-selection/SKILL.md",
+      "sha256": "4cca217efa102cca72589bb9aa64c9ab72dcfa00e14b31f9c7d81abad1140297",
+      "bytes": 2244
+    },
+    {
+      "path": "skills/prism-target-quality/agents/openai.yaml",
+      "sha256": "6964e8d89684f83e08ad7ebd4a81f35fcddad96e94f59640d87fbc5f096cb04c",
+      "bytes": 358
+    },
+    {
+      "path": "skills/prism-target-quality/SKILL.md",
+      "sha256": "459d45972c14091660eec25165588afefaf3ac3fcf357490a2323229c9308672",
+      "bytes": 2000
+    },
+    {
+      "path": "skills/prism-target-view-binding/agents/openai.yaml",
+      "sha256": "d67fff6ccd55b1353310c63c0edaf650bc9a65bfa36ff2edf2bc6e8d2adaf163",
+      "bytes": 391
+    },
+    {
+      "path": "skills/prism-target-view-binding/SKILL.md",
+      "sha256": "a81cfacba49bffb396c5fb177309e0ea03be37e1cdcbc9b0e2ef677dd12e42f0",
+      "bytes": 1910
+    },
+    {
+      "path": "skills/prism-trend-semantic-clustering/agents/openai.yaml",
+      "sha256": "be3a221723cf443375f64bdf33fa23511bb8a67de6e2995886d016d0a9e42670",
+      "bytes": 398
+    },
+    {
+      "path": "skills/prism-trend-semantic-clustering/references/format.md",
+      "sha256": "39df71ac0c165a35cfe3016c86f6e6d0cc99d9c9c7fdecd78ad86d7820116fb5",
+      "bytes": 1914
+    },
+    {
+      "path": "skills/prism-trend-semantic-clustering/SKILL.md",
+      "sha256": "8504edd3c01ed480ec4ac8d7e2dcff06635b3ae8be0a518f47e0b0e6eeccadfb",
+      "bytes": 2205
+    },
+    {
+      "path": "skills/prism-visual-family/agents/openai.yaml",
+      "sha256": "7b10ea84eac6f4f8dd32f00943b985f5c0d8cdc691851697d9dcd4c025d12f1f",
+      "bytes": 388
+    },
+    {
+      "path": "skills/prism-visual-family/SKILL.md",
+      "sha256": "bb67c7e366ed2f4c22cb74d3e52c5db443fbd029979e3a2bfbe74ce4dafaaae3",
+      "bytes": 2161
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/case.json",
+      "sha256": "c68f0eca0e1e88e1b2cd9a0a0db11a7d02470e4d60b49c61e9ffd79fbdfeec87",
+      "bytes": 704
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/CMF01.png",
+      "sha256": "88736d6d24de1b5a365b2407f7ae939ce147285a7eec34f7c8d52aaf9bab4f7f",
+      "bytes": 1501112
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/CMF02.png",
+      "sha256": "79c0e7904be7eaeb70da3e9f2b6a5f7ad8106c47cd7e430e39e8343df62fb291",
+      "bytes": 1106196
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/CMF03.png",
+      "sha256": "08fcff98fb509345cea6d631fad30d0b1fffd59d717685e751304a969a00b632",
+      "bytes": 2256548
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/ID01.png",
+      "sha256": "51c2449342a145c7bbdba7599860efed1e9fc084bad260562f446c5fa22ae8d1",
+      "bytes": 1344379
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/ID02.png",
+      "sha256": "96391d7eda988557c3bf483b3b4121376e1c79c1e3316c870a43a672f4f03712",
+      "bytes": 923242
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/ID03.png",
+      "sha256": "3935459db4130fd87a865fde09c3df6484bd199fd7cc180154286a62fb5466cf",
+      "bytes": 1421711
+    },
+    {
+      "path": "skills/prism_skill_support/assets/calibration/README.md",
+      "sha256": "2632667ad227febe24ddb03013c678c6f8d542263f9464dcdde87e15e815520f",
+      "bytes": 702
+    },
+    {
+      "path": "skills/prism_skill_support/references/cmf_reference_board_v4.md",
+      "sha256": "6b862c86af8eaa6bee7792800a4ccf2480c473d6fdec1853feae6fc7ab7d951e",
+      "bytes": 10300
+    },
+    {
+      "path": "skills/prism_skill_support/references/contracts.md",
+      "sha256": "bff17e09e9dfd1721a6c28d79f001489ddcb6f911636326d31e1d9c5bdc32564",
+      "bytes": 10554
+    },
+    {
+      "path": "skills/prism_skill_support/references/declared-visible-scope-policy.txt",
+      "sha256": "d6e73094250546900fa71f876f291e597a35195e3dd54271ad06bfec930fba1e",
+      "bytes": 5124
+    },
+    {
+      "path": "skills/prism_skill_support/references/evaluation-contract.md",
+      "sha256": "4e28cd7ff157662aaa14b131ebc671d33c534fe6787efee9a2fdf819a1409e05",
+      "bytes": 2365
+    },
+    {
+      "path": "skills/prism_skill_support/references/execution.md",
+      "sha256": "d3cca511bd51a8c50abc70bc45ad20d503fdef1cb6674e5d3d3e230c0e55a9d3",
+      "bytes": 2579
+    },
+    {
+      "path": "skills/prism_skill_support/references/h2-original-negative-future-reference.md",
+      "sha256": "fb96ebc3f7325061c49cd0fbad6431d50e087157afce30923c26cfbce9157bc5",
+      "bytes": 5059
+    },
+    {
+      "path": "skills/prism_skill_support/references/history-and-proposals.md",
+      "sha256": "0f668dd64ac06e69efef98f125f5798560ee4a4abdf8d7b9ecb6be5faa3d0c37",
+      "bytes": 1565
+    },
+    {
+      "path": "skills/prism_skill_support/references/id_reference_board_v5.md",
+      "sha256": "1172d4b06981e68a1475a187b6a71de80cd2f180433b5407e74e3f80a3eb478f",
+      "bytes": 10626
+    },
+    {
+      "path": "skills/prism_skill_support/references/material-contract.md",
+      "sha256": "dc6f11bcf6092182a7ffffd10eaf90152fd38609734d90bca15202cbbd3ff756",
+      "bytes": 3474
+    },
+    {
+      "path": "skills/prism_skill_support/references/native-api.md",
+      "sha256": "bd7518113707e2bb49ac5e7b92ea32fe21c2cf65e1dd6ef58ba1079801ef3f31",
+      "bytes": 4208
+    },
+    {
+      "path": "skills/prism_skill_support/references/r5_exact_byte_alias_v1.md",
+      "sha256": "c627a34c21b2335f10fee5dc11f4a0d987ec130287c53ff259b546cd3e77d0f5",
+      "bytes": 4454
+    },
+    {
+      "path": "skills/prism_skill_support/references/review-contract.md",
+      "sha256": "a7f3cdfb2ffb2df5aa64ca594ede12870f5bf97df7f2f9869dd40ede4eb15b65",
+      "bytes": 1951
+    },
+    {
+      "path": "skills/prism_skill_support/references/routing.md",
+      "sha256": "c1b08cfc30e67c8981591a8ea6dc8404fbe9d379b9d574a7e25fef0deb7382a4",
+      "bytes": 1271
+    },
+    {
+      "path": "skills/prism_skill_support/references/trend-proposal-format.md",
+      "sha256": "015b8e9ba38b831622ee9c63831519e2eb775a070d3d921d89fa46f65c0e28be",
+      "bytes": 2522
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/__init__.py",
+      "sha256": "781e90231ce4123f9d868aa51addcdab5a387ba891de7c4081035072cf56110b",
+      "bytes": 53
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/__init__.py",
+      "sha256": "781e90231ce4123f9d868aa51addcdab5a387ba891de7c4081035072cf56110b",
+      "bytes": 53
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/__init__.py",
+      "sha256": "80473504cb0821b6e2f76e8391a73564692e6fa5c58862b919803bc8187e2992",
+      "bytes": 485
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/common.py",
+      "sha256": "8b259880c9d1fd2c48108d692732faace43a6c611e48e6417a52af2c10a5fd2c",
+      "bytes": 4278
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/dependencies.json",
+      "sha256": "8a614e1523de18e0952af91e1beb0dddb62f38260a1fce6027886d07ac37f5c7",
+      "bytes": 841
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/fixtures.py",
+      "sha256": "23ca068698d11448fdf5f59651d672ded0c17bd48ddf423f921c758bc8e19a82",
+      "bytes": 13456
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/protocol.py",
+      "sha256": "75db1dfdc07e3842041cc4d6a6b5fecea9f8bb63a6ce69a391ce1897e926d3e3",
+      "bytes": 37161
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/quality.py",
+      "sha256": "93e0aa583ecd8f392bd2e1e252f5008e21f56fdaf75ad4cf6dcbc68b6769fbab",
+      "bytes": 4985
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/tests.py",
+      "sha256": "d12049cb910444e0e7ac77f5e17e00b896f6c6541f23d9f324d574babcb9a5b3",
+      "bytes": 13777
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/h2_original_negative_future_ref_v1/__init__.py",
+      "sha256": "032e8cadf66ae59a3b6f328f197b599068a0e6506b316220fcd46180d3a62bd7",
+      "bytes": 289
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/h2_original_negative_future_ref_v1/consumer.py",
+      "sha256": "e8fa78afc426f4fc3403097ac22444c69e6bd27ec2c87cd2d414b6c67d9da44a",
+      "bytes": 4506
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/h2_original_negative_future_ref_v1/dependencies.json",
+      "sha256": "82f4c28f351addfdd8b78a418e75f7ceaeb39d6c1a52a888a1ed3c60801a16f3",
+      "bytes": 1001
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/h2_original_negative_future_ref_v1/references.py",
+      "sha256": "d94209a96a9a64d7ac2531a4c983d7ed6544ef9fd6b2297522d327f725354fd8",
+      "bytes": 4473
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/__init__.py",
+      "sha256": "bcc5036c28aa220323f44667ffab0020bdf5c016b3da43d25396bc9886909709",
+      "bytes": 419
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/common.py",
+      "sha256": "3965a9bfaf00b86cd05559e14e0e13f5ed912989ae667054d58d189fc8a5768a",
+      "bytes": 4277
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/dependencies.json",
+      "sha256": "8a614e1523de18e0952af91e1beb0dddb62f38260a1fce6027886d07ac37f5c7",
+      "bytes": 841
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/fixtures.py",
+      "sha256": "0c596cddc1d352f8b90ee7b22ad5cea542e622a46ea7f056dc4678e39beece96",
+      "bytes": 16244
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/protocol.py",
+      "sha256": "12d36341cc2f342998344fd439a5874bfb24f78212b9b364398946cedcd283b6",
+      "bytes": 39533
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/quality.py",
+      "sha256": "7798a2921af680c1b57915948f8f20612e7c8e3f07b334c01627d858eaf73a6a",
+      "bytes": 5246
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/tests.py",
+      "sha256": "c23f288398275520f43b2c1a13cb5da34bf35a0ffb90f37381d85cf116553a68",
+      "bytes": 13213
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/__init__.py",
+      "sha256": "1da41c3e4c119fc442f53a85b17f1e2a5f6d5b11bf405e8a89d09c20ec6df6ed",
+      "bytes": 348
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/adapter.py",
+      "sha256": "52e8011a666f0707ed2988454b6a18db826e0e8142d9f3b1a302a02ac8c8fe54",
+      "bytes": 7388
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/baseline.json",
+      "sha256": "ba4b63bfdbddfd1728c04df4715e5ad5b7213ba22c775bed7b26fd4d78a3b8c4",
+      "bytes": 1600
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/common.py",
+      "sha256": "56b2f1fdba805c38d02d324dc6fbe472392f2fd7caea5562231cba7e1c6374ed",
+      "bytes": 1740
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/engine.py",
+      "sha256": "5b5264ce349d1a43b6917d30ecaa1ad97ccf4c302284545eda855323f77aa122",
+      "bytes": 20209
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/fixtures.py",
+      "sha256": "f58293c80cb71982beaf7a0d09c5ea3a52d33ad5c2703df4a71f5828c11b7211",
+      "bytes": 7442
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/producer.json",
+      "sha256": "923c16ad6924fad235a188b1a06e083d94cfe0dc2d744502ebaaa64ded89ba2d",
+      "bytes": 1130
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/quality.py",
+      "sha256": "28641150c39137cd39ff97614cb460b8750b0d1f302341af3ec29dd18bd72670",
+      "bytes": 3171
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/request-shape-fixture.json",
+      "sha256": "ba9e9d512dd7b341d7324dda1943825ae36e086e102562948f4127c54df351f9",
+      "bytes": 4178
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/request.schema.json",
+      "sha256": "51b3b93e2b5ffc7d3c353610d0d5835dc97227458f16febf60d15af405a3029b",
+      "bytes": 8806
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/rules.json",
+      "sha256": "0d81a75e30c0bf90f1d75a7ba5b56d04f88f4a8cf4483044ae1a2939cf1575a3",
+      "bytes": 1961
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/scope.py",
+      "sha256": "eddcd7ceb0cf513305340335b0287e6397f2189ee9cd62b39c8e6fa5ddc7baf5",
+      "bytes": 4118
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/tests.py",
+      "sha256": "7a16f883233a3522e44307c957d68bc53467f6f3fdd3e15e40272a0690daefd1",
+      "bytes": 14041
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/__init__.py",
+      "sha256": "5ce03f5c1adc8228e2d394d64a4d8427c00168bfd8f84ca348c33d528e77c17b",
+      "bytes": 194
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/adapter.py",
+      "sha256": "6303cafac3ac6c387c48abf0a72ed568687399ec16bbd7b20a4e7f3ac2e5b2bf",
+      "bytes": 2786
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/consumers.py",
+      "sha256": "c4817f7ee83dfc8b0a607e6b8daa8deca2aeb00c66c31b823a4240a6c6533443",
+      "bytes": 2225
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/dependencies.json",
+      "sha256": "fbb1828c6057d0d1ce4880b80099b4102ffdab9de277f9d461ea3217fa17d69f",
+      "bytes": 3171
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/registry.py",
+      "sha256": "b14db61bde87dcc8ed4fc484300729ae9218e19ba426982fa61552632441e638",
+      "bytes": 730
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/tests.py",
+      "sha256": "6b74b89dcad49773065b9495811e73d8803b232ae373cc7c401dffb441f490d4",
+      "bytes": 12010
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_sidecars/__init__.py",
+      "sha256": "781e90231ce4123f9d868aa51addcdab5a387ba891de7c4081035072cf56110b",
+      "bytes": 53
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_sidecars/quality_selected_target_v2/__init__.py",
+      "sha256": "466980f4b5d18afd1fdb7d9d9c7c29c791826be1b16a663d52d43728d2517ef3",
+      "bytes": 178
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_sidecars/quality_selected_target_v2/prompt.txt",
+      "sha256": "2b2dcbd3f558270cadb9f5594bf819248cb0dbe816069046159a9796748718a8",
+      "bytes": 2000
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_sidecars/quality_selected_target_v2/protocol.py",
+      "sha256": "5f8dda60c5f220ad13b9956497782a304b8eba6bea286fabaeb04e947cf22a68",
+      "bytes": 24890
+    },
+    {
+      "path": "skills/prism_skill_support/runtime/prism_sidecars/quality_selected_target_v2/test_protocol.py",
+      "sha256": "e4d9a15632b61dfd97e8eef7f8a4a1933b75d31084b0a0ae79f09903b788c0c4",
+      "bytes": 16476
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/assets.py",
+      "sha256": "26eeeb4a57b3907211b1c9c8ede69427842bb1fc5e1c1278982d5edab063f215",
+      "bytes": 3916
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/intake_pptx.py",
+      "sha256": "5aa8a054b25a075d29471d11b6c47ebadc8201f8ba73ce7f2f12386400ee5a31",
+      "bytes": 5610
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/io_utils.py",
+      "sha256": "95b6de4ebc77de7270823c2fe3445f39e0db955ce2edad0d81c2501576b91f39",
+      "bytes": 2474
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/material_plan.py",
+      "sha256": "803f3b42250791dcfb889e77fc7e3e5ed116e7415ecae0fc18260b7c51d83c46",
+      "bytes": 4007
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/native_api.py",
+      "sha256": "1aa6efe60916704f695c583fd541738df3e9921bd198ee54fbbfc6e52bf0e21d",
+      "bytes": 4585
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/recall.py",
+      "sha256": "65a5a1451c73d948e68c1896fe0922b0ac3fbeceb1dd0d702b9b47f85e436ec7",
+      "bytes": 2616
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/render_board.py",
+      "sha256": "a1019d0dc7ee4803a17e30b0673229a09bb56636fb95c88ca7fd7eb3319eef74",
+      "bytes": 6283
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/review_gate.py",
+      "sha256": "ddec7afb9fe4b5965b61596ecce3ebb0100138fd46c0999983cc91c0e51f50e0",
+      "bytes": 2890
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/run_model.py",
+      "sha256": "20b9b9d7ff036a082cb1506ef5618726d9ac3f26cb9d63fa6cebac158d2ed88d",
+      "bytes": 6762
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/trend_text.py",
+      "sha256": "6cfc00749e276ddf27f02da2c4dec1f13074c429839c2a12c173819550949ccb",
+      "bytes": 9090
+    },
+    {
+      "path": "skills/prism_skill_support/scripts/workflow.py",
+      "sha256": "1a364ae3a831f716872768620f9881bcd1c635771a8ce001c55e2e397bd4addd",
+      "bytes": 5172
+    },
+    {
+      "path": "START-HERE.md",
+      "sha256": "dfe5cd5e547eb7431205bf85c4c033ada610f16149ee0499d14d589578681876",
+      "bytes": 5143
+    },
+    {
+      "path": "tools/checks/test_future_consumer.py",
+      "sha256": "bf1073b6a7891ba6feb3b04ab588a93d9c1805023490d0c10b1f486d46a50b2e",
+      "bytes": 2076
+    },
+    {
+      "path": "tools/checks/test_helpers.py",
+      "sha256": "724e3f08d7edb66d4729e55c2f6f8a62012ec6eb5c98ab7105bf364b947859d3",
+      "bytes": 12276
+    },
+    {
+      "path": "tools/checks/test_v2_contracts.py",
+      "sha256": "3dae04107b726d65eff0cb7856b49826e564451042a17fe02d19d9c3c2d2200f",
+      "bytes": 7748
+    },
+    {
+      "path": "tools/install.py",
+      "sha256": "91368d1975b1274f3de4cb11f762da1609396da45958b05b1d5903e9bcb4b51e",
+      "bytes": 1240
+    },
+    {
+      "path": "tools/prepare_case.py",
+      "sha256": "32ff47c390509f496adfb131380d485501ee44b885cd27e4cfd0521ab39b1121",
+      "bytes": 1272
+    },
+    {
+      "path": "tools/run_checks.py",
+      "sha256": "bbd92f0e120c576a36f6cf2f35af8ee17774eba0aa5a0ab438e843872ec8cbc2",
+      "bytes": 2725
+    },
+    {
+      "path": "tools/verify_bundle.py",
+      "sha256": "0aaaf9eef7cfdc8f515ea325fd00b6ced73d3671e9995497e233c7cb71b2cda4",
+      "bytes": 843
+    },
+    {
+      "path": "validation/browser-QA.json",
+      "sha256": "ec157e26dcafc5e57d376fc6958e40338d3ee659bb7cf1b01664fcbe5c989a08",
+      "bytes": 420
+    },
+    {
+      "path": "validation/first-use-review.md",
+      "sha256": "794f5a45c6f774d7bf884097e69f9cb9fc6691a011cda8523129ca6b08da3bb2",
+      "bytes": 1300
+    },
+    {
+      "path": "validation/independent-recheck.json",
+      "sha256": "4780f328ffd261651cc9d6687a81f58dac0b713f44f955c27060ef8f7d3af8c6",
+      "bytes": 2999
+    },
+    {
+      "path": "validation/initial-findings/native-path-evidence.json",
+      "sha256": "14b021b2882a213b41ae13ead806783e96f8797eda17192a88cb0e9038c91a2e",
+      "bytes": 2909
+    },
+    {
+      "path": "validation/initial-findings/path-resolution-check.json",
+      "sha256": "aca73b1f40b5c20d9c0784508b4d493864cf55be8840eb2ce534246a2ca48e7e",
+      "bytes": 1159
+    },
+    {
+      "path": "validation/initial-findings/windows-path-length-check.json",
+      "sha256": "d4bb5e88d423f5c9ef2ef828290b5d097defcd71c98440810accadb23f668eb6",
+      "bytes": 551
+    },
+    {
+      "path": "validation/observed-v2-tests.json",
+      "sha256": "b9239477a9f211445a378641d8c595bd4f3476b3308fc3a1fb70514430211d10",
+      "bytes": 1274
+    },
+    {
+      "path": "validation/offline-deep/future-reference-consumer.stderr.txt",
+      "sha256": "189eb2155b8d89e5028431128b601508ce638542dc79260c94af2c1bc1f84ba3",
+      "bytes": 104
+    },
+    {
+      "path": "validation/offline-deep/H01-boundaries.stdout.txt",
+      "sha256": "1d775dbd6df96a5286556f7e79328673c978f9c7d7593719af8751a2cddd1cb5",
+      "bytes": 1975
+    },
+    {
+      "path": "validation/offline-deep/native-doctor.stdout.txt",
+      "sha256": "621f70db4c8fa9d58abd240831357a4aa7d09600c47482148d4ca9c897859b80",
+      "bytes": 2312
+    },
+    {
+      "path": "validation/offline-deep/native-ID-CMF-alias.stderr.txt",
+      "sha256": "61b630fdda9d4ad5f2bbbf16033806010d1c9a33c921a7c8e5d6c75381a9d779",
+      "bytes": 149
+    },
+    {
+      "path": "validation/offline-deep/R5-replay.stdout.txt",
+      "sha256": "bade03ab0cad8e8eedd2a397cc75b90661ce3593c7ad5a1b6428b8364e06bbcd",
+      "bytes": 576
+    },
+    {
+      "path": "validation/offline-deep/report.json",
+      "sha256": "16511eeab56f0e075250a59114ea97d938a705d90b43f2783299d606eb17ea16",
+      "bytes": 1815
+    },
+    {
+      "path": "validation/offline-deep/research-boundaries.stdout.txt",
+      "sha256": "8f4282aa4469ef81272075112e2393433f417c2c8e16bf5bde4df20dc3f89dea",
+      "bytes": 1559
+    },
+    {
+      "path": "validation/relocation-initial.json",
+      "sha256": "7982a00b6ea5e98db557b9d1fd52e490a4424d8e00cd18ab43982903d92592ca",
+      "bytes": 449
+    },
+    {
+      "path": "validation/skill-structure.json",
+      "sha256": "802d66ec24d4ca22a1c3a253a095702e183a4a464074dbca4c7daf69aa4dd9db",
+      "bytes": 1745
+    },
+    {
+      "path": "validation/static-check.json",
+      "sha256": "72175da17c82c42d61abe364807e1aebff82772d8e96e67798ac64ce4fdd8e31",
+      "bytes": 114
+    },
+    {
+      "path": "validation/validation-report.json",
+      "sha256": "ab34a25360a2111f83d959749b82066a0624db1cdb71166598153a2695bc87ab",
+      "bytes": 1990
+    },
+    {
+      "path": "完整工作流.html",
+      "sha256": "21ef0e068b00c0f2ab9f3dc23a1ca90b13baad9d491d7c9a2c6429cb78f012f0",
+      "bytes": 1051777
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "sources": [
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/prepare.py",
+      "source_sha256": "a1bc13f5abb104d3fbffa9a5e379451653a97b0709f1a9e22f79b9405945d2ba",
+      "bundled": "prism-research-semantic-clustering/scripts/research_core/prepare.py",
+      "bundled_sha256": "1ddbb818c2093c34e8fecb0005f03e272351306a555c09a45f3367efff45764e",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/compile.py",
+      "source_sha256": "bf1a5dc69fcd65929c130429d1d1e0cfff4f410093c7cd9f07cd7e8322800529",
+      "bundled": "prism-research-semantic-clustering/scripts/research_core/compile.py",
+      "bundled_sha256": "212005d708a6469d8ed626d238a12c803c731e8f48c7a9c88d517a0604db3555",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/contract.json",
+      "source_sha256": "b6550f4a761a6eec5a664339249741a1d7b23b473d93f1ddb17892804ddcf217",
+      "bundled": "prism-research-semantic-clustering/scripts/research_core/contract.json",
+      "bundled_sha256": "815452233ce925a0cd09350314cf086ae1087a90b0cdbea50cd99f802f38f27c",
+      "adapted": false
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/prompts/cluster.md",
+      "source_sha256": "efbfe644a11766619250614c84010daf7dc3c2801289aa83375164c3236e9f6e",
+      "bundled": "prism-research-semantic-clustering/scripts/research_core/prompts/cluster.md",
+      "bundled_sha256": "4d9bdc112d5aae2d8b5831e0373ed074381b698619c779457e5f412b7efb6895",
+      "adapted": false
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/prompts/review.md",
+      "source_sha256": "ecce944a6f060bb29d7b440fa5dd9652b290995c5ffe68d14570f3216b0d0044",
+      "bundled": "prism-research-semantic-clustering/references/semantic-review.md",
+      "bundled_sha256": "9d713d7384e005236237ec85eddd7ac7c0e4530ff50e7b7915aa536dc9be9da6",
+      "adapted": false
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/METHOD.md",
+      "source_sha256": "56d318e20d92e82231adfee4f1436bc5c12108be4adf56191e06582110aeef6d",
+      "bundled": "prism-research-semantic-clustering/references/upstream-method.md",
+      "bundled_sha256": "62a926fd9c70ec4157e0392a395d16d29b3a8f716d6701221aae4e8622f78e2d",
+      "adapted": false
+    }
+  ],
+  "validation_scope": "structure, citation, role, coverage and replay; not independent semantic accuracy",
+  "model_decisions": "produced by the invoking assistant under the included prompts; not keyword rules or K-means",
+  "source_date": "2026-09-30"
+}

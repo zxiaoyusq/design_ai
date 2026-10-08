@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜范围与运行约定"
+  short_description: "冻结棱镜项目目标、资料范围、分支、候选容量、成板数量及模型预算，登记可复用状态。用于启动或接续运行；不代替各环节算法。"
+  default_prompt: "使用 $prism-run-contract 完成本环节，保留实际输入输出、来源和未解决问题。"

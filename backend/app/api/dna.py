@@ -35,6 +35,7 @@ from app.services.dna.tasks import (
     ExtractionTaskNotFoundError,
     extraction_task_manager,
 )
+from app.api.dna_v2 import prism_task_manager
 from app.services.llm.catalog import get_model
 
 
@@ -95,7 +96,7 @@ def read_uploaded_image_content(image_id: str) -> FileResponse:
 def remove_uploaded_image(image_id: str) -> None:
     """删除素材，但保留已经完成的设计 DNA 结果。"""
 
-    if extraction_task_manager.is_image_in_active_task(image_id):
+    if extraction_task_manager.is_image_in_active_task(image_id) or prism_task_manager.is_image_in_active_task(image_id):
         raise HTTPException(status_code=409, detail="图片正在提取中，任务结束后才能删除")
     try:
         delete_uploaded_image(image_id)

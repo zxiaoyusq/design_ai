@@ -1,0 +1,15 @@
+{
+  "purpose": "旧纯文本情绪板执行与测试历史快照，不导入、不作新运行fallback；4–8/6–8仅作历史数据协议。",
+  "files": [
+    {
+      "original_path": "backend/tests/test_moodboards.py",
+      "archive_file": "tests_test_moodboards.py.txt",
+      "sha256": "6c1e989571b3f1698d3f8e044839d514a281e85bdd889549a4a6ef22249ec90e"
+    },
+    {
+      "original_path": "backend/app/services/moodboards/tasks.py",
+      "archive_file": "moodboards_tasks.py.txt",
+      "sha256": "84d06353613dceaf46e4a0e29eccdf47b61f8d74c384c3f39d8a981f3ac0aa29"
+    }
+  ]
+}

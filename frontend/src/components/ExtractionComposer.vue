@@ -24,6 +24,11 @@ const props = defineProps<{
   prompt: string
   task: ExtractionTask | null
   running: boolean
+  skillLabel?: string
+  concurrencyLabel?: string
+  /** 冻结提取器保持现有布局，但禁止修改模型和提示；历史读取不受影响。 */
+  frozenConfiguration?: boolean
+  executorLabel?: string
 }>()
 
 const emit = defineEmits<{
@@ -39,7 +44,7 @@ const canStart = computed(
 const taskStatusText = computed(() => {
   const labels: Record<string, string> = {
     queued: '任务已进入队列',
-    running: 'DeepAgent 正在并行提取设计 DNA',
+    running: `${props.executorLabel || 'DeepAgent'} 正在执行 ${props.skillLabel || '设计 DNA 提取'}`,
     completed: '全部图片提取完成',
     partial: '任务完成，部分图片需要检查',
     failed: '任务未能完成',
@@ -114,12 +119,12 @@ function errorSummary(item: ExtractionTaskItem) {
     <div class="section-heading compact">
       <div>
         <span class="eyebrow">02 / 描述任务</span>
-        <h2>告诉 Agent 你关注什么</h2>
-        <p>可补充品类、业务场景或希望重点观察的区域。</p>
+        <h2>{{ frozenConfiguration ? '冻结 Sol R5 提取配置' : '告诉 Agent 你关注什么' }}</h2>
+        <p>{{ frozenConfiguration ? '固定 gpt-6-sol / low / default，Fast 关闭；视觉审阅独立执行。' : '可补充品类、业务场景或希望重点观察的区域。' }}</p>
       </div>
       <div class="skill-chip">
         <span class="status-dot"></span>
-        Multi-tag Design DNA Skill
+        {{ skillLabel || 'Multi-tag Design DNA Skill' }}
       </div>
     </div>
 
@@ -128,6 +133,7 @@ function errorSummary(item: ExtractionTaskItem) {
       <a-select
         id="model-select"
         :value="selectedModelId"
+        :disabled="frozenConfiguration"
         size="large"
         placeholder="选择模型"
         :options="
@@ -151,13 +157,14 @@ function errorSummary(item: ExtractionTaskItem) {
     <div class="chat-box">
       <div class="agent-avatar"><RobotOutlined /></div>
       <div class="chat-content">
-        <div class="chat-label"><MessageOutlined /> 用户具体要求</div>
+        <div class="chat-label"><MessageOutlined /> {{ frozenConfiguration ? '原生冻结提示' : '用户具体要求' }}</div>
         <a-textarea
           :value="prompt"
+          :disabled="frozenConfiguration"
           :rows="6"
           :maxlength="4000"
           show-count
-          placeholder="例如：这是一组户外运动产品，请重点关注防护结构、材质关系和动感语义；背景道具不要纳入分析。"
+          :placeholder="frozenConfiguration ? '提取直接使用同事 Sol R5 原始提示，不注入额外要求；未知和未决项原样保留。' : '例如：这是一组户外运动产品，请重点关注防护结构、材质关系和动感语义；背景道具不要纳入分析。'"
           @update:value="emit('update:prompt', $event)"
         />
       </div>
@@ -166,7 +173,7 @@ function errorSummary(item: ExtractionTaskItem) {
     <div class="run-bar">
       <div class="selection-summary">
         <span>{{ selectedCount }}</span>
-        张图片将并行提取，最多同时 4 张
+        张图片将并行提取，{{ concurrencyLabel || '最多同时 4 张' }}
       </div>
       <a-button
         type="primary"

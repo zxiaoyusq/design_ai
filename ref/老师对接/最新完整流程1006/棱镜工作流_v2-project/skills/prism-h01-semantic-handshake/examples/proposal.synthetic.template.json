@@ -1,0 +1,123 @@
+{
+  "schema_version": "prism.semantic_h01_proposal.v2",
+  "request_snapshot": null,
+  "directions": [
+    {
+      "direction_id": "D1",
+      "title": "深灰低光泽背板与局部银亮边框",
+      "design_question": "如何保留背板安静观感又让小边框提供变化？",
+      "alignment_state": "overlap_candidate",
+      "relation_basis": "direct_support",
+      "trend_cluster_ids": [
+        "TC1"
+      ],
+      "research_cluster_ids": [
+        "RC1",
+        "RC2"
+      ],
+      "trend_citations": [
+        {
+          "evidence_id": "TE1",
+          "text": "深灰低光泽面与窄银色边框形成局部对比",
+          "text_kind": "original_text",
+          "reason": "合成趋势明确区分主体与局部"
+        }
+      ],
+      "research_citations": [
+        {
+          "unit_id": "U1",
+          "text": "我喜欢这块背板的深灰色和哑光表面。",
+          "role": "direct_support",
+          "reason": "合成直接背板偏好"
+        },
+        {
+          "unit_id": "U4",
+          "text": "我更喜欢小边框有一点银色亮光。",
+          "role": "direct_support",
+          "reason": "合成局部边框偏好"
+        },
+        {
+          "unit_id": "U2",
+          "text": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "role": "boundary",
+          "reason": "保留背板太亮与边框例外"
+        }
+      ],
+      "shared_design_principle": "通过主体和细节分工形成受控的光泽差异。",
+      "extension_explanation": "",
+      "hypotheses": [],
+      "conditions_and_limits": [
+        {
+          "basis_kind": "source_quote",
+          "reference_id": "U2",
+          "text": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "implication": "不能把局部可亮扩大成整背板高亮"
+        }
+      ],
+      "unresolved_questions": [
+        "U8未指明颜色，适用性仍未知。"
+      ],
+      "suggested_branches": [
+        "CMF"
+      ]
+    }
+  ],
+  "negative_audit": [
+    {
+      "unit_id": "U2",
+      "impacts": [
+        {
+          "state": "applicable",
+          "direction_ids": [
+            "D1"
+          ],
+          "reason": "背板与小边框正是该方向的两个对象；保留程度差异。"
+        }
+      ]
+    },
+    {
+      "unit_id": "U8",
+      "impacts": [
+        {
+          "state": "unresolved",
+          "direction_ids": [
+            "D1"
+          ],
+          "reason": "未记录讨厌的具体颜色，不能当作无关或已消除。"
+        }
+      ]
+    }
+  ],
+  "trend_cluster_coverage": [
+    {
+      "cluster_id": "TC1",
+      "disposition": "used",
+      "reason": "双侧语义存在具体依据"
+    }
+  ],
+  "research_cluster_coverage": [
+    {
+      "cluster_id": "RC1",
+      "disposition": "used",
+      "reason": "参与具体引文"
+    },
+    {
+      "cluster_id": "RC2",
+      "disposition": "used",
+      "reason": "参与具体引文"
+    },
+    {
+      "cluster_id": "RC3",
+      "disposition": "not_selected",
+      "reason": "背景/举例不能转成直接外观偏好"
+    },
+    {
+      "cluster_id": "RC4",
+      "disposition": "not_selected",
+      "reason": "背景/举例不能转成直接外观偏好"
+    }
+  ],
+  "overall_evidence_gaps": [
+    "Synthetic example only; no real interview, market prevalence, image or product validation."
+  ]
+}

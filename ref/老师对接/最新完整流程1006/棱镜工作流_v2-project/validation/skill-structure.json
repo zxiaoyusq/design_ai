@@ -1,0 +1,87 @@
+[
+  {
+    "skill": "prism-board-review",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-cmf-moodboard",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-crop-enhancement",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-direction-selection",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-dna-sol-r5",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-h01-semantic-handshake",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-id-moodboard",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-independent-evaluation-loop",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-moodboard-delivery",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-research-intake",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-research-semantic-clustering",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-run-contract",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-source-image-selection",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-target-quality",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-target-view-binding",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-trend-semantic-clustering",
+    "exit": 0,
+    "message": "Skill is valid!"
+  },
+  {
+    "skill": "prism-visual-family",
+    "exit": 0,
+    "message": "Skill is valid!"
+  }
+]

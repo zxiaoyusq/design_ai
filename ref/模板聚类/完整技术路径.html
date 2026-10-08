@@ -1,0 +1,617 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>完整技术路径 · v0.6</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f4f3ef;color:#25312b;font-family:"Microsoft YaHei",Arial,sans-serif;line-height:1.8}main{max-width:1180px;padding:30px 42px 70px;margin:auto;background:#fff}nav{position:sticky;top:0;background:#eaf0ebee;padding:12px 24px;z-index:3;display:flex;gap:25px;align-items:center;border-bottom:1px solid #ccd7ce}a{color:#2c6552;text-underline-offset:3px}h1{font-size:31px;line-height:1.35}h2{font-size:23px;margin-top:44px;padding-top:12px;border-top:1px solid #dbe2dc}h3{font-size:19px;margin-top:32px}p,li{font-size:16px}table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.65;margin:20px 0;display:block;overflow-x:auto}th,td{border:1px solid #dce3dc;padding:10px 12px;vertical-align:top;text-align:left}th{background:#eef3ee}code{font-family:Consolas,monospace;background:#edf2ee;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}pre{overflow:auto;background:#f0f4f0;padding:18px;line-height:1.5}pre code{padding:0}img{width:100%;height:auto;margin:15px 0;border:1px solid #dbe2dc}blockquote{margin:20px 0;border-left:4px solid #4a7865;padding:12px 20px;background:#f0f5f1}.math{font-family:Consolas,"Microsoft YaHei",monospace;background:#edf4ef;padding:18px;white-space:pre-line;border-left:4px solid #567a64}.pipeline{padding:22px;background:#edf3ee;margin:20px 0;border-radius:10px}.steps{display:flex;gap:9px;flex-wrap:wrap}.steps button{background:white;border:1px solid #9caf9f;padding:9px 12px;border-radius:6px;font-size:14px;color:#244d38;cursor:pointer}.steps button.active{background:#315f46;color:white}.stage{min-height:105px;padding:17px 0 0}.small{font-size:13px;color:#6c7770}.cover{padding:16px 0 28px}.cover b{font-size:20px}button.print{border:1px solid #7b9180;border-radius:5px;background:white;padding:6px 10px;cursor:pointer}@media print{nav,.print,.pipeline{display:none}main{padding:0;max-width:none}body{background:white}h2{break-after:avoid}table{display:table;font-size:10px}tr{break-inside:avoid}img{max-height:23cm;object-fit:contain}pre{white-space:pre-wrap;overflow:visible}p,li{font-size:11px}}@media(max-width:700px){main{padding:20px 15px}nav{gap:12px;flex-wrap:wrap}h1{font-size:25px}td,th{padding:7px}}</style><nav><a href="情绪板_v0.6.html">浏览情绪板</a><a href="规则结果说明.html">结果与DNA说明</a><a href="完整技术路径.html">完整技术路径</a><a href="规则情绪板_v0.6_批注用.pptx">批注PPTX</a><button class="print" onclick="print()">打印 / 保存PDF</button></nav><main><section class="pipeline"><b>交互式技术路径</b><p class="small">点击步骤查看输入、输出与人机分工。</p><div class="steps"><button data-stage="0" class="active">01 原图</button><button data-stage="1" class="">02 视觉观察</button><button data-stage="2" class="">03 字段融合</button><button data-stage="3" class="">04 差异区间</button><button data-stage="4" class="">05 候选方向</button><button data-stage="5" class="">06 方向内合并</button><button data-stage="6" class="">07 主图与选板</button><button data-stage="7" class="">08 解释与交付</button></div><div class="stage" id="stage"></div></section><script>const stages=[["01 原图","103张原始PNG，稳定ID与SHA256。全部读取，短边235–237像素。原图内容不改写。","analysis/originals · image_manifest.json"],["02 视觉观察","视觉语言模型按统一规范记录整体及表面证据，保留不确定性。补充观察者不看旧板或蓝圈。","rules_v05/features_frozen.json · surface_a/b.json"],["03 字段融合","由旧单元、尺度和新表面构造生成18字段；6显著性冲突、5组合未覆盖、1原证据未知分别保留。","engine.fuse · features_v06.json"],["04 差异区间","七系数固定。计算5253个不同图对的下界与上界；未知不当相同，不重新分配权重。中点只用于排序与主图。","distance_lower.npy · distance_upper.npy"],["05 候选方向","由字段的实际联合取值枚举141个方向组合。scope、共同表面签名与关键字段必须通过。","engine.profiles · protocol.json"],["06 方向内合并","完全连接只合并所有跨簇图对上界≤0.45的集合。形成147个方向内簇，去重后8个≥3图候选板。","clustering_trace.json · merge_logs"],["07 主图与选板","自动medoid，控制同家族、复用与板间重合。全局固定排序选择5板、23图；每张已选图确定一个主归属。","boards_raw.json · primary_assignments.json"],["08 解释与交付","名称、DNA映射和说明性构成权重在成员冻结后添加。原图直接排版成HTML/PNG/PPTX，另交80张未入板原因。","boards.json · editorial_integrity.json"]];function stage(i){document.querySelectorAll('[data-stage]').forEach(b=>b.classList.toggle('active',+b.dataset.stage===i));document.getElementById('stage').innerHTML='<strong>'+stages[i][0]+'</strong><p>'+stages[i][1]+'</p><code>'+stages[i][2]+'</code>';}document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>stage(+b.dataset.stage));stage(0);</script><h1>从原图到一致性情绪板：v0.6 C 技术路径说明</h1>
+<p>本稿依据已执行的<code>v0.6-consistency-first-C</code>协议、<code>engine.py</code>及运行输出。C版本自动选出5板，分别含7、6、4、3、3张，合计23个展示位置、23张独立原图，80张未入板。五张主图均由程序计算。只有1板达到7–10张的目标范围；本次没有将其余4板补满，也没有将80张未展示图判为风格不合格。</p>
+<p>本轮将103张原图的观察结果转成可执行规则，再由程序生成方向、组织成员、选择主图和控制复用。用户已明确优先保证一致性，因此最多16板、每板最多10张；7–10张保留为展示目标，允许不足7张，正式候选的最小规模设为3张。少于16板或出现3–6张板时如实交付，不放宽距离、改编码或补入未通过图片来凑数。</p>
+<p>这里的“自动”指在观察字段和规则冻结之后，成员由程序确定。图像观察由视觉语言模型（LLM）按规范读图并写出结构化判断，规则设计与解释仍需人为决策。这不是本地训练的自动视觉特征网络或深度聚类模型，也没有证明消费者会认可这些搭配。</p>
+<h2>开发轨迹：为何从16板缩到5板</h2>
+<table>
+<thead>
+<tr>
+<th>本轮开发版本</th>
+<th>发现的问题与通用修改</th>
+<th align="right">实际板数</th>
+<th align="right">独立展示图数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>形态方向仅锁定轮廓与体量，数值门槛通过仍可能混入不同主导表面；保留该次规则与结果供追溯</td>
+<td align="right">16</td>
+<td align="right">67</td>
+</tr>
+<tr>
+<td>B</td>
+<td>所有方向开始联合表面家族，表面方向再联合光泽；但颗粒与细碎斑仍可能归并，覆盖层级与纹理路径没有统一绑定到所有方向</td>
+<td align="right">10</td>
+<td align="right">40</td>
+</tr>
+<tr>
+<td>C，正式候选</td>
+<td>区分细碎斑与细密表面；所有方向共享表面签名及覆盖/路径条件；形态方向再联合主体色域；显著性观察冲突暂缓</td>
+<td align="right">5</td>
+<td align="right">23</td>
+</tr>
+</tbody></table>
+<p>这是对字段冲突作出解释、改通用规则并重算全103图的开发轨迹。A、B的冻结输入和结果保留于<code>moodboards_v06/iterations/a</code>与<code>iterations/b</code>。板数减少不能表述为正确率提高；三个版本使用同批素材、受到既有反馈启发，不构成独立盲测。C规则制定与运行没有新的用户反馈作为验证，审美有效性尚未确认。</p>
+<h2>一、完整数据流与模块边界</h2>
+<pre><code class="language-text">103张原图 + 原图清单/SHA256
+                ↓
+v0.5冻结观察 + v0.6独立表面补充观察
+                ↓
+字段校验、通用映射、来源保留
+                ↓
+18字段表示 + 每图未知权重
+                ↓
+固定七维差异区间：下界 / 上界 / 排序中点
+                ↓
+从实际字段组合枚举方向；检查方向必要条件
+                ↓
+各方向内完全连接层级合并 → 候选簇
+                ↓
+自动medoid主图 → 每候选最多10张
+                ↓
+全局选板：新增覆盖、一致性、板间重合与复用约束
+                ↓
+唯一主归属 + 展示复用 + 未入板去向
+                ↓
+冻结成员 → 消费者可读命名、原图排版、结果检查
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>模块</th>
+<th>读取什么</th>
+<th>产生什么</th>
+<th>不在本模块做什么</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原图登记</td>
+<td><code>recluster_v02/image_manifest.json</code>及<code>analysis/originals</code></td>
+<td>图像ID、路径、尺寸和源图SHA256的可追溯关系</td>
+<td>文件编号、来源页不进入相似度</td>
+</tr>
+<tr>
+<td>视觉观察</td>
+<td><code>rules_v05/codebook.md</code>、冻结观察、<code>moodboards_v06/feature_supplement.md</code>及原图</td>
+<td>七维字段、表面路径/构造、中文证据、不确定性、实际读图日志</td>
+<td>不依据旧板成员或圈选结果决定新观察值</td>
+</tr>
+<tr>
+<td>表示生成</td>
+<td>冻结观察和补充字段</td>
+<td>供运算的18字段、通用纹理类别、每图未知权重；原始词和证据保留</td>
+<td>不按图片ID特判，不增加第八项权重</td>
+</tr>
+<tr>
+<td>差异计算</td>
+<td>18字段和固定权重</td>
+<td>所有不同图片对的差异下界、上界和中点</td>
+<td>未知不视为相同，不把其权重转给其他字段</td>
+</tr>
+<tr>
+<td>方向与候选生成</td>
+<td>实际出现的字段组合、六类方向模板、差异矩阵</td>
+<td>方向条件、通过者、完全连接候选簇及排除依据</td>
+<td>不继承旧16张主图、旧标题和旧成员</td>
+</tr>
+<tr>
+<td>全局选板</td>
+<td>候选簇、自动主图、公开约束</td>
+<td>选中板、展示成员、复用次数、板间重合</td>
+<td>不将覆盖全部103图作为强制目标</td>
+</tr>
+<tr>
+<td>解释与交付</td>
+<td>冻结选图及原图、DNA解释参照</td>
+<td>主归属、未入板原因、板名、可核查证据、渲染成品</td>
+<td>命名和文案不回流改变成员</td>
+</tr>
+</tbody></table>
+<p>v0.6只补充直接服务于规则复现的表面观察。<code>surface_path</code>描述纹理单元的组织路径，避免把物体外轮廓抄成纹理方向；<code>surface_construction</code>区分细碎颗粒、可见交织、连续线纹、平面纹样、凸起单元、小部件和平静表面。它们不是新增DNA参数编号。</p>
+<p>新观察与原冻结观察保留各自来源。构造、原单元和尺度经统一规则得到<code>texture.family</code>，具体C映射如下；全部图片适用同一映射，不按ID写例外。</p>
+<table>
+<thead>
+<tr>
+<th>新构造及旧字段条件</th>
+<th>生成的纹理家族</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>quiet</code>且没有显著性冲突</td>
+<td><code>quiet</code></td>
+</tr>
+<tr>
+<td><code>fine_particulate</code>＋旧<code>irregular_patch</code></td>
+<td><code>flat_irregular</code>，不归入细颗粒家族</td>
+</tr>
+<tr>
+<td><code>fine_particulate/interlaced</code>＋旧<code>grain/fiber/line</code>＋尺度<code>fine/medium</code></td>
+<td><code>fine_surface</code>；原颗粒/交织差别保留在证据中</td>
+</tr>
+<tr>
+<td><code>continuous_lines</code>＋旧<code>line</code></td>
+<td><code>lines</code></td>
+</tr>
+<tr>
+<td><code>continuous_lines</code>＋旧<code>irregular_patch</code></td>
+<td><code>flat_irregular</code></td>
+</tr>
+<tr>
+<td><code>flat_pattern</code>＋旧<code>geometric_patch/irregular_patch/line</code></td>
+<td>依次为<code>flat_geometric/flat_irregular/lines</code></td>
+</tr>
+<tr>
+<td><code>raised_units</code>或<code>small_components</code></td>
+<td>同名家族</td>
+</tr>
+<tr>
+<td>其余组合或关键来源字段未知</td>
+<td><code>null</code>，保留未映射原因，不凭常识补值</td>
+</tr>
+</tbody></table>
+<p>新<code>texture.path</code>进入距离，旧<code>texture.order</code>保留供追溯而不另加一次权重。四个纹理距离字段仍共用22%的原维度系数。</p>
+<p>需要分清三类输入问题：<strong>显著性冲突</strong>是旧观察判断主要纹理有/无，与新<code>quiet/非quiet</code>判断相反；C不选一方当真，而把<code>family/scale/path/coverage</code>统一置<code>null</code>，保留两份证据。共有6图：007、027、068、070、074、081。<strong>编码组合未覆盖</strong>是来源字段有值，但通用映射表没有对应分支；019、034、061、062、064属于此类，它们不是因为图像完全看不清而被置未知。<strong>原证据未知</strong>则是观察本身未能判断；016的旧单元、尺度与覆盖为<code>null</code>，补充观察虽有细粒线索，仍未补齐这些字段。后两类在程序状态中合并为<code>uncovered_or_unknown_combination</code>，共6图；本说明按来源证据进一步区分。其余91图映射成功。</p>
+<p>这12图都因缺少已知表面家族而暂缓入板。暂缓不表示已证实视觉冲突，也不说明映射未覆盖的5图不适合形成方向。</p>
+<h2>二、固定七维系数怎样落到18个字段</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th align="right">系数</th>
+<th>参与距离的字段</th>
+<th align="right">每字段份额</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>形态 shape</td>
+<td align="right">0.28</td>
+<td>contour、mass</td>
+<td align="right">0.14</td>
+</tr>
+<tr>
+<td>纹理 texture</td>
+<td align="right">0.22</td>
+<td>family、scale、path、coverage</td>
+<td align="right">0.055</td>
+</tr>
+<tr>
+<td>材质外观与光学 optics</td>
+<td align="right">0.17</td>
+<td>gloss、transparency、appearance</td>
+<td align="right">0.17/3</td>
+</tr>
+<tr>
+<td>主体配色 color</td>
+<td align="right">0.15</td>
+<td>palette、organization、contrast</td>
+<td align="right">0.05</td>
+</tr>
+<tr>
+<td>构件关系 relation</td>
+<td align="right">0.10</td>
+<td>assembly、rhythm</td>
+<td align="right">0.05</td>
+</tr>
+<tr>
+<td>光效 light</td>
+<td align="right">0.05</td>
+<td>form、extent</td>
+<td align="right">0.025</td>
+</tr>
+<tr>
+<td>图文场景 context</td>
+<td align="right">0.03</td>
+<td>setting、dominance</td>
+<td align="right">0.015</td>
+</tr>
+</tbody></table>
+<p>系数合计1。维内均分是本轮公开的工程选择，并非经过消费者数据校准的感知贡献。图像ID、来源页、文件名、主观标题和反馈标签没有距离权重；SHA256仅用于完全同分时的稳定排序。<code>focus</code>、<code>scope</code>、观察文本和原始构造字段用于来源、准入或解释，不在表中重复累计。</p>
+<p>令维度为<code>k</code>，系数为<code>w_k</code>，该维字段集合为<code>F_k</code>。两个不同图像<code>i,j</code>在字段<code>f</code>上的差异区间为<code>[ℓ_f(i,j), u_f(i,j)]</code>。总差异定义为：</p>
+<div class="math">L(i,j) = Σₖ wₖ × 本维各字段差异下界的平均
+U(i,j) = Σₖ wₖ × 本维各字段差异上界的平均</div>
+
+
+<p>仅用于排序与主图选择的中点为<code>M(i,j)=[L(i,j)+U(i,j)]/2</code>。各值在0到1之间，越小表示按当前字段编码得到的差异越小。这里不把<code>1−M</code>包装成消费者相似概率或匹配置信度。</p>
+<p>两个值都已知时，相同取0，一般名义类别不同取1。协议另外公开以下0.5差异：</p>
+<ul>
+<li>轮廓<code>mixed</code>与<code>curved/straight</code>之间取0.5；<code>curved</code>与<code>straight</code>之间取1。</li>
+<li>尺度<code>fine–medium–coarse</code>、光泽<code>matte–soft–sharp</code>、透明<code>opaque–translucent–transparent</code>、对比<code>low–medium–high</code>及场景主导程度<code>support–shared–dominant</code>，相邻取0.5、首尾取1。</li>
+<li>光学字段的<code>mixed</code>对已知具体类别取0.5。色域的<code>mixed</code>对具体类别取0.5；<code>neutral</code>与<code>warm_muted/cool_muted</code>之间取0.5，其余不同取1。</li>
+</ul>
+<p>这些0.5是为了运行规则而指定的类别差异，不表示物理量等距，也不是DNA字典原生提供的数值距离。<code>none</code>是有证据支持的不显著或不适用观察值；<code>null</code>是信息不足，两者不能互换。</p>
+<h2>三、未知不被相似度吞掉</h2>
+<p>不同源图比较时，任一方字段为<code>null</code>，该字段差异保留为逻辑区间<code>[0,1]</code>。即使两张图都看不清同一属性，也不能据此认为相同。已知字段不增加权重，未知字段也不默认填成最相似类别。同一原图SHA256的自比较由程序直接返回0，不把自比较的未知当成自身差异。</p>
+<p>每图未知权重为：</p>
+<div class="math">q(i) = Σₖ [ wₖ / 本维字段数 × 本维未知字段数 ]</div>
+
+
+<p>协议要求每图未知权重不超过0.30；方向必要字段还必须分别已知。总预算通过，不会让一个未知的必要条件变成通过。0.30是本轮工程门槛，不是统计置信水平。</p>
+<p>图对的区间宽度<code>U−L</code>等于至少一方未知的字段所占权重之和。例如只看到表面近景而无法判断整体轮廓和体量，形态维可能带来0.28的区间宽度；不能把这28%悄悄转给纹理。中点将这部分区间折中用于排序，准入仍检查上界。</p>
+<p>在0.45阈值下，可以分清三种含义：<code>U≤0.45</code>是按最不利未知取值仍通过；<code>L&gt;0.45</code>是已有差异足以超限；<code>L≤0.45&lt;U</code>是证据不足以保证通过。后一种未通过，不能被解释为已经看到了明确风格冲突。</p>
+<h2>四、方向由实际组合产生</h2>
+<p>程序以六类公开模板遍历103张图，枚举实际出现的字段组合。模板是规则族，数据中的组合才是具体方向。因此方向数量不预设为16，也不是将16个已有标题重新填图。C实际产生141个不同方向组合。</p>
+<p>所有方向先通过共同条件：未知权重不超过0.30；<code>scope</code>必须为<code>dominant/shared</code>；纹理家族必须已知。非<code>quiet</code>表面还必须为<code>coverage=dominant</code>。表面签名由家族与路径组成；除<code>quiet/fine_surface</code>以外，路径必须已知且相同。这两类的方向签名采用<code>any_path</code>通配，但原始路径仍参与22%纹理距离，不会被从距离中删去。</p>
+<table>
+<thead>
+<tr>
+<th>方向族</th>
+<th>必要字段</th>
+<th>主要准入边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>形态 form</td>
+<td>轮廓、体量、主体色域、表面签名</td>
+<td>这些字段同时一致；<code>quiet</code>须再联合已知外观类别并排除<code>other/mixed</code>，平静表面本身不独立支撑正向方向</td>
+</tr>
+<tr>
+<td>表面 surface</td>
+<td>纹理家族、覆盖、光泽及所需路径</td>
+<td>排除<code>quiet</code>，覆盖须为<code>dominant</code>，光泽已知且相同；<code>fine_surface</code>路径通配，其余路径已知且相同；几何平面纹样与不规则纹样分开</td>
+</tr>
+<tr>
+<td>外观 optical</td>
+<td>外观类别、光泽、主体色域、表面签名</td>
+<td>外观排除<code>other/mixed/null</code>；明确外观、色域和表面签名联合，不能仅凭亮面归为一板</td>
+</tr>
+<tr>
+<td>配色 colour</td>
+<td>主体色域、配色组织、表面签名</td>
+<td>排除<code>neutral/null</code>；三者同时一致</td>
+</tr>
+<tr>
+<td>构件 assembly</td>
+<td>构件关系、组织节奏、表面签名</td>
+<td>关系仅用<code>branching/layered/repeated_array</code>；泛化的<code>integrated</code>或<code>surface_pattern</code>不单独建方向</td>
+</tr>
+<tr>
+<td>光效 luminous</td>
+<td>亮光形态、范围、主体色域、表面签名</td>
+<td>有显著<code>point/line/area</code>且必要字段已知；不根据反光高光确认真实光源</td>
+</tr>
+</tbody></table>
+<p>方向条件属于必要条件，距离属于总体一致性条件，二者需要同时通过。七维平均接近不能弥补方向核心表达缺失。这也说明最终选择不只由七个百分比决定：门槛、方向模板和复用限制都会影响结果，但它们不是新增的隐藏权重。</p>
+<p>一个图像可以符合多个方向族，例如既符合某种形态，也符合某种表面。此时产生重叠候选簇，之后由全局选板和主归属规则处理；不在观察阶段人为决定其最终组别。</p>
+<h2>五、完全连接如何保证板内两两通过</h2>
+<p>每个方向内部先将图像视为单元素集合，反复选择允许合并的集合。集合间差异采用完全连接：</p>
+<div class="math">D_complete(A,B) = max { U(i,j) : i∈A, j∈B }</div>
+
+
+<p>只有合并后所有不同图片对的上界均不超过0.45才允许合并。每步在可合并簇对中选择跨簇最大上界最低者；完全同分时按合并后原图SHA256集合的字典序决定。计算比较允许<code>1e−12</code>浮点容差，不用于实质放宽阈值。停止后记录全部簇，再保留规模至少3张者进入候选制作。</p>
+<p>这条规则检查的是每一对成员。A与B通过、B与C通过，并不足以让A/B/C自动同板；A与C也要通过。只限制成员到主图的距离不能替代这项检查。</p>
+<p>完全连接会偏向紧凑小簇，尤其容易排除未知较多的表面近景。这是选择最不利上界的保守代价，不说明被排除图片没有价值。层级合并和后续贪心也不是所有可能板组合的穷举，因此程序产出的板数不构成“其他算法不可能更多”的证明。</p>
+<h2>六、主图、截取与全局选板</h2>
+<p>候选簇<code>C</code>的主图取其medoid，即到簇内其余图片的平均差异中点最小的真实原图：</p>
+<div class="math">m_C = argminᵢ∈C [ 到簇内其他图的平均差异中点 ]</div>
+
+
+<p>完全同分时按源图SHA256稳定排序。公式除以<code>|C|−1</code>表示到其他图的平均；实现将自身0距离也计入并除以<code>|C|</code>，同一候选内两者只差共同常数因子，选出的medoid完全相同。主图不是合成平均图，也不是经消费者验证的最佳设计，只是当前表示中的数值中心。</p>
+<p>候选先保留主图，其余先按到主图的差异上界，再按中点、源图SHA256排序。按这个顺序去除同板完全重复图和疑似同设计家族图，再取到最多10张；去重后不足3张则不成候选板。最后在保留集合中按同一medoid规则重算主图，并重新排序。</p>
+<p><code>duplicate_candidates.json</code>登记了091/099这一对“可能同设计家族”，不能确认是同一型号，也不是像素近重复；同板至多保留一张。它是另行披露的展示质量约束，不进入视觉距离、DNA字段或反馈排除规则。C最终5板均未使用这对图片。未进入前10张表示展示上限截取，不能统一记为“不相似”。从已两两合格的簇取子集不会破坏成对门槛。</p>
+<p>相同成员集合只保留一个候选，优先采用涉及维度系数和较高的解释，完全同分再按方向键排序；成员集合本身不改变。</p>
+<p>全局选择在这些候选板之间运行，最多选16板。每次先剔除违反约束的候选，再按以下优先级贪心选择：新增独立图片数更多；与已选板的最大重合更低；板内平均差异上界更低；方向涉及维度的系数和更高；成员更多；方向键与原图SHA256集合字典序。涉及维度的系数和只作同级候选优先级，不修改七维距离：形态为形态＋纹理＋配色，<code>quiet</code>形态再加光学；表面为纹理＋光学；外观为光学＋配色＋纹理；配色为配色＋纹理；构件为构件关系＋纹理；光效为光效＋配色＋纹理。</p>
+<p>采用的硬约束为：每图最多展示2次；每新板至少增加2张此前未展示图片；任意两板的Jaccard重合不超过1/3。板<code>A,B</code>的重合定义为：</p>
+<div class="math">J(A,B) = |A∩B| / |A∪B| ≤ 1/3</div>
+
+
+<p>Jaccard不是固定“最多共3张”。例如两张7图板共3张时为3/11，可以通过；共4张时为4/10，不能通过。它直接考虑板的大小，因此适用于本轮3–10张的可变规模。</p>
+<p>选择在达到16板或没有合格新增候选时停止。没有追求填满空位的默认补图流程，也不以蓝圈排除数量挑选阈值。贪心选择是可复算的工程方案，不能声称已找到全局最优覆盖。</p>
+<h2>七、唯一主归属与展示复用分开</h2>
+<p>对至少出现在一张选中板中的图像，比较其到各出现板主图的距离中点，最近者成为唯一主归属；完全同分按稳定板ID排序。其他出现位置标记为展示复用。归属范围只包括实际展示该图的板。任何未入板图像都不强行指派到一个看似最近的板；程序以<code>R00</code>记未入板状态，不把R00当作新的风格簇。C最终没有跨板复用，因此23张展示图各自所属板就是其主归属。</p>
+<p>因此应分别报告三种数量：选中板的展示总位置、实际使用的独立图片数、103图中未展示的数量。展示总位置会因复用大于独立图片数，不能混写成覆盖率。</p>
+<p>未展示的原因应依据运行记录说明：必要字段未知、核心条件不符、图对上界不能保证通过、候选簇规模不足3、每候选10张上限、复用/重合/新增覆盖限制或全局候选未被选中。多种原因可以同时存在；“没有展示”不等于“已判不相似”。</p>
+<h2>八、观察字段怎样对应DNA实际ID</h2>
+<p>下表依据<code>recluster_v02/dna_reference.json</code>，保留字典真实的连字符编号。映射是解释关联，不是把本轮粗粒度字段逐项伪装成字典原始取值。字典当前提取项的定义状态是“推演候选”，也没有提供聚类权重或已学习的审美规则。</p>
+<table>
+<thead>
+<tr>
+<th>本轮字段或证据</th>
+<th>DNA实际参数</th>
+<th>对应程度与不能直接推出的内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>shape.contour</code>及具体曲线证据</td>
+<td><strong>GEO-001 轮廓路径类型</strong>；<strong>GEO-005 曲率变化方式</strong></td>
+<td>轮廓有部分直接关联；<code>curved</code>不能自动区分圆弧与自由曲线，也不能自动赋予恒定曲率或连续变化</td>
+</tr>
+<tr>
+<td><code>shape.mass=open</code>及负空间证据</td>
+<td><strong>GEO-019 穿透与镂空方式</strong></td>
+<td>仅部分对应；照片中开敞不证明盲孔、通孔或背面贯穿。<code>compact/slender/sheet</code>没有在本次字典提取中找到一对一参数，保留工程描述</td>
+</tr>
+<tr>
+<td><code>texture.family</code>、原<code>unit</code>、<code>surface_construction</code></td>
+<td><strong>TEX-002 基本单元类型</strong></td>
+<td>可说明颗粒、纤维、线、斑块等可见单元；<code>fine_surface</code>是运算归并，不是字典新增值，也不确认真实微观结构</td>
+</tr>
+<tr>
+<td><code>texture.path</code> / <code>surface_path</code></td>
+<td><strong>TEX-007 方向组织</strong></td>
+<td>直向、交叉、放射与流线可解释关联；<code>curved</code>还需具体证据区分环向与流线，不由物体圆形推环向</td>
+</tr>
+<tr>
+<td>原<code>texture.order</code>及重复证据</td>
+<td><strong>TEX-010 分布随机性</strong>；<strong>TEX-011 重复结构</strong></td>
+<td>规则/不规则与随机性有关；仅凭规则排列不能自动确定平移、镜像或旋转重复。旧<code>order</code>本轮保留溯源，不重复加权</td>
+</tr>
+<tr>
+<td><code>texture.coverage</code></td>
+<td><strong>TEX-018 纹理覆盖方式</strong></td>
+<td>说明全域、局部等作用范围；本轮<code>dominant</code>不是实测面积占比，也不自动区别边缘、分区或密度渐变</td>
+</tr>
+<tr>
+<td><code>texture.scale</code></td>
+<td>本次提取中无一对一参数</td>
+<td><code>fine/medium/coarse</code>是相对可见主体的图像尺度估计，不填物理尺寸</td>
+</tr>
+<tr>
+<td><code>optics.appearance</code></td>
+<td><strong>OPT-001 材质视觉类别</strong></td>
+<td>记录材料线索外观，不能写成真实基材或制造工艺事实</td>
+</tr>
+<tr>
+<td><code>optics.gloss</code></td>
+<td><strong>OPT-002 光泽外观</strong></td>
+<td>对应反光突出程度；<code>sharp</code>不自动等于实测高光或镜面，拍摄照明和视角会影响判断</td>
+</tr>
+<tr>
+<td><code>optics.transparency</code></td>
+<td><strong>OPT-007 透明程度外观</strong></td>
+<td>按后方内容可辨程度解释；亮边或反射不能证明透明，0.5差异不是字典给定的等距量表</td>
+</tr>
+<tr>
+<td><code>color.organization</code>与实际颜色构成证据</td>
+<td><strong>COL-001 颜色模式</strong></td>
+<td>部分关联；字典可多选，本轮为主导单值。<code>palette</code>的冷暖/鲜艳和<code>contrast</code>在本次提取中没有精确一对一参数</td>
+</tr>
+<tr>
+<td><code>color.organization=gradient</code>及过渡路径证据</td>
+<td><strong>COL-010 渐变方式</strong></td>
+<td>只有存在连续颜色变化才适用；当前<code>gradient</code>单值不足以确定线性、径向或沿路径渐变</td>
+</tr>
+<tr>
+<td><code>relation.assembly/rhythm</code>及对象间证据</td>
+<td><strong>REL-009 重复方式</strong>；<strong>REL-014 连接或邻接关系</strong></td>
+<td>需明确参与构件、参照系与范围；照片外观不证明实际装配或受力结构。纹理扩展成面与多个构件成组需分开</td>
+</tr>
+<tr>
+<td>主体/辅助/背景作用证据，含<code>scope</code>与<code>context.dominance</code></td>
+<td><strong>REL-015 主辅角色分配</strong></td>
+<td>仅部分关联；本轮图像主导程度不是逐对象角色记录，<code>focus</code>也不自动等同主体角色</td>
+</tr>
+<tr>
+<td><code>light.form</code>与可确认的亮光区域</td>
+<td><strong>EMI-002 发光单元形态</strong></td>
+<td>点、线、面有解释关联；图像中的显著亮光不自动证明真实光源，<code>extent</code>也不是实测面积</td>
+</tr>
+<tr>
+<td>光效边缘衰减的额外可见证据</td>
+<td><strong>EMI-009 光效边界衰减</strong></td>
+<td>本轮18字段没有专门编码衰减方式，不从<code>form/extent</code>自动填值，信息不足则保留未知</td>
+</tr>
+<tr>
+<td><code>context.setting</code>与背景证据</td>
+<td><strong>CTX-011 背景类型</strong>；<strong>CTX-013 场景道具与人物</strong></td>
+<td>保留为观察情境，不将背景色、人物肤色或道具材质转记到产品本体</td>
+</tr>
+<tr>
+<td>七维权重、区间、阈值、方向模板、medoid、选板与复用规则</td>
+<td>无基础字典参数ID</td>
+<td>属于本轮算法与管理规则，不创建DNA编号，也不修改基础字典</td>
+</tr>
+</tbody></table>
+<p>未来如需逐图正式填写DNA，仍须按字典要求绑定对象和区域，保留证据来源；<code>unknown</code>与<code>not_applicable</code>也要分开。本报告的解释映射不代替该项逐对象标注工作。</p>
+<h2>九、实际结果、去向与已核查范围</h2>
+<p>正式输出为141个方向组合、147个方向内终止簇。其中123簇为单图、16簇为双图，均未达到3张的候选下限；8簇达到下限并形成8个独立候选板，最终选择5板。147不是147个可交付风格方向，141也不是141个已验证需求。</p>
+<table>
+<thead>
+<tr>
+<th>板ID</th>
+<th align="right">自动主图</th>
+<th>成员，按最终展示顺序</th>
+<th align="right">张数</th>
+<th align="right">平均图对上界</th>
+<th align="right">最大图对上界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>N01</td>
+<td align="right">031</td>
+<td>031、055、044、028、045、050、048</td>
+<td align="right">7</td>
+<td align="right">0.2279</td>
+<td align="right">0.4050</td>
+</tr>
+<tr>
+<td>N02</td>
+<td align="right">053</td>
+<td>053、015、035、059、051、056</td>
+<td align="right">6</td>
+<td align="right">0.2734</td>
+<td align="right">0.4450</td>
+</tr>
+<tr>
+<td>N03</td>
+<td align="right">069</td>
+<td>069、077、026、006</td>
+<td align="right">4</td>
+<td align="right">0.3485</td>
+<td align="right">0.4167</td>
+</tr>
+<tr>
+<td>N04</td>
+<td align="right">103</td>
+<td>103、001、102</td>
+<td align="right">3</td>
+<td align="right">0.3200</td>
+<td align="right">0.3467</td>
+</tr>
+<tr>
+<td>N05</td>
+<td align="right">024</td>
+<td>024、023、073</td>
+<td align="right">3</td>
+<td align="right">0.3456</td>
+<td align="right">0.4258</td>
+</tr>
+</tbody></table>
+<p>这些数字由<code>boards_raw.json</code>取得并与保存的距离矩阵核对。五板依次增加7、6、4、3、3张独立图片，总共23张，原图库展示覆盖为23/103，约22.3%；未展示80张。实际每图最多使用1次，复用数为0，任意两板Jaccard为0。最大图对上界0.4450低于0.45，不能转述成“相似度至少55.5%”。</p>
+<p>候选名称由冻结成员的核心字段和证据在排版阶段追加：N01为<code>metallic/soft/neutral/quiet</code>外观组合，N02为<code>metallic/sharp/neutral/quiet</code>，N03为<code>flat_geometric/grid/matte</code>主表面，N04为<code>flat_irregular/irregular/soft</code>主表面，N05为<code>vivid/blocks/quiet</code>配色组合。名称不参与引擎输入，也不能改变上表成员。</p>
+<p>80张未展示图按<code>primary_assignments.json</code>的优先归因汇总如下。每张只计入一个主原因，因此不是所有失败条件的交叉统计。</p>
+<table>
+<thead>
+<tr>
+<th>主去向原因</th>
+<th align="right">数量</th>
+<th>如何解读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主表面显著性观察冲突</td>
+<td align="right">6</td>
+<td>保留双方证据并暂缓，不裁定哪次观察正确</td>
+</tr>
+<tr>
+<td>表面组合未覆盖或相关来源未知</td>
+<td align="right">6</td>
+<td>5张为映射组合未覆盖，1张为原单元/尺度/覆盖未知；不能合称画面看不清</td>
+</tr>
+<tr>
+<td>主要表达只占局部或范围未知</td>
+<td align="right">2</td>
+<td>本次为010、011；没有按人物或品类一刀切</td>
+</tr>
+<tr>
+<td>已有候选但全局选择未采用</td>
+<td align="right">1</td>
+<td>037通过某候选，因全局约束未展示；不表示图像不合格</td>
+</tr>
+<tr>
+<td>可见表面组织仅局部或覆盖范围未知</td>
+<td align="right">21</td>
+<td>未通过整板核心覆盖条件；局部表达不能直接代替主体表面语言</td>
+</tr>
+<tr>
+<td>未形成至少3张合格候选，或同家族去重后不足3张</td>
+<td align="right">44</td>
+<td>当前程序保存的是这项合并原因，不能据此细分成“确定不相似”与其他子原因</td>
+</tr>
+<tr>
+<td>合计</td>
+<td align="right">80</td>
+<td>不强制分配到任何已选板</td>
+</tr>
+</tbody></table>
+<p>103张中有71张的18字段未知权重为0，32张大于0；最大未知权重0.28，均未超0.30预算。入选23图的最大未知权重0.155。没有图片仅因0.30预算超限被拒，但核心字段未知和表面观察冲突仍会使其无法进入方向。</p>
+<table>
+<thead>
+<tr>
+<th>已核查内容</th>
+<th>本次证据</th>
+<th>结论边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原图完整性与输入数量</td>
+<td>引擎逐文件核对103张原图SHA256；103条编码与唯一ID完整</td>
+<td>不证明观察判断无偏差</td>
+</tr>
+<tr>
+<td>冻结协议与代码</td>
+<td><code>freeze.json</code>的协议、补充规范、重复候选规则和引擎哈希在运行前校验；观察输入哈希另存运行清单</td>
+<td>固定规则版本，不代表规则正确</td>
+</tr>
+<tr>
+<td>七维与核心条件</td>
+<td>权重合计1；文稿核对确认各板成员都生成对应profile</td>
+<td>通过公开条件，不等于消费者认可</td>
+</tr>
+<tr>
+<td>板内上界</td>
+<td>保存矩阵核对全部板内图对均<code>≤0.45</code></td>
+<td>未知按最不利区间处理，仍受字段抽象限制</td>
+</tr>
+<tr>
+<td>规模、复用与重合</td>
+<td>实际5板、3–7张、无成员重复、无跨板复用、板间Jaccard为0，每步新增至少3张</td>
+<td>控制展示规模和雷同程度，不证明消费者感知差异</td>
+</tr>
+<tr>
+<td>输入顺序</td>
+<td>引擎把103条编码反序后重新计算，profile、主图和成员顺序完全相同</td>
+<td>证明已测的输入顺序不变性；不将未运行的测试写成已通过</td>
+</tr>
+<tr>
+<td>主归属与未展示</td>
+<td>23图有唯一主归属，80图为R00</td>
+<td>区分分析覆盖、展示覆盖及复用</td>
+</tr>
+</tbody></table>
+<p>本表是数据与规则检查。原图排版、文字遮挡、PPTX可编辑性等由独立交付检查负责；它们通过也不构成模型或审美验证。</p>
+<h2>十、原目录复算入口、文件与依赖</h2>
+<p>原工作目录为<code>D:\Users\Documents\ChatGPT\dna提取</code>。已核实运行环境为Windows 11、64位Python <strong>3.12.14</strong>、NumPy <strong>2.3.5</strong>。选板引擎的唯一第三方Python依赖是NumPy，其余使用Python标准库；不调用scikit-learn、PyTorch、深度聚类模型、向量数据库或联网模型API。复算直接消费已冻结的观察JSON，不重新运行LLM读图。</p>
+<p>在原目录执行的正式命令是：</p>
+<pre><code class="language-powershell">$dnaPython = &#39;C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe&#39;
+Set-Location -LiteralPath &#39;D:\Users\Documents\ChatGPT\dna提取&#39;
+&amp; $dnaPython -X utf8 &#39;moodboards_v06/engine.py&#39;
+</code></pre>
+<p>在相同Python/NumPy环境且当前目录已正确时，等价短命令为<code>python moodboards_v06/engine.py</code>。一次调用包括：冻结文件校验、原图哈希校验、观察融合、距离矩阵计算、方向和候选生成、自动主图与全局选板、归属记录及输入反序复算检查。它会重写下列派生输出，不修改原图或源观察。复算时运行时间戳自然变化，成员语义与成员摘要应保持不变。</p>
+<p><strong>读取的输入，均相对于工作区根目录：</strong></p>
+<ul>
+<li><code>recluster_v02/image_manifest.json</code>及其中登记的103个原图路径；原目录清单含本机绝对路径。</li>
+<li><code>rules_v05/features_frozen.json</code>：v0.5冻结观察。</li>
+<li><code>moodboards_v06/surface_a.json</code>、<code>surface_b.json</code>：v0.6补充观察。</li>
+<li><code>moodboards_v06/protocol.json</code>、<code>freeze.json</code>、<code>duplicate_candidates.json</code>；<code>feature_supplement.md</code>参与冻结哈希校验。</li>
+</ul>
+<p><strong>写出的派生文件，全部位于<code>D:\Users\Documents\ChatGPT\dna提取\moodboards_v06</code>：</strong></p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>features_v06.json</code></td>
+<td>18字段运算表示、原始纹理观察、新表面观察、源图哈希及映射状态</td>
+</tr>
+<tr>
+<td><code>observation_conflicts.json</code></td>
+<td>6处显著性冲突及双方原始证据</td>
+</tr>
+<tr>
+<td><code>distance_lower.npy</code>、<code>distance_upper.npy</code></td>
+<td>103×103下界/上界矩阵；行列顺序均为图ID001–103，中点由两者平均得到</td>
+</tr>
+<tr>
+<td><code>boards_raw.json</code></td>
+<td>正式C成员、主图、profile、板内统计、总体stats与未入板记录</td>
+</tr>
+<tr>
+<td><code>clustering_trace.json</code></td>
+<td>所有方向终止簇、候选板、合并记录、选板次序、归属及统计</td>
+</tr>
+<tr>
+<td><code>primary_assignments.json</code></td>
+<td>103图唯一主归属或R00、展示板、候选方向、主去向原因、未知权重</td>
+</tr>
+<tr>
+<td><code>run_manifest.json</code></td>
+<td>运行UTC时间、输入哈希、原图校验与反序复算状态、最终成员摘要</td>
+</tr>
+</tbody></table>
+<p>本次最终成员摘要SHA256为：</p>
+<pre><code class="language-text">0d106e340b8d914dd3916b5accb079ae583edef4fe79c9193b9fb20cb3a14361
+</code></pre>
+<p>该摘要对应板ID、主图、成员的有序列表；它验证成员重现，不为所有文件的字节一致性背书。方向名称不在该成员摘要中。</p>
+<p><code>moodboards_v06/export_deck.mjs</code>是独立排版层，读取带名称与文案的<code>boards.json</code>、原图清单和原图，不由<code>engine.py</code>自动调用。已核实本机Node.js <strong>24.19.0</strong>、<code>@oai/artifact-tool</code> <strong>2.8.59</strong>；排版器还调用演示文稿工具中的完整性校验辅助程序。PPTX默认输出至<code>outputs/规则情绪板_v0.6/规则情绪板_v0.6_批注用.pptx</code>。排版依赖不属于Python选板引擎依赖，也不能用排版成功代替选板复算。</p>
+<p>本节记录原工作区的真实入口。随交付附<a href="%E5%A4%8D%E7%AE%97%E5%8C%85/README.md">复算包/README.md</a>：在独立包目录安装<code>requirements.txt</code>所列依赖后运行<code>python reproduce.py</code>，仅重算“冻结观察到最终选板”；已跨工作目录复算，结果与完整预期<code>boards_raw.json</code>及成员摘要一致。排版脚本另依赖原Node环境。迁移须保留源图内容、冻结观察、C规则和成员摘要校验，不能把本机绝对路径命令直接称为跨机可移植命令。</p>
+<h2>十一、人机边界与尚未证明的内容</h2>
+<p>LLM视觉观察负责按规范读取原图，描述可见轮廓、表面、配色与构件，并记录图像估计及未知；规范设计、规则选择、解释措辞和复核边界需要人为决策。LLM内部具有视觉能力，不代表本项目训练或部署了专门的自动特征网络。本次没有目标检测器、像素分割、端到端视觉嵌入、表示学习损失函数或深度聚类训练过程。</p>
+<p>软件引擎负责18字段运算、方向枚举、完全连接、主图选择、全局约束、归属和可追溯输出。它读取离散观察JSON，无法独立从一张新图片恢复这些字段；面对新图仍要先通过同规范观察与证据记录。对于同一冻结输入，程序的决定可以复算；重新读图可能产生不同观察，两者不能混称为同一个“自动化”能力。</p>
+<p>成员冻结后才写名称、核心表达与差异范围。视觉核查如果发现观察证据错误，应保留修正原因和版本并整批重跑；不能直接手工替换最终成员，再称为原算法结果。C当前输入冲突已按统一规则暂缓，没有为数量目标回改这些观察。</p>
+<p>本轮新观察者在编码时不读取旧板、旧编码结果或蓝圈反馈；算法设计者已经知道既有反馈，所以整体是反馈启发的方法迭代。技术文稿作者可在观察完成后阅读历史报告，但这不授权按成绩回改观察。新成员生成后若比较旧25个问题搭配，只属于内部回看；旧主图未在新板出现的搭配应记“不可比”，不能用“没有展示”宣称已纠正。</p>
+<p>主要局限仍在输入与有效性上：原图短边约236像素，真实材料、触感、工艺和发光机制通常不能确认；主导单值编码压缩了次要表达，不同观察者可能给出不同值；形态、纹理与材质外观字段也未必独立。完全连接和未知上界会牺牲覆盖，全局贪心不保证最优，阈值和类别差异尚未经过独立感知校准。</p>
+<p>本轮没有独立消费者正反标注，也没有未见图片的外部验证，因此不报告准确率、精确率、消费者喜欢概率或“训练完成”。最终可以确认的范围是：程序是否按公开条件，对这一批冻结观察生成了可复算的板及去向；这些板是否符合用户和消费者的审美判断，仍需另行验证。</p>
+</main></html>

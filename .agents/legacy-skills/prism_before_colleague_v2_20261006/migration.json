@@ -1,0 +1,84 @@
+{
+  "strategy": "colleague-v2-project-with-web-format-adapter",
+  "upstream_zip": "ref/老师对接/最新完整流程1006/棱镜_完整工作流与17个Skills_v2.0_20261006.zip",
+  "upstream_sha256": "590da707ce817bdf1f1c6b6e95c44dfbbcc753582882012b6eb074143b3a4dbc",
+  "model_calls": 0,
+  "historical_model_results_rewritten": false,
+  "backups": [
+    {
+      "name": "prism-workflow",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/prism-workflow",
+      "source_was_symlink": true,
+      "source_target": "/root/dev/work/design_ai/ref/老师对接/最新完整流程/棱镜Skills组合_v1.1-local/skills/prism-workflow",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/prism-workflow"
+    },
+    {
+      "name": "prism-source-image-selection",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/prism-source-image-selection",
+      "source_was_symlink": true,
+      "source_target": "/root/dev/work/design_ai/ref/老师对接/最新完整流程/棱镜Skills组合_v1.1-local/skills/prism-source-image-selection",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/prism-source-image-selection"
+    },
+    {
+      "name": "prism_skill_support",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/prism_skill_support",
+      "source_was_symlink": true,
+      "source_target": "/root/dev/work/design_ai/ref/老师对接/最新完整流程/棱镜Skills组合_v1.1-local/skills/prism_skill_support",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/prism_skill_support"
+    },
+    {
+      "name": "prism-dna-sol-r5",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/prism-dna-sol-r5",
+      "source_was_symlink": false,
+      "source_target": "/root/dev/work/design_ai/.agents/skills/prism-dna-sol-r5",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/prism-dna-sol-r5"
+    },
+    {
+      "name": "prism-h01-semantic-handshake",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/prism-h01-semantic-handshake",
+      "source_was_symlink": false,
+      "source_target": "/root/dev/work/design_ai/.agents/skills/prism-h01-semantic-handshake",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/prism-h01-semantic-handshake"
+    },
+    {
+      "name": "prism-trend-themes",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/prism-trend-themes",
+      "source_was_symlink": false,
+      "source_target": "/root/dev/work/design_ai/.agents/skills/prism-trend-themes",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/prism-trend-themes"
+    },
+    {
+      "name": "user-research-design-clusterer",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/user-research-design-clusterer",
+      "source_was_symlink": false,
+      "source_target": "/root/dev/work/design_ai/.agents/skills/user-research-design-clusterer",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/user-research-design-clusterer"
+    },
+    {
+      "name": "moodboard-generator",
+      "old_active_path": "/root/dev/work/design_ai/.agents/skills/moodboard-generator",
+      "source_was_symlink": true,
+      "source_target": "/root/dev/work/design_ai/ref/moodboard-generator",
+      "backup": "/root/dev/work/design_ai/.agents/legacy-skills/prism_before_colleague_v2_20261006/moodboard-generator"
+    }
+  ],
+  "installed_skills": [
+    "prism-cmf-moodboard",
+    "prism-trend-semantic-clustering",
+    "prism-visual-family",
+    "prism-independent-evaluation-loop",
+    "prism-board-review",
+    "prism-target-view-binding",
+    "prism-research-semantic-clustering",
+    "prism-run-contract",
+    "prism-crop-enhancement",
+    "prism-direction-selection",
+    "prism-research-intake",
+    "prism-moodboard-delivery",
+    "prism-target-quality",
+    "prism-dna-sol-r5",
+    "prism-source-image-selection",
+    "prism-h01-semantic-handshake",
+    "prism-id-moodboard"
+  ]
+}

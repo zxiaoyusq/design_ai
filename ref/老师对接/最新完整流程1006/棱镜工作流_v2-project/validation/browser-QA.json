@@ -1,0 +1,21 @@
+{
+  "desktop": {
+    "title": "棱镜完整工作流 · 17个小Skill组合",
+    "skills": 17,
+    "imagesLoaded": true,
+    "horizontalOverflow": false,
+    "externalImages": 0
+  },
+  "mobile": {
+    "horizontalOverflow": false,
+    "skills": 17
+  },
+  "actualCase": {
+    "tiles": 10,
+    "imagesLoaded": true,
+    "externalImages": 0,
+    "zoomOpen": true
+  },
+  "pageErrors": [],
+  "networkDisabledDuringQA": true
+}

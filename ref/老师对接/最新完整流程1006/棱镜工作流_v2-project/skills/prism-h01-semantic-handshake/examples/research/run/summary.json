@@ -1,0 +1,24 @@
+{
+  "input_units": 9,
+  "people": 3,
+  "cluster_count": 4,
+  "clusters_by_kind": {
+    "shared_theme": 1,
+    "design_issue": 2,
+    "background_theme": 1
+  },
+  "membership_count": 9,
+  "units_with_cluster_membership": 8,
+  "coverage_dispositions": {
+    "clustered": 8,
+    "unclustered_boundary": 1
+  },
+  "all_units_have_explicit_outcome": true,
+  "original_negative_units": 2,
+  "negative_units_retained": 2,
+  "source_unchanged": true,
+  "external_model_API_calls": 0,
+  "cross_person_semantic_clustering_performed": true,
+  "image_reclustering_performed": false,
+  "independent_semantic_review_performed": false
+}

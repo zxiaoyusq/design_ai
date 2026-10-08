@@ -1,0 +1,42 @@
+{
+  "assets/source-r3.py": {
+    "sha256": "f972c0d8ce662eff2acd1ec8d42fd3eaf1dba63b7d4c24f3bae2548ac26ee96d",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r3\\algorithm.py"
+  },
+  "assets/source-r5.py": {
+    "sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\algorithm.py"
+  },
+  "assets/source-refine.py": {
+    "sha256": "cd9c1bfa1115e0606886ad1574f3d3654355b86f1170ad22c38727c0e8c121aa",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\refine.py"
+  },
+  "assets/source-finalize.py": {
+    "sha256": "2467fdee7182ee089c4701011ee307640f8b82da777f7ab93ca23ead43aba6bb",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\finalize.py"
+  },
+  "assets/primary.prompt.txt": {
+    "sha256": "cc32895b670d1cc2f41a82ecf34db551f015ae4e328a3da07beaef74201c0dae",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\primary.prompt.txt"
+  },
+  "assets/primary.schema.json": {
+    "sha256": "2bcb2dabc6d8d81434eb8275a645e01c257b57dcc7d27abc6a7bfa5a0fd9c326",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\primary.schema.json"
+  },
+  "assets/vision-only.txt": {
+    "sha256": "1482e474b19687b7c842d526a8f52822ec13860878240b2226b5c5c1f36337f0",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\vision-only.txt"
+  },
+  "assets/dictionary.json": {
+    "sha256": "16c8ce855e8cd080b97fab7ed4c62b74e404436b25691101acd615f261fe9f50",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\棱镜_DNA基础字典_AI版_v0.3.json"
+  },
+  "references/owner-baseline-selection.json": {
+    "sha256": "e657fe69cabc55a7a0b697d482038cbe9c067d75879caf6285efea57fcdf80f8",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\baseline-selection.json"
+  },
+  "references/owner-outcome.json": {
+    "sha256": "cc90ea346b4e580fed33e8b9a9cf8c2bf7a4e432af8dcf3ac14b5e438c7d8b00",
+    "original_source": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\outcome.json"
+  }
+}

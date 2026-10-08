@@ -7,20 +7,19 @@ from typing import Any
 
 from deepagents import create_deep_agent
 from deepagents.backends.filesystem import FilesystemBackend
-from deepagents.middleware.filesystem import FilesystemPermission
+from deepagents.middleware.filesystem import FilesystemMiddleware, FilesystemPermission
 from langchain_core.tools import tool
 from langgraph.graph.state import CompiledStateGraph
 
 from app.services.llm import create_chat_model
 from app.services.llm.catalog import get_model
 
-
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 SKILL_ROOT = PROJECT_ROOT / "ref" / "multimodal-design-dna-multitag-extractor"
 SKILLS_SOURCE = "/.agents/skills/"
 BOUND_SKILL_NAME = "multimodal-design-dna-multitag-extractor"
 AGENT_PROMPT_VERSION = "design-dna-multitag-agent-v11-no-uncertainties"
-PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v12"
+PRELOADED_CONTEXT_VERSION = "multitag-preloaded-context-v13"
 _PRELOADED_CONTEXT_FILES = (
     ("SKILL", "SKILL.md"),
     ("EXTRACTION_PROTOCOL", "references/extraction-protocol.zh-CN.md"),
@@ -198,6 +197,13 @@ def create_design_dna_agent(model_id: str) -> CompiledStateGraph:
             mode="deny",
         ),
     ]
+    # Skill 已预装到系统上下文，运行时只保留 DeepAgents 强制要求的 read_file。
+    # glob/grep 等可空参数会生成缺少顶层 type 的 Schema，Gemini 会在推理前拒绝请求。
+    filesystem_middleware = FilesystemMiddleware(
+        backend=backend,
+        tools=["read_file"],
+        _permissions=permissions,
+    )
     return create_deep_agent(
         model=model,
         tools=[resolve_applicable_design_fields],
@@ -205,6 +211,7 @@ def create_design_dna_agent(model_id: str) -> CompiledStateGraph:
         backend=backend,
         skills=[SKILLS_SOURCE],
         permissions=permissions,
+        middleware=[filesystem_middleware],
         name="design-dna-multitag-extractor",
     )
 
@@ -222,9 +229,11 @@ def create_style_semantic_review_agent(model_id: str) -> CompiledStateGraph:
     if model_definition.max_output_tokens is not None:
         model_options["max_tokens"] = min(model_definition.max_output_tokens, 4096)
     model = create_chat_model(model_id, **model_options)
+    filesystem_middleware = FilesystemMiddleware(tools=["read_file"])
     return create_deep_agent(
         model=model,
         tools=[],
         system_prompt=STYLE_SEMANTIC_REVIEW_SYSTEM_PROMPT,
+        middleware=[filesystem_middleware],
         name="design-dna-style-evidence-reviewer",
     )

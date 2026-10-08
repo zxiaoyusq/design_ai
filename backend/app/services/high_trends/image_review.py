@@ -14,11 +14,13 @@ from zipfile import ZIP_STORED, ZipFile
 
 from PIL import Image, ImageOps
 
+from app.services.high_trends.image_inventory import is_generated_research_result
+
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"}
 REVIEW_LOCK = RLock()
 REMAINING_IMAGE_POLICY = "exclude_any_user_dislike_v1"
-REMAINING_SCOPE = "扫描整个 data/trend_data 与 data/userreseach_data 目录，排除本次结果全部图片并按文件内容去重。排除任何用户标记 DISLIKE 的图片（含喜欢/不喜欢混合反馈），保留正向及未标注图片，默认未保留。"
+REMAINING_SCOPE = "扫描 data/trend_data 与 data/userreseach_data 的原始图片，排除用研 D02 生成结果目录；排除本次结果全部图片并按文件内容去重。排除任何用户标记 DISLIKE 的图片（含喜欢/不喜欢混合反馈），保留正向及未标注图片，默认未保留。"
 
 
 def has_user_dislike(item):
@@ -123,7 +125,8 @@ class HighTrendImageReview:
             return None
         path = (path if path.is_absolute() else self.root / path).resolve()
         roots = [self.root / "data/trend_data", self.root / "data/userreseach_data"]
-        if (not any(path.is_relative_to(root.resolve()) for root in roots)
+        if (is_generated_research_result(path, self.root)
+                or not any(path.is_relative_to(root.resolve()) for root in roots)
                 or path.suffix.lower() not in IMAGE_SUFFIXES or not path.is_file()):
             return None
         return path

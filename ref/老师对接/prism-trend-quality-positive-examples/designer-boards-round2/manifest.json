@@ -1,0 +1,2881 @@
+[
+  {
+    "id": "B01",
+    "cohort": "board",
+    "board_id": "B01",
+    "label": "B01 整板",
+    "original": "boards/B01.jpg",
+    "model_input": "inputs/B01.jpg",
+    "original_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "input_sha256": "d088cb75254db0f712865fc821545f79ed2d93b2a6eefbd884adf192e7c344f8",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-23f7c63e-70a2-413c-9b7d-912d9896f4ac.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B01-T01",
+      "B01-T02",
+      "B01-T03",
+      "B01-T04",
+      "B01-T05",
+      "B01-T06"
+    ]
+  },
+  {
+    "id": "B01-T01",
+    "cohort": "tile",
+    "board_id": "B01",
+    "label": "B01 / 子图1",
+    "original": "tiles/B01-T01.png",
+    "model_input": "inputs/B01-T01.jpg",
+    "original_sha256": "c6300a13bd09cc24654c1a491d74c7eb97e323116b1dd7dde9186db6ce60c962",
+    "input_sha256": "a183bb121866c5ec46e8da90ded621229819d8b7f872f5776c5bbe7e572925af",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B01-T02",
+    "cohort": "tile",
+    "board_id": "B01",
+    "label": "B01 / 子图2",
+    "original": "tiles/B01-T02.png",
+    "model_input": "inputs/B01-T02.jpg",
+    "original_sha256": "e305e778488a38a2d9163cacd27814c2254b98f7d2ef795f5c7cea1bca748014",
+    "input_sha256": "0f8944e325247e782c07eb069559a689e1b835e70c1e66466bec5e1d034a387e",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B01-T03",
+    "cohort": "tile",
+    "board_id": "B01",
+    "label": "B01 / 子图3",
+    "original": "tiles/B01-T03.png",
+    "model_input": "inputs/B01-T03.jpg",
+    "original_sha256": "1345a18157bb07ba2309ebb9a1c02bef7bc503d5c220501bf5ac1f4dc9b6140d",
+    "input_sha256": "80d0b4e1eb0fe90ff3949bffa840b517cb9e3a7e18b531fdcf662d85c5cd325b",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B01-T04",
+    "cohort": "tile",
+    "board_id": "B01",
+    "label": "B01 / 子图4",
+    "original": "tiles/B01-T04.png",
+    "model_input": "inputs/B01-T04.jpg",
+    "original_sha256": "56fa3080e9713d873e32d667c527afd622750d37aa123a4135b39c477b472772",
+    "input_sha256": "f6cd90e7c4d324b8b42ef55ba3c917be59969138e51084760a6b3b3c1118ecdf",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B01-T05",
+    "cohort": "tile",
+    "board_id": "B01",
+    "label": "B01 / 子图5",
+    "original": "tiles/B01-T05.png",
+    "model_input": "inputs/B01-T05.jpg",
+    "original_sha256": "c9868c8b4674ca87349607c7fc6766897cc7d3882a5a1dfef1e2adb0d3d26a81",
+    "input_sha256": "25db1fd7cea00b231dbbddccc193234a6a8887e18a3f8781294fcb4791cc4d1d",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B01-T06",
+    "cohort": "tile",
+    "board_id": "B01",
+    "label": "B01 / 子图6",
+    "original": "tiles/B01-T06.png",
+    "model_input": "inputs/B01-T06.jpg",
+    "original_sha256": "f7f41a96cac67f645250b1f81ecde3e1084d31cb7930610e60245f3fd0518c7d",
+    "input_sha256": "dc5d5d6d889320eb156c65a30f3b5489563018bfdb4d3af1892d013e6fd3caa5",
+    "pixels": [
+      477,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02",
+    "cohort": "board",
+    "board_id": "B02",
+    "label": "B02 整板",
+    "original": "boards/B02.jpg",
+    "model_input": "inputs/B02.jpg",
+    "original_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "input_sha256": "216f1cc9fd043b2f108394a34c4e5fab1cce15c57b5093941bff25761dd178b5",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-cc3367b2-b13a-488a-bb42-64e7f0104ff6.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B02-T01",
+      "B02-T02",
+      "B02-T03",
+      "B02-T04",
+      "B02-T05",
+      "B02-T06",
+      "B02-T07"
+    ]
+  },
+  {
+    "id": "B02-T01",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图1",
+    "original": "tiles/B02-T01.png",
+    "model_input": "inputs/B02-T01.jpg",
+    "original_sha256": "f1b465fea165f8d30677da4534439c0737bad1d1be7f076b21ef9faaa645a5c7",
+    "input_sha256": "5a7097de777d2203cc7e0af36c2422a6dd074f23a31e65bfab095789066c7d6b",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02-T02",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图2",
+    "original": "tiles/B02-T02.png",
+    "model_input": "inputs/B02-T02.jpg",
+    "original_sha256": "6f8ff6e5768ef7cbed0113b7504f6aa36e80f0e5f9297ddeef26fcd656c54982",
+    "input_sha256": "438b6a7b1d715a4094f1518099f8b8afdd5c0be9356ac31ec7a9736fa90d394c",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02-T03",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图3",
+    "original": "tiles/B02-T03.png",
+    "model_input": "inputs/B02-T03.jpg",
+    "original_sha256": "607a2fd970b015ce3718f143b446feef9b258e8eccf3bcbad236b9d9b6e0f375",
+    "input_sha256": "536f4a864117221103edc9031457d4713c0f77f453864077b7fdded2f9dbfede",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      489
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02-T04",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图4",
+    "original": "tiles/B02-T04.png",
+    "model_input": "inputs/B02-T04.jpg",
+    "original_sha256": "ad9019f98487ed8783fe391e9a89690c0a4b40206a2e8126d853c85c5ab3996e",
+    "input_sha256": "77c29b29f29f670c13f6a3cfc9f2c3b994d3cf63edf9201ac7ebc7d45b821351",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02-T05",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图5",
+    "original": "tiles/B02-T05.png",
+    "model_input": "inputs/B02-T05.jpg",
+    "original_sha256": "bf91c12c454f2c8c10768ea5c48305284c3fe1e1914653c9e9cdc816a792fb56",
+    "input_sha256": "cbd5b75d31669f5484c0a75e672de7d95adf80af386a224c8dc4efb3ac85e8b3",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02-T06",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图6",
+    "original": "tiles/B02-T06.png",
+    "model_input": "inputs/B02-T06.jpg",
+    "original_sha256": "9a0e2f4195d1f9977895eb99f040348b7e7d6f0fb3abd38b0065d7d5a1b55ccc",
+    "input_sha256": "08a83616b964954d3870a0a659c7bfefdb7f4eb986382f127902a2eb541d725a",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B02-T07",
+    "cohort": "tile",
+    "board_id": "B02",
+    "label": "B02 / 子图7",
+    "original": "tiles/B02-T07.png",
+    "model_input": "inputs/B02-T07.jpg",
+    "original_sha256": "ce3100d84dc9c180868e71d6ad242fdf28a595c1c7771c2e0de6dc8e0b812e28",
+    "input_sha256": "573733d6333864152d813b50da6e551ac308e207ce6661dbad284a92af05c043",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B03",
+    "cohort": "board",
+    "board_id": "B03",
+    "label": "B03 整板",
+    "original": "boards/B03.jpg",
+    "model_input": "inputs/B03.jpg",
+    "original_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "input_sha256": "89417a6c08fed431b285e33b5748836aa368c1eef99fa6d8ea13f09145561f96",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-cf59d61c-c9ab-447a-baac-bddc8b8d5a34.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B03-T01",
+      "B03-T02",
+      "B03-T03",
+      "B03-T04",
+      "B03-T05",
+      "B03-T06"
+    ]
+  },
+  {
+    "id": "B03-T01",
+    "cohort": "tile",
+    "board_id": "B03",
+    "label": "B03 / 子图1",
+    "original": "tiles/B03-T01.png",
+    "model_input": "inputs/B03-T01.jpg",
+    "original_sha256": "c6ab24b37fcb7d18f50ab232077e220b7fe6060749293d750a3483b58252bea7",
+    "input_sha256": "621d96442d574e0a2a89331f5a76ac6422215d977adf5ea0425ca888b232d2bb",
+    "pixels": [
+      477,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B03-T02",
+    "cohort": "tile",
+    "board_id": "B03",
+    "label": "B03 / 子图2",
+    "original": "tiles/B03-T02.png",
+    "model_input": "inputs/B03-T02.jpg",
+    "original_sha256": "5cc58684b7cf72b25a815d076b7dfe6e5988e6adabcd342db52ab8f1e90990f2",
+    "input_sha256": "cf274b3ac50580286c47956fb50798decbad8f1de80767068fcd07ed87b25523",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B03-T03",
+    "cohort": "tile",
+    "board_id": "B03",
+    "label": "B03 / 子图3",
+    "original": "tiles/B03-T03.png",
+    "model_input": "inputs/B03-T03.jpg",
+    "original_sha256": "5ea68d8f3af31c2b4e16eae08ab8ca116d2d8e21204453aba677bb1f370acfd8",
+    "input_sha256": "c33e5bdfcf8bb49b2d77bd924d3e935ae0d4e33b53bb7d6251f32ea1e1434c6c",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B03-T04",
+    "cohort": "tile",
+    "board_id": "B03",
+    "label": "B03 / 子图4",
+    "original": "tiles/B03-T04.png",
+    "model_input": "inputs/B03-T04.jpg",
+    "original_sha256": "72048a3a18efea254a04b1f9710c5555feac0124832cc55c7fe1f579f9842093",
+    "input_sha256": "db4336bcf77801c88174167f04438f82e852a0c36196b3746a6fef3238d8daa3",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B03-T05",
+    "cohort": "tile",
+    "board_id": "B03",
+    "label": "B03 / 子图5",
+    "original": "tiles/B03-T05.png",
+    "model_input": "inputs/B03-T05.jpg",
+    "original_sha256": "51145d18b557765b0d10d86d9dcb9f50110f7c534e296fd055210e0064a543c7",
+    "input_sha256": "51cdeda2ca11450b75e19feeaf11ab967049546fc423aaf3037f09b71c88a483",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B03-T06",
+    "cohort": "tile",
+    "board_id": "B03",
+    "label": "B03 / 子图6",
+    "original": "tiles/B03-T06.png",
+    "model_input": "inputs/B03-T06.jpg",
+    "original_sha256": "245149567fa8ac5cfc32f5db1fa8ec8324d5313ddd9a3463357d0b17edc08961",
+    "input_sha256": "c0a28136c899a97886abd8867e0edab3ba3bbed83779eb85c3e10180982a48b1",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04",
+    "cohort": "board",
+    "board_id": "B04",
+    "label": "B04 整板",
+    "original": "boards/B04.jpg",
+    "model_input": "inputs/B04.jpg",
+    "original_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "input_sha256": "09ef0a7c95230e094dfc323fb7b80b0a456bb6bbc74c60e4806ffa8df8c670b7",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-660d4f8c-169c-43b5-b9a9-60699b1183fe.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B04-T01",
+      "B04-T02",
+      "B04-T03",
+      "B04-T04",
+      "B04-T05",
+      "B04-T06",
+      "B04-T07"
+    ]
+  },
+  {
+    "id": "B04-T01",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图1",
+    "original": "tiles/B04-T01.png",
+    "model_input": "inputs/B04-T01.jpg",
+    "original_sha256": "fb1b796b6862539cbba6f597401f49b073b8d2e39a8b09a35dd2d69c49ecbf00",
+    "input_sha256": "e890906e2181ac80ea4d68683aeef8f0a316d2b4b7bd8f86cf7d0e4ec127159d",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04-T02",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图2",
+    "original": "tiles/B04-T02.png",
+    "model_input": "inputs/B04-T02.jpg",
+    "original_sha256": "86bdfcf4ed1ee5b7f4a3e11662199c3bf501d21b7a0f49409867d501173c2acd",
+    "input_sha256": "a8ce7dc4b20bfef20cf52089052add80181b8ba6c1f79e1554eb04bc70d9d182",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04-T03",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图3",
+    "original": "tiles/B04-T03.png",
+    "model_input": "inputs/B04-T03.jpg",
+    "original_sha256": "1ac923a7724bbb5b1150b992255a378c38ed58c0bb33398122739ebad487e741",
+    "input_sha256": "fb6995ac61988714eb6b3d42fe6f4ecaeab5534f8d6a8425a7e71b0b77a59d60",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04-T04",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图4",
+    "original": "tiles/B04-T04.png",
+    "model_input": "inputs/B04-T04.jpg",
+    "original_sha256": "e5d22401ef7e956c8e5412262419ae9322deb8c314a975338cefeec6e8fe14ae",
+    "input_sha256": "10bab8e0b204b6d4b88f9f90a01eb836727918d15b3b3ed94c9fee4189e862ac",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04-T05",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图5",
+    "original": "tiles/B04-T05.png",
+    "model_input": "inputs/B04-T05.jpg",
+    "original_sha256": "102c234c16ed7a486d81507cbfffe4a6c4cb7c3804a53c0b806c3b84ce3629af",
+    "input_sha256": "4aa62cd5ed61eeeaa7ca71ce1c9f3a24b906be5c7ebfb49237b706a61093bd1b",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04-T06",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图6",
+    "original": "tiles/B04-T06.png",
+    "model_input": "inputs/B04-T06.jpg",
+    "original_sha256": "20c9f26e271b27f3360724c085053cbb00538cfbe84d835632c2c20d4a1561ca",
+    "input_sha256": "05e8965876ba63d66c479b180e859a084a304434cba7f3e0a05bd977e6b92628",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B04-T07",
+    "cohort": "tile",
+    "board_id": "B04",
+    "label": "B04 / 子图7",
+    "original": "tiles/B04-T07.png",
+    "model_input": "inputs/B04-T07.jpg",
+    "original_sha256": "87576e85789fbe04891de84ed90d060f770802bf6a6c20ae3002444491c9ba7c",
+    "input_sha256": "7953c82bad46186a6837d1924a1c2eea731e2219205324ad697324f26eb13e89",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B05",
+    "cohort": "board",
+    "board_id": "B05",
+    "label": "B05 整板",
+    "original": "boards/B05.jpg",
+    "model_input": "inputs/B05.jpg",
+    "original_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "input_sha256": "c2629b4c13330e203a2da107eb0179365d62013019d892a00cdaaa348b424df3",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-42322567-0d63-4aad-bf24-da310f5c348c.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B05-T01",
+      "B05-T02",
+      "B05-T03",
+      "B05-T04",
+      "B05-T05",
+      "B05-T06"
+    ]
+  },
+  {
+    "id": "B05-T01",
+    "cohort": "tile",
+    "board_id": "B05",
+    "label": "B05 / 子图1",
+    "original": "tiles/B05-T01.png",
+    "model_input": "inputs/B05-T01.jpg",
+    "original_sha256": "0c9cba6cba8c10a8293f9ceb42757d57f66a645dc518349f1e8c8fe629ea53a7",
+    "input_sha256": "1eb4373e6bd61074d4c7cf3873f630c018e7aa08b9522ec32b3e45132f2696ac",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      489
+    ],
+    "source_board_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B05-T02",
+    "cohort": "tile",
+    "board_id": "B05",
+    "label": "B05 / 子图2",
+    "original": "tiles/B05-T02.png",
+    "model_input": "inputs/B05-T02.jpg",
+    "original_sha256": "907c764c99ba8404b67c10ab431708335945f619505b2218d171f599a589140a",
+    "input_sha256": "1b70f1feb03808cf6e1b2f8f30cf25bb469988500fcd87b1ba8747311e2491bb",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B05-T03",
+    "cohort": "tile",
+    "board_id": "B05",
+    "label": "B05 / 子图3",
+    "original": "tiles/B05-T03.png",
+    "model_input": "inputs/B05-T03.jpg",
+    "original_sha256": "f8c040fd11e74ece27ca02043385a3db794a37c5bf3eac4befda376a3a5b0fed",
+    "input_sha256": "d790fedb4c6814dd37c75970b3485bd6975080419da39b98e964b28f65a33be6",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B05-T04",
+    "cohort": "tile",
+    "board_id": "B05",
+    "label": "B05 / 子图4",
+    "original": "tiles/B05-T04.png",
+    "model_input": "inputs/B05-T04.jpg",
+    "original_sha256": "206a99dc1cdc62f5254a0f36f22a06721402bda6cf5205187a578c375fc21c25",
+    "input_sha256": "13cf62a7947d662443503577547b9e303d92cf59b7345d062d2fab897ec0ee20",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B05-T05",
+    "cohort": "tile",
+    "board_id": "B05",
+    "label": "B05 / 子图5",
+    "original": "tiles/B05-T05.png",
+    "model_input": "inputs/B05-T05.jpg",
+    "original_sha256": "a9f364eda1d2b4df7311746c51c24528b1de8060d19cd681f6a353cb6c16a189",
+    "input_sha256": "a42d494279b74046a24788ec2dc5f0146c169bd3be6182ed65a37a438b1b784d",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B05-T06",
+    "cohort": "tile",
+    "board_id": "B05",
+    "label": "B05 / 子图6",
+    "original": "tiles/B05-T06.png",
+    "model_input": "inputs/B05-T06.jpg",
+    "original_sha256": "8cf6c0ff7daa9d4e5d4a07c300774595ab35b4ff3638330a19a2abc1b73cc913",
+    "input_sha256": "ee7c0788ea6c420bed13a111848cee0184b3ce455e02e27c560e73328ac46553",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B06",
+    "cohort": "board",
+    "board_id": "B06",
+    "label": "B06 整板",
+    "original": "boards/B06.jpg",
+    "model_input": "inputs/B06.jpg",
+    "original_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "input_sha256": "75ceb50afd93652267e59b064ede87564c11afa8fb8e491a7ceb15af7590c6a4",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-860d3c6e-dd18-4133-9831-16767dff6680.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B06-T01",
+      "B06-T02",
+      "B06-T03",
+      "B06-T04",
+      "B06-T05",
+      "B06-T06"
+    ]
+  },
+  {
+    "id": "B06-T01",
+    "cohort": "tile",
+    "board_id": "B06",
+    "label": "B06 / 子图1",
+    "original": "tiles/B06-T01.png",
+    "model_input": "inputs/B06-T01.jpg",
+    "original_sha256": "6a11754b54bdedb785d1bb0b345306f3377ee9d944cc4136f93c00b54067ac03",
+    "input_sha256": "7d4938ce6d660ac97c4329bb7112ae366d39e6370c4e0117458c9f703610fa9c",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      489
+    ],
+    "source_board_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B06-T02",
+    "cohort": "tile",
+    "board_id": "B06",
+    "label": "B06 / 子图2",
+    "original": "tiles/B06-T02.png",
+    "model_input": "inputs/B06-T02.jpg",
+    "original_sha256": "cacfb86cfba2d143368ea1479a267be438fff113c29855cbb0cd6706d304af4c",
+    "input_sha256": "cbdf7a0787bc24af49cc2578d9e80b993dca12b0d0ec767919b74c173c274923",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B06-T03",
+    "cohort": "tile",
+    "board_id": "B06",
+    "label": "B06 / 子图3",
+    "original": "tiles/B06-T03.png",
+    "model_input": "inputs/B06-T03.jpg",
+    "original_sha256": "634b95944ee765b53f96120d58d30c6dad09e60a8260f8193352576b839be683",
+    "input_sha256": "0c8bb712041a8616a6b0662e47984694ca2a2e8e342a108c6f5a95c56e76a1bb",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      489
+    ],
+    "source_board_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B06-T04",
+    "cohort": "tile",
+    "board_id": "B06",
+    "label": "B06 / 子图4",
+    "original": "tiles/B06-T04.png",
+    "model_input": "inputs/B06-T04.jpg",
+    "original_sha256": "57de7b5235611611e7f85fff3c05d2b83a26e0bb3f6f584dd129036be28fd0ab",
+    "input_sha256": "2ddb7a7fbf5f5e45aee6f3aee6cb28511b1c7d4e4bcf39ad091cb5a7bf48edcc",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B06-T05",
+    "cohort": "tile",
+    "board_id": "B06",
+    "label": "B06 / 子图5",
+    "original": "tiles/B06-T05.png",
+    "model_input": "inputs/B06-T05.jpg",
+    "original_sha256": "a1518e0888eeb58408df3ea50fbe48464c7776b3271b03e2d46adcbfd1bd5040",
+    "input_sha256": "7a7b8a4843eb323c8ccf0b763809ba3db9c57b6705b3f7dc83fa26f3fafb7304",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B06-T06",
+    "cohort": "tile",
+    "board_id": "B06",
+    "label": "B06 / 子图6",
+    "original": "tiles/B06-T06.png",
+    "model_input": "inputs/B06-T06.jpg",
+    "original_sha256": "3dc704614e95ca444180a0eee2e1fd9ded489e55933ab718fc0af69e6dcbcf0c",
+    "input_sha256": "1101a815e063c3984a253c84f664ba06bd7b8e572c258a5b2b148127feffeb7a",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B07",
+    "cohort": "board",
+    "board_id": "B07",
+    "label": "B07 整板",
+    "original": "boards/B07.jpg",
+    "model_input": "inputs/B07.jpg",
+    "original_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "input_sha256": "cec9389f8a8bac930ccf0f1d0a0cfa6f0a4ffd2adcb29cbf09c969fce41a896d",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-50de8183-936e-4226-826a-f6f113eff859.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B07-T01",
+      "B07-T02",
+      "B07-T03",
+      "B07-T04",
+      "B07-T05",
+      "B07-T06"
+    ]
+  },
+  {
+    "id": "B07-T01",
+    "cohort": "tile",
+    "board_id": "B07",
+    "label": "B07 / 子图1",
+    "original": "tiles/B07-T01.png",
+    "model_input": "inputs/B07-T01.jpg",
+    "original_sha256": "52898cc335b16c93c9aecd672470dc21d391621812bda01b13de39b40aa7b14f",
+    "input_sha256": "63a5995f36ed4df3f22e852a69699cc80675df8f10fb879c8eb7b3df5d60a22a",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B07-T02",
+    "cohort": "tile",
+    "board_id": "B07",
+    "label": "B07 / 子图2",
+    "original": "tiles/B07-T02.png",
+    "model_input": "inputs/B07-T02.jpg",
+    "original_sha256": "744dbb118f2e7a47b5692ac906bfe70f9823c2e319dc484ba5326df0247aafdf",
+    "input_sha256": "e1df005966883a36f7173c0fad0b3cd17ec473a129abe8898ef0257c5088e78a",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B07-T03",
+    "cohort": "tile",
+    "board_id": "B07",
+    "label": "B07 / 子图3",
+    "original": "tiles/B07-T03.png",
+    "model_input": "inputs/B07-T03.jpg",
+    "original_sha256": "daa3ef26864f16840adf6a48720b3bd109ee8a92531ac3cbc706ba8006183862",
+    "input_sha256": "3c5bb2885ea865610dd2c61def6da939d58fee048aa9be887b70ff833750cfc7",
+    "pixels": [
+      477,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B07-T04",
+    "cohort": "tile",
+    "board_id": "B07",
+    "label": "B07 / 子图4",
+    "original": "tiles/B07-T04.png",
+    "model_input": "inputs/B07-T04.jpg",
+    "original_sha256": "06b7a171f7ada532f2126f624f2c7c64b87dd380afe153ac3f6d70813c1cc657",
+    "input_sha256": "fa32573750af26ccb05fbd5d5ce28be28ce527169ed58c19e0cb2dac8aae46c8",
+    "pixels": [
+      477,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B07-T05",
+    "cohort": "tile",
+    "board_id": "B07",
+    "label": "B07 / 子图5",
+    "original": "tiles/B07-T05.png",
+    "model_input": "inputs/B07-T05.jpg",
+    "original_sha256": "57a6cbc44718d941f5fd008ac5669314a1ded6c082990c7bf9520aab7977443f",
+    "input_sha256": "8ec8e963de5393149651cf042c695ee0e54f87803cdb7ac45e0b2d47c016533b",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B07-T06",
+    "cohort": "tile",
+    "board_id": "B07",
+    "label": "B07 / 子图6",
+    "original": "tiles/B07-T06.png",
+    "model_input": "inputs/B07-T06.jpg",
+    "original_sha256": "34b0b4444d87640834fb33f0ba0c6478253497f4c5990ead40427398b2b768da",
+    "input_sha256": "8710380d17cd2dc85d98b4af9a0d31ecdf43d68ba09a86caae9693a738a142ba",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B08",
+    "cohort": "board",
+    "board_id": "B08",
+    "label": "B08 整板",
+    "original": "boards/B08.jpg",
+    "model_input": "inputs/B08.jpg",
+    "original_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "input_sha256": "1e8c0750d484f011f06726d10d6c37b419ac10f6f73a9653a599065023fb2bf6",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-c23de60c-d5e3-40e6-a925-3bb9578e16a2.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B08-T01",
+      "B08-T02",
+      "B08-T03",
+      "B08-T04",
+      "B08-T05",
+      "B08-T06"
+    ]
+  },
+  {
+    "id": "B08-T01",
+    "cohort": "tile",
+    "board_id": "B08",
+    "label": "B08 / 子图1",
+    "original": "tiles/B08-T01.png",
+    "model_input": "inputs/B08-T01.jpg",
+    "original_sha256": "1ed15926c67a051e7f6eb4ee0ee6284d43ecdacd70b0294cdca83d4ae8a718e7",
+    "input_sha256": "22ff2a61672f21e09ab62e69276101ee42a55151924a19469555cec761f100f0",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      489
+    ],
+    "source_board_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B08-T02",
+    "cohort": "tile",
+    "board_id": "B08",
+    "label": "B08 / 子图2",
+    "original": "tiles/B08-T02.png",
+    "model_input": "inputs/B08-T02.jpg",
+    "original_sha256": "f3efa2deae53fe75fde2c9add63ddc6c5135c7b8d5d49b48e7c805e835a5e4cb",
+    "input_sha256": "46f513b14f0bc6e3db808fa2640ece7106a3a1a1328283b52777cc39fa929c82",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B08-T03",
+    "cohort": "tile",
+    "board_id": "B08",
+    "label": "B08 / 子图3",
+    "original": "tiles/B08-T03.png",
+    "model_input": "inputs/B08-T03.jpg",
+    "original_sha256": "ae1a6f4bd968c62dad488fa240cebc0d0b18002418ff06d297d46847cb533da3",
+    "input_sha256": "ddc70ec53125a18e6851b0a04d37d8b9e6f61d435579100e51255c48c17b66cb",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      489
+    ],
+    "source_board_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B08-T04",
+    "cohort": "tile",
+    "board_id": "B08",
+    "label": "B08 / 子图4",
+    "original": "tiles/B08-T04.png",
+    "model_input": "inputs/B08-T04.jpg",
+    "original_sha256": "e34cae2bfd0872bc3da1d108c599ef1f8cd89e4f41d14abbd8eacfeed7eeabc9",
+    "input_sha256": "473ae89dce2def96ce2622f0cbe7cd03da73408d64f6a169c3d813da3427c242",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B08-T05",
+    "cohort": "tile",
+    "board_id": "B08",
+    "label": "B08 / 子图5",
+    "original": "tiles/B08-T05.png",
+    "model_input": "inputs/B08-T05.jpg",
+    "original_sha256": "106318d501a64a4dd4bb2b7d98f21921bb44092ce898b0f6cdc6fad16a978994",
+    "input_sha256": "3e5199d5dba21708fd12f8d2744a5781d083e3a779161a35509258595bd8facc",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B08-T06",
+    "cohort": "tile",
+    "board_id": "B08",
+    "label": "B08 / 子图6",
+    "original": "tiles/B08-T06.png",
+    "model_input": "inputs/B08-T06.jpg",
+    "original_sha256": "a9f5fb837f7cb55cf4b48efaf4fe6e5bd65f0f92aa669c25e565deb7fe6f8f37",
+    "input_sha256": "9eb8ced0ba56bfbe992705539ae1cd091bc7073216f95b0648f4fffefd8b78ec",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09",
+    "cohort": "board",
+    "board_id": "B09",
+    "label": "B09 整板",
+    "original": "boards/B09.jpg",
+    "model_input": "inputs/B09.jpg",
+    "original_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "input_sha256": "326f461768fb3365af042ced8fdfce048375f8a61d1e460c72425f599008f3ce",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-c8ccad64-d5c1-49de-b31f-27aac77fd39d.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B09-T01",
+      "B09-T02",
+      "B09-T03",
+      "B09-T04",
+      "B09-T05",
+      "B09-T06",
+      "B09-T07"
+    ]
+  },
+  {
+    "id": "B09-T01",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图1",
+    "original": "tiles/B09-T01.png",
+    "model_input": "inputs/B09-T01.jpg",
+    "original_sha256": "13b1e048817a9fbc0c9ff89c28f9350e01a910787106debeb17fa891fe5418e6",
+    "input_sha256": "93e3ad7c364f6ced14c3a750b43105775acb838258071fcb4d4f55e8a44c572b",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09-T02",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图2",
+    "original": "tiles/B09-T02.png",
+    "model_input": "inputs/B09-T02.jpg",
+    "original_sha256": "34fbabae8ea2863c7e62d5d28ef86bd6ec456ee970a6c1ac174373faff10a97b",
+    "input_sha256": "75de181866080e9570afcecc37485f12e384be3ea7c1dbe66c12eb87c540613e",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09-T03",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图3",
+    "original": "tiles/B09-T03.png",
+    "model_input": "inputs/B09-T03.jpg",
+    "original_sha256": "f6c9185c85fe80230e6efd57cd466ff3ee1caae9f51a62042426061fc54a52db",
+    "input_sha256": "d30ccfc21f90180f8423496c5678e63a9cd4b337fe1f7e3af907fcca48310279",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      489
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09-T04",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图4",
+    "original": "tiles/B09-T04.png",
+    "model_input": "inputs/B09-T04.jpg",
+    "original_sha256": "e8caf18b3367a1303a1127769c528135becda5ac9af7dc0cbfca8f9ee2e58f38",
+    "input_sha256": "ed7b4535db94862b46ed9b960f88e25d0f0dd634d3b4d5b753923948d357543e",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09-T05",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图5",
+    "original": "tiles/B09-T05.png",
+    "model_input": "inputs/B09-T05.jpg",
+    "original_sha256": "00a7cdb86f40e50ad7a531cba78a454d435ddeb1a27bf5bf2d5dbca472aa48d6",
+    "input_sha256": "1351d76a064d3c6324bdc3f721faa7c1b1324a14081c36d12af2e39d2ca81a86",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09-T06",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图6",
+    "original": "tiles/B09-T06.png",
+    "model_input": "inputs/B09-T06.jpg",
+    "original_sha256": "8e943d81b30eb4a8287215ee68de328c7610633e8032358074a6e22778738faf",
+    "input_sha256": "9831410af3098d783598915ec506065e63a7f84706ccdbc8f72e1f8d4459d817",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B09-T07",
+    "cohort": "tile",
+    "board_id": "B09",
+    "label": "B09 / 子图7",
+    "original": "tiles/B09-T07.png",
+    "model_input": "inputs/B09-T07.jpg",
+    "original_sha256": "58a2aa923bdc182b501a9b4cd5235987d8d0e6436a1a24e44c4b106c7ccb6ed9",
+    "input_sha256": "ce8feb7b5b0464e20c52fdb0d08e657d3261aea1a865f1b0e0668b117f03e1d8",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B10",
+    "cohort": "board",
+    "board_id": "B10",
+    "label": "B10 整板",
+    "original": "boards/B10.jpg",
+    "model_input": "inputs/B10.jpg",
+    "original_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "input_sha256": "a128fafe296d70616c9a4a22488dbb6b3576346c2196898634c71ac200ab1b06",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-be964b30-46e7-4ac7-9f57-c493bb97233b.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B10-T01",
+      "B10-T02",
+      "B10-T03",
+      "B10-T04",
+      "B10-T05",
+      "B10-T06"
+    ]
+  },
+  {
+    "id": "B10-T01",
+    "cohort": "tile",
+    "board_id": "B10",
+    "label": "B10 / 子图1",
+    "original": "tiles/B10-T01.png",
+    "model_input": "inputs/B10-T01.jpg",
+    "original_sha256": "772fb1900855517a3e1468f91dc393350935403718b254c15d59530c3f203f53",
+    "input_sha256": "b8a091f028247b78886c472fe3e7c55b0c3a3a8053966097c50fd651aebb064b",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      489
+    ],
+    "source_board_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B10-T02",
+    "cohort": "tile",
+    "board_id": "B10",
+    "label": "B10 / 子图2",
+    "original": "tiles/B10-T02.png",
+    "model_input": "inputs/B10-T02.jpg",
+    "original_sha256": "5b5fc55970f6eb9abf16b442d40d9ea4be96ab308c6b2f17d5fd4e960e33772f",
+    "input_sha256": "3650156209cc125eb15042e59042280959bc9ff0fc6ed17d6a6c95edb0404c91",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B10-T03",
+    "cohort": "tile",
+    "board_id": "B10",
+    "label": "B10 / 子图3",
+    "original": "tiles/B10-T03.png",
+    "model_input": "inputs/B10-T03.jpg",
+    "original_sha256": "daf3e3f80b4a8516d31a108bd0525350760f7170b4f0ec52f7a752a17fe06a89",
+    "input_sha256": "9e4687df06e010d25416a34cbba120f7878f8d55c138a2b2a6106591d6cdb607",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B10-T04",
+    "cohort": "tile",
+    "board_id": "B10",
+    "label": "B10 / 子图4",
+    "original": "tiles/B10-T04.png",
+    "model_input": "inputs/B10-T04.jpg",
+    "original_sha256": "3548a0e682f6ece0720c714f5982a5d0a4d65e97283a452eff8c0870d7f498ff",
+    "input_sha256": "9f87ab144208d46481b00637424282f3c60e40fbc430e41ea822cfbea2453213",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B10-T05",
+    "cohort": "tile",
+    "board_id": "B10",
+    "label": "B10 / 子图5",
+    "original": "tiles/B10-T05.png",
+    "model_input": "inputs/B10-T05.jpg",
+    "original_sha256": "195293631c335e0cebd34dcdd48fa55f0320f870e44aed6ff98d53372193aa72",
+    "input_sha256": "464f292699045bbd854f0ab4bd7a2e46eeff75d78e987d7899915c9945f66e3c",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B10-T06",
+    "cohort": "tile",
+    "board_id": "B10",
+    "label": "B10 / 子图6",
+    "original": "tiles/B10-T06.png",
+    "model_input": "inputs/B10-T06.jpg",
+    "original_sha256": "3a8ac5ad24486642b7f806b7f118c0cc75147c8301a76921c3793a60005b9cd2",
+    "input_sha256": "5b3df3276711a513740157d66d33366e17824c04b36c502c7b2c05f69aaf0d7a",
+    "pixels": [
+      477,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B11",
+    "cohort": "board",
+    "board_id": "B11",
+    "label": "B11 整板",
+    "original": "boards/B11.jpg",
+    "model_input": "inputs/B11.jpg",
+    "original_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "input_sha256": "769549502bff3af2bbabac73dc46f98ce5ec6a00bfcc83a6e2ecaf85abd54b3f",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-885a1161-f7ee-4591-be46-9004c6de2683.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B11-T01",
+      "B11-T02",
+      "B11-T03",
+      "B11-T04",
+      "B11-T05",
+      "B11-T06"
+    ]
+  },
+  {
+    "id": "B11-T01",
+    "cohort": "tile",
+    "board_id": "B11",
+    "label": "B11 / 子图1",
+    "original": "tiles/B11-T01.png",
+    "model_input": "inputs/B11-T01.jpg",
+    "original_sha256": "67fa2757d76bee52ad8f3ea454f351edbd2557e6fdbf2bc51a7d427b51ccb2f9",
+    "input_sha256": "7cf5975c3536dcb1ede30711b507c5d161bad5d680b26ddd11cddd8d1207f18d",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B11-T02",
+    "cohort": "tile",
+    "board_id": "B11",
+    "label": "B11 / 子图2",
+    "original": "tiles/B11-T02.png",
+    "model_input": "inputs/B11-T02.jpg",
+    "original_sha256": "1003d53da6f6bea602112bc7051ed5f52f4075b324ca40e12c9c21162da2584c",
+    "input_sha256": "8bf6e56fd04e5f5f3a8bb5e36059056fba819c602da62a41cd66c649aee89da6",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      489
+    ],
+    "source_board_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B11-T03",
+    "cohort": "tile",
+    "board_id": "B11",
+    "label": "B11 / 子图3",
+    "original": "tiles/B11-T03.png",
+    "model_input": "inputs/B11-T03.jpg",
+    "original_sha256": "53d064753551cabdd2864b28ca539fca5dac0c8bc63981cbffbab2749f0f3589",
+    "input_sha256": "ba02d0e0b64fc9186b7a4a34d8194ab2957a92555ea907b39d06e87e38063a35",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B11-T04",
+    "cohort": "tile",
+    "board_id": "B11",
+    "label": "B11 / 子图4",
+    "original": "tiles/B11-T04.png",
+    "model_input": "inputs/B11-T04.jpg",
+    "original_sha256": "3ef4314d7d9359421fe7d4d4e2609d809c3f34e364ba5ec39bc0c1f4aae060b0",
+    "input_sha256": "0a432ba41d83c22c368075a4f0806e592ed44c7840a314ab7b8273efe2b09370",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B11-T05",
+    "cohort": "tile",
+    "board_id": "B11",
+    "label": "B11 / 子图5",
+    "original": "tiles/B11-T05.png",
+    "model_input": "inputs/B11-T05.jpg",
+    "original_sha256": "5d63df68e7a563fb26bbf25aa3fc9cea6b1c43f4979f77282a0da7a0f5079e86",
+    "input_sha256": "b89442f1df82a36dd8d0ce621a5dee6a62921515c94e677d3af6f34982f2cad7",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B11-T06",
+    "cohort": "tile",
+    "board_id": "B11",
+    "label": "B11 / 子图6",
+    "original": "tiles/B11-T06.png",
+    "model_input": "inputs/B11-T06.jpg",
+    "original_sha256": "cddf0c81f1c6f4ea2eabd967b50827948ed35db226375f4429aad19c36d725bd",
+    "input_sha256": "bae97bb29f6edd15ac8b46aeb32f2520bcc9ffe0b0d2355b2c26012e48b1671e",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B12",
+    "cohort": "board",
+    "board_id": "B12",
+    "label": "B12 整板",
+    "original": "boards/B12.jpg",
+    "model_input": "inputs/B12.jpg",
+    "original_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "input_sha256": "97170ea7df27e7233d246d0c36b32e29d88a6c7302b7113ddf885add144af015",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-b2d1f90d-b158-4184-8cec-098443d7a942.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B12-T01",
+      "B12-T02",
+      "B12-T03",
+      "B12-T04",
+      "B12-T05",
+      "B12-T06"
+    ]
+  },
+  {
+    "id": "B12-T01",
+    "cohort": "tile",
+    "board_id": "B12",
+    "label": "B12 / 子图1",
+    "original": "tiles/B12-T01.png",
+    "model_input": "inputs/B12-T01.jpg",
+    "original_sha256": "cdc17a8874563dacad0d3f7211c385af36dba4e801ddf3c84ad9d22a6fabde98",
+    "input_sha256": "242a8883bde47033cfeabd24f5c1c00d70b6ee1d8b23abbb78c31b7bba89a362",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B12-T02",
+    "cohort": "tile",
+    "board_id": "B12",
+    "label": "B12 / 子图2",
+    "original": "tiles/B12-T02.png",
+    "model_input": "inputs/B12-T02.jpg",
+    "original_sha256": "61f1e36675072c081765ea0cae08d1e0eba8d5c6261de1dc1afa6ec7483d906c",
+    "input_sha256": "b5cb5204bd9eb78e751ab618d3733435f04c1fce7b85f618d1ecda2c1bdf03e7",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      489
+    ],
+    "source_board_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B12-T03",
+    "cohort": "tile",
+    "board_id": "B12",
+    "label": "B12 / 子图3",
+    "original": "tiles/B12-T03.png",
+    "model_input": "inputs/B12-T03.jpg",
+    "original_sha256": "488b072000df26505a839b902eecce69c8c46c943e751bd20e50bd442ce4cab4",
+    "input_sha256": "3b2c6003b5eb564be1056751a6284ee491d04360659652eca38ec982feb3b0b1",
+    "pixels": [
+      477,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B12-T04",
+    "cohort": "tile",
+    "board_id": "B12",
+    "label": "B12 / 子图4",
+    "original": "tiles/B12-T04.png",
+    "model_input": "inputs/B12-T04.jpg",
+    "original_sha256": "617f90312471a27a14537c7d9769190b3d511809d051a2954662fb13f1bf081d",
+    "input_sha256": "58154dd06c8f5cfa454ceaa36b21d9e0d73d35d7043439dd6900cd2cefb45ff7",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B12-T05",
+    "cohort": "tile",
+    "board_id": "B12",
+    "label": "B12 / 子图5",
+    "original": "tiles/B12-T05.png",
+    "model_input": "inputs/B12-T05.jpg",
+    "original_sha256": "c1b799022c71ba733ffe2363ff5fa2d5663024c0b9a7a6f00c370459dd9e8695",
+    "input_sha256": "fb9f902326ecf8d21db6121efd5a5338fe502aaa5e3d6fcc0dd4decc62a666b8",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B12-T06",
+    "cohort": "tile",
+    "board_id": "B12",
+    "label": "B12 / 子图6",
+    "original": "tiles/B12-T06.png",
+    "model_input": "inputs/B12-T06.jpg",
+    "original_sha256": "b1bb2a5d6795f5d1d9a883dd795ad244910740ac563745ef2265ca7d731a9204",
+    "input_sha256": "baafe6aeec1b8a96347b0bbb42dfe9a0c99871220edbdf4ac3550aa8545fef12",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13",
+    "cohort": "board",
+    "board_id": "B13",
+    "label": "B13 整板",
+    "original": "boards/B13.jpg",
+    "model_input": "inputs/B13.jpg",
+    "original_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "input_sha256": "f9325f527bd263f860a72164dfe4a4b8479a77f22cebba896a6777a04305c763",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-4fd8ee41-20cb-4e14-9d98-d9a6affb67a4.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B13-T01",
+      "B13-T02",
+      "B13-T03",
+      "B13-T04",
+      "B13-T05",
+      "B13-T06",
+      "B13-T07"
+    ]
+  },
+  {
+    "id": "B13-T01",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图1",
+    "original": "tiles/B13-T01.png",
+    "model_input": "inputs/B13-T01.jpg",
+    "original_sha256": "d346f0b4b84bbde2126b23abeaeb835d1bb3ad2798f504dba750743f5a4ace3c",
+    "input_sha256": "758617f19a2e3325ea1b57887cd7eab066bec89b778a839a0327cb38d473da77",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13-T02",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图2",
+    "original": "tiles/B13-T02.png",
+    "model_input": "inputs/B13-T02.jpg",
+    "original_sha256": "00412139b4988fcad931d641e79b7e5c23b517df585e2c0074b9ce9dcccf902e",
+    "input_sha256": "4d56b67dfdd8e74f33ed52c0eda439197a3dae18b83b7a1bcac3f24bc2d4b318",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13-T03",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图3",
+    "original": "tiles/B13-T03.png",
+    "model_input": "inputs/B13-T03.jpg",
+    "original_sha256": "23a47dd754411317b0dc58b9084b7acdfda02a8d57cc41f35a1a232fef2cebad",
+    "input_sha256": "2ff7698bf2f47f69644e85768f66a1a665023487c20c10932ea040c42798ad0c",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13-T04",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图4",
+    "original": "tiles/B13-T04.png",
+    "model_input": "inputs/B13-T04.jpg",
+    "original_sha256": "0c42cf2cab78bc05af13823f83705887ff88de4895d3e0469df17a10bf4c6183",
+    "input_sha256": "5258ac32dba3bedf78f30d23ca56fc18d1fe0e966b84340b939c97ebe7c8b805",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13-T05",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图5",
+    "original": "tiles/B13-T05.png",
+    "model_input": "inputs/B13-T05.jpg",
+    "original_sha256": "5926092ad6880b8f6c06e3bad00d204e5dcff07213d2e51370e5308e66aa7d42",
+    "input_sha256": "7ea12b024ed8c8766d1244ce0977de6b1b72e2d16ae5495cd6cc8ac99da7c6a7",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13-T06",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图6",
+    "original": "tiles/B13-T06.png",
+    "model_input": "inputs/B13-T06.jpg",
+    "original_sha256": "1bc99e697c5d5067666f441d8d8d98db9cac00bd770ea8e81f5a6add538e3f73",
+    "input_sha256": "1f291f4d3dda90787f9f4b25776335d0e58f0043b5c8dcbc783932d8325a91ad",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B13-T07",
+    "cohort": "tile",
+    "board_id": "B13",
+    "label": "B13 / 子图7",
+    "original": "tiles/B13-T07.png",
+    "model_input": "inputs/B13-T07.jpg",
+    "original_sha256": "d43fd5e28cf5855e5e6d375c8c4a33601b49e433266ea6609b186695e1cca0a1",
+    "input_sha256": "f10f0ab1051acd915881b4a00d53af48ed877a14a524e5e990c03cb358dde075",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14",
+    "cohort": "board",
+    "board_id": "B14",
+    "label": "B14 整板",
+    "original": "boards/B14.jpg",
+    "model_input": "inputs/B14.jpg",
+    "original_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "input_sha256": "8bdb64d90576fa90989a9ef6e3c6cf35631acdf03061be02e94cc954e5cb7c75",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-2a236db5-8244-4b6e-85e8-2634260fcef4.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B14-T01",
+      "B14-T02",
+      "B14-T03",
+      "B14-T04",
+      "B14-T05",
+      "B14-T06",
+      "B14-T07"
+    ]
+  },
+  {
+    "id": "B14-T01",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图1",
+    "original": "tiles/B14-T01.png",
+    "model_input": "inputs/B14-T01.jpg",
+    "original_sha256": "d928b67034e381dafe15e3821d7033ea95fe1c4224e81e7695981daa30d64d18",
+    "input_sha256": "d3ad042de6badd23a97a675af46a46a5a111e78fe3d32e152aa85fdb8bd2d647",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14-T02",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图2",
+    "original": "tiles/B14-T02.png",
+    "model_input": "inputs/B14-T02.jpg",
+    "original_sha256": "7e3b03ee73a97ceb6437bf081080e1e580048d07bb751809be00ec2618aa58b8",
+    "input_sha256": "b96cffc2a74d34ecbee47b8f14e367899533689ebc5fd86f131d3a8f5bf4d1df",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      489
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14-T03",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图3",
+    "original": "tiles/B14-T03.png",
+    "model_input": "inputs/B14-T03.jpg",
+    "original_sha256": "7534d461ee73b1ec8553429469d5ae363e56ff9da25e0eadbcb6ff3cdc4c7d71",
+    "input_sha256": "487bdd4596771b974cec05ab6286bd63108c27d257667efe2834fe9862b81d3e",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14-T04",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图4",
+    "original": "tiles/B14-T04.png",
+    "model_input": "inputs/B14-T04.jpg",
+    "original_sha256": "ac4b329e49b418dbb345eb0b7c5ffd30fe73ecf8b212e6d2da6366387c311434",
+    "input_sha256": "dc0815a2455ac65ec5a2462b2403ba2fd9ed9fd84a018c77796afe77335bdc23",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14-T05",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图5",
+    "original": "tiles/B14-T05.png",
+    "model_input": "inputs/B14-T05.jpg",
+    "original_sha256": "531b03f20ee53a0c841d8ee899fa7f3fc2c065e2ad5b3d0c57b0bd746570a4c4",
+    "input_sha256": "ab42d1cbba559001362c5f8632085a21ac3e04e8995f0545eb0cc73d615d7ed8",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14-T06",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图6",
+    "original": "tiles/B14-T06.png",
+    "model_input": "inputs/B14-T06.jpg",
+    "original_sha256": "2e49a06cf024ee546c88cf877854e2554608c3580be4108819e52947f1013f3d",
+    "input_sha256": "6954243264492e1552416639d86a6ce812865d543c641102131558bcfc5f2cc1",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B14-T07",
+    "cohort": "tile",
+    "board_id": "B14",
+    "label": "B14 / 子图7",
+    "original": "tiles/B14-T07.png",
+    "model_input": "inputs/B14-T07.jpg",
+    "original_sha256": "3903383285713afc1946e1b5c432aec725d9ac8d39e65cbc9a4a1ec368cafa2f",
+    "input_sha256": "830fa740d28aff4af983b79c19bf1755e1c60b908a5ec0b2abd9feeea2bc805f",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15",
+    "cohort": "board",
+    "board_id": "B15",
+    "label": "B15 整板",
+    "original": "boards/B15.jpg",
+    "model_input": "inputs/B15.jpg",
+    "original_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "input_sha256": "8a8e3c4e450efb7c82e9ea26254256f9ed08d20c58d1996c7b8d5da4c140cd7c",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-b0825738-4d5a-44f5-a218-63612218ac91.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B15-T01",
+      "B15-T02",
+      "B15-T03",
+      "B15-T04",
+      "B15-T05",
+      "B15-T06",
+      "B15-T07"
+    ]
+  },
+  {
+    "id": "B15-T01",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图1",
+    "original": "tiles/B15-T01.png",
+    "model_input": "inputs/B15-T01.jpg",
+    "original_sha256": "4de3609625cf08bf467b2940f8e60c505448f3caceed2ef465de624def86a49b",
+    "input_sha256": "b0bc95bfc0eef2d26fc133803a062c8efb5f6a2ee58c877590e6e1fc5b2c7c46",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15-T02",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图2",
+    "original": "tiles/B15-T02.png",
+    "model_input": "inputs/B15-T02.jpg",
+    "original_sha256": "d1d55c49178c77710343bf02ec4fe67dd7cb733af8dfc190c807a335f0f99605",
+    "input_sha256": "8af81cfb285ca3745a8077f965cb1fca9928396725d33a3bccf2ca5b240408d4",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      489
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15-T03",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图3",
+    "original": "tiles/B15-T03.png",
+    "model_input": "inputs/B15-T03.jpg",
+    "original_sha256": "79fc471205e9a2c9326038cf30281996e21028db311741d74f5de59f52e32432",
+    "input_sha256": "76202fdd66c2aa6b4aad6a4304574ac2319daee23eca154e3c50a90583b8ac89",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15-T04",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图4",
+    "original": "tiles/B15-T04.png",
+    "model_input": "inputs/B15-T04.jpg",
+    "original_sha256": "f6714cb67f7bab95a63fa6490b7409d5c83612cb2ede035058e53a93de9d7cc9",
+    "input_sha256": "3cfa6b1771837cf703b383d937fce45f591c312f4f8c5288d3700f457eb6733d",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      249
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15-T05",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图5",
+    "original": "tiles/B15-T05.png",
+    "model_input": "inputs/B15-T05.jpg",
+    "original_sha256": "b58a0e88af0e8b489890a6ee23244851f19ae043e60c3bdc9fe3f0e80a65af05",
+    "input_sha256": "321f2d0d90bad5d67f0044743a819c94d16c17ff82509ca634a5c79c5fe64706",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15-T06",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图6",
+    "original": "tiles/B15-T06.png",
+    "model_input": "inputs/B15-T06.jpg",
+    "original_sha256": "eebab53ca639aadedf85cc0d74de3f00acb07e811edf65bc4bd2e1ca72971e2c",
+    "input_sha256": "09b425ab8c60c5128fe1faeb162f0fc0ab382f71f610314c771d98424d57bdff",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B15-T07",
+    "cohort": "tile",
+    "board_id": "B15",
+    "label": "B15 / 子图7",
+    "original": "tiles/B15-T07.png",
+    "model_input": "inputs/B15-T07.jpg",
+    "original_sha256": "741c7e8364f9dfa632bbb7f6488fe6d5e7cd69a88c9c1320041cddb2c4cfac29",
+    "input_sha256": "dd3c05a66d54a3e380ef57cd5a2f50b9e9a13a37939c886cfa19ce74c0c71821",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      252,
+      979,
+      489
+    ],
+    "source_board_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16",
+    "cohort": "board",
+    "board_id": "B16",
+    "label": "B16 整板",
+    "original": "boards/B16.jpg",
+    "model_input": "inputs/B16.jpg",
+    "original_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "input_sha256": "e96cb4908bf14f1955ada2500ad473d7a40756f87969e39c579111200ab2a9c0",
+    "pixels": [
+      1000,
+      500
+    ],
+    "gold_decision": "PASS",
+    "source_path": "C:\\Users\\Admin\\AppData\\Local\\Temp\\codex-clipboard-97fa4623-174c-4842-86b2-6c2418acb7cf.jpg",
+    "annotation": "Designer-approved group, confirmed explicitly by user",
+    "children": [
+      "B16-T01",
+      "B16-T02",
+      "B16-T03",
+      "B16-T04",
+      "B16-T05",
+      "B16-T06",
+      "B16-T07"
+    ]
+  },
+  {
+    "id": "B16-T01",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图1",
+    "original": "tiles/B16-T01.png",
+    "model_input": "inputs/B16-T01.jpg",
+    "original_sha256": "e28ac82e777a548d9c4b4764b3395be98485ee524495b5aa6ff44f5407485079",
+    "input_sha256": "cadfe942019c26bf9dd03ae4bb802fc6c9c78d032f289eef770c5f94e73dcb01",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      12,
+      259,
+      249
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16-T02",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图2",
+    "original": "tiles/B16-T02.png",
+    "model_input": "inputs/B16-T02.jpg",
+    "original_sha256": "b3a140918543591c5d56925fec766e257e2db1cef33519a1be83d10c0510e15c",
+    "input_sha256": "62f0ec10d65af46c70c76e926e992ea64d52e67c38c40c12c1c0ec1b6297e211",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      12,
+      499,
+      249
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16-T03",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图3",
+    "original": "tiles/B16-T03.png",
+    "model_input": "inputs/B16-T03.jpg",
+    "original_sha256": "a7dd9081e759c30c575de2a2f9e3735830a4c966ce78229dcef00f8408b53a26",
+    "input_sha256": "6db95da8b7094aa23fe2ee2ffe16970e2af94d800deaaf47da55a7d78221c465",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      12,
+      739,
+      249
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16-T04",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图4",
+    "original": "tiles/B16-T04.png",
+    "model_input": "inputs/B16-T04.jpg",
+    "original_sha256": "b7d4c8661ef59525a9483236ab8b6b4fd9863aef4d2f0707e6e530ad6534b582",
+    "input_sha256": "6cf1a19891556acaee0556baa3531f6198d97f269d963286f5f411b4673f0bd5",
+    "pixels": [
+      237,
+      477
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      742,
+      12,
+      979,
+      489
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16-T05",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图5",
+    "original": "tiles/B16-T05.png",
+    "model_input": "inputs/B16-T05.jpg",
+    "original_sha256": "6b20357f622479b5424fcf845543f815900fee0191bf9a8dd9eff20a2bba5148",
+    "input_sha256": "757d4d209494d42b8acc772abdd54f6db20991b72cff11aac78f8c49f145a76b",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      22,
+      252,
+      259,
+      489
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16-T06",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图6",
+    "original": "tiles/B16-T06.png",
+    "model_input": "inputs/B16-T06.jpg",
+    "original_sha256": "09ac9c534b173c9cff417f7f1946defb4c04ed631f5c4004670bd4711d7be429",
+    "input_sha256": "741ea105585ea2fda1e80c11fa5ba25b7e2e2e51b35ce128c2ba66dd248c00cd",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      262,
+      252,
+      499,
+      489
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  },
+  {
+    "id": "B16-T07",
+    "cohort": "tile",
+    "board_id": "B16",
+    "label": "B16 / 子图7",
+    "original": "tiles/B16-T07.png",
+    "model_input": "inputs/B16-T07.jpg",
+    "original_sha256": "f11af34e2ed94b2388d7be47e7721f32ffddbd285498cb93806c8c7d07d3405f",
+    "input_sha256": "a32a5b207381ede1df830c28a4fe9d5a84614bb60af25c473939a5227070247d",
+    "pixels": [
+      237,
+      237
+    ],
+    "gold_decision": "PASS",
+    "crop_box_xyxy": [
+      502,
+      252,
+      739,
+      489
+    ],
+    "source_board_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+    "annotation": "Positive label inherited from the user-confirmed designer-selected group; exact source rectangle preserved",
+    "pixel_crop_verified": true
+  }
+]

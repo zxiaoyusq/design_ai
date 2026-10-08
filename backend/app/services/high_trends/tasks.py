@@ -16,6 +16,7 @@ from app.agents.design_trend_synthesizer import (
 )
 from app.services.high_trends.skill import PROJECT_ROOT, SKILL_ROOT, lean, prepare, dataset_paths
 from app.services.high_trends.errors import error_detail
+from app.services.high_trends.image_inventory import is_generated_research_result
 from app.services.high_trends.scope import resolve_user_scope
 from app.services.llm.catalog import get_model
 
@@ -174,7 +175,8 @@ class HighTrendManager:
         path = (path if path.is_absolute() else self.root / path).resolve()
         roots = [self.root / "data/trend_data", self.root / "data/userreseach_data"]
         # 只提供既有研究图片，拒绝越界路径、软链接逃逸及可执行网页内容。
-        if (not any(path.is_relative_to(root.resolve()) for root in roots)
+        if (is_generated_research_result(path, self.root)
+                or not any(path.is_relative_to(root.resolve()) for root in roots)
                 or path.suffix.lower() not in {".jpg", ".jpeg", ".png", ".webp", ".gif", ".avif"}
                 or not path.is_file()):
             return None

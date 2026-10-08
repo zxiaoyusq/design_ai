@@ -5,12 +5,24 @@ import json
 from pathlib import Path
 
 
+LIKED_D02_RESULTS_RELATIVE = Path("data/userreseach_data/liked_images_d02_results")
+
+
+def is_generated_research_result(path, root):
+    """D02 提取产物位于用研目录，但不能作为新来源图片或元数据重复入库。"""
+
+    generated = (Path(root).resolve() / LIKED_D02_RESULTS_RELATIVE).resolve()
+    return Path(path).resolve().is_relative_to(generated)
+
+
 def scan_inventory(root, suffixes):
     candidates, metadata_files, warnings = {}, [], []
     root = Path(root).resolve()
     for kind, relative in (("trend", "data/trend_data"), ("user", "data/userreseach_data")):
         directory = root / relative
         for path in sorted(directory.rglob("*")):
+            if kind == "user" and is_generated_research_result(path, root):
+                continue
             if path.suffix.lower() not in suffixes or not path.is_file():
                 continue
             resolved = path.resolve()
@@ -82,6 +94,8 @@ def scan_inventory(root, suffixes):
                     walk(child, f"{pointer}/{escaped}", current, document_path, base)
 
         for document_path in sorted(directory.rglob("*.json")):
+            if kind == "user" and is_generated_research_result(document_path, root):
+                continue
             if "backups" in document_path.relative_to(directory).parts or not document_path.resolve().is_relative_to(directory.resolve()):
                 continue
             try:

@@ -1,0 +1,4 @@
+interface:
+  display_name: "视觉转译与选材"
+  short_description: "把语义方向转为具体视觉条件，通过真实预览校准来源容量并冻结候选池与处理计划"
+  default_prompt: "使用 $prism-visual-material-planning 把已选方向转为可检验条件，校准素材供给并输出冻结选材资料包。"

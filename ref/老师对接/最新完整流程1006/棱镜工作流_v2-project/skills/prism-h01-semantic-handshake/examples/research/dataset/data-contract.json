@@ -1,0 +1,27 @@
+{
+  "dataset_id": "synthetic:two-semantic-skills-v1",
+  "dataset_mode": "synthetic_fixture",
+  "sources": [
+    {
+      "source_id": "S1",
+      "label": "虚构协议测试材料1",
+      "locator": "synthetic:document/1",
+      "evidence_kind": "synthetic_fixture"
+    },
+    {
+      "source_id": "S2",
+      "label": "虚构协议测试材料2",
+      "locator": "synthetic:document/2",
+      "evidence_kind": "synthetic_fixture"
+    },
+    {
+      "source_id": "S3",
+      "label": "虚构协议测试材料3",
+      "locator": "synthetic:document/3",
+      "evidence_kind": "synthetic_fixture"
+    }
+  ],
+  "source_import": "one_to_one_text_no_OCR_or_document_truth_verification",
+  "original_input_digest": "1e65345c66a873dfd1e4bafca518a1a44cc086391117b339a7b650d31f9b8237",
+  "image_associations": "not_supplied"
+}

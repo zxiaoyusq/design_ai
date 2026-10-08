@@ -1,0 +1,138 @@
+{
+  "fixture_only": true,
+  "not_executable_without_matching_synthetic_observation_catalog_and_confirmation": true,
+  "requests": [
+    {
+      "rule_version": "r5-dual-clustering-v2.0.0",
+      "selection_digest": "synthetic:selection-only",
+      "direction_id": "synthetic:D01",
+      "candidate_image_ids": [
+        "synthetic:chair",
+        "synthetic:lamp",
+        "synthetic:kettle"
+      ],
+      "semantic_context": {
+        "title": "合成：柔和曲线与低反光表面",
+        "design_question": "如何用曲线和表面表达安静而连续的观感？",
+        "trend_evidence_refs": [
+          "synthetic:trend"
+        ],
+        "research_evidence_refs": [
+          "synthetic:research"
+        ],
+        "unresolved": []
+      },
+      "negative_audit": [],
+      "deferred_obligations": [
+        {
+          "status": "unfulfilled",
+          "text": "真实原图、使用情境与设计适配仍须核验；这是离线夹具。"
+        }
+      ],
+      "schema_version": "prism.h02.id_style.v2",
+      "request_id": "synthetic:ID",
+      "branch": "ID",
+      "patterns": [
+        {
+          "pattern_id": "synthetic:round-seam",
+          "label": "合成圆弧与环绕接缝线索",
+          "rationale": "仅用于测试跨产品形态归组；不是实际研究结论。",
+          "semantic_refs": [
+            "synthetic:trend",
+            "synthetic:research"
+          ],
+          "binding_scope": "image_index",
+          "core": [
+            {
+              "parameter_id": "GEO-001",
+              "allowed_values": [
+                "圆弧"
+              ],
+              "observation_refs": [
+                "r5obs:fixture-form"
+              ]
+            },
+            {
+              "parameter_id": "STR-007",
+              "allowed_values": [
+                "环绕"
+              ],
+              "observation_refs": [
+                "r5obs:fixture-seam"
+              ]
+            }
+          ],
+          "support": [],
+          "negative_rules": []
+        }
+      ],
+      "quality_bindings": []
+    },
+    {
+      "rule_version": "r5-dual-clustering-v2.0.0",
+      "selection_digest": "synthetic:selection-only",
+      "direction_id": "synthetic:D01",
+      "candidate_image_ids": [
+        "synthetic:chair",
+        "synthetic:lamp",
+        "synthetic:kettle"
+      ],
+      "semantic_context": {
+        "title": "合成：柔和曲线与低反光表面",
+        "design_question": "如何用曲线和表面表达安静而连续的观感？",
+        "trend_evidence_refs": [
+          "synthetic:trend"
+        ],
+        "research_evidence_refs": [
+          "synthetic:research"
+        ],
+        "unresolved": []
+      },
+      "negative_audit": [],
+      "deferred_obligations": [
+        {
+          "status": "unfulfilled",
+          "text": "真实原图、使用情境与设计适配仍须核验；这是离线夹具。"
+        }
+      ],
+      "schema_version": "prism.h02.cmf_local.v2",
+      "request_id": "synthetic:CMF",
+      "branch": "CMF",
+      "patterns": [
+        {
+          "pattern_id": "synthetic:matte-gold",
+          "label": "合成金色哑光局部",
+          "rationale": "只匹配同一声明位置；不证明真金或已完成产品设计。",
+          "semantic_refs": [
+            "synthetic:trend",
+            "synthetic:research"
+          ],
+          "binding_scope": "declared_location",
+          "core": [
+            {
+              "parameter_id": "COL-006",
+              "allowed_values": [
+                "金色"
+              ],
+              "observation_refs": [
+                "r5obs:fixture-gold"
+              ]
+            },
+            {
+              "parameter_id": "OPT-002",
+              "allowed_values": [
+                "哑光"
+              ],
+              "observation_refs": [
+                "r5obs:fixture-matte"
+              ]
+            }
+          ],
+          "support": [],
+          "negative_rules": []
+        }
+      ],
+      "quality_bindings": []
+    }
+  ]
+}

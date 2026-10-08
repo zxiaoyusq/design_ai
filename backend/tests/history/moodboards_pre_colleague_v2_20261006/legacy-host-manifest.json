@@ -1,0 +1,15 @@
+{
+  "reason": "旧纯文本情绪板宿主准备/发布入口退役，新版只能校验原生结果后网页投影",
+  "files": [
+    {
+      "source": "backend/scripts/run_moodboard_host.py",
+      "snapshot": "backend/tests/history/moodboards_pre_colleague_v2_20261006/run_moodboard_host.py.txt",
+      "sha256": "1cef0aa29566c9744c5425095039f160971e671d2f6d9a8cd2f143abf8e3f95e"
+    },
+    {
+      "source": "backend/tests/test_moodboard_host.py",
+      "snapshot": "backend/tests/history/moodboards_pre_colleague_v2_20261006/test_moodboard_host.py.txt",
+      "sha256": "182ad4a633e2bf5f981de2d6a4f77d25e295c5f744124a0141f08551216f87ad"
+    }
+  ]
+}

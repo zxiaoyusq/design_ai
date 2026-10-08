@@ -123,6 +123,28 @@ class ScriptContractTests(unittest.TestCase):
         self.assertFalse(view_requirement_satisfied(["rear"], "unknown"))
         self.assertTrue(view_requirement_satisfied(["any"], "unknown"))
 
+    def test_detail_terms_are_not_promoted_to_enums_or_semantic_aliases(self) -> None:
+        """描述性细节不能扩充值域，也不能通过代码强配成不同含义的旧值。"""
+
+        spaces = extract_kb_value_spaces(
+            (ROOT / "references/design-dna-knowledge-base.zh-CN.md").read_text()
+        )
+        normalization = json.loads(
+            (ROOT / "references/value-normalization.json").read_text()
+        )
+        for field_id, detail in (
+            ("TEX-05", "交叉"),
+            ("IDG-06", "无衬线"),
+            ("IDG-06", "衬线"),
+        ):
+            with self.subTest(field_id=field_id, detail=detail):
+                self.assertNotIn(detail, spaces[field_id][1])
+                normalized, notes = _normalized_controlled_value(
+                    field_id, {"value_type": "enum"}, detail, spaces, normalization,
+                )
+                self.assertIsNone(normalized)
+                self.assertTrue(notes)
+
     def test_root_camel_case_aliases_are_only_normalized_without_conflict(self) -> None:
         notes = {"missing_critical_fields": [], "warnings": [], "concise_summary": "ok"}
         quality = {"overall_quality": 0.8}

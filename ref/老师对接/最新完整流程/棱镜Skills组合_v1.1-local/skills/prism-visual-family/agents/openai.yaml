@@ -1,0 +1,4 @@
+interface:
+  display_name: "语义方向到可见家族"
+  short_description: "语义方向到可见家族：保留来源边界，按当前任务执行并交接可追溯结果"
+  default_prompt: "使用 $prism-visual-family 处理当前项目资料，并保留实际输入、判断和交接边界。"

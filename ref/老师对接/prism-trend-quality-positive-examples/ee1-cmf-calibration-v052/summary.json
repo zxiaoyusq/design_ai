@@ -1,0 +1,240 @@
+{
+  "created_utc": "2026-09-26T09:14:57.414047+00:00",
+  "model": "qwen3.8-flash",
+  "algorithm_version": "cmf-reference-signal-gate-v0.5.2",
+  "ground_truth_authority": "User explicitly reports designer human labels",
+  "designer_positive_images": {
+    "total": 138,
+    "pass": 138,
+    "fail": 0,
+    "invalid": 0
+  },
+  "gold_positive_recall": 1.0,
+  "all_designer_positives_pass": true,
+  "designer_positive_positions": {
+    "total": 140,
+    "pass": 140
+  },
+  "old_v04": {
+    "raw_model_pass": 77,
+    "raw_model_fail": 61,
+    "raw_positive_recall": 0.5579710144927537,
+    "usable_pass": 73,
+    "usable_fail": 60,
+    "invalid": 5,
+    "usable_positive_recall": 0.5289855072463768
+  },
+  "sentinels": {
+    "total": 12,
+    "pass": 11,
+    "fail": 1,
+    "invalid": 0
+  },
+  "sentinel_old_pass": 4,
+  "sentinel_changes": [
+    {
+      "id": "control01",
+      "label": "白色常规台灯单品图",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "图片清晰展示了灯罩的折面纹理与底座的流线型曲面，具备明确的CMF与造型参考信号。"
+    },
+    {
+      "id": "control02",
+      "label": "白色铅笔造型灯单品图",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "该物体具有明确的仿生造型语言，特别是顶部的波浪形分割结构以及中间半透磨砂材质的光学表现，提供了可复用的CMF参考信号。"
+    },
+    {
+      "id": "control03",
+      "label": "白T恤日常搭配",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "图片展示了具有清晰CMF特征的服装搭配，特别是裤装的做旧水洗纹理和鞋履的特殊表面肌理提供了具体的设计参考信号。"
+    },
+    {
+      "id": "control05",
+      "label": "创作者肖像",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "图片展示了具有强烈个人风格的CMF搭配，通过配饰色彩呼应、不同材质的软硬对比以及旧化纹理细节提供了可提取的造型参考信号。"
+    },
+    {
+      "id": "control06",
+      "label": "工作台创作过程",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "图像清晰展示了墨迹在纸面上的干湿浓淡肌理变化，以及多种不同表面质感的材料组合关系。"
+    },
+    {
+      "id": "control09",
+      "label": "蓝色曲线时钟单品",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "该物体具有极具辨识度的拱形几何造型，配合高饱和单色涂装与极简的盘面设计，构成了明确且可复用的CMF参考信号。"
+    },
+    {
+      "id": "control12",
+      "label": "透明棱面杯近景",
+      "old": "FAIL",
+      "new": "PASS",
+      "reason": "图片清晰展示了玻璃器皿的局部造型语言，特别是直棱与曲面的结合及分界线设计，具有明确的CMF参考信号。"
+    }
+  ],
+  "sentinel_labels_are_not_human_gold": true,
+  "negative_specificity_established": false,
+  "unseen_generalization_established": false,
+  "scope": "Designer-positive calibration/regression, not all-class accuracy or independent unseen holdout",
+  "per_page": [
+    {
+      "page": 1,
+      "board": "G1",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 2,
+      "board": "G2",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 3,
+      "board": "G3",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 4,
+      "board": "G4",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 5,
+      "board": "G5",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 6,
+      "board": "G6",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 7,
+      "board": "G7",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 8,
+      "board": "G8",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 9,
+      "board": "G9",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 10,
+      "board": "G10",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 11,
+      "board": "G11",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 12,
+      "board": "G12",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 13,
+      "board": "G13",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    },
+    {
+      "page": 14,
+      "board": "G14",
+      "total": 10,
+      "pass": 10,
+      "fail": 0,
+      "invalid": 0
+    }
+  ],
+  "model_inference_calls_total_this_calibration": 150,
+  "reused_identical_model_responses": 150,
+  "new_calls_for_schema_replay": 0,
+  "calls_for_gold": 138,
+  "calls_for_sentinels": 12,
+  "raw_response_preservation": true,
+  "all_http_200": true,
+  "usage": {
+    "input_tokens": 238131,
+    "output_tokens": 35734,
+    "total_tokens": 273865,
+    "image_tokens": 62031
+  },
+  "latency_seconds": {
+    "mean": 4.087,
+    "median": 3.956,
+    "min": 2.847,
+    "max": 12.582,
+    "note": "Per-request latency with two concurrent requests; not a sequential batch SLA comparison."
+  },
+  "dna_calls": 0,
+  "labels_supplied_to_model": false,
+  "identity_whitelist": false,
+  "production_modified": false,
+  "timer_status": "PAUSED",
+  "metadata_warnings": [
+    {
+      "id": "u121",
+      "warnings": [
+        "summary_missing_use_evidence"
+      ]
+    }
+  ],
+  "technical_recoveries_across_schema_patches": [
+    "u001",
+    "u121"
+  ]
+}

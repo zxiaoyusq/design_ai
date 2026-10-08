@@ -219,8 +219,8 @@ def _stored_result_images(result_id: str) -> list[Path]:
     ]
 
 
-def save_result_image(result_id: str, image_path: Path) -> Path:
-    """保存最长边 480px 的独立缩略图，素材删除后结果仍可正常展示。"""
+def save_result_image(result_id: str, image_path: Path, *, output_dir: Path | None = None) -> Path:
+    """保存最长边 480px 的独立缩略图；指定目录时与对应业务结果一起存放。"""
 
     if not RESULT_ID_PATTERN.fullmatch(result_id):
         raise ValueError("结果 ID 不合法")
@@ -240,11 +240,12 @@ def save_result_image(result_id: str, image_path: Path) -> Path:
             thumbnail.save(output, format="WEBP", quality=84, method=4)
     except (UnidentifiedImageError, OSError) as exc:
         raise ImageStorageError("无法生成结果缩略图") from exc
-    target = RESULTS_DIR / ".images" / f"{result_id}.webp"
+    target = (output_dir or RESULTS_DIR / ".images") / f"{result_id}.webp"
     _atomic_write(target, output.getvalue())
-    for previous in _stored_result_images(result_id):
-        if previous != target:
-            previous.unlink(missing_ok=True)
+    if output_dir is None:
+        for previous in _stored_result_images(result_id):
+            if previous != target:
+                previous.unlink(missing_ok=True)
     return target
 
 

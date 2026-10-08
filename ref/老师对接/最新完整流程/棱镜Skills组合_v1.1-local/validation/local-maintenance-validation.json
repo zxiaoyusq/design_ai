@@ -1,0 +1,188 @@
+{
+  "schema": "prism.local-maintenance-validation.v1",
+  "suite_version": "1.1.0-local",
+  "validation_scope": "Skill格式、相对链接和上游字节差异；不验证新图片审美效果",
+  "quick_validate": [
+    {
+      "skill": "prism-cmf-moodboard",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-dna-sol-r5",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-h01-semantic-handshake",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-id-moodboard",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-moodboard-delivery",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-research-intake",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-research-semantic-clustering",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-source-image-selection",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-target-quality",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-target-view-binding",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-trend-semantic-clustering",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-visual-family",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    },
+    {
+      "skill": "prism-workflow",
+      "passed": true,
+      "output": "Skill is valid!",
+      "error": ""
+    }
+  ],
+  "markdown_relative_links": {
+    "checked": 50,
+    "errors": []
+  },
+  "changed_upstream_files": [
+    "skills/prism-cmf-moodboard/SKILL.md",
+    "skills/prism-id-moodboard/SKILL.md",
+    "skills/prism-moodboard-delivery/SKILL.md",
+    "skills/prism-source-image-selection/SKILL.md",
+    "skills/prism-workflow/references/routing.md",
+    "skills/prism-workflow/SKILL.md",
+    "skills/prism_skill_support/references/contracts.md",
+    "skills/prism_skill_support/references/history-and-proposals.md",
+    "START-HERE.md",
+    "metadata/bundle-manifest.json"
+  ],
+  "source_archive_sha256": "6f5f37e536c3725fd94dcc4267c2877ece3b51a907f5d5fd79a90f9978aaac59",
+  "model_calls": 0,
+  "original_archive_unchanged": true,
+  "run_frozen_modified": false,
+  "project_docs_modified": false,
+  "entrypoint_links": [
+    {
+      "path": "/root/dev/work/design_ai/.agents/skills/prism-workflow",
+      "resolved_path": "/root/dev/work/design_ai/ref/老师对接/最新完整流程/棱镜Skills组合_v1.1-local/skills/prism-workflow",
+      "exists": true
+    },
+    {
+      "path": "/root/dev/work/design_ai/.agents/skills/prism-source-image-selection",
+      "resolved_path": "/root/dev/work/design_ai/ref/老师对接/最新完整流程/棱镜Skills组合_v1.1-local/skills/prism-source-image-selection",
+      "exists": true
+    },
+    {
+      "path": "/root/dev/work/design_ai/.agents/skills/prism_skill_support",
+      "resolved_path": "/root/dev/work/design_ai/ref/老师对接/最新完整流程/棱镜Skills组合_v1.1-local/skills/prism_skill_support",
+      "exists": true
+    }
+  ],
+  "runtime_files_changed": [],
+  "upstream_files_preserved_exactly": 200,
+  "supplier_execution_enabled": false,
+  "entrypoint_relative_links": [
+    {
+      "entry": ".agents/skills/prism-workflow/SKILL.md",
+      "target": "../prism_skill_support/references/contracts.md",
+      "exists": true
+    },
+    {
+      "entry": ".agents/skills/prism-workflow/SKILL.md",
+      "target": "references/routing.md",
+      "exists": true
+    },
+    {
+      "entry": ".agents/skills/prism-workflow/SKILL.md",
+      "target": "../prism_skill_support/references/budgeted-visual-selection.md",
+      "exists": true
+    },
+    {
+      "entry": ".agents/skills/prism-workflow/SKILL.md",
+      "target": "../prism_skill_support/references/history-and-proposals.md",
+      "exists": true
+    },
+    {
+      "entry": ".agents/skills/prism-source-image-selection/SKILL.md",
+      "target": "../prism_skill_support/references/contracts.md",
+      "exists": true
+    },
+    {
+      "entry": ".agents/skills/prism-source-image-selection/SKILL.md",
+      "target": "../prism_skill_support/references/budgeted-visual-selection.md",
+      "exists": true
+    },
+    {
+      "entry": ".agents/skills/prism-source-image-selection/SKILL.md",
+      "target": "../prism_skill_support/scripts/recall.py",
+      "exists": true
+    }
+  ],
+  "independent_read_only_review": {
+    "reviewer": "/root/board_delivery/skill_offline_readtest",
+    "scenario": "用户只要H002三张已有DNA本地候选，paused_after_full_corpus_semantics；继承30原图/12ROI/2整板记录。",
+    "result": "符合当前授权：只准备local_preselection_only候选，不发模型或恢复执行，不为用满预算补跑。",
+    "findings": [
+      "累计档位须查现有项目登记，不能从已看30张倒推扩档授权。",
+      "已用完ROI与同板审阅额度不重置；旧原图可用于本地候选但不授予新视觉PASS。",
+      "没有完整请求/附件账本时不宣称还有余额，未知tokens不作0。",
+      "先从本地文件核对范围，不必为本地候选计划先询问恢复执行。",
+      "两个项目入口7处相对链接全部可解析。"
+    ],
+    "files_modified": false,
+    "network_or_supplier_calls": 0
+  },
+  "budget_stop_consistency_review": {
+    "scope": "只读文档一致性复核；未运行供应商或执行链",
+    "rule": "按新增指标消耗限制，保留其他余额内的真实候选收尾；整板到限未通过或无合法阶段余额才停止新探索。",
+    "examples": [
+      "原图60/ROI12到限，已有合法6图且审板有余额：允许在当前授权内收尾。",
+      "整板2次已用且pending：停止新原图探索，保留真实缺口。",
+      "项目paused：任何剩余额度都不解除暂停。"
+    ],
+    "frozen_or_run_scripts_changed": false,
+    "supplier_calls": 0
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "source": "backend/scripts/run_moodboard_sample.py",
+  "snapshot": "backend/tests/history/moodboards_pre_colleague_v2_20261006/run_moodboard_sample.py.txt",
+  "sha256": "e6b90c48d4afa87822a23de51896084993bafa52a74c75490b3603bd9fa7fe84",
+  "reason": "旧采样CLI只能经已停用manager生成；新版统一只读native结果"
+}

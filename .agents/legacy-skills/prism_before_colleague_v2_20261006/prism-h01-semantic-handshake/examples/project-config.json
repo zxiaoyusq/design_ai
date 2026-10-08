@@ -1,0 +1,8 @@
+{
+  "research_final": "data/result/user_research_clusters/users_selected_5_astra_20260930/final",
+  "trend_final": "data/result/trend_text_clusters/astra_consensus_20261001/final",
+  "trend_images_file": "data/trend_data/trend_info_0930/trends.jsonl",
+  "brief": "基于现有用研与趋势聚类，按共同审美机制筛选跨品类的高潜方向；名称、设计问题和共同机制不含品类限定，原对象、情境与迁移条件保留在证据中。",
+  "mode": "extension",
+  "min_trend_source_groups": 2
+}

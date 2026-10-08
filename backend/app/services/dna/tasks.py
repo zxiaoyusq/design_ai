@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from collections.abc import Callable
 from copy import deepcopy
 from datetime import UTC, datetime
 from threading import Lock
@@ -28,13 +29,20 @@ class ExtractionTaskNotFoundError(KeyError):
 class ExtractionTaskManager:
     """并行处理独立图片，所有批次共享最多四个单图执行槽位。"""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        runner: Callable | None = None,
+        *,
+        max_workers: int = MAX_CONCURRENT_IMAGE_EXTRACTIONS,
+        thread_name_prefix: str = "dna-extraction",
+    ) -> None:
         self._tasks: dict[str, dict] = {}
         self._lock = Lock()
+        self._runner = runner if runner is not None else run_design_dna_extraction
         # 共享线程池使并发量随待处理图片数自然变化，同时约束多个批次的进程级总并发。
         self._executor = ThreadPoolExecutor(
-            max_workers=MAX_CONCURRENT_IMAGE_EXTRACTIONS,
-            thread_name_prefix="dna-extraction",
+            max_workers=max_workers,
+            thread_name_prefix=thread_name_prefix,
         )
 
     def create(self, image_ids: list[str], model_id: str, prompt: str) -> dict:
@@ -228,7 +236,7 @@ class ExtractionTaskManager:
                     level,
                 )
 
-            output = run_design_dna_extraction(
+            output = self._runner(
                 image_path=image_path,
                 content_type=stored.content_type,
                 model_id=model_id,

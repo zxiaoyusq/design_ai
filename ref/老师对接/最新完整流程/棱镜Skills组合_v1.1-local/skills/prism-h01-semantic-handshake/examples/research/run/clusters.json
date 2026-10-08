@@ -1,0 +1,842 @@
+{
+  "schema_version": "prism.research_semantic_clustering.v1",
+  "input_binding": {
+    "dataset_id": "synthetic:two-semantic-skills-v1",
+    "files": {
+      "semantic-units.jsonl": "a04331f0b15b15e72a651841b97731e813c7930f5df7fd2184662f5be11ab5b0",
+      "people.json": "7ea14e40de2b64d09a0857d6d33053713e4c4ffa5f69aa2c9c8c21c2d565cd73",
+      "raw-evidence.jsonl": "da900af3e649cc91be38bde24dbba92d15a90b2d83936494b0dfcefa57ff8398",
+      "picture-contexts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "image-display-views.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "selection-groups.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "concept-example-links.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "data-contract.json": "a52aee745b7fc9b74f28af0469df466893525c1d6aabef60b6020fe2e55d2031"
+    }
+  },
+  "proposal_digest": "c4398f52e2f094cb2571769bbe6e7783c43a37f9e4cd76ca130321b63febf7b1",
+  "analyst": {
+    "actor_kind": "synthetic_fixture",
+    "actor_id": "package-example",
+    "model": "none",
+    "review_status": "not_performed"
+  },
+  "summary": {
+    "input_units": 9,
+    "people": 3,
+    "cluster_count": 4,
+    "clusters_by_kind": {
+      "shared_theme": 1,
+      "design_issue": 2,
+      "background_theme": 1
+    },
+    "membership_count": 9,
+    "units_with_cluster_membership": 8,
+    "coverage_dispositions": {
+      "clustered": 8,
+      "unclustered_boundary": 1
+    },
+    "all_units_have_explicit_outcome": true,
+    "original_negative_units": 2,
+    "negative_units_retained": 2,
+    "source_unchanged": true,
+    "external_model_API_calls": 0,
+    "cross_person_semantic_clustering_performed": true,
+    "image_reclustering_performed": false,
+    "independent_semantic_review_performed": false
+  },
+  "people": [
+    {
+      "person_id": "P1",
+      "display_name": "虚构甲"
+    },
+    {
+      "person_id": "P2",
+      "display_name": "虚构乙"
+    },
+    {
+      "person_id": "P3",
+      "display_name": "虚构丙"
+    }
+  ],
+  "clusters": [
+    {
+      "cluster_id": "RC1",
+      "title": "深灰、低光泽的背板",
+      "kind": "shared_theme",
+      "definition": "两位虚构人物对背板低光泽的直接表达。",
+      "common_meaning": "特定背板上的安静、低反光观感。",
+      "boundaries": [
+        "不扩展为所有对象都不能亮",
+        "虚构甲的重复表达只算一个人"
+      ],
+      "handshake_question": "如何以深灰低光泽组织背板，同时给小边框留出差异？",
+      "members": [
+        {
+          "unit_id": "U1",
+          "quote": "我喜欢这块背板的深灰色和哑光表面。",
+          "relation": "support",
+          "facet": "背板低光泽",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "仅所指背板",
+          "membership_id": "RC1-M001",
+          "cluster_id": "RC1",
+          "person_id": "P1",
+          "person_name": "虚构甲",
+          "source_channel": "direct_design_expression",
+          "source_attitude": "like",
+          "whole_source_unit": "我喜欢这块背板的深灰色和哑光表面。",
+          "source_kind": "explicit_cmf_caption",
+          "source_id": "S1",
+          "source_unit_digest": "a1a4ed4d6752d90497f1ac5881d3c3748a9b47e181b43776466f9553015266f5",
+          "source_page": 1,
+          "source_slide_id": "synthetic:P1/page/1",
+          "source_scope": "这块背板",
+          "source_entity": "这块背板",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U1:original",
+              "text": "我喜欢这块背板的深灰色和哑光表面。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": true
+        },
+        {
+          "unit_id": "U3",
+          "quote": "我喜欢这个深灰色哑光背板，看着比较安静。",
+          "relation": "support",
+          "facet": "背板低光泽",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "仅所指背板",
+          "membership_id": "RC1-M002",
+          "cluster_id": "RC1",
+          "person_id": "P2",
+          "person_name": "虚构乙",
+          "source_channel": "direct_design_expression",
+          "source_attitude": "like",
+          "whole_source_unit": "我喜欢这个深灰色哑光背板，看着比较安静。",
+          "source_kind": "explicit_cmf_caption",
+          "source_id": "S2",
+          "source_unit_digest": "525b6af157f79f08cc02c2837be3c4d595ea57af9dd3dedc321770e9d76fbbbe",
+          "source_page": 3,
+          "source_slide_id": "synthetic:P2/page/3",
+          "source_scope": "这个背板",
+          "source_entity": "这个背板",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U3:original",
+              "text": "我喜欢这个深灰色哑光背板，看着比较安静。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": true
+        },
+        {
+          "unit_id": "U9",
+          "quote": "同一款手机，我还是喜欢它不反光的背板。",
+          "relation": "support",
+          "facet": "背板低光泽",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "与U1同一人，不能新增人数",
+          "membership_id": "RC1-M003",
+          "cluster_id": "RC1",
+          "person_id": "P1",
+          "person_name": "虚构甲",
+          "source_channel": "direct_design_expression",
+          "source_attitude": "like",
+          "whole_source_unit": "同一款手机，我还是喜欢它不反光的背板。",
+          "source_kind": "phone_preference_reason",
+          "source_id": "S1",
+          "source_unit_digest": "b31f3f593a86342fefb1ac88acea687ff1dafe3ce6bbe02e8237b02d00d8263b",
+          "source_page": 9,
+          "source_slide_id": "synthetic:P1/page/9",
+          "source_scope": "同一款手机的背板",
+          "source_entity": "同一款手机的背板",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U9:original",
+              "text": "同一款手机，我还是喜欢它不反光的背板。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": true
+        },
+        {
+          "unit_id": "U2",
+          "quote": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "relation": "boundary",
+          "facet": "背板过亮",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "保留太亮的程度及小边框例外",
+          "membership_id": "RC1-M004",
+          "cluster_id": "RC1",
+          "person_id": "P1",
+          "person_name": "虚构甲",
+          "source_channel": "direct_design_expression",
+          "source_attitude": "dislike",
+          "whole_source_unit": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "source_kind": "explicit_cmf_caption",
+          "source_id": "S1",
+          "source_unit_digest": "9dcdb1daee84208cc2b4c3c2c76b20386272143dc02c951d4df354c3ce7dfce0",
+          "source_page": 2,
+          "source_slide_id": "synthetic:P1/page/2",
+          "source_scope": "这块背板及小边框",
+          "source_entity": "这块背板及小边框",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U2:original",
+              "text": "这块背板太亮了，我不喜欢，但小边框亮一点可以。"
+            }
+          ],
+          "contrast_or_limit_markers": [
+            "但"
+          ],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": false
+        }
+      ],
+      "facets": {
+        "背板低光泽": [
+          "RC1-M001",
+          "RC1-M002",
+          "RC1-M003"
+        ],
+        "背板过亮": [
+          "RC1-M004"
+        ]
+      },
+      "person_evidence_matrix": {
+        "P1": {
+          "direct_support": [
+            "RC1-M001",
+            "RC1-M003"
+          ],
+          "boundary": [
+            "RC1-M004"
+          ]
+        },
+        "P2": {
+          "direct_support": [
+            "RC1-M002"
+          ]
+        }
+      },
+      "statistics": {
+        "direct_design_support_people": [
+          "P1",
+          "P2"
+        ],
+        "direct_design_support_count": 2,
+        "support_people_by_source_kind": {
+          "explicit_cmf_caption": [
+            "P1",
+            "P2"
+          ],
+          "phone_preference_reason": [
+            "P1"
+          ]
+        },
+        "direct_support_is_only_word_selection": false,
+        "brand_impression_people": [],
+        "brand_impression_count": 0,
+        "boundary_people": [
+          "P1"
+        ],
+        "boundary_count": 1,
+        "alternative_people": [],
+        "context_people": [],
+        "illustration_people": [],
+        "mention_people": [],
+        "distinct_people_any_role": 2,
+        "membership_count": 4,
+        "distinct_source_units": 4,
+        "linked_image_occurrence_count": 0,
+        "cohort_people": 3,
+        "not_a_population_preference_rate": true
+      },
+      "images": [],
+      "summary_status": "analyst_semantic_synthesis_not_independently_reviewed",
+      "source_association_status": "inherits_first_pass_image_links_no_upgrade",
+      "elicitation_note": "Some records are prompted vocabulary choices or prompted selection reasons; counts do not establish unprompted preference or population prevalence.",
+      "country_generalization": false,
+      "trend_rank": null,
+      "DNA_parameter_mapping": null
+    },
+    {
+      "cluster_id": "RC2",
+      "title": "背板与小边框的光泽差异",
+      "kind": "design_issue",
+      "definition": "比较不同载体和程度下的光泽接受范围。",
+      "common_meaning": "边框可以有亮点，不能由此推导全背板镜面。",
+      "boundaries": [
+        "不同部位不直接当作态度冲突"
+      ],
+      "handshake_question": "小边框怎样有亮点又不让背板整体过亮？",
+      "members": [
+        {
+          "unit_id": "U2",
+          "quote": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "relation": "boundary",
+          "facet": "背板过亮",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "原句含边框例外",
+          "membership_id": "RC2-M001",
+          "cluster_id": "RC2",
+          "person_id": "P1",
+          "person_name": "虚构甲",
+          "source_channel": "direct_design_expression",
+          "source_attitude": "dislike",
+          "whole_source_unit": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "source_kind": "explicit_cmf_caption",
+          "source_id": "S1",
+          "source_unit_digest": "9dcdb1daee84208cc2b4c3c2c76b20386272143dc02c951d4df354c3ce7dfce0",
+          "source_page": 2,
+          "source_slide_id": "synthetic:P1/page/2",
+          "source_scope": "这块背板及小边框",
+          "source_entity": "这块背板及小边框",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U2:original",
+              "text": "这块背板太亮了，我不喜欢，但小边框亮一点可以。"
+            }
+          ],
+          "contrast_or_limit_markers": [
+            "但"
+          ],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": false
+        },
+        {
+          "unit_id": "U4",
+          "quote": "我更喜欢小边框有一点银色亮光。",
+          "relation": "support",
+          "facet": "小边框亮光",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "仅局部银色边框",
+          "membership_id": "RC2-M002",
+          "cluster_id": "RC2",
+          "person_id": "P3",
+          "person_name": "虚构丙",
+          "source_channel": "direct_design_expression",
+          "source_attitude": "like",
+          "whole_source_unit": "我更喜欢小边框有一点银色亮光。",
+          "source_kind": "explicit_cmf_caption",
+          "source_id": "S3",
+          "source_unit_digest": "651ca0d400f4f3dec07f6aa1203d2775bdf55233acb3183abbfe29ac7fbf1d46",
+          "source_page": 4,
+          "source_slide_id": "synthetic:P3/page/4",
+          "source_scope": "小边框",
+          "source_entity": "小边框",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U4:original",
+              "text": "我更喜欢小边框有一点银色亮光。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": true
+        }
+      ],
+      "facets": {
+        "背板过亮": [
+          "RC2-M001"
+        ],
+        "小边框亮光": [
+          "RC2-M002"
+        ]
+      },
+      "person_evidence_matrix": {
+        "P1": {
+          "boundary": [
+            "RC2-M001"
+          ]
+        },
+        "P3": {
+          "direct_support": [
+            "RC2-M002"
+          ]
+        }
+      },
+      "statistics": {
+        "direct_design_support_people": [
+          "P3"
+        ],
+        "direct_design_support_count": 1,
+        "support_people_by_source_kind": {
+          "explicit_cmf_caption": [
+            "P3"
+          ]
+        },
+        "direct_support_is_only_word_selection": false,
+        "brand_impression_people": [],
+        "brand_impression_count": 0,
+        "boundary_people": [
+          "P1"
+        ],
+        "boundary_count": 1,
+        "alternative_people": [],
+        "context_people": [],
+        "illustration_people": [],
+        "mention_people": [],
+        "distinct_people_any_role": 2,
+        "membership_count": 2,
+        "distinct_source_units": 2,
+        "linked_image_occurrence_count": 0,
+        "cohort_people": 3,
+        "not_a_population_preference_rate": true
+      },
+      "images": [],
+      "summary_status": "analyst_semantic_synthesis_not_independently_reviewed",
+      "source_association_status": "inherits_first_pass_image_links_no_upgrade",
+      "elicitation_note": "Some records are prompted vocabulary choices or prompted selection reasons; counts do not establish unprompted preference or population prevalence.",
+      "country_generalization": false,
+      "trend_rank": null,
+      "DNA_parameter_mapping": null
+    },
+    {
+      "cluster_id": "RC3",
+      "title": "可靠感的背景关联",
+      "kind": "background_theme",
+      "definition": "个人目标背景，不能作为外观支持票。",
+      "common_meaning": "对可靠身份的期望。",
+      "boundaries": [
+        "不把人格推导为哑光或金属"
+      ],
+      "handshake_question": "可靠感是否存在直接的设计表达证据？",
+      "members": [
+        {
+          "unit_id": "U6",
+          "quote": "我希望别人觉得我是一个可靠的人。",
+          "relation": "context",
+          "facet": "个人目标",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "不计外观偏好",
+          "membership_id": "RC3-M001",
+          "cluster_id": "RC3",
+          "person_id": "P3",
+          "person_name": "虚构丙",
+          "source_channel": "personal_goal",
+          "source_attitude": "aspiration",
+          "whole_source_unit": "我希望别人觉得我是一个可靠的人。",
+          "source_kind": "personal_identity_goal",
+          "source_id": "S3",
+          "source_unit_digest": "5f6643e8577fe18cc8509f2e4e8aaba008e5bd11f24ccfcb37c533f35559caf5",
+          "source_page": 6,
+          "source_slide_id": "synthetic:P3/page/6",
+          "source_scope": null,
+          "source_entity": null,
+          "evidence_quotes": [
+            {
+              "evidence_id": "U6:original",
+              "text": "我希望别人觉得我是一个可靠的人。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": false
+        }
+      ],
+      "facets": {
+        "个人目标": [
+          "RC3-M001"
+        ]
+      },
+      "person_evidence_matrix": {
+        "P3": {
+          "context": [
+            "RC3-M001"
+          ]
+        }
+      },
+      "statistics": {
+        "direct_design_support_people": [],
+        "direct_design_support_count": 0,
+        "support_people_by_source_kind": {},
+        "direct_support_is_only_word_selection": false,
+        "brand_impression_people": [],
+        "brand_impression_count": 0,
+        "boundary_people": [],
+        "boundary_count": 0,
+        "alternative_people": [],
+        "context_people": [
+          "P3"
+        ],
+        "illustration_people": [],
+        "mention_people": [],
+        "distinct_people_any_role": 1,
+        "membership_count": 1,
+        "distinct_source_units": 1,
+        "linked_image_occurrence_count": 0,
+        "cohort_people": 3,
+        "not_a_population_preference_rate": true
+      },
+      "images": [],
+      "summary_status": "analyst_semantic_synthesis_not_independently_reviewed",
+      "source_association_status": "inherits_first_pass_image_links_no_upgrade",
+      "elicitation_note": "Some records are prompted vocabulary choices or prompted selection reasons; counts do not establish unprompted preference or population prevalence.",
+      "country_generalization": false,
+      "trend_rank": null,
+      "DNA_parameter_mapping": null
+    },
+    {
+      "cluster_id": "RC4",
+      "title": "品牌印象与概念举例的证据限制",
+      "kind": "design_issue",
+      "definition": "保留关联材料供参考，不混作直接审美偏好。",
+      "common_meaning": "不同来源角色各有解释边界。",
+      "boundaries": [
+        "品牌可靠不证明喜欢具体材料",
+        "举奢华例子不等于想拥有金色产品"
+      ],
+      "handshake_question": "哪些关联还需要直接偏好证据？",
+      "members": [
+        {
+          "unit_id": "U5",
+          "quote": "这个虚构品牌给我可靠、耐用的印象。",
+          "relation": "support",
+          "facet": "品牌印象",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "单列品牌关联，不计直接支持",
+          "membership_id": "RC4-M001",
+          "cluster_id": "RC4",
+          "person_id": "P3",
+          "person_name": "虚构丙",
+          "source_channel": "brand_impression",
+          "source_attitude": "document_recorded_favorite_context",
+          "whole_source_unit": "这个虚构品牌给我可靠、耐用的印象。",
+          "source_kind": "brand_preference_or_impression",
+          "source_id": "S3",
+          "source_unit_digest": "2d5827016cf381a5041d2da3f3ae4861cca60be17b2e67eef17a60d6be6959fb",
+          "source_page": 5,
+          "source_slide_id": "synthetic:P3/page/5",
+          "source_scope": "品牌印象",
+          "source_entity": "品牌印象",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U5:original",
+              "text": "这个虚构品牌给我可靠、耐用的印象。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": false
+        },
+        {
+          "unit_id": "U7",
+          "quote": "如果要举一个奢华的例子，我会想到金色宫殿。",
+          "relation": "illustration",
+          "facet": "概念举例",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "不可反推喜欢金色产品",
+          "membership_id": "RC4-M002",
+          "cluster_id": "RC4",
+          "person_id": "P2",
+          "person_name": "虚构乙",
+          "source_channel": "concept_example",
+          "source_attitude": "neutral",
+          "whole_source_unit": "如果要举一个奢华的例子，我会想到金色宫殿。",
+          "source_kind": "elicited_concept_image_example",
+          "source_id": "S2",
+          "source_unit_digest": "c249bddec4a462145caa817f9a9f41de3bf36701d88a9419ebddbd1a3352f759",
+          "source_page": 7,
+          "source_slide_id": "synthetic:P2/page/7",
+          "source_scope": "被要求举例的概念",
+          "source_entity": "被要求举例的概念",
+          "evidence_quotes": [
+            {
+              "evidence_id": "U7:original",
+              "text": "如果要举一个奢华的例子，我会想到金色宫殿。"
+            }
+          ],
+          "contrast_or_limit_markers": [],
+          "image_links": [],
+          "source_page_image_ids": [],
+          "input_interpretation_status": "not_performed",
+          "direct_support_vote": false
+        }
+      ],
+      "facets": {
+        "品牌印象": [
+          "RC4-M001"
+        ],
+        "概念举例": [
+          "RC4-M002"
+        ]
+      },
+      "person_evidence_matrix": {
+        "P3": {
+          "brand_impression": [
+            "RC4-M001"
+          ]
+        },
+        "P2": {
+          "illustration": [
+            "RC4-M002"
+          ]
+        }
+      },
+      "statistics": {
+        "direct_design_support_people": [],
+        "direct_design_support_count": 0,
+        "support_people_by_source_kind": {},
+        "direct_support_is_only_word_selection": false,
+        "brand_impression_people": [
+          "P3"
+        ],
+        "brand_impression_count": 1,
+        "boundary_people": [],
+        "boundary_count": 0,
+        "alternative_people": [],
+        "context_people": [],
+        "illustration_people": [
+          "P2"
+        ],
+        "mention_people": [],
+        "distinct_people_any_role": 2,
+        "membership_count": 2,
+        "distinct_source_units": 2,
+        "linked_image_occurrence_count": 0,
+        "cohort_people": 3,
+        "not_a_population_preference_rate": true
+      },
+      "images": [],
+      "summary_status": "analyst_semantic_synthesis_not_independently_reviewed",
+      "source_association_status": "inherits_first_pass_image_links_no_upgrade",
+      "elicitation_note": "Some records are prompted vocabulary choices or prompted selection reasons; counts do not establish unprompted preference or population prevalence.",
+      "country_generalization": false,
+      "trend_rank": null,
+      "DNA_parameter_mapping": null
+    }
+  ],
+  "coverage": [
+    {
+      "unit_id": "U1",
+      "cluster_ids": [
+        "RC1"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P1",
+      "source_kind": "explicit_cmf_caption",
+      "source_attitude": "like",
+      "whole_source_unit": "我喜欢这块背板的深灰色和哑光表面。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U1:original",
+          "text": "我喜欢这块背板的深灰色和哑光表面。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 1,
+      "source_slide_id": "synthetic:P1/page/1",
+      "source_entity": "这块背板",
+      "source_unit_digest": "a1a4ed4d6752d90497f1ac5881d3c3748a9b47e181b43776466f9553015266f5"
+    },
+    {
+      "unit_id": "U2",
+      "cluster_ids": [
+        "RC1",
+        "RC2"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P1",
+      "source_kind": "explicit_cmf_caption",
+      "source_attitude": "dislike",
+      "whole_source_unit": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U2:original",
+          "text": "这块背板太亮了，我不喜欢，但小边框亮一点可以。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 2,
+      "source_slide_id": "synthetic:P1/page/2",
+      "source_entity": "这块背板及小边框",
+      "source_unit_digest": "9dcdb1daee84208cc2b4c3c2c76b20386272143dc02c951d4df354c3ce7dfce0"
+    },
+    {
+      "unit_id": "U3",
+      "cluster_ids": [
+        "RC1"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P2",
+      "source_kind": "explicit_cmf_caption",
+      "source_attitude": "like",
+      "whole_source_unit": "我喜欢这个深灰色哑光背板，看着比较安静。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U3:original",
+          "text": "我喜欢这个深灰色哑光背板，看着比较安静。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 3,
+      "source_slide_id": "synthetic:P2/page/3",
+      "source_entity": "这个背板",
+      "source_unit_digest": "525b6af157f79f08cc02c2837be3c4d595ea57af9dd3dedc321770e9d76fbbbe"
+    },
+    {
+      "unit_id": "U4",
+      "cluster_ids": [
+        "RC2"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P3",
+      "source_kind": "explicit_cmf_caption",
+      "source_attitude": "like",
+      "whole_source_unit": "我更喜欢小边框有一点银色亮光。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U4:original",
+          "text": "我更喜欢小边框有一点银色亮光。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 4,
+      "source_slide_id": "synthetic:P3/page/4",
+      "source_entity": "小边框",
+      "source_unit_digest": "651ca0d400f4f3dec07f6aa1203d2775bdf55233acb3183abbfe29ac7fbf1d46"
+    },
+    {
+      "unit_id": "U5",
+      "cluster_ids": [
+        "RC4"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P3",
+      "source_kind": "brand_preference_or_impression",
+      "source_attitude": "document_recorded_favorite_context",
+      "whole_source_unit": "这个虚构品牌给我可靠、耐用的印象。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U5:original",
+          "text": "这个虚构品牌给我可靠、耐用的印象。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 5,
+      "source_slide_id": "synthetic:P3/page/5",
+      "source_entity": "品牌印象",
+      "source_unit_digest": "2d5827016cf381a5041d2da3f3ae4861cca60be17b2e67eef17a60d6be6959fb"
+    },
+    {
+      "unit_id": "U6",
+      "cluster_ids": [
+        "RC3"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P3",
+      "source_kind": "personal_identity_goal",
+      "source_attitude": "aspiration",
+      "whole_source_unit": "我希望别人觉得我是一个可靠的人。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U6:original",
+          "text": "我希望别人觉得我是一个可靠的人。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 6,
+      "source_slide_id": "synthetic:P3/page/6",
+      "source_entity": null,
+      "source_unit_digest": "5f6643e8577fe18cc8509f2e4e8aaba008e5bd11f24ccfcb37c533f35559caf5"
+    },
+    {
+      "unit_id": "U7",
+      "cluster_ids": [
+        "RC4"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P2",
+      "source_kind": "elicited_concept_image_example",
+      "source_attitude": "neutral",
+      "whole_source_unit": "如果要举一个奢华的例子，我会想到金色宫殿。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U7:original",
+          "text": "如果要举一个奢华的例子，我会想到金色宫殿。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 7,
+      "source_slide_id": "synthetic:P2/page/7",
+      "source_entity": "被要求举例的概念",
+      "source_unit_digest": "c249bddec4a462145caa817f9a9f41de3bf36701d88a9419ebddbd1a3352f759"
+    },
+    {
+      "unit_id": "U8",
+      "cluster_ids": [],
+      "disposition": "unclustered_boundary",
+      "reason": "原颜色和对象未记录；保留原始否定，不补造色相。",
+      "person_id": "P1",
+      "source_kind": "explicit_cmf_caption",
+      "source_attitude": "dislike",
+      "whole_source_unit": "我不喜欢这个颜色。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U8:original",
+          "text": "我不喜欢这个颜色。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 8,
+      "source_slide_id": "synthetic:P1/page/8",
+      "source_entity": null,
+      "source_unit_digest": "49f7bd5c63146223b715a65aa697b787081169b6a35b2311d04f067d7a21faad"
+    },
+    {
+      "unit_id": "U9",
+      "cluster_ids": [
+        "RC1"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。",
+      "person_id": "P1",
+      "source_kind": "phone_preference_reason",
+      "source_attitude": "like",
+      "whole_source_unit": "同一款手机，我还是喜欢它不反光的背板。",
+      "evidence_quotes": [
+        {
+          "evidence_id": "U9:original",
+          "text": "同一款手机，我还是喜欢它不反光的背板。"
+        }
+      ],
+      "image_links": [],
+      "source_page": 9,
+      "source_slide_id": "synthetic:P1/page/9",
+      "source_entity": "同一款手机的背板",
+      "source_unit_digest": "b31f3f593a86342fefb1ac88acea687ff1dafe3ce6bbe02e8237b02d00d8263b"
+    }
+  ],
+  "case_notes": [
+    "All people, quotes and conclusions are fictional protocol examples."
+  ]
+}

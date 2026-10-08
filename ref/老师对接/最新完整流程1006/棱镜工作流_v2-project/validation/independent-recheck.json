@@ -1,0 +1,63 @@
+{
+  "status": "passed_for_F1_and_N1",
+  "scope": [
+    "F1",
+    "N1"
+  ],
+  "initial_report": "forward-review.json",
+  "F1": {
+    "status": "resolved_in_recheck",
+    "executed": "workflow.py init with the unchanged original new-project/project.json; new output new-project/run-f1-recheck",
+    "evidence": "logs/workflow-init-f1-recheck.log",
+    "inputs": [
+      {
+        "key": "research_input",
+        "expected": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\inputs\\research-input.synthetic.json",
+        "actual": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\inputs\\research-input.synthetic.json",
+        "absolute": true,
+        "exists": true,
+        "correct_original_base": true,
+        "input_hash_matches": true
+      },
+      {
+        "key": "trend_articles",
+        "expected": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\inputs\\articles.synthetic.json",
+        "actual": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\inputs\\articles.synthetic.json",
+        "absolute": true,
+        "exists": true,
+        "correct_original_base": true,
+        "input_hash_matches": true
+      }
+    ],
+    "source_and_binding": {
+      "source_json_content_preserved": true,
+      "original_config_ref_hash_matches": true,
+      "original_base_directory_matches": true,
+      "state_source_copy_hash_matches": true,
+      "state_frozen_hash_matches": true
+    }
+  },
+  "N1": {
+    "status": "sufficient_to_author_proposal_and_review",
+    "skill_link_resolves": true,
+    "assessed_fields": [
+      "themes: theme_id/title/definition/boundary/design_question",
+      "assignments: article_id/theme_id/anchor/reason, including null disposition",
+      "review: proposal_sha256/reviewer/reviews",
+      "reviews: article_id/theme_id/status/anchor/reason; supported/uncertain/unsupported",
+      "exact anchor, one row per assigned article, original proposal byte hash, compile CLI, H01 and coverage outputs"
+    ],
+    "note": "文档已足够继续编写提案，不需读实现猜字段。没有生成或伪造实际独立审阅。",
+    "doc": "../package/skills/prism_skill_support/references/trend-proposal-format.md",
+    "doc_sha256": "015b8e9ba38b831622ee9c63831519e2eb775a070d3d921d89fa46f65c0e28be"
+  },
+  "not_retested": [
+    "F2 or all 43 native tests",
+    "new semantic correctness",
+    "new model execution",
+    "browser interactions"
+  ],
+  "new_model_calls": 0,
+  "network_calls": 0,
+  "package_files_modified_by_reviewer": false
+}

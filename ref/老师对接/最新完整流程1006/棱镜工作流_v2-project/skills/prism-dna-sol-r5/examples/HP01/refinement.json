@@ -1,0 +1,142 @@
+{
+  "answer": {
+    "groups": {
+      "3": {
+        "areas": [
+          {
+            "name": "左右耳罩浅米色外壳",
+            "base": {
+              "COL-006": "浅米白色",
+              "OPT-001": "塑料外观",
+              "OPT-002": "半光",
+              "OPT-007": "不透明"
+            },
+            "texture": {
+              "state": "none"
+            },
+            "more": [
+              {
+                "p": "OPT-003",
+                "v": "宽散"
+              },
+              {
+                "p": "OPT-004",
+                "v": "随表面变化"
+              }
+            ]
+          },
+          {
+            "name": "耳罩外侧浅米色支架",
+            "base": {
+              "COL-006": "浅米白色",
+              "OPT-001": "塑料外观",
+              "OPT-002": "半光",
+              "OPT-007": "不透明"
+            },
+            "texture": {
+              "state": "none"
+            },
+            "more": []
+          }
+        ],
+        "evidence": "耳罩硬壳与跨过左耳罩的支架有可见接缝，但未见可靠的颜色、纹理或光学差异；保留同类外观判断，不因部件边界另造CMF差异。"
+      },
+      "6": {
+        "areas": [
+          {
+            "name": "耳罩内侧黑色凹入区域",
+            "base": {
+              "COL-006": "黑色",
+              "OPT-001": null,
+              "OPT-002": "哑光",
+              "OPT-007": "不透明"
+            },
+            "texture": {
+              "state": "none"
+            },
+            "more": []
+          }
+        ],
+        "evidence": "可见黑色凹入区域；明暗变化可由遮蔽解释，未见足以确认另一种表面外观的子区。"
+      },
+      "8": {
+        "areas": [
+          {
+            "name": "耳罩浅色表面上的深色小孔",
+            "base": {
+              "COL-006": "深灰黑色",
+              "OPT-001": null,
+              "OPT-002": null,
+              "OPT-007": null
+            },
+            "texture": {
+              "state": "none"
+            },
+            "more": []
+          },
+          {
+            "name": "耳罩浅色表面上的深色标记",
+            "base": {
+              "COL-006": "深灰黑色",
+              "OPT-001": null,
+              "OPT-002": null,
+              "OPT-007": null
+            },
+            "texture": {
+              "state": "visible",
+              "dna": {
+                "TEX-001": "颜色图案",
+                "TEX-002": null,
+                "TEX-005": null,
+                "TEX-007": null,
+                "TEX-010": null,
+                "TEX-011": null,
+                "TEX-014": null,
+                "TEX-018": "局部"
+              }
+            },
+            "more": []
+          }
+        ],
+        "evidence": "浅色耳罩上可见数个深色小孔及独立的深色细标记；孔洞不是印刷图案，故分开记录，不推断其材质或重复纹理。"
+      }
+    }
+  },
+  "receipt": {
+    "state": "response_received",
+    "finished_at": "2026-09-29T08:56:42.958591+00:00",
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 18.0278,
+    "usage": {
+      "input_tokens": 21241,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 542,
+      "reasoning_output_tokens": 0
+    },
+    "event_counts": {
+      "thread.started": 1,
+      "turn.started": 1,
+      "item.completed": 2,
+      "turn.completed": 1
+    },
+    "tool_events": [],
+    "notices": [
+      {
+        "id": "item_0",
+        "type": "error",
+        "message": "Exceeded skills context budget. All skill descriptions were removed and 24 additional skills were not included in the model-visible skills list."
+      }
+    ],
+    "schema_valid": true,
+    "validation_errors": []
+  },
+  "selected_indices": [
+    "3",
+    "6",
+    "8"
+  ],
+  "seconds": 19.0853,
+  "cost": 0.047902
+}

@@ -1,0 +1,69 @@
+{
+  "status": "passed_after_targeted_portability_repairs",
+  "date": "2026-10-06",
+  "skill_count": 17,
+  "official_skill_structure_checks": 17,
+  "python_syntax_checked_files": 76,
+  "offline": {
+    "research_boundaries": "passed",
+    "H01_boundaries": "passed",
+    "R5_saved_response_replay": "passed",
+    "portable_helpers_after_archive_fix": {
+      "tests": 20,
+      "passed": true
+    },
+    "new_material_review_config_contracts": {
+      "tests": 15,
+      "passed": true
+    },
+    "optional_future_consumer": {
+      "tests": 1,
+      "passed": true
+    },
+    "native_ID_CMF_alias_deep_path": {
+      "tests": 43,
+      "passed": true
+    }
+  },
+  "portability": {
+    "unicode_spaces_relocation_verified": true,
+    "new_run_relative_paths_reverified_independently": true,
+    "source_machine_runtime_paths_not_required": true,
+    "same_full_SHA_after_short_archive_filenames": true
+  },
+  "browser": {
+    "desktop": {
+      "title": "棱镜完整工作流 · 17个小Skill组合",
+      "skills": 17,
+      "imagesLoaded": true,
+      "horizontalOverflow": false,
+      "externalImages": 0
+    },
+    "mobile": {
+      "horizontalOverflow": false,
+      "skills": 17
+    },
+    "actualCase": {
+      "tiles": 10,
+      "imagesLoaded": true,
+      "externalImages": 0,
+      "zoomOpen": true
+    },
+    "pageErrors": [],
+    "networkDisabledDuringQA": true
+  },
+  "independent_first_use": {
+    "issues": [
+      "F1 relative frozen paths",
+      "F2 Windows path length",
+      "N1 trend schema guidance"
+    ],
+    "all_scoped_issues_addressed": true,
+    "independent_recheck": "independent-recheck.json"
+  },
+  "new_model_or_paid_API_batches": 0,
+  "new_visual_accuracy_claimed": false,
+  "user_live_skills_installed": false,
+  "historical_permissions_inherited": false,
+  "details": "Tests prove contracts, replay and portability. Actual semantic and image judgment still required on new data."
+}

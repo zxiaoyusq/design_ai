@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜 · 第一次语义握手"
+  short_description: "对齐趋势语义与用研语义，形成有双侧证据和完整负向审计的候选方向"
+  default_prompt: "请使用 $prism-h01-semantic-handshake 处理我提供的资料，保留原始证据并给出可复查的结果。"

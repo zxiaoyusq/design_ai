@@ -1,0 +1,537 @@
+{
+  "type": "object",
+  "properties": {
+    "o": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  1
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "pattern": "^[0123459x][01234569x]$",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 3
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  2,
+                  3,
+                  4,
+                  7,
+                  8,
+                  10,
+                  14
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "pattern": "^[0123459x][01234569x][012349x][01239x][0123456789x][01234569x]$",
+                "minLength": 6,
+                "maxLength": 6
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 7
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  5
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "pattern": "^[0123459x][01234569x][012349x][01239x]$",
+                "minLength": 4,
+                "maxLength": 4
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 5
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  6,
+                  9
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "pattern": "^[0123459x][01234569x][012349x][01239x][0123456789x]$",
+                "minLength": 5,
+                "maxLength": 5
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 6
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  11,
+                  12,
+                  13
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "pattern": "^[0123459x][0123456789x]$",
+                "minLength": 2,
+                "maxLength": 2
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 3
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  15
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "pattern": "^[0123459x]$",
+                "minLength": 1,
+                "maxLength": 1
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 1,
+                "maxItems": 2
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "t": {
+                "type": "integer",
+                "enum": [
+                  16,
+                  17,
+                  18
+                ]
+              },
+              "g": {
+                "$ref": "#/$defs/typed_geometry"
+              },
+              "c": {
+                "type": "string",
+                "enum": [
+                  ""
+                ]
+              },
+              "v": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "integer",
+                      "enum": [
+                        -1,
+                        -2
+                      ]
+                    }
+                  ]
+                },
+                "minItems": 0,
+                "maxItems": 0
+              },
+              "d": {
+                "$ref": "#/$defs/details"
+              }
+            },
+            "required": [
+              "t",
+              "g",
+              "c",
+              "v",
+              "d"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "f": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/v"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "q": {
+      "type": "object",
+      "properties": {
+        "GEO": {
+          "type": "string",
+          "pattern": "^[un]{20}$",
+          "minLength": 20,
+          "maxLength": 20
+        },
+        "STR": {
+          "type": "string",
+          "pattern": "^[un]{19}$",
+          "minLength": 19,
+          "maxLength": 19
+        },
+        "COL": {
+          "type": "string",
+          "pattern": "^[un]{14}$",
+          "minLength": 14,
+          "maxLength": 14
+        },
+        "TEX": {
+          "type": "string",
+          "pattern": "^[un]{18}$",
+          "minLength": 18,
+          "maxLength": 18
+        },
+        "OPT": {
+          "type": "string",
+          "pattern": "^[un]{14}$",
+          "minLength": 14,
+          "maxLength": 14
+        },
+        "EMI": {
+          "type": "string",
+          "pattern": "^[un]{14}$",
+          "minLength": 14,
+          "maxLength": 14
+        },
+        "TXT": {
+          "type": "string",
+          "pattern": "^[un]{14}$",
+          "minLength": 14,
+          "maxLength": 14
+        },
+        "REL": {
+          "type": "string",
+          "pattern": "^[un]{20}$",
+          "minLength": 20,
+          "maxLength": 20
+        },
+        "CTX": {
+          "type": "string",
+          "pattern": "^[un]{15}$",
+          "minLength": 15,
+          "maxLength": 15
+        }
+      },
+      "required": [
+        "GEO",
+        "STR",
+        "COL",
+        "TEX",
+        "OPT",
+        "EMI",
+        "TXT",
+        "REL",
+        "CTX"
+      ],
+      "additionalProperties": false
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 160
+      },
+      "maxItems": 8
+    }
+  },
+  "required": [
+    "o",
+    "f",
+    "q",
+    "issues"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "v": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "head": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": -1,
+        "maximum": 1000
+      },
+      "minItems": 9,
+      "maxItems": 9
+    },
+    "core_packet": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "integer"
+          }
+        ]
+      },
+      "maxItems": 8
+    },
+    "details": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/v"
+      }
+    },
+    "typed_geometry": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": -1,
+        "maximum": 1000
+      },
+      "minItems": 8,
+      "maxItems": 8
+    }
+  }
+}

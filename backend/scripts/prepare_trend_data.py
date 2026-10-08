@@ -99,7 +99,10 @@ def read_trends(
             sheet_name = workbook.sheetnames[0]
         if sheet_name not in workbook.sheetnames:
             raise ValueError(f"找不到工作表：{sheet_name}")
-        rows = iter(workbook[sheet_name].iter_rows(values_only=True))
+        sheet = workbook[sheet_name]
+        # 部分导出工作簿把工作表范围错误写为 A1；重置维度才能读取其真实行列。
+        sheet.reset_dimensions()
+        rows = iter(sheet.iter_rows(values_only=True))
         headers = [str(value).strip() if value is not None else "" for value in next(rows, ())]
         names = [name for name in headers if name]
         if len(names) != len(set(names)):

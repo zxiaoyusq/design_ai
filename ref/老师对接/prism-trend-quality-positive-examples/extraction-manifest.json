@@ -1,0 +1,2966 @@
+{
+  "source_archive": "ref/老师对接/棱镜_完整交接包_20260928.zip",
+  "purpose": "历史设计师正例查看；原报告原样提取，未重新判标",
+  "files": [
+    {
+      "path": "designer-boards-round2/board-sources.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/board-sources.json",
+      "sha256": "a67228de0b449c5eaf39735d2a71e652bab27c087cec37437a13a1f241673e1f"
+    },
+    {
+      "path": "designer-boards-round2/designer-labels.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/designer-labels.json",
+      "sha256": "47b5b750ac2024270fdb4cb1c1d18ff883592ae2bd0f753b82398d3dd0c8f06e"
+    },
+    {
+      "path": "designer-boards-round2/manifest.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/manifest.json",
+      "sha256": "e1d87a158515166ab09a43f10d7c5233949c58b8a3246fec53170edb19fa9508"
+    },
+    {
+      "path": "designer-boards-round2/boards/B01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B01.jpg",
+      "sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65"
+    },
+    {
+      "path": "designer-boards-round2/boards/B02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B02.jpg",
+      "sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c"
+    },
+    {
+      "path": "designer-boards-round2/boards/B03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B03.jpg",
+      "sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac"
+    },
+    {
+      "path": "designer-boards-round2/boards/B04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B04.jpg",
+      "sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3"
+    },
+    {
+      "path": "designer-boards-round2/boards/B05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B05.jpg",
+      "sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30"
+    },
+    {
+      "path": "designer-boards-round2/boards/B06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B06.jpg",
+      "sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a"
+    },
+    {
+      "path": "designer-boards-round2/boards/B07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B07.jpg",
+      "sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c"
+    },
+    {
+      "path": "designer-boards-round2/boards/B08.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B08.jpg",
+      "sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5"
+    },
+    {
+      "path": "designer-boards-round2/boards/B09.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B09.jpg",
+      "sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51"
+    },
+    {
+      "path": "designer-boards-round2/boards/B10.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B10.jpg",
+      "sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0"
+    },
+    {
+      "path": "designer-boards-round2/boards/B11.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B11.jpg",
+      "sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9"
+    },
+    {
+      "path": "designer-boards-round2/boards/B12.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B12.jpg",
+      "sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa"
+    },
+    {
+      "path": "designer-boards-round2/boards/B13.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B13.jpg",
+      "sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525"
+    },
+    {
+      "path": "designer-boards-round2/boards/B14.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B14.jpg",
+      "sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773"
+    },
+    {
+      "path": "designer-boards-round2/boards/B15.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B15.jpg",
+      "sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0"
+    },
+    {
+      "path": "designer-boards-round2/boards/B16.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/boards/B16.jpg",
+      "sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01-T01.jpg",
+      "sha256": "a183bb121866c5ec46e8da90ded621229819d8b7f872f5776c5bbe7e572925af"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01-T02.jpg",
+      "sha256": "0f8944e325247e782c07eb069559a689e1b835e70c1e66466bec5e1d034a387e"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01-T03.jpg",
+      "sha256": "80d0b4e1eb0fe90ff3949bffa840b517cb9e3a7e18b531fdcf662d85c5cd325b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01-T04.jpg",
+      "sha256": "f6cd90e7c4d324b8b42ef55ba3c917be59969138e51084760a6b3b3c1118ecdf"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01-T05.jpg",
+      "sha256": "25db1fd7cea00b231dbbddccc193234a6a8887e18a3f8781294fcb4791cc4d1d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01-T06.jpg",
+      "sha256": "dc5d5d6d889320eb156c65a30f3b5489563018bfdb4d3af1892d013e6fd3caa5"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B01.jpg",
+      "sha256": "d088cb75254db0f712865fc821545f79ed2d93b2a6eefbd884adf192e7c344f8"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T01.jpg",
+      "sha256": "5a7097de777d2203cc7e0af36c2422a6dd074f23a31e65bfab095789066c7d6b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T02.jpg",
+      "sha256": "438b6a7b1d715a4094f1518099f8b8afdd5c0be9356ac31ec7a9736fa90d394c"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T03.jpg",
+      "sha256": "536f4a864117221103edc9031457d4713c0f77f453864077b7fdded2f9dbfede"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T04.jpg",
+      "sha256": "77c29b29f29f670c13f6a3cfc9f2c3b994d3cf63edf9201ac7ebc7d45b821351"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T05.jpg",
+      "sha256": "cbd5b75d31669f5484c0a75e672de7d95adf80af386a224c8dc4efb3ac85e8b3"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T06.jpg",
+      "sha256": "08a83616b964954d3870a0a659c7bfefdb7f4eb986382f127902a2eb541d725a"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02-T07.jpg",
+      "sha256": "573733d6333864152d813b50da6e551ac308e207ce6661dbad284a92af05c043"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B02.jpg",
+      "sha256": "216f1cc9fd043b2f108394a34c4e5fab1cce15c57b5093941bff25761dd178b5"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03-T01.jpg",
+      "sha256": "621d96442d574e0a2a89331f5a76ac6422215d977adf5ea0425ca888b232d2bb"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03-T02.jpg",
+      "sha256": "cf274b3ac50580286c47956fb50798decbad8f1de80767068fcd07ed87b25523"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03-T03.jpg",
+      "sha256": "c33e5bdfcf8bb49b2d77bd924d3e935ae0d4e33b53bb7d6251f32ea1e1434c6c"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03-T04.jpg",
+      "sha256": "db4336bcf77801c88174167f04438f82e852a0c36196b3746a6fef3238d8daa3"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03-T05.jpg",
+      "sha256": "51cdeda2ca11450b75e19feeaf11ab967049546fc423aaf3037f09b71c88a483"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03-T06.jpg",
+      "sha256": "c0a28136c899a97886abd8867e0edab3ba3bbed83779eb85c3e10180982a48b1"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B03.jpg",
+      "sha256": "89417a6c08fed431b285e33b5748836aa368c1eef99fa6d8ea13f09145561f96"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T01.jpg",
+      "sha256": "e890906e2181ac80ea4d68683aeef8f0a316d2b4b7bd8f86cf7d0e4ec127159d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T02.jpg",
+      "sha256": "a8ce7dc4b20bfef20cf52089052add80181b8ba6c1f79e1554eb04bc70d9d182"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T03.jpg",
+      "sha256": "fb6995ac61988714eb6b3d42fe6f4ecaeab5534f8d6a8425a7e71b0b77a59d60"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T04.jpg",
+      "sha256": "10bab8e0b204b6d4b88f9f90a01eb836727918d15b3b3ed94c9fee4189e862ac"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T05.jpg",
+      "sha256": "4aa62cd5ed61eeeaa7ca71ce1c9f3a24b906be5c7ebfb49237b706a61093bd1b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T06.jpg",
+      "sha256": "05e8965876ba63d66c479b180e859a084a304434cba7f3e0a05bd977e6b92628"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04-T07.jpg",
+      "sha256": "7953c82bad46186a6837d1924a1c2eea731e2219205324ad697324f26eb13e89"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B04.jpg",
+      "sha256": "09ef0a7c95230e094dfc323fb7b80b0a456bb6bbc74c60e4806ffa8df8c670b7"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05-T01.jpg",
+      "sha256": "1eb4373e6bd61074d4c7cf3873f630c018e7aa08b9522ec32b3e45132f2696ac"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05-T02.jpg",
+      "sha256": "1b70f1feb03808cf6e1b2f8f30cf25bb469988500fcd87b1ba8747311e2491bb"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05-T03.jpg",
+      "sha256": "d790fedb4c6814dd37c75970b3485bd6975080419da39b98e964b28f65a33be6"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05-T04.jpg",
+      "sha256": "13cf62a7947d662443503577547b9e303d92cf59b7345d062d2fab897ec0ee20"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05-T05.jpg",
+      "sha256": "a42d494279b74046a24788ec2dc5f0146c169bd3be6182ed65a37a438b1b784d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05-T06.jpg",
+      "sha256": "ee7c0788ea6c420bed13a111848cee0184b3ce455e02e27c560e73328ac46553"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B05.jpg",
+      "sha256": "c2629b4c13330e203a2da107eb0179365d62013019d892a00cdaaa348b424df3"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06-T01.jpg",
+      "sha256": "7d4938ce6d660ac97c4329bb7112ae366d39e6370c4e0117458c9f703610fa9c"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06-T02.jpg",
+      "sha256": "cbdf7a0787bc24af49cc2578d9e80b993dca12b0d0ec767919b74c173c274923"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06-T03.jpg",
+      "sha256": "0c8bb712041a8616a6b0662e47984694ca2a2e8e342a108c6f5a95c56e76a1bb"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06-T04.jpg",
+      "sha256": "2ddb7a7fbf5f5e45aee6f3aee6cb28511b1c7d4e4bcf39ad091cb5a7bf48edcc"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06-T05.jpg",
+      "sha256": "7a7b8a4843eb323c8ccf0b763809ba3db9c57b6705b3f7dc83fa26f3fafb7304"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06-T06.jpg",
+      "sha256": "1101a815e063c3984a253c84f664ba06bd7b8e572c258a5b2b148127feffeb7a"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B06.jpg",
+      "sha256": "75ceb50afd93652267e59b064ede87564c11afa8fb8e491a7ceb15af7590c6a4"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07-T01.jpg",
+      "sha256": "63a5995f36ed4df3f22e852a69699cc80675df8f10fb879c8eb7b3df5d60a22a"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07-T02.jpg",
+      "sha256": "e1df005966883a36f7173c0fad0b3cd17ec473a129abe8898ef0257c5088e78a"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07-T03.jpg",
+      "sha256": "3c5bb2885ea865610dd2c61def6da939d58fee048aa9be887b70ff833750cfc7"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07-T04.jpg",
+      "sha256": "fa32573750af26ccb05fbd5d5ce28be28ce527169ed58c19e0cb2dac8aae46c8"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07-T05.jpg",
+      "sha256": "8ec8e963de5393149651cf042c695ee0e54f87803cdb7ac45e0b2d47c016533b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07-T06.jpg",
+      "sha256": "8710380d17cd2dc85d98b4af9a0d31ecdf43d68ba09a86caae9693a738a142ba"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B07.jpg",
+      "sha256": "cec9389f8a8bac930ccf0f1d0a0cfa6f0a4ffd2adcb29cbf09c969fce41a896d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08-T01.jpg",
+      "sha256": "22ff2a61672f21e09ab62e69276101ee42a55151924a19469555cec761f100f0"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08-T02.jpg",
+      "sha256": "46f513b14f0bc6e3db808fa2640ece7106a3a1a1328283b52777cc39fa929c82"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08-T03.jpg",
+      "sha256": "ddc70ec53125a18e6851b0a04d37d8b9e6f61d435579100e51255c48c17b66cb"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08-T04.jpg",
+      "sha256": "473ae89dce2def96ce2622f0cbe7cd03da73408d64f6a169c3d813da3427c242"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08-T05.jpg",
+      "sha256": "3e5199d5dba21708fd12f8d2744a5781d083e3a779161a35509258595bd8facc"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08-T06.jpg",
+      "sha256": "9eb8ced0ba56bfbe992705539ae1cd091bc7073216f95b0648f4fffefd8b78ec"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B08.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B08.jpg",
+      "sha256": "1e8c0750d484f011f06726d10d6c37b419ac10f6f73a9653a599065023fb2bf6"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T01.jpg",
+      "sha256": "93e3ad7c364f6ced14c3a750b43105775acb838258071fcb4d4f55e8a44c572b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T02.jpg",
+      "sha256": "75de181866080e9570afcecc37485f12e384be3ea7c1dbe66c12eb87c540613e"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T03.jpg",
+      "sha256": "d30ccfc21f90180f8423496c5678e63a9cd4b337fe1f7e3af907fcca48310279"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T04.jpg",
+      "sha256": "ed7b4535db94862b46ed9b960f88e25d0f0dd634d3b4d5b753923948d357543e"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T05.jpg",
+      "sha256": "1351d76a064d3c6324bdc3f721faa7c1b1324a14081c36d12af2e39d2ca81a86"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T06.jpg",
+      "sha256": "9831410af3098d783598915ec506065e63a7f84706ccdbc8f72e1f8d4459d817"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09-T07.jpg",
+      "sha256": "ce8feb7b5b0464e20c52fdb0d08e657d3261aea1a865f1b0e0668b117f03e1d8"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B09.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B09.jpg",
+      "sha256": "326f461768fb3365af042ced8fdfce048375f8a61d1e460c72425f599008f3ce"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10-T01.jpg",
+      "sha256": "b8a091f028247b78886c472fe3e7c55b0c3a3a8053966097c50fd651aebb064b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10-T02.jpg",
+      "sha256": "3650156209cc125eb15042e59042280959bc9ff0fc6ed17d6a6c95edb0404c91"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10-T03.jpg",
+      "sha256": "9e4687df06e010d25416a34cbba120f7878f8d55c138a2b2a6106591d6cdb607"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10-T04.jpg",
+      "sha256": "9f87ab144208d46481b00637424282f3c60e40fbc430e41ea822cfbea2453213"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10-T05.jpg",
+      "sha256": "464f292699045bbd854f0ab4bd7a2e46eeff75d78e987d7899915c9945f66e3c"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10-T06.jpg",
+      "sha256": "5b3df3276711a513740157d66d33366e17824c04b36c502c7b2c05f69aaf0d7a"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B10.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B10.jpg",
+      "sha256": "a128fafe296d70616c9a4a22488dbb6b3576346c2196898634c71ac200ab1b06"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11-T01.jpg",
+      "sha256": "7cf5975c3536dcb1ede30711b507c5d161bad5d680b26ddd11cddd8d1207f18d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11-T02.jpg",
+      "sha256": "8bf6e56fd04e5f5f3a8bb5e36059056fba819c602da62a41cd66c649aee89da6"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11-T03.jpg",
+      "sha256": "ba02d0e0b64fc9186b7a4a34d8194ab2957a92555ea907b39d06e87e38063a35"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11-T04.jpg",
+      "sha256": "0a432ba41d83c22c368075a4f0806e592ed44c7840a314ab7b8273efe2b09370"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11-T05.jpg",
+      "sha256": "b89442f1df82a36dd8d0ce621a5dee6a62921515c94e677d3af6f34982f2cad7"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11-T06.jpg",
+      "sha256": "bae97bb29f6edd15ac8b46aeb32f2520bcc9ffe0b0d2355b2c26012e48b1671e"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B11.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B11.jpg",
+      "sha256": "769549502bff3af2bbabac73dc46f98ce5ec6a00bfcc83a6e2ecaf85abd54b3f"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12-T01.jpg",
+      "sha256": "242a8883bde47033cfeabd24f5c1c00d70b6ee1d8b23abbb78c31b7bba89a362"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12-T02.jpg",
+      "sha256": "b5cb5204bd9eb78e751ab618d3733435f04c1fce7b85f618d1ecda2c1bdf03e7"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12-T03.jpg",
+      "sha256": "3b2c6003b5eb564be1056751a6284ee491d04360659652eca38ec982feb3b0b1"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12-T04.jpg",
+      "sha256": "58154dd06c8f5cfa454ceaa36b21d9e0d73d35d7043439dd6900cd2cefb45ff7"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12-T05.jpg",
+      "sha256": "fb9f902326ecf8d21db6121efd5a5338fe502aaa5e3d6fcc0dd4decc62a666b8"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12-T06.jpg",
+      "sha256": "baafe6aeec1b8a96347b0bbb42dfe9a0c99871220edbdf4ac3550aa8545fef12"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B12.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B12.jpg",
+      "sha256": "97170ea7df27e7233d246d0c36b32e29d88a6c7302b7113ddf885add144af015"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T01.jpg",
+      "sha256": "758617f19a2e3325ea1b57887cd7eab066bec89b778a839a0327cb38d473da77"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T02.jpg",
+      "sha256": "4d56b67dfdd8e74f33ed52c0eda439197a3dae18b83b7a1bcac3f24bc2d4b318"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T03.jpg",
+      "sha256": "2ff7698bf2f47f69644e85768f66a1a665023487c20c10932ea040c42798ad0c"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T04.jpg",
+      "sha256": "5258ac32dba3bedf78f30d23ca56fc18d1fe0e966b84340b939c97ebe7c8b805"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T05.jpg",
+      "sha256": "7ea12b024ed8c8766d1244ce0977de6b1b72e2d16ae5495cd6cc8ac99da7c6a7"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T06.jpg",
+      "sha256": "1f291f4d3dda90787f9f4b25776335d0e58f0043b5c8dcbc783932d8325a91ad"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13-T07.jpg",
+      "sha256": "f10f0ab1051acd915881b4a00d53af48ed877a14a524e5e990c03cb358dde075"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B13.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B13.jpg",
+      "sha256": "f9325f527bd263f860a72164dfe4a4b8479a77f22cebba896a6777a04305c763"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T01.jpg",
+      "sha256": "d3ad042de6badd23a97a675af46a46a5a111e78fe3d32e152aa85fdb8bd2d647"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T02.jpg",
+      "sha256": "b96cffc2a74d34ecbee47b8f14e367899533689ebc5fd86f131d3a8f5bf4d1df"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T03.jpg",
+      "sha256": "487bdd4596771b974cec05ab6286bd63108c27d257667efe2834fe9862b81d3e"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T04.jpg",
+      "sha256": "dc0815a2455ac65ec5a2462b2403ba2fd9ed9fd84a018c77796afe77335bdc23"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T05.jpg",
+      "sha256": "ab42d1cbba559001362c5f8632085a21ac3e04e8995f0545eb0cc73d615d7ed8"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T06.jpg",
+      "sha256": "6954243264492e1552416639d86a6ce812865d543c641102131558bcfc5f2cc1"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14-T07.jpg",
+      "sha256": "830fa740d28aff4af983b79c19bf1755e1c60b908a5ec0b2abd9feeea2bc805f"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B14.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B14.jpg",
+      "sha256": "8bdb64d90576fa90989a9ef6e3c6cf35631acdf03061be02e94cc954e5cb7c75"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T01.jpg",
+      "sha256": "b0bc95bfc0eef2d26fc133803a062c8efb5f6a2ee58c877590e6e1fc5b2c7c46"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T02.jpg",
+      "sha256": "8af81cfb285ca3745a8077f965cb1fca9928396725d33a3bccf2ca5b240408d4"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T03.jpg",
+      "sha256": "76202fdd66c2aa6b4aad6a4304574ac2319daee23eca154e3c50a90583b8ac89"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T04.jpg",
+      "sha256": "3cfa6b1771837cf703b383d937fce45f591c312f4f8c5288d3700f457eb6733d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T05.jpg",
+      "sha256": "321f2d0d90bad5d67f0044743a819c94d16c17ff82509ca634a5c79c5fe64706"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T06.jpg",
+      "sha256": "09b425ab8c60c5128fe1faeb162f0fc0ab382f71f610314c771d98424d57bdff"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15-T07.jpg",
+      "sha256": "dd3c05a66d54a3e380ef57cd5a2f50b9e9a13a37939c886cfa19ce74c0c71821"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B15.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B15.jpg",
+      "sha256": "8a8e3c4e450efb7c82e9ea26254256f9ed08d20c58d1996c7b8d5da4c140cd7c"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T01.jpg",
+      "sha256": "cadfe942019c26bf9dd03ae4bb802fc6c9c78d032f289eef770c5f94e73dcb01"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T02.jpg",
+      "sha256": "62f0ec10d65af46c70c76e926e992ea64d52e67c38c40c12c1c0ec1b6297e211"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T03.jpg",
+      "sha256": "6db95da8b7094aa23fe2ee2ffe16970e2af94d800deaaf47da55a7d78221c465"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T04.jpg",
+      "sha256": "6cf1a19891556acaee0556baa3531f6198d97f269d963286f5f411b4673f0bd5"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T05.jpg",
+      "sha256": "757d4d209494d42b8acc772abdd54f6db20991b72cff11aac78f8c49f145a76b"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T06.jpg",
+      "sha256": "741ea105585ea2fda1e80c11fa5ba25b7e2e2e51b35ce128c2ba66dd248c00cd"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16-T07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16-T07.jpg",
+      "sha256": "a32a5b207381ede1df830c28a4fe9d5a84614bb60af25c473939a5227070247d"
+    },
+    {
+      "path": "designer-boards-round2/inputs/B16.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/inputs/B16.jpg",
+      "sha256": "e96cb4908bf14f1955ada2500ad473d7a40756f87969e39c579111200ab2a9c0"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B01-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B01-decoded.png",
+      "sha256": "2008d6a11498291589e19c382c64e0bf2798d5ab7f691b484d63ad4c6f722330"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B01.jpg",
+      "sha256": "e1b28f1c45c32a1261530db8d756b29d5799f3ed26a7ce6dc61aa0150b70b0f1"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B02-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B02-decoded.png",
+      "sha256": "b6604054e0fe32f90df93afcd9d3d87b0f22c5d1caf94adfbd945d527feb9bc0"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B02.jpg",
+      "sha256": "1d680a017d599c32d89bc4f73220f06cd78216528a4be413e7bfa0d4a7f96cf0"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B03-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B03-decoded.png",
+      "sha256": "77d734c351ca69754c7ceec9960ffc76a9a3e43f64b5012d55fda4d956fe5787"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B03.jpg",
+      "sha256": "c321702e483d81ffc8ae57169132ad9fe956c2a942e54d025da9ea46da412ec4"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B04-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B04-decoded.png",
+      "sha256": "d938c4f3ba4480000be2fb06d2ca734c29ae3bc0c0ee9e49d5fa127a08384d69"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B04.jpg",
+      "sha256": "fb245a66c9c71a773ae5eb35d2e158c05cb0807adc35f807ce42dc1a47d497cb"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B05-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B05-decoded.png",
+      "sha256": "efcc36c14c229b1a8ffc27ac1d48a51163d93d9067104508a35f564f7f9b13fd"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B05.jpg",
+      "sha256": "e0742ecd9b1dd32d60bf94f36950668e95edf7aa9056dadfffd4b15ff4342849"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B06-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B06-decoded.png",
+      "sha256": "e87e02b82a573c21ecb0e1454f15caf9885036e095864a8b67ab72267638bbe4"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B06.jpg",
+      "sha256": "246ae8fbaf04851a0427720b55b0bc12b9a56d19857aa11d814d693e3645bb09"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B07-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B07-decoded.png",
+      "sha256": "5873f84596afe96a0937fb82d48ace87647fb4d7a8273fd6ce3e61056287e501"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B07.jpg",
+      "sha256": "b578ed142ae255408fa03f9c70d12ab08f6f5b471b216ed1a989f76535b01d6f"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B08-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B08-decoded.png",
+      "sha256": "bd12669e71eab4569460f028ad3a4ffb5a9acf26e54bae1e5e4626fe1b88fe42"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B08.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B08.jpg",
+      "sha256": "b9f72606f6f03c98b7518f2a4e009a633c57ebf0140a414cd145564634278f11"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B09-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B09-decoded.png",
+      "sha256": "64cdabb9f7064fcb0831f91a2676b6c3cba9473fdce00859cbd5db469e2816dd"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B09.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B09.jpg",
+      "sha256": "36f1eda72a5c8569ea693955bda99744025576339c042e67367cd37fdd61a747"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B10-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B10-decoded.png",
+      "sha256": "8ed6149b06eb3337b4ac91250b764072dce3c417886f4ca5f5d588513e54383f"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B10.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B10.jpg",
+      "sha256": "46d82abca281a6e7b72880429a576eceb3c2026881c2cf4dd192899c5229c27e"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B11-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B11-decoded.png",
+      "sha256": "edcadc6a9d9ccf18a66b9d7af3bcb38ecb6e8a4ab283f77d39aa6a614f45704b"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B11.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B11.jpg",
+      "sha256": "51699825c24f894d8260e78fab23c3d2d71b3a7393b71c93152133714b6933da"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B12-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B12-decoded.png",
+      "sha256": "4da52f9519ec9eb3652efbd9244b571e961222ac2c6179dca8d9116133c9a939"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B12.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B12.jpg",
+      "sha256": "79daa249600e7435bfa34fcb4d9b95c73e6145ca35c413d4cfefa3cfd2fa09a8"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B13-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B13-decoded.png",
+      "sha256": "39f3cbb89eef9dec55874cf8b4fe78b785fea5f5b1663d46eadf59cc1b12fda3"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B13.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B13.jpg",
+      "sha256": "ab1fb5e255a12b41f8291f1adf0a7cdce622a7a3c8221aee99059835a42f26cb"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B14-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B14-decoded.png",
+      "sha256": "93aa19bee52ce73891fa1bdc5340e9e9a1cf9ca529764da5832186554b9a1e3a"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B14.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B14.jpg",
+      "sha256": "fda8dc4b45a77b2d90261d6a0e25ea6eb52656a060d54914cc8cc60509acb749"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B15-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B15-decoded.png",
+      "sha256": "e017e31a3f282f4b5ca0dcbf34c5f975eabcd56693a0bb798c892df14224839e"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B15.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B15.jpg",
+      "sha256": "ed576fba99ad3c97caae8f9f327e1220d1cf2cafd2e8d0e3d285446db8811fd1"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B16-decoded.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B16-decoded.png",
+      "sha256": "c94c91f69ee030fea358715341df6e26b52d852a1582b007724d9c18387de86f"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/B16.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/B16.jpg",
+      "sha256": "39e0d88d50604f21837fe8fc224e21ab25b65c1b8630988fd09e565837a15767"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/overview-01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/overview-01.jpg",
+      "sha256": "f8231bd5c40a3eb7ce57ecae8fdf6ff009d98ff1573c393e410536934eecd9bd"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/overview-02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/overview-02.jpg",
+      "sha256": "f06c6298a749825197638315da155da277cff61c655b99a27fc09120d8d4600c"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/overview-03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/overview-03.jpg",
+      "sha256": "81ea06b20b2db53f2279ea5e4f407e98c00fe88b3eb0917afc4ec8b8be635ab2"
+    },
+    {
+      "path": "designer-boards-round2/layout-qa/overview-04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/layout-qa/overview-04.jpg",
+      "sha256": "4fd4dade1c74c307a87c25782afe696c292f549e6ef14099990f2bdbf7df52fe"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B01-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B01-T01.png",
+      "sha256": "c6300a13bd09cc24654c1a491d74c7eb97e323116b1dd7dde9186db6ce60c962"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B01-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B01-T02.png",
+      "sha256": "e305e778488a38a2d9163cacd27814c2254b98f7d2ef795f5c7cea1bca748014"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B01-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B01-T03.png",
+      "sha256": "1345a18157bb07ba2309ebb9a1c02bef7bc503d5c220501bf5ac1f4dc9b6140d"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B01-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B01-T04.png",
+      "sha256": "56fa3080e9713d873e32d667c527afd622750d37aa123a4135b39c477b472772"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B01-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B01-T05.png",
+      "sha256": "c9868c8b4674ca87349607c7fc6766897cc7d3882a5a1dfef1e2adb0d3d26a81"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B01-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B01-T06.png",
+      "sha256": "f7f41a96cac67f645250b1f81ecde3e1084d31cb7930610e60245f3fd0518c7d"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T01.png",
+      "sha256": "f1b465fea165f8d30677da4534439c0737bad1d1be7f076b21ef9faaa645a5c7"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T02.png",
+      "sha256": "6f8ff6e5768ef7cbed0113b7504f6aa36e80f0e5f9297ddeef26fcd656c54982"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T03.png",
+      "sha256": "607a2fd970b015ce3718f143b446feef9b258e8eccf3bcbad236b9d9b6e0f375"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T04.png",
+      "sha256": "ad9019f98487ed8783fe391e9a89690c0a4b40206a2e8126d853c85c5ab3996e"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T05.png",
+      "sha256": "bf91c12c454f2c8c10768ea5c48305284c3fe1e1914653c9e9cdc816a792fb56"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T06.png",
+      "sha256": "9a0e2f4195d1f9977895eb99f040348b7e7d6f0fb3abd38b0065d7d5a1b55ccc"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B02-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B02-T07.png",
+      "sha256": "ce3100d84dc9c180868e71d6ad242fdf28a595c1c7771c2e0de6dc8e0b812e28"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B03-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B03-T01.png",
+      "sha256": "c6ab24b37fcb7d18f50ab232077e220b7fe6060749293d750a3483b58252bea7"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B03-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B03-T02.png",
+      "sha256": "5cc58684b7cf72b25a815d076b7dfe6e5988e6adabcd342db52ab8f1e90990f2"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B03-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B03-T03.png",
+      "sha256": "5ea68d8f3af31c2b4e16eae08ab8ca116d2d8e21204453aba677bb1f370acfd8"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B03-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B03-T04.png",
+      "sha256": "72048a3a18efea254a04b1f9710c5555feac0124832cc55c7fe1f579f9842093"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B03-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B03-T05.png",
+      "sha256": "51145d18b557765b0d10d86d9dcb9f50110f7c534e296fd055210e0064a543c7"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B03-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B03-T06.png",
+      "sha256": "245149567fa8ac5cfc32f5db1fa8ec8324d5313ddd9a3463357d0b17edc08961"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T01.png",
+      "sha256": "fb1b796b6862539cbba6f597401f49b073b8d2e39a8b09a35dd2d69c49ecbf00"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T02.png",
+      "sha256": "86bdfcf4ed1ee5b7f4a3e11662199c3bf501d21b7a0f49409867d501173c2acd"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T03.png",
+      "sha256": "1ac923a7724bbb5b1150b992255a378c38ed58c0bb33398122739ebad487e741"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T04.png",
+      "sha256": "e5d22401ef7e956c8e5412262419ae9322deb8c314a975338cefeec6e8fe14ae"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T05.png",
+      "sha256": "102c234c16ed7a486d81507cbfffe4a6c4cb7c3804a53c0b806c3b84ce3629af"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T06.png",
+      "sha256": "20c9f26e271b27f3360724c085053cbb00538cfbe84d835632c2c20d4a1561ca"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B04-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B04-T07.png",
+      "sha256": "87576e85789fbe04891de84ed90d060f770802bf6a6c20ae3002444491c9ba7c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B05-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B05-T01.png",
+      "sha256": "0c9cba6cba8c10a8293f9ceb42757d57f66a645dc518349f1e8c8fe629ea53a7"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B05-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B05-T02.png",
+      "sha256": "907c764c99ba8404b67c10ab431708335945f619505b2218d171f599a589140a"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B05-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B05-T03.png",
+      "sha256": "f8c040fd11e74ece27ca02043385a3db794a37c5bf3eac4befda376a3a5b0fed"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B05-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B05-T04.png",
+      "sha256": "206a99dc1cdc62f5254a0f36f22a06721402bda6cf5205187a578c375fc21c25"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B05-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B05-T05.png",
+      "sha256": "a9f364eda1d2b4df7311746c51c24528b1de8060d19cd681f6a353cb6c16a189"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B05-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B05-T06.png",
+      "sha256": "8cf6c0ff7daa9d4e5d4a07c300774595ab35b4ff3638330a19a2abc1b73cc913"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B06-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B06-T01.png",
+      "sha256": "6a11754b54bdedb785d1bb0b345306f3377ee9d944cc4136f93c00b54067ac03"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B06-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B06-T02.png",
+      "sha256": "cacfb86cfba2d143368ea1479a267be438fff113c29855cbb0cd6706d304af4c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B06-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B06-T03.png",
+      "sha256": "634b95944ee765b53f96120d58d30c6dad09e60a8260f8193352576b839be683"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B06-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B06-T04.png",
+      "sha256": "57de7b5235611611e7f85fff3c05d2b83a26e0bb3f6f584dd129036be28fd0ab"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B06-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B06-T05.png",
+      "sha256": "a1518e0888eeb58408df3ea50fbe48464c7776b3271b03e2d46adcbfd1bd5040"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B06-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B06-T06.png",
+      "sha256": "3dc704614e95ca444180a0eee2e1fd9ded489e55933ab718fc0af69e6dcbcf0c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B07-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B07-T01.png",
+      "sha256": "52898cc335b16c93c9aecd672470dc21d391621812bda01b13de39b40aa7b14f"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B07-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B07-T02.png",
+      "sha256": "744dbb118f2e7a47b5692ac906bfe70f9823c2e319dc484ba5326df0247aafdf"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B07-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B07-T03.png",
+      "sha256": "daa3ef26864f16840adf6a48720b3bd109ee8a92531ac3cbc706ba8006183862"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B07-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B07-T04.png",
+      "sha256": "06b7a171f7ada532f2126f624f2c7c64b87dd380afe153ac3f6d70813c1cc657"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B07-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B07-T05.png",
+      "sha256": "57a6cbc44718d941f5fd008ac5669314a1ded6c082990c7bf9520aab7977443f"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B07-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B07-T06.png",
+      "sha256": "34b0b4444d87640834fb33f0ba0c6478253497f4c5990ead40427398b2b768da"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B08-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B08-T01.png",
+      "sha256": "1ed15926c67a051e7f6eb4ee0ee6284d43ecdacd70b0294cdca83d4ae8a718e7"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B08-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B08-T02.png",
+      "sha256": "f3efa2deae53fe75fde2c9add63ddc6c5135c7b8d5d49b48e7c805e835a5e4cb"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B08-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B08-T03.png",
+      "sha256": "ae1a6f4bd968c62dad488fa240cebc0d0b18002418ff06d297d46847cb533da3"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B08-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B08-T04.png",
+      "sha256": "e34cae2bfd0872bc3da1d108c599ef1f8cd89e4f41d14abbd8eacfeed7eeabc9"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B08-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B08-T05.png",
+      "sha256": "106318d501a64a4dd4bb2b7d98f21921bb44092ce898b0f6cdc6fad16a978994"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B08-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B08-T06.png",
+      "sha256": "a9f5fb837f7cb55cf4b48efaf4fe6e5bd65f0f92aa669c25e565deb7fe6f8f37"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T01.png",
+      "sha256": "13b1e048817a9fbc0c9ff89c28f9350e01a910787106debeb17fa891fe5418e6"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T02.png",
+      "sha256": "34fbabae8ea2863c7e62d5d28ef86bd6ec456ee970a6c1ac174373faff10a97b"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T03.png",
+      "sha256": "f6c9185c85fe80230e6efd57cd466ff3ee1caae9f51a62042426061fc54a52db"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T04.png",
+      "sha256": "e8caf18b3367a1303a1127769c528135becda5ac9af7dc0cbfca8f9ee2e58f38"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T05.png",
+      "sha256": "00a7cdb86f40e50ad7a531cba78a454d435ddeb1a27bf5bf2d5dbca472aa48d6"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T06.png",
+      "sha256": "8e943d81b30eb4a8287215ee68de328c7610633e8032358074a6e22778738faf"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B09-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B09-T07.png",
+      "sha256": "58a2aa923bdc182b501a9b4cd5235987d8d0e6436a1a24e44c4b106c7ccb6ed9"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B10-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B10-T01.png",
+      "sha256": "772fb1900855517a3e1468f91dc393350935403718b254c15d59530c3f203f53"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B10-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B10-T02.png",
+      "sha256": "5b5fc55970f6eb9abf16b442d40d9ea4be96ab308c6b2f17d5fd4e960e33772f"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B10-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B10-T03.png",
+      "sha256": "daf3e3f80b4a8516d31a108bd0525350760f7170b4f0ec52f7a752a17fe06a89"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B10-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B10-T04.png",
+      "sha256": "3548a0e682f6ece0720c714f5982a5d0a4d65e97283a452eff8c0870d7f498ff"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B10-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B10-T05.png",
+      "sha256": "195293631c335e0cebd34dcdd48fa55f0320f870e44aed6ff98d53372193aa72"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B10-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B10-T06.png",
+      "sha256": "3a8ac5ad24486642b7f806b7f118c0cc75147c8301a76921c3793a60005b9cd2"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B11-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B11-T01.png",
+      "sha256": "67fa2757d76bee52ad8f3ea454f351edbd2557e6fdbf2bc51a7d427b51ccb2f9"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B11-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B11-T02.png",
+      "sha256": "1003d53da6f6bea602112bc7051ed5f52f4075b324ca40e12c9c21162da2584c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B11-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B11-T03.png",
+      "sha256": "53d064753551cabdd2864b28ca539fca5dac0c8bc63981cbffbab2749f0f3589"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B11-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B11-T04.png",
+      "sha256": "3ef4314d7d9359421fe7d4d4e2609d809c3f34e364ba5ec39bc0c1f4aae060b0"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B11-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B11-T05.png",
+      "sha256": "5d63df68e7a563fb26bbf25aa3fc9cea6b1c43f4979f77282a0da7a0f5079e86"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B11-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B11-T06.png",
+      "sha256": "cddf0c81f1c6f4ea2eabd967b50827948ed35db226375f4429aad19c36d725bd"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B12-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B12-T01.png",
+      "sha256": "cdc17a8874563dacad0d3f7211c385af36dba4e801ddf3c84ad9d22a6fabde98"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B12-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B12-T02.png",
+      "sha256": "61f1e36675072c081765ea0cae08d1e0eba8d5c6261de1dc1afa6ec7483d906c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B12-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B12-T03.png",
+      "sha256": "488b072000df26505a839b902eecce69c8c46c943e751bd20e50bd442ce4cab4"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B12-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B12-T04.png",
+      "sha256": "617f90312471a27a14537c7d9769190b3d511809d051a2954662fb13f1bf081d"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B12-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B12-T05.png",
+      "sha256": "c1b799022c71ba733ffe2363ff5fa2d5663024c0b9a7a6f00c370459dd9e8695"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B12-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B12-T06.png",
+      "sha256": "b1bb2a5d6795f5d1d9a883dd795ad244910740ac563745ef2265ca7d731a9204"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T01.png",
+      "sha256": "d346f0b4b84bbde2126b23abeaeb835d1bb3ad2798f504dba750743f5a4ace3c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T02.png",
+      "sha256": "00412139b4988fcad931d641e79b7e5c23b517df585e2c0074b9ce9dcccf902e"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T03.png",
+      "sha256": "23a47dd754411317b0dc58b9084b7acdfda02a8d57cc41f35a1a232fef2cebad"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T04.png",
+      "sha256": "0c42cf2cab78bc05af13823f83705887ff88de4895d3e0469df17a10bf4c6183"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T05.png",
+      "sha256": "5926092ad6880b8f6c06e3bad00d204e5dcff07213d2e51370e5308e66aa7d42"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T06.png",
+      "sha256": "1bc99e697c5d5067666f441d8d8d98db9cac00bd770ea8e81f5a6add538e3f73"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B13-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B13-T07.png",
+      "sha256": "d43fd5e28cf5855e5e6d375c8c4a33601b49e433266ea6609b186695e1cca0a1"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T01.png",
+      "sha256": "d928b67034e381dafe15e3821d7033ea95fe1c4224e81e7695981daa30d64d18"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T02.png",
+      "sha256": "7e3b03ee73a97ceb6437bf081080e1e580048d07bb751809be00ec2618aa58b8"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T03.png",
+      "sha256": "7534d461ee73b1ec8553429469d5ae363e56ff9da25e0eadbcb6ff3cdc4c7d71"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T04.png",
+      "sha256": "ac4b329e49b418dbb345eb0b7c5ffd30fe73ecf8b212e6d2da6366387c311434"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T05.png",
+      "sha256": "531b03f20ee53a0c841d8ee899fa7f3fc2c065e2ad5b3d0c57b0bd746570a4c4"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T06.png",
+      "sha256": "2e49a06cf024ee546c88cf877854e2554608c3580be4108819e52947f1013f3d"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B14-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B14-T07.png",
+      "sha256": "3903383285713afc1946e1b5c432aec725d9ac8d39e65cbc9a4a1ec368cafa2f"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T01.png",
+      "sha256": "4de3609625cf08bf467b2940f8e60c505448f3caceed2ef465de624def86a49b"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T02.png",
+      "sha256": "d1d55c49178c77710343bf02ec4fe67dd7cb733af8dfc190c807a335f0f99605"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T03.png",
+      "sha256": "79fc471205e9a2c9326038cf30281996e21028db311741d74f5de59f52e32432"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T04.png",
+      "sha256": "f6714cb67f7bab95a63fa6490b7409d5c83612cb2ede035058e53a93de9d7cc9"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T05.png",
+      "sha256": "b58a0e88af0e8b489890a6ee23244851f19ae043e60c3bdc9fe3f0e80a65af05"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T06.png",
+      "sha256": "eebab53ca639aadedf85cc0d74de3f00acb07e811edf65bc4bd2e1ca72971e2c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B15-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B15-T07.png",
+      "sha256": "741c7e8364f9dfa632bbb7f6488fe6d5e7cd69a88c9c1320041cddb2c4cfac29"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T01.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T01.png",
+      "sha256": "e28ac82e777a548d9c4b4764b3395be98485ee524495b5aa6ff44f5407485079"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T02.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T02.png",
+      "sha256": "b3a140918543591c5d56925fec766e257e2db1cef33519a1be83d10c0510e15c"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T03.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T03.png",
+      "sha256": "a7dd9081e759c30c575de2a2f9e3735830a4c966ce78229dcef00f8408b53a26"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T04.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T04.png",
+      "sha256": "b7d4c8661ef59525a9483236ab8b6b4fd9863aef4d2f0707e6e530ad6534b582"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T05.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T05.png",
+      "sha256": "6b20357f622479b5424fcf845543f815900fee0191bf9a8dd9eff20a2bba5148"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T06.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T06.png",
+      "sha256": "09ac9c534b173c9cff417f7f1946defb4c04ed631f5c4004670bd4711d7be429"
+    },
+    {
+      "path": "designer-boards-round2/tiles/B16-T07.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/tiles/B16-T07.png",
+      "sha256": "f11af34e2ed94b2388d7be47e7721f32ffddbd285498cb93806c8c7d07d3405f"
+    },
+    {
+      "path": "designer-boards-round2-v06/RELEASE.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/RELEASE.json",
+      "sha256": "b7f99707f2e150408984d4c70ff62e625d7014a675b40c5a66e8153fd56eed21"
+    },
+    {
+      "path": "designer-boards-round2-v06/manifest.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/manifest.json",
+      "sha256": "b200b48f85431a35369046e489dfec64c9fb69a33403da6d996251c6b13b5097"
+    },
+    {
+      "path": "designer-boards-round2-v06/report.html",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/report.html",
+      "sha256": "f3f8e524395f041bd03199454cd653727e028b879d3af892dec642b19f1f5828"
+    },
+    {
+      "path": "designer-boards-round2-v06/resolved-manifest.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/resolved-manifest.json",
+      "sha256": "daab702b019c297ee17c6e153ea6c4477a59d6c868c9c5b6c5306c1bd5cf9ea7"
+    },
+    {
+      "path": "designer-boards-round2-v06/summary.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/summary.json",
+      "sha256": "b57206fb45b92d2ec95f39fb3de81a50a0e0b75b1624238130ffc4b0c0819495"
+    },
+    {
+      "path": "designer-boards-round2-v06/inputs/B07-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/inputs/B07-T04.jpg",
+      "sha256": "fa32573750af26ccb05fbd5d5ce28be28ce527169ed58c19e0cb2dac8aae46c8"
+    },
+    {
+      "path": "designer-boards-round2-v06/inputs/B08-T03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/inputs/B08-T03.jpg",
+      "sha256": "ddc70ec53125a18e6851b0a04d37d8b9e6f61d435579100e51255c48c17b66cb"
+    },
+    {
+      "path": "designer-boards-round2-v06/inputs/B08-T04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/inputs/B08-T04.jpg",
+      "sha256": "473ae89dce2def96ce2622f0cbe7cd03da73408d64f6a169c3d813da3427c242"
+    },
+    {
+      "path": "designer-boards-round2-v06/inputs/B11-T01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/inputs/B11-T01.jpg",
+      "sha256": "7cf5975c3536dcb1ede30711b507c5d161bad5d680b26ddd11cddd8d1207f18d"
+    },
+    {
+      "path": "designer-boards-round2-v06/inputs/control04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/inputs/control04.jpg",
+      "sha256": "73ea3fc302da16259a3a794529a9b3fdac5a4dd0581d758e1bde784eaa11cfc9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/RELEASE.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/RELEASE.json",
+      "sha256": "97dd928142c25a7200aeb467f3e812806fa496b09e5a591306235f976ed18157"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/designer-labels.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/designer-labels.json",
+      "sha256": "c790c639540f2711d6f5ad06197b4e5bb5ffd251c923ac23023aaf5825cd551b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/manifest.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/manifest.json",
+      "sha256": "8dfd786b18bf85859018b7622322e23f5204654b0a4b26ee9325300b6ef49a5e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/report.html",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/report.html",
+      "sha256": "2daace70b76524b7018d1dc8cf4dc974fa916423ae140fa849e2f2f0a245fe3c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/summary.json",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/summary.json",
+      "sha256": "b5048b49e8b4283aea96a5eb23ade90d07bd060a7666d82f03abc031be253ecb"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control01.jpg",
+      "sha256": "50a1fa6cdd9d66ca84a8cad9d56ccfbb670fee6e00f8078fef1d0af1abbf75c6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control02.jpg",
+      "sha256": "5c04a11d8fdc6526789cbd9f565806b318a1a9acbb293f2a7d12718fe7020b5e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control03.jpg",
+      "sha256": "d960575229c51e4bc21fff77b47d629df6d2d8892518e88a2871ab78714cb6df"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control04.jpg",
+      "sha256": "73ea3fc302da16259a3a794529a9b3fdac5a4dd0581d758e1bde784eaa11cfc9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control05.jpg",
+      "sha256": "c75c08f4ca12540408228fc4a4a4db07a588f8a79872e5ba4bf162db7c63a067"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control06.jpg",
+      "sha256": "461ab88f0f9222b7fff29c2ab1fd4d38c631b09c1b5326223ca6cf1f5813e554"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control07.jpg",
+      "sha256": "60baec36eceb37df65b1cbf4d35fda08f52e2d086f9768d04106226d0d34c0d1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control08.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control08.jpg",
+      "sha256": "c356cacd8ccea203525311653f81ca73febcabefe954cd4dfcb549ba57af494f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control09.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control09.jpg",
+      "sha256": "8d7b898f14b9673d6e9676d98cfae88679679c1c3937a300d5a624ce72e7b309"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control10.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control10.jpg",
+      "sha256": "b6a2e2bdeb3897370bb98ef555bd7698ecf3ae5d20dcde9137d4713503f4ad59"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control11.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control11.jpg",
+      "sha256": "14bdeeddae7b644938b25301c59835d0e890091fd41785a6b4557c1809f4fac6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/control12.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/control12.jpg",
+      "sha256": "ee60489bf1c374591ee5aa57c62e29f493f5b330010c0766e2401263e5418019"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u001.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u001.jpg",
+      "sha256": "184756adaf6799c153ec1be5bf2646aa09105e73a8a1d785da6ca1cb3c395aa7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u002.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u002.jpg",
+      "sha256": "8b049b98c14d5f10b9f59abcb666f4aa11ea64581d524d6e06c3a327cfa816bf"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u003.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u003.jpg",
+      "sha256": "a0d343b04d42457f9ae730bec5c8441794637ebe4e7d5a4f965fa98580086b41"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u004.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u004.jpg",
+      "sha256": "c65191cf7aaf8cd6fae4a9f7d55d867c6d0905e4f6c034f1e4a80237d789ce05"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u005.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u005.jpg",
+      "sha256": "205d898a08afce4970c3303a9fd3400c2349422b42fdcede225f74bec8fac59c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u006.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u006.jpg",
+      "sha256": "805dfe0d33783d7f14b8d85f816655a629395f6dbe7779ed07b3f3e49e829d84"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u007.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u007.jpg",
+      "sha256": "9f315afe1fb701d3b26fa9d9917d32eceb3e48718985bf92d5d18456f5965c75"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u008.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u008.jpg",
+      "sha256": "d0ba0139a25c6177575b62cf2772d17fd559d9ee343e5e74c52d29a631782eb9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u009.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u009.jpg",
+      "sha256": "3e8010da79d75cf1f333f6a2eee97e4f05ede23ec686f61558a75224b1fdfd5c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u010.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u010.jpg",
+      "sha256": "51d7bb529f4601ae4a139954b5fb2ddeb9f025891da75ece8f37a24abda48648"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u011.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u011.jpg",
+      "sha256": "c1e05c008c54c0a81b5c9ccbe46286ac1e801af7b63cd3f4a8745c54341e852f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u012.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u012.jpg",
+      "sha256": "7e5fcd353c3bde9b03b43eb6bd6d5c0a23f86510ef155604a14f7f43f826566e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u013.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u013.jpg",
+      "sha256": "953494ed9cf6a5c8b1c919c36ac812d475a54de5d5e809d43c91f77d5382b788"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u014.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u014.jpg",
+      "sha256": "f2cc549ff06b2f0122c2a05a0d85b30e49af62aad65427e70db0b0f8d578b783"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u015.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u015.jpg",
+      "sha256": "3f6cb5f33aff564ec5080e86f90659f429b48542c6454bcb349751ce7f35d250"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u016.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u016.jpg",
+      "sha256": "606a31731e0dcd3b4163391185669098f15033a86ea4bb24bb5208afa55c7ea6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u017.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u017.jpg",
+      "sha256": "8a76499160be9732f8c6f30da44ebe857ea2236f923b7f42baa0f3a28606fb07"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u018.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u018.jpg",
+      "sha256": "3165ffc7e36974111e2996f5ec78d8fd501f2c10e7467fcbbc64d0fbf13a42b6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u019.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u019.jpg",
+      "sha256": "24b949ee7429a64edb1de79b367af6b8738d5e52e15b651a69e769116e838cb0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u020.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u020.jpg",
+      "sha256": "cc5723d29e54b4d323b92212203c36d009ff667031aef9cfa631e0c4792c3166"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u021.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u021.jpg",
+      "sha256": "cd64bdd96b85100daebd5afb82be7ef1a73e0dc553e901b41a26384674885b1a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u022.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u022.jpg",
+      "sha256": "c460f81adcd7efa41d15dbbf11dc0077bb071b5c59e57fccd330077ce7a4cff4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u023.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u023.jpg",
+      "sha256": "ca2addbf40008c3f7d90e7e7c96c16365ea58cb603295b1214efc52c5c3a1c65"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u024.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u024.jpg",
+      "sha256": "9e0d4f4c07ba46cd5401a2fe24d4be96f951a0f9256246c51641206a564df732"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u025.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u025.jpg",
+      "sha256": "67abadf237a2030d7458c5021461e5d7b995eb0054eb68722ecfe90beb748b7c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u026.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u026.jpg",
+      "sha256": "139d44af10bcf63face7cce8815adbe64aa5e73c7affe312308c6a435f5ab369"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u027.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u027.jpg",
+      "sha256": "9494b8b9e5cf60dc5eeb7357ca700cd8c76e89cbcd932ee8f580c0e3bf49636f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u028.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u028.jpg",
+      "sha256": "3e914b16bd6f1032be6542d178e8acd421123d3d5d117adef346a5aa79fa7cd3"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u029.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u029.jpg",
+      "sha256": "349ce3e0f68673f6d7e040b78fbcc9d2b083ec91b1bf9cf916cf7e4fa8a3e7ab"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u030.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u030.jpg",
+      "sha256": "f2a27a0b7c5b4aab6b19377a8aaadb1deaa6e7f1d359e46fa203a97796665b6f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u031.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u031.jpg",
+      "sha256": "3342d1d15a77ac4e816170a9097855c06704986a0b8ea6c1d2ac49a8d3fc49ca"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u032.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u032.jpg",
+      "sha256": "339f87fce5529bbb76e9bad0406ce34115a9b2c484a471dee5c2087d9a9d3d3f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u033.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u033.jpg",
+      "sha256": "19ac3efeb8082423541ca5d2ec09cf2784fc440a7721301b5b975a198ab9acc3"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u034.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u034.jpg",
+      "sha256": "88d4604771b6991f939eee2e927639a9b6cf06a826cdfba0539469b65a9f744a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u035.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u035.jpg",
+      "sha256": "612980ad6867d3e16414f2216972f500daef9680821c1e60e3ecc40d99915f5e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u036.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u036.jpg",
+      "sha256": "ccb481e3abd6940e4c6b41a2c68c4253f4bd2e01f716315b436b4f17f5cfedd1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u037.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u037.jpg",
+      "sha256": "6903d94cbcff137923f012b74e74021fa53419fa54e92225484d9b57bb32f6ac"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u038.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u038.jpg",
+      "sha256": "f444d7aa2fc97754594863cc695a5580fa0fb6f9bb6595a4d83f0e6d0db60f5f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u039.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u039.jpg",
+      "sha256": "2c31c24fa0d61106561cfe2880cc28650397a5c58dce462db2c75dbd80905571"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u040.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u040.jpg",
+      "sha256": "761f1134c8608e6fd7e620ce619f0d6f798c99857aee16461d3b189f4264cf87"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u041.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u041.jpg",
+      "sha256": "36c91109da50dfefa8bfd316718d15421c7be68002c41225578eb5411db0f483"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u042.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u042.jpg",
+      "sha256": "faffa0709477790a1c5f806aaa65b02c59a1faff96c2e31963c7672094f70630"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u043.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u043.jpg",
+      "sha256": "07c11b81a38db2d408f00de897c178c6603dc3b8d7d7e370034d17faf638779e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u044.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u044.jpg",
+      "sha256": "3c3ffb5ba847e3292e2d63ead33375ea2b73dcbd7eefd9c5cc622d63df0d298e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u045.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u045.jpg",
+      "sha256": "3cea95e828274339184de39fdbd15577edc319df28bfd1fb4b58628c1bc9ec98"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u046.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u046.jpg",
+      "sha256": "0c433cb7e193538678931371d44ea043a5e8d7a5f02e9c41e9c3723ba1a21423"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u047.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u047.jpg",
+      "sha256": "b517806da1741bd2926fcfa432cb14643b9754dbbd46865873904d66c16f4be7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u048.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u048.jpg",
+      "sha256": "d5cf6cb9b1115152e5cdd24bcac9a244c7edd3e71edc088e9290e63fa2f69731"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u049.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u049.jpg",
+      "sha256": "d3ea46277af0367cad44b2e6124b0ac3f0fb6cab32913147b19c979d9949ea52"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u050.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u050.jpg",
+      "sha256": "6d2b983b352bd41dbba8a95b09df9fbf291b5460ad9f340b52209fb21dad0559"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u051.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u051.jpg",
+      "sha256": "313cbf5f409bbe44f98e53c85074c902831efccd1cb6a3ab1b7680e1bc7e6ece"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u052.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u052.jpg",
+      "sha256": "ca799a93706fcd1015253774def8a71e24d0992f606458c2b69ed6822da107c1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u053.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u053.jpg",
+      "sha256": "0ce3256e72e086405fc851eb208bcce89d08b0b96ffb65b0b7c8c384a1c11a86"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u054.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u054.jpg",
+      "sha256": "c76ed1241e5c87bdfc36f1d932e483ba6a6c88e629dea69dcc1458008b75049c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u055.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u055.jpg",
+      "sha256": "55f617eed4d93f0de56823a7b2fe896f78e62016871c470f3793d24862ee13aa"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u056.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u056.jpg",
+      "sha256": "8cbd8af71f17acb15a9ad49f2ab5a18bab6e33b3ef956a977788fcbd1d501e1c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u057.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u057.jpg",
+      "sha256": "5acb073978fcdc314cea16e6aa75f8c18096340911f8297b0faf854e36e949bb"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u058.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u058.jpg",
+      "sha256": "2be95cb25d391cf42b1f367a6316a4d6c3784744ab052198ae471c13a0aa686d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u059.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u059.jpg",
+      "sha256": "02882f58ad264d98024d697d6b8caae3b4813bfb5b5f883ac6e2baf4a6c31261"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u060.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u060.jpg",
+      "sha256": "2258a7f1fd56a3b69b6832cd3f25614a9f77ee238a7175e4700f44e126b24365"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u061.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u061.jpg",
+      "sha256": "3451f78623e36fac63b9c04dcdfeec662ccd1cefffee12efa6e554810e6a7386"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u062.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u062.jpg",
+      "sha256": "0fbee35c991ee1ae83462118bba495fd37000f6aca831bd6392c53bfc2d73d4d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u063.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u063.jpg",
+      "sha256": "4f3fe1f2a3610c4a858b30be061e893a6047c1ab28e422b31e8821a2ced70cfb"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u064.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u064.jpg",
+      "sha256": "abb5953657e8ec9218713fb9017bac035639781bc3399b29ae39cebc724ea6b9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u065.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u065.jpg",
+      "sha256": "18423ddc134d89cd5b14c174e6e48d731a52c88ceed317fec3df25dd1ea68e05"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u066.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u066.jpg",
+      "sha256": "b34187de6720478461755fce76edae18d56113f4153caadb2a0ac2885e73ad6b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u067.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u067.jpg",
+      "sha256": "10c6310ab5472fe83ad33bc8ccf7b9522aedbd685e5a47a9d53a82502520f090"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u068.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u068.jpg",
+      "sha256": "c4ce7d71c6d42cadf1569352ce530c964701737f834f24ba6af374b7abe0dfe2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u069.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u069.jpg",
+      "sha256": "792c416f8a98bee21ede3198f1bba17c5e8984e5c3e6a0df00f358db65fef038"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u070.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u070.jpg",
+      "sha256": "6f094a1a1ee874f6141ffd756a4d07c43d21e52433468e2f1db3a61440de22ac"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u071.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u071.jpg",
+      "sha256": "b0fcc5ada49bf3bdb906a4e546a51b0f70879823148615393d055fa4fdda5964"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u072.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u072.jpg",
+      "sha256": "c88257c6ee0df6ce102546592577063af04ad16b5b0134d6b7cbd3b02c21852b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u073.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u073.jpg",
+      "sha256": "51524ba3330b200396807e831385400699ee8a0d0268c2ec77e1d0301926e40a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u074.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u074.jpg",
+      "sha256": "4f08da16e7ffe15456da44f5974b9080cb1288e16a4a9b3a895312782bcbe786"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u075.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u075.jpg",
+      "sha256": "2785b47d753935dea111daf837981fe6738b67aaa2952ef642d1dc91b2559fe7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u076.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u076.jpg",
+      "sha256": "72a91284f8b10a32161488b513758684ac07e8d5be03874522e47e3c30a6fa63"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u077.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u077.jpg",
+      "sha256": "f0e588b0eb8176cbdf8eea8e3e6683e443f5a0df8ffe301080e5db8a3d8da537"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u078.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u078.jpg",
+      "sha256": "a95a96739c80f7e5e738ad58225913affdae166608d8312b32d58c41ae40acf4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u079.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u079.jpg",
+      "sha256": "c39d7a027ed0abf45b3c94b0734ab3fb57606085f996581899171ef9ae1a00e9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u080.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u080.jpg",
+      "sha256": "d013de6c16c90c6a43d1d42513a100695113a69616e0d7aafe59bae3a287724a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u081.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u081.jpg",
+      "sha256": "2b8c034b2a040a12a4498beaef2f2aa8f04439220fb1089cf1b80d26d36437f4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u082.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u082.jpg",
+      "sha256": "4bedcd4913e8a76b37d9dbe03ccea737386444c8b030b83a94f1d581f9814ba6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u083.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u083.jpg",
+      "sha256": "589122078e53c16273977a9961623cc16abcf657ec7a11367197a6f245847f55"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u084.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u084.jpg",
+      "sha256": "4cbf7eaee323dbeec35e4b08d645f94cee6ed72a78e6aac04cf624bd30c48758"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u085.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u085.jpg",
+      "sha256": "3a4e554ac87d1674a4caa7feae33a60e3891d321b18c1f3b92d6c85444ee3bbe"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u086.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u086.jpg",
+      "sha256": "c2d654f61935837f416682ae022d8c51f89d9e1b35b26cc1a3f160e1f5ffb932"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u087.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u087.jpg",
+      "sha256": "27c257a1d5ada956f8daad3167dc3b65a8b6aae79487d479f13f62145b22c13d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u088.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u088.jpg",
+      "sha256": "2c15963cf83bf3d11eb531d0ca4160803ffca36dbdc8502bedeefa23a765b6ac"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u089.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u089.jpg",
+      "sha256": "d8b613b0ec476e6932510d9535693b42afa86f80117041b2b0c2850063c8f223"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u090.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u090.jpg",
+      "sha256": "e877cbc82ccb97d590bcf03961bf32b4b4b1d9695bfd65b0926ded9c05831132"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u091.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u091.jpg",
+      "sha256": "724168b8a31edd97d8ba62b9ef8ba1de9fa444801adff593ff9dfddf1982979f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u092.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u092.jpg",
+      "sha256": "02295bef3d5fde18078f044d447974685d69e0b0ed880948d3cd570efbcada40"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u093.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u093.jpg",
+      "sha256": "b102581e38bec60c2f7d531c96893290ede53d759bd73ef3dc3faaebbe7963b8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u094.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u094.jpg",
+      "sha256": "2064a418632cea7f470e4acbb5357c10047b2b5d2177c01d6f506bfa7004eb4e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u095.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u095.jpg",
+      "sha256": "330e1a68b00fb3dab1b5d647c8c0cd08a7c9fabf445f12d1dfd7ba10fca952a6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u096.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u096.jpg",
+      "sha256": "aa912554d1605fb0c073c081fc140326008b1a2b9f5248be2b7497561eb4a61d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u097.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u097.jpg",
+      "sha256": "0e396cdb1df5428c962b2eda44411fc4d2cf16aaccc4bddc79087fc64606d747"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u098.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u098.jpg",
+      "sha256": "9a20a1e439cd079c3f53f5efd79aae6f3dde1e61532d880ed23bf57260f3425e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u099.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u099.jpg",
+      "sha256": "83b459b4a218c23a0b02049a97af39911014a9bca0faa34575218c5415ba0d72"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u100.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u100.jpg",
+      "sha256": "642cbb928f0cc4c64a2d1941df1c69cffc772fba0400093060c7d1e874ba1670"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u101.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u101.jpg",
+      "sha256": "26c8532ddd9a2eaeef672d7607f9c02d1c54d15f5d9159b6458ae444cbf4ad5c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u102.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u102.jpg",
+      "sha256": "b7ab1c844fadffa4ef32c12f6e7b8264ab9495da1a218fe6118330936580912a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u103.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u103.jpg",
+      "sha256": "39c8adff94251cf999136efb3833157584ed1efa99c493cce3d880b46d9c13a9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u104.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u104.jpg",
+      "sha256": "3f71f1fe1d323ed724d40a672e78dc094a6e6d46a1756fb8c531734699cbbc26"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u105.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u105.jpg",
+      "sha256": "6d0f967ebed24ae1dfcc54fc15198bc94e5d06d5696fd6a786aee51e8642d4d2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u106.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u106.jpg",
+      "sha256": "3a6625f40b3c56584724a36c6544dfb557e95f3f1d7c17ab81abe025ba4894cd"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u107.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u107.jpg",
+      "sha256": "86e1d52e9af1053b96a47eee920c3d6239184d47397625dbbd1189a5cf9dcdc3"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u108.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u108.jpg",
+      "sha256": "a9431b06e6525409b911df9045e145291c3fcc41cfb358a63bc63e410c8a9c9c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u109.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u109.jpg",
+      "sha256": "5267a4e268a941d674c84176ed82230e94b83d049c8482b04c8ec4ca4692b99e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u110.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u110.jpg",
+      "sha256": "089e96095b440f0c24cb95ed4bed1db47680fad7d10c6bb4a738af63f846c319"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u111.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u111.jpg",
+      "sha256": "3f578bc85c923267c3baff7808fc57f501faa9df299504044bdbf37ea4fab853"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u112.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u112.jpg",
+      "sha256": "4304a16dccebf978db542a624c2b7fc1c446779cacb317708c7473bbc74547e4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u113.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u113.jpg",
+      "sha256": "77048904271dbf839d55734a2a7465a60275d5b6732867c7f40e908aaf844c0f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u114.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u114.jpg",
+      "sha256": "0be4f29cc729815e90ce70c0fdaf0406b3fa9f7dae10d5f3a8bc338ddbd31574"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u115.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u115.jpg",
+      "sha256": "2c54c3f132e5786271ba40afcddea764f64b65bd60bc8677b5d519f206fc28c5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u116.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u116.jpg",
+      "sha256": "c5b899106ed6e93d6e12ff68ebbfbbf90a136f2a8bb218dc1337320144d4e781"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u117.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u117.jpg",
+      "sha256": "62de286c1ef05f0ca1bb30a11b88fc096069cd4442e2d152b47795b97c1a7ae6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u118.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u118.jpg",
+      "sha256": "ec0ab137f2142b2ace977b5988be748e04734cd6bbbe25cc6438ff51890919a7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u119.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u119.jpg",
+      "sha256": "3c927771003243491ef8267050fd7d86693d12788221d411bd1f435aedec92c5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u120.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u120.jpg",
+      "sha256": "c348095cd1336db99a081c425ac8f72db17523541305e62dde3d62de259dfa01"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u121.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u121.jpg",
+      "sha256": "3148bc53a722cf0152b071b346c2133889fe168ac910380d6f515912fe42c4c6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u122.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u122.jpg",
+      "sha256": "e4d04764240c492bf0023a55f439d80b4bab4422ca6576ba1bb89b5117a38fb8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u123.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u123.jpg",
+      "sha256": "779bc1cc9f3e2449698927e855e14edf972e4c2315f38019bc4499702efded56"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u124.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u124.jpg",
+      "sha256": "5eddc9fe0a1f8352bf1274fa30a4894d022db5cf77aeb42faeb9f9f93cf37a77"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u125.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u125.jpg",
+      "sha256": "86399460f237688c7ac792e2ab72740b0da64254f052d5c0a774cca7359dff41"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u126.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u126.jpg",
+      "sha256": "e42c678cac0b594511389c0860fe1a412a9fe8f0ecc346bb5b6d29103cb5fb41"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u127.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u127.jpg",
+      "sha256": "5d481dd0d44390c8328936dd0a49a4c19038e47e14bdb77232ac0a95c40a3dc8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u128.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u128.jpg",
+      "sha256": "e20c0c6e33ebd0fd8888cdddf5ee685a6725607515075d7e6579e8f655d1563d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u129.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u129.jpg",
+      "sha256": "423e6c2d63fbcf9cdf7453b56e4d039520c03c2951dc03940628cf8c2d415d7c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u130.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u130.jpg",
+      "sha256": "5a83a07735f513fee0904b28aa2305e6099f927d6bcf5abb24fc6b60c551acd5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u131.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u131.jpg",
+      "sha256": "603e8961e61213c77c0b4279e5038a16c5606e183e6b605b2fc9c41bfe191c57"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u132.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u132.jpg",
+      "sha256": "6a2f1f6e77c2ce30c5e98ce55539d39b75c9e23b742173a86b1abfea538c0322"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u133.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u133.jpg",
+      "sha256": "fa9a5757d7a1b6e62c8e057aad3ee645eeb6e5d2322d4efcb8ac19febc00e842"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u134.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u134.jpg",
+      "sha256": "62589fc16c0bcf95601748352add8ee6ccd069c3d6f8a2b9a86d935c9e069f72"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u135.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u135.jpg",
+      "sha256": "ccf550d87cc8d9ff64b0e2f5afc2efd87facc866ffb1917494c339b7a0772e9b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u136.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u136.jpg",
+      "sha256": "506efc19fc7daadaa636c485fbdb46475812d09b38986694c9080716d7f79a52"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u137.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u137.jpg",
+      "sha256": "1c2392a66af2f9756066fd97150027225029a70769a19f4739f44f450b6c8038"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/inputs/u138.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/inputs/u138.jpg",
+      "sha256": "a6ccde25937234a61d9733a3cdeb347d85b86004b62af42d61d207761894fba9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control01.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control01.jpg",
+      "sha256": "b4c9a6fb17b538d23293a574b32781efbc61beff410945094f733e6352d0f8a7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control02.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control02.jpg",
+      "sha256": "bd815e0f8b342396afa70d6495e0bb4809761d53bc22640fbab2fc98d39ae10e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control03.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control03.jpg",
+      "sha256": "129f3ed6892708e8defa69d72a404fc2386dec2e61c7999653f84cb17d1baaf5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control04.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control04.jpg",
+      "sha256": "51d93e15ac76d8cff67dad0d5ff42ca9a1dd8f9f5189c28ce3c1e65193327a21"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control05.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control05.jpg",
+      "sha256": "47355d18c263dc405cfe1d282c7bb904f69909d8b0573dcfc285d6ce2d5096c3"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control06.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control06.jpg",
+      "sha256": "5497ef7dbac12d4b19e4b95df3675fb7c04871d17c7c0886378e3fa00eb19a08"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control07.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control07.jpg",
+      "sha256": "f8e67c81b9f287114566c5eed5a31cc3f8f37316708981a7ba63929594b1625e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control08.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control08.jpg",
+      "sha256": "c4c98589ed77c4dd2b977d26a48c8b36c8107082517bbb3b34bba4db3c6e91b4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control09.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control09.jpg",
+      "sha256": "e3b9fde78a9845cf5289f6c9b5d05462746f39d405c09267e39be571ceec5a54"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control10.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control10.jpg",
+      "sha256": "ae6aed5cac9d7e696cde7fb2cfddf32592728029f430dd59adcd50a7003aa0e7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control11.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control11.jpg",
+      "sha256": "fead7685df29ebf2dfcbcd2a03e7a66f78e66e766e80928ce7fba02ec87be101"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/control12.jpg",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/control12.jpg",
+      "sha256": "61efb67d60f2ccc9b0a5c7fe4d8b45fd969f1f7a1fa8b14794f4908ff3f65625"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u001.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u001.png",
+      "sha256": "bf1adc67d804fefa763e75e8545525bcffc4b21b348504618ed6446917c6dea2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u002.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u002.png",
+      "sha256": "71dcd8255e8bfb20e52900419c5547de36e8899087823dd8ced7a230bb0de3c5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u003.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u003.png",
+      "sha256": "19bb22e4fd48092ff65d144f775f5b3551f7b5c443767fbbe0044ab6dd14adcc"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u004.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u004.png",
+      "sha256": "e5d7ca5386050c90c00e87e274e5e255556444254bb0afcb3764adbcd95fbf13"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u005.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u005.png",
+      "sha256": "bff2b76a911229f14482e36b5da8ff6e3f27aab1e0a6b90a8c4eed85837a69a1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u006.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u006.png",
+      "sha256": "f25a6fa10e5633c1f2588aa564b00f2e71feb64456e41b8819322c4bf2dc418c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u007.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u007.png",
+      "sha256": "aa392651dbd2ac130568faa76d74888e7a1616cfdd376b7ef97306b1a6dbe97a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u008.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u008.png",
+      "sha256": "7e1c9a8980bbedbc642432557b0eeed77eeefb32c3b7df046182f2dba68d0d84"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u009.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u009.png",
+      "sha256": "dc6e313caab3e225c6afb17cf3548a81d22b34a6a9ac8348294f3e539ea003de"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u010.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u010.png",
+      "sha256": "1073decfcb93d01dd4441ad748282f0ff75852c73373456e0f3d247e9b1c5bc8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u011.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u011.png",
+      "sha256": "e157391d54f835ca2db41619cb76bf7348658199f1cac7c63b598bbab747747d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u012.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u012.png",
+      "sha256": "6d6bef279d9e50d212c1e8d9ba3b3d83ffd2c55dd43d73f629fc471114d3d50a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u013.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u013.png",
+      "sha256": "34fb6edf54ffde98282c3b957855fc46002db55fc91ca2a990726a8eea3c25d5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u014.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u014.png",
+      "sha256": "5eecde5aad5163860ab4a36d753058d5d51afb210d680c952237c0c0e147e011"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u015.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u015.png",
+      "sha256": "81c971ff0775a7253c5161b523a081a13b626019a354e5174462b368f729c348"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u016.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u016.png",
+      "sha256": "374351fc66dda0b526ec36bce57f39d885ec8a3c09275389103044d05a840c9b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u017.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u017.png",
+      "sha256": "76e8cd0ff42fdcf571cec015430585cb0d5d88419019f499ed4e54f05fb0ddd9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u018.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u018.png",
+      "sha256": "3b769549121161b175ec6cee066c2dc2c91a4fdfaf6386a967f1c38568086dc0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u019.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u019.png",
+      "sha256": "74ee8037948154ff4c56c0e928f6e04bb6d0548090d561e7c9c232c64e10ff0a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u020.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u020.png",
+      "sha256": "b58584830878ed158f8125d4ebd9db4ea119cb51d06df752b39f0c764216f768"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u021.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u021.png",
+      "sha256": "8662579beb4983f9647822bd79747dc6cbaba198443ac735221f7d27b37b8523"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u022.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u022.png",
+      "sha256": "d506bd1f8ac56a0a2ff5f457b15f0b19411265f51b09c298fc04ee20fe4d138f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u023.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u023.png",
+      "sha256": "68dfb88cfcbb17ef4b4b4c9be7a1a35844a4b32dbfe69b58adc597d2e9ef97f8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u024.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u024.png",
+      "sha256": "5d90a461a80d8d23e773e377d7a8b591415626dfa4e34e4ec9dcee6efbc953e1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u025.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u025.png",
+      "sha256": "1f34b61074058f9af88d7ca4f99f8a9087727504978f3bb0c2904bab04b25eda"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u026.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u026.png",
+      "sha256": "9279524587c3ebe541bf3598d0d29f342bba5ac77dd47b9064b04b2ef48ec1b1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u027.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u027.png",
+      "sha256": "e6218311b26e5d3600d04ff65369c95acd796a53568dfa5fcc5ae83c969deca4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u028.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u028.png",
+      "sha256": "62f7356d062984f60e2c6efe88e8d0a511c2567c587c00a65e77b2d4b868ccae"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u029.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u029.png",
+      "sha256": "8d024e04b3948f12080e7671ad289f37ba597310e7853f6adcf01e3be7d24c49"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u030.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u030.png",
+      "sha256": "e741987079d51be6510f09c1521478b460d34be45a8c93d67f2a91b888b309dc"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u031.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u031.png",
+      "sha256": "14e28423bfc228136a42377fa329b2aa0ec721d967750a3df3279fc8c9906f1e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u032.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u032.png",
+      "sha256": "9d76f92febeca3814c4e9f40e04aec0d83e5a368da04671e78fb17c3b67c45a9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u033.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u033.png",
+      "sha256": "a81101cd5cc3b362f35f0111ac43166f53503581aba11af92702cfe107237dd2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u034.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u034.png",
+      "sha256": "77c34b16a32ffa3f1ae51a5c75518bf5a8dd595bf7efd74c93eb51e593ba3cb2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u035.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u035.png",
+      "sha256": "dcf316edf8a40614d8921eeaaebc6ea7702548dca67fa77c51a750d1b1491f32"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u036.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u036.png",
+      "sha256": "388277ba369711de7231575b83a4fa06b1ddbe76327b410fb94405cedc82cc66"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u037.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u037.png",
+      "sha256": "124866ca11fb19ffbe4b6fd4a9265c36e62f932607e23cb50da924c9bdaa6d45"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u038.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u038.png",
+      "sha256": "441d86ca7bf6d96b5a14ca13548509ba4b4c28ac6aa9b2dfe5d2c7a799458b37"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u039.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u039.png",
+      "sha256": "aeccf2051c4d13412861a552287f8508f4be5005808a6ae823b8bbe44afbb8c7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u040.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u040.png",
+      "sha256": "063664dbc50dd71b81c34e175620fe832eeaa9480a8634f7b746f65b3f321276"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u041.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u041.png",
+      "sha256": "1b1a326308c1eaa1fd49c396f9a94a68bc4746cba93d20a8e56a024564c24b48"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u042.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u042.png",
+      "sha256": "abf3071c4dc37655f45e68c6eb56fb5c1c35730427ee01425b121a4dc0c25549"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u043.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u043.png",
+      "sha256": "82d5b97486bcb461e93d4dcd18337410b9b14dcbd08a4186eef43e9e95ad0c99"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u044.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u044.png",
+      "sha256": "cecefa553a9b266e5aa9dbb117e2b64be97755c8cd42110105a8bf7fd5c7c53c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u045.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u045.png",
+      "sha256": "9483a09aecfdd250267b89a503c83a098b87ed6a465afd15e6db427191c01c90"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u046.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u046.png",
+      "sha256": "276628e1883df1d85bd23bb6db53fd587f51cc96d0bfa67243a94f1bb2162a57"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u047.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u047.png",
+      "sha256": "2820932fddd346b6f494aefe9cf915a187508b0c1981c0d9c957ff41134d1f9a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u048.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u048.png",
+      "sha256": "1fc1d06446192aff0de2d607ab7d1b53cb5f013c186f98677b903727c3bd5177"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u049.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u049.png",
+      "sha256": "d305dda22490cf47c588f6460579d17ed22d8332f5001007b5a9ee1747b853db"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u050.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u050.png",
+      "sha256": "f4c2792569ccdb22b780e31accff92ee64dfeae81690ad6c080169e62341ecd6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u051.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u051.png",
+      "sha256": "f733f445204a173bce1066cc70ba5875880b077e8b23a26566745e660552723a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u052.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u052.png",
+      "sha256": "bf71d5ca48846a8d890225e050708eec1d175bede5b728039120ff58b4221262"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u053.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u053.png",
+      "sha256": "d57d2e4da3e8a3f6d750f958f54089bef589dca35ebe636e329dd2719ff369c5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u054.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u054.png",
+      "sha256": "8f4acefa1778325090f83c436bf085578ce2b035583158e4be822916df97f7c3"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u055.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u055.png",
+      "sha256": "3945bce6d95e505e45460c25fd9b4010a68bd17a284fe738125038be9243fde5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u056.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u056.png",
+      "sha256": "9fd93dd8ad4786630792288b77afec24949c5e71be7eafd5c10981cbccf783c0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u057.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u057.png",
+      "sha256": "0505cc413098e5008d2fc0cde74cdea17a32008d20d6a29bda60ffaae11a53da"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u058.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u058.png",
+      "sha256": "04d0a7d5ae7c0729d74ae765e212e1b5208c955f09c4498ec166ab14ddc6439a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u059.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u059.png",
+      "sha256": "93badbe888c67e3a8ec95a5d4160566164823332c49d5e8b079cd551b9d65ab0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u060.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u060.png",
+      "sha256": "ed25634557e61c8cd1664d3efa31ab8cb3d1a4fb16d30a7fb3f260d6577f2dd4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u061.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u061.png",
+      "sha256": "55b999837701073a9bf2255d9b52e7b2b2ddd4ae3af323e8c09318f8722d3c86"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u062.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u062.png",
+      "sha256": "8448d6f949019c8b3044bb12e5e5da380242a1ef4b4e89df8d33cd59c2876fb0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u063.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u063.png",
+      "sha256": "5baab19f8f43be756c86850a79b02ad85ebe6323478ef12f5bd60f3a4d5586a6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u064.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u064.png",
+      "sha256": "16c595065b87bf69f69b6ce01095880cd38970cdd00617fb572a08f339e3dba5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u065.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u065.png",
+      "sha256": "6754af20494ca2bb7bd2cef6d63a8088f1bde993ac5ef7ecfa1fc58a397dce91"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u066.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u066.png",
+      "sha256": "a1cc4e91a3408cb389bdffb1910d2ed178d29f4319d4c24d284af1f5832b98de"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u067.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u067.png",
+      "sha256": "3e059d141baa1348d682e4e8e16caf54c616ca4a3d0cfd10be28a909f6f3eb73"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u068.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u068.png",
+      "sha256": "015a14bda87169f6953655f435e017e4a4d79bc6cb472192a5ab5b3e5e07d7a4"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u069.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u069.png",
+      "sha256": "795f7e32eaf889032a25c486d44f933a8f4e38a244659ec5ba93d356d8ba2934"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u070.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u070.png",
+      "sha256": "3b9539754222e249cceaa893ee3e14fd3c11a259d7f7b9a0cd40f5e6534b4543"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u071.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u071.png",
+      "sha256": "2fbbd297b91ba12110c3578f947b8e07f37852c56f03c7eaf8eed2a56e148264"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u072.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u072.png",
+      "sha256": "2c086af9f72c6ef1b7719317b1aef1a0120a3c30160345ea41e19b1d0b3896fa"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u073.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u073.png",
+      "sha256": "3a6e0853a6956cb8f6e02653211ce33ed569fb1ac9c83aeeb302606d0f28f037"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u074.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u074.png",
+      "sha256": "d776072dd3656628878facb88b713a727630b24b7ab78b57b71e34e66f356b0e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u075.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u075.png",
+      "sha256": "cfe04f9ede20479eec6ed6af87c29041177110345ebfdc9aeab739ef76c48b28"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u076.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u076.png",
+      "sha256": "ec958faa4f78a6a888726b36adcb74662dba9de6171ad911ff53b16bb2087ef0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u077.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u077.png",
+      "sha256": "755e70fabef72e82f3896a91cc6c57a002e6401e767776051917bd9b02d0039e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u078.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u078.png",
+      "sha256": "5bfb39cbf9a67c349ebf0e391a271a35529e2699c27bf7c825f103c2b12c493d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u079.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u079.png",
+      "sha256": "83e015af3f3e9aa3d342670cba65f27a99448663bcf2d16bf8280adaf135ef94"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u080.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u080.png",
+      "sha256": "3985fbfc6e84bbf62cd4105d7d7241c2abf22370a26a01f065deb20a0c81f60f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u081.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u081.png",
+      "sha256": "d27dec78efd98808f9caf1971e887a7e69a01d59bd6520ab17bd9ad430b7b276"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u082.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u082.png",
+      "sha256": "dd879b4501110188aa1436657281e26f53dbbbe891e7ebf71f2e4ae0aea7d3e9"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u083.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u083.png",
+      "sha256": "f5b27036c4e2a964f2b506878119dba18463a4b572ca159408c29b96b50df6ac"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u084.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u084.png",
+      "sha256": "1668f539b27c6e41150c7d943c328acee425ceb85e55a534bdc6abae75eef2ce"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u085.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u085.png",
+      "sha256": "e71881f869875cbe938535e876846c6b58417f3b225965ac2acb6b661418241e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u086.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u086.png",
+      "sha256": "5f534283f243642959db08381be1d0b3f4d09abb8d5173386e8f137a2bf8b7d6"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u087.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u087.png",
+      "sha256": "f307e5cbe208dfaf7cbac509252f9e6ff8d390e213e1122de8722c3ef1ae0959"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u088.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u088.png",
+      "sha256": "34bf93d3325d257804782be55a452347354f84e47a0358b1be2973f876681081"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u089.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u089.png",
+      "sha256": "019cee424ed4456cdb4ffc6f6250c1f68e701e2c5948a5088810268795051527"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u090.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u090.png",
+      "sha256": "0158e5cb39810cf6a473b52e4d99fd88ad668aa205047940d90d0c104963d23d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u091.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u091.png",
+      "sha256": "11b242fcafbc7629987478bd05101ef22e2a2ea029118bb355de0475f9c04ebb"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u092.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u092.png",
+      "sha256": "ffe87685f95b706e7a54ba20498658c0d3290a93ae2597f702e7be95f18bdf90"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u093.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u093.png",
+      "sha256": "b233f3743d6b5f2ca6070cdc5678e3891c89121eddf5ef6fb84ce92e304a29ba"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u094.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u094.png",
+      "sha256": "377cf732ca0ff2771ade2f22359c80883447b0ebd76a743e70f36feb9f9331f8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u095.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u095.png",
+      "sha256": "ce94debbf7b3518144fcdaf7ab9581732a08c08cc90a4175481960c06bfca945"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u096.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u096.png",
+      "sha256": "fc69f8fe3ebeebebe21f9c324f2564fb7ff9de4a15cc71475f42bbf8dac66bc2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u097.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u097.png",
+      "sha256": "2e3aa82cc272d6ca95912244682cfb7b6b78ce010c04beb5b3ce0da6472ce11b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u098.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u098.png",
+      "sha256": "d302697ea7e9ad7b3d3bd2dcfe4c38865609f8ffec23ada3fd0387bd79a7ca4d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u099.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u099.png",
+      "sha256": "71623b8a6b8d372ce75590da7282393b0d78e39aa811eafa48937147cf3208eb"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u100.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u100.png",
+      "sha256": "2492fd459fb13b356e5887ea2ed4fc484a57fa63608a10f679cc03824b2c44c3"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u101.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u101.png",
+      "sha256": "dafbac7cb5b5ba9c1943e74377885857394aeddceff81424096c143096fea8dc"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u102.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u102.png",
+      "sha256": "9ba630f8f08491f412eeb12489acf23911031c58a17e941aeeee94774aaa383e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u103.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u103.png",
+      "sha256": "3871b48be58a7c3cca4de55b808c1e842d5b54b7f7fb1680442beb82e5fbeae7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u104.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u104.png",
+      "sha256": "d3f5720beadaecba9c9f0ba51a4dfd7def4c7658e1e738544ca1817731d509c0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u105.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u105.png",
+      "sha256": "788720c30c31c4dda7ca88270178be6ccd4ae6383ceb6747d56b08dcd7c5ffe5"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u106.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u106.png",
+      "sha256": "3da567a0bdcb5ee40850c942a2111238a784ebc81a8c02e813abd985b5a1bc73"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u107.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u107.png",
+      "sha256": "acb139fd7af58f594919d927be6f37344ae9be032e5144093f1485eae892820e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u108.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u108.png",
+      "sha256": "fe2001ad4b804c5b67898bc146e9a906dec3cffd7c673fcf3532e5119c91a54f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u109.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u109.png",
+      "sha256": "68eae5183cb97bbc30e1bf5f24cc64a481dabe5473ccf1ad71e0e2925db22b77"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u110.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u110.png",
+      "sha256": "eca97f92aa8020168f0ffc09251688be75b5c85a6e64e0f8826172ddd542934e"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u111.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u111.png",
+      "sha256": "2486ea146ebd020df2e085eb57e0d2a3ea39537739439cd1771430a9dcba7517"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u112.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u112.png",
+      "sha256": "c65c600ee57d1982090630b747c1c6a6eba052f18a83bfb8872459880150542a"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u113.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u113.png",
+      "sha256": "67a3359857bc3fbbebd47b271b35e9bc65e1b332161f7e49375b463939b03532"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u114.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u114.png",
+      "sha256": "02ee5d9bf8983d197da86fc01990a9dd85dabb8b133cb66b4ff80b97f7b6dfc7"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u115.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u115.png",
+      "sha256": "ae643e4446898eb0c00cc015550e0fe8dda07f73cb2c56f423669c38f0d715ab"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u116.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u116.png",
+      "sha256": "d9df8e6726b8f7e3217bf1c5e886683baf7d39aacaffb78e6f98c462ba34eb16"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u117.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u117.png",
+      "sha256": "bbeb48a3fdbad0ae0ffddde41d2f978242fc6ea71db72997c7797fc6bab78ae2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u118.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u118.png",
+      "sha256": "f42394050f1cf2665b71772522a8f5a49b9f87d4fc02acdbb5af3e6aebdb92a2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u119.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u119.png",
+      "sha256": "f47242f84d4e510dd209a6b2ac6182bb74a75058f9091c81924e919da7e06523"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u120.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u120.png",
+      "sha256": "e2d5e41a72a8ee112daa6c51bacd1c94e45a1ed9a4b115dd6a20af07a3d2ee9f"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u121.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u121.png",
+      "sha256": "7e28c31b0b84580424907ab72dba113260edd6e5f402e8b519828c4ea2b85d37"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u122.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u122.png",
+      "sha256": "3c130313970d8ff44f3b8819855b29fd0f9ae95bec6f60dfbb2090056e5db10b"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u123.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u123.png",
+      "sha256": "b0bd3b04c57db03572730795a7902871dba77858884fc14d3a9225e9c1449487"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u124.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u124.png",
+      "sha256": "c7c63da693a6789468f4fd2da8efa8631002d6f41d865f068206ef49b0365620"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u125.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u125.png",
+      "sha256": "12663665822783f1cd05a02f094137f6133f2aefb655197845ad33f50cc872a2"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u126.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u126.png",
+      "sha256": "b39ca678b017c95a28babcfe3ec16f8092c279be2bb9cff525d2fca98facec63"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u127.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u127.png",
+      "sha256": "24fec0962bdb45c04c925d3d46eda3818d910ded9d4817427a5e70e6641e8de1"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u128.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u128.png",
+      "sha256": "b1c64bccf4e84aeea7c5a7ee4b8eb063ecad29271f0533051a74ad7416f4f648"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u129.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u129.png",
+      "sha256": "380fc07106b291054cc6b885d89007134f03792f033a932fc68d03be22e5f4cc"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u130.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u130.png",
+      "sha256": "af81df781549b721ef0696518927e3906c6a8b6b8c7427cc0c942c9100162b9d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u131.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u131.png",
+      "sha256": "30b1c6138e6d97afa6c088b6256bfc1085154b741b9e812474f3f5f0098fb72c"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u132.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u132.png",
+      "sha256": "ebfd97d4c6ff28dde3bb89207e87944915a3a9adca3b33eceb16d54bc110910d"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u133.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u133.png",
+      "sha256": "636a940e4b1c4c176bdd8bf162006e14fcbea762d8a9fbb5e665422098ee6cf8"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u134.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u134.png",
+      "sha256": "9231af07c0cb89248d1f3dbced711266a24b4455fb8d522092091a9ec458b3b0"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u135.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u135.png",
+      "sha256": "43655d47049e4f67aac6ea3bdff70bd9bb3f86e16b5de5a57bd247436cc58bfa"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u136.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u136.png",
+      "sha256": "52e051ae5405484559de8e5995b0d2a8fa6385ad50e3bf0da944358188bc5007"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u137.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u137.png",
+      "sha256": "6fc6ae2b41273daf7e93bac8e5ef7683f5dc72fdda5c2a8404b20f820304b9dc"
+    },
+    {
+      "path": "ee1-cmf-calibration-v052/originals/u138.png",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/ee1-cmf-calibration-v052/originals/u138.png",
+      "sha256": "724deed628ef9f62e9b6df411e748d36729e453cd2c3091b13f55422318f7600"
+    }
+  ]
+}

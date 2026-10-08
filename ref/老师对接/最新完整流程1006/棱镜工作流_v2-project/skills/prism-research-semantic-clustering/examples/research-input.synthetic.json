@@ -1,0 +1,160 @@
+{
+  "schema_version": "prism.research_semantic_input.v1",
+  "dataset_id": "synthetic:two-semantic-skills-v1",
+  "dataset_mode": "synthetic_fixture",
+  "people": [
+    {
+      "person_id": "P1",
+      "display_name": "虚构甲"
+    },
+    {
+      "person_id": "P2",
+      "display_name": "虚构乙"
+    },
+    {
+      "person_id": "P3",
+      "display_name": "虚构丙"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "S1",
+      "label": "虚构协议测试材料1",
+      "locator": "synthetic:document/1",
+      "evidence_kind": "synthetic_fixture"
+    },
+    {
+      "source_id": "S2",
+      "label": "虚构协议测试材料2",
+      "locator": "synthetic:document/2",
+      "evidence_kind": "synthetic_fixture"
+    },
+    {
+      "source_id": "S3",
+      "label": "虚构协议测试材料3",
+      "locator": "synthetic:document/3",
+      "evidence_kind": "synthetic_fixture"
+    }
+  ],
+  "units": [
+    {
+      "unit_id": "U1",
+      "person_id": "P1",
+      "source_id": "S1",
+      "page": 1,
+      "locator": "synthetic:P1/page/1",
+      "kind": "explicit_cmf_caption",
+      "attitude": "like",
+      "text": "我喜欢这块背板的深灰色和哑光表面。",
+      "scope": "这块背板",
+      "target_entity": "这块背板",
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U2",
+      "person_id": "P1",
+      "source_id": "S1",
+      "page": 2,
+      "locator": "synthetic:P1/page/2",
+      "kind": "explicit_cmf_caption",
+      "attitude": "dislike",
+      "text": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+      "scope": "这块背板及小边框",
+      "target_entity": "这块背板及小边框",
+      "contrast_or_limit_markers": [
+        "但"
+      ]
+    },
+    {
+      "unit_id": "U3",
+      "person_id": "P2",
+      "source_id": "S2",
+      "page": 3,
+      "locator": "synthetic:P2/page/3",
+      "kind": "explicit_cmf_caption",
+      "attitude": "like",
+      "text": "我喜欢这个深灰色哑光背板，看着比较安静。",
+      "scope": "这个背板",
+      "target_entity": "这个背板",
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U4",
+      "person_id": "P3",
+      "source_id": "S3",
+      "page": 4,
+      "locator": "synthetic:P3/page/4",
+      "kind": "explicit_cmf_caption",
+      "attitude": "like",
+      "text": "我更喜欢小边框有一点银色亮光。",
+      "scope": "小边框",
+      "target_entity": "小边框",
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U5",
+      "person_id": "P3",
+      "source_id": "S3",
+      "page": 5,
+      "locator": "synthetic:P3/page/5",
+      "kind": "brand_preference_or_impression",
+      "attitude": "document_recorded_favorite_context",
+      "text": "这个虚构品牌给我可靠、耐用的印象。",
+      "scope": "品牌印象",
+      "target_entity": "品牌印象",
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U6",
+      "person_id": "P3",
+      "source_id": "S3",
+      "page": 6,
+      "locator": "synthetic:P3/page/6",
+      "kind": "personal_identity_goal",
+      "attitude": "aspiration",
+      "text": "我希望别人觉得我是一个可靠的人。",
+      "scope": null,
+      "target_entity": null,
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U7",
+      "person_id": "P2",
+      "source_id": "S2",
+      "page": 7,
+      "locator": "synthetic:P2/page/7",
+      "kind": "elicited_concept_image_example",
+      "attitude": "neutral",
+      "text": "如果要举一个奢华的例子，我会想到金色宫殿。",
+      "scope": "被要求举例的概念",
+      "target_entity": "被要求举例的概念",
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U8",
+      "person_id": "P1",
+      "source_id": "S1",
+      "page": 8,
+      "locator": "synthetic:P1/page/8",
+      "kind": "explicit_cmf_caption",
+      "attitude": "dislike",
+      "text": "我不喜欢这个颜色。",
+      "scope": null,
+      "target_entity": null,
+      "contrast_or_limit_markers": []
+    },
+    {
+      "unit_id": "U9",
+      "person_id": "P1",
+      "source_id": "S1",
+      "page": 9,
+      "locator": "synthetic:P1/page/9",
+      "kind": "phone_preference_reason",
+      "attitude": "like",
+      "text": "同一款手机，我还是喜欢它不反光的背板。",
+      "scope": "同一款手机的背板",
+      "target_entity": "同一款手机的背板",
+      "contrast_or_limit_markers": []
+    }
+  ]
+}

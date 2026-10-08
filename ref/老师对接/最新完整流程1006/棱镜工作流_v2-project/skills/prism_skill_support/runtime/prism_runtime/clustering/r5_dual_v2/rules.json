@@ -1,0 +1,49 @@
+{
+  "version": "r5-dual-clustering-v2.0.0",
+  "phase": "rules_declared_before_new_image_execution",
+  "matching": "all_core_constraints_with_typed_exact_allowed_values",
+  "grouping": "one_overlapping_candidate_group_per_confirmed_pattern",
+  "ID": {
+    "minimum_core_parameters": 2,
+    "requires_form_structure_or_relation_core": true,
+    "allowed_bindings": [
+      "image_index",
+      "declared_location"
+    ],
+    "image_index_claim": "image_contains_recorded_ID_cues_not_a_reconstructed_object"
+  },
+  "CMF": {
+    "minimum_core_parameters": 2,
+    "minimum_core_axes": 2,
+    "allowed_bindings": [
+      "declared_location"
+    ],
+    "axes": [
+      "color",
+      "material_appearance",
+      "texture",
+      "gloss",
+      "other_visible_CMF"
+    ]
+  },
+  "unknowns": "not_positive_not_equal_not_absence; relevant_local_pending_blocks_core; unrelated_issues_retained",
+  "negative_policy": "known_forbidden_excludes; missing_or_pending_coverage_is_boundary; deferred_and_not_applicable_require_explicit_reason",
+  "quality_policy": "trend_purpose_gate_is_separate_for_ID_and_CMF; missing_is_pending; research_is_not_quality_eliminated",
+  "ranking": [
+    "confirmed_support_parameter_count_desc",
+    "shared_recorded_parameter_count_desc",
+    "image_sha256_asc",
+    "image_id_asc",
+    "location_label_asc"
+  ],
+  "main_image": "first_ranked_quality_scoped_reference_as_candidate_pending_Root_original_image_review",
+  "secondary_images": "ranked_remaining_distinct_image_hashes_allowed_as_support",
+  "same_product_required": false,
+  "single_cluster_per_image_required": false,
+  "unique_image_count_basis": "original_image_sha256",
+  "numeric_distance_or_fuzzy_semantic_mapping": false,
+  "crop_or_geometry_generation": false,
+  "product_approval": false,
+  "whole_image_review_required": false,
+  "main_secondary_roles": "display_recommendations_not_new_quality_or_final_usage_approval"
+}

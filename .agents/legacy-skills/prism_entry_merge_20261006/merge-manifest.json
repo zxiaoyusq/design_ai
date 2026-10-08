@@ -1,0 +1,73 @@
+{
+  "version": "skill-entry-consolidation-20261006",
+  "replacements": {
+    "prism-visual-material-planning": [
+      "prism-visual-family",
+      "prism-source-image-selection"
+    ],
+    "prism-reference-image-preparation": [
+      "prism-target-view-binding",
+      "prism-target-quality",
+      "prism-crop-enhancement"
+    ],
+    "prism-visual-grouping": [
+      "prism-id-moodboard",
+      "prism-cmf-moodboard"
+    ]
+  },
+  "retired_entry_records": [
+    {
+      "old_name": "prism-visual-family",
+      "new_entry": "prism-visual-material-planning",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-visual-family",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-visual-family",
+      "skill_sha256": "bb67c7e366ed2f4c22cb74d3e52c5db443fbd029979e3a2bfbe74ce4dafaaae3"
+    },
+    {
+      "old_name": "prism-source-image-selection",
+      "new_entry": "prism-visual-material-planning",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-source-image-selection",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-source-image-selection",
+      "skill_sha256": "4cca217efa102cca72589bb9aa64c9ab72dcfa00e14b31f9c7d81abad1140297"
+    },
+    {
+      "old_name": "prism-target-view-binding",
+      "new_entry": "prism-reference-image-preparation",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-target-view-binding",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-target-view-binding",
+      "skill_sha256": "a81cfacba49bffb396c5fb177309e0ea03be37e1cdcbc9b0e2ef677dd12e42f0"
+    },
+    {
+      "old_name": "prism-target-quality",
+      "new_entry": "prism-reference-image-preparation",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-target-quality",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-target-quality",
+      "skill_sha256": "459d45972c14091660eec25165588afefaf3ac3fcf357490a2323229c9308672"
+    },
+    {
+      "old_name": "prism-crop-enhancement",
+      "new_entry": "prism-reference-image-preparation",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-crop-enhancement",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-crop-enhancement",
+      "skill_sha256": "7dbbb11f5a1d77f003d1f1479dcb062243ac349d52557d98abbb6c0f78c91682"
+    },
+    {
+      "old_name": "prism-id-moodboard",
+      "new_entry": "prism-visual-grouping",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-id-moodboard",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-id-moodboard",
+      "skill_sha256": "c5c7749c1ee9fb8f2591172ee9b07a7e05caec98abb88bd8d77d1cb8f79b7fa3"
+    },
+    {
+      "old_name": "prism-cmf-moodboard",
+      "new_entry": "prism-visual-grouping",
+      "original_active_link": "../../ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-cmf-moodboard",
+      "internal_upstream": "/root/dev/work/design_ai/ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/skills/prism-cmf-moodboard",
+      "skill_sha256": "6a2be87d5513e4678957a4857284695e4a677cbdf3687c8c85f537acd99384f2"
+    }
+  ],
+  "main_canonical_skill_count": 13,
+  "native_implementations_changed": false,
+  "new_model_calls": 0,
+  "historical_outputs_changed": false
+}

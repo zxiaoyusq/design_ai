@@ -1,0 +1,94 @@
+{
+  "suite_id": "prism-six-card-skill-suite",
+  "version": "1.0.0",
+  "skills": [
+    {
+      "name": "prism-workflow",
+      "title": "棱镜流程编排",
+      "description": "按分工编排趋势与用研语义握手、选图、DNA和ID/CMF情绪卡，维护范围、证据与增量状态。用于端到端棱镜任务或恢复已有运行；具体算法由对应小Skill执行。",
+      "entry": "skills/prism-workflow/SKILL.md"
+    },
+    {
+      "name": "prism-research-intake",
+      "title": "用研原始证据入库",
+      "description": "从受访者报告提取文字、图片出现位置和原始来源，区分问题、选项、回答与分析笔记。用于用研报告入库；不替代语义聚类或从图片猜偏好。",
+      "entry": "skills/prism-research-intake/SKILL.md"
+    },
+    {
+      "name": "prism-research-semantic-clustering",
+      "title": "用研偏好：纯语义聚类",
+      "description": "将用研原话按含义归纳为偏好主题、单人线索与设计议题，保留正反态度、对象范围和来源。用于用研偏好纯语义聚类；不用于图片聚类、DNA解析、趋势排名或市场比例推断。",
+      "entry": "skills/prism-research-semantic-clustering/SKILL.md"
+    },
+    {
+      "name": "prism-trend-semantic-clustering",
+      "title": "趋势文字聚类与规模排名",
+      "description": "对全量趋势文章的标题摘要标签作语义归组，独立检查主方向文字支持并输出库内规模排名及H01接口。用于趋势文字库；不看图片做归类、不把篇数解释为市场热度。",
+      "entry": "skills/prism-trend-semantic-clustering/SKILL.md"
+    },
+    {
+      "name": "prism-h01-semantic-handshake",
+      "title": "趋势与用研：第一次语义握手",
+      "description": "对齐趋势语义簇与用研语义簇，完成第一次握手，输出可选择的方向、双侧原文依据、条件和完整负向审计。用于H01语义候选筛选；不做图片解析、高级感、H02视觉握手或情绪板。",
+      "entry": "skills/prism-h01-semantic-handshake/SKILL.md"
+    },
+    {
+      "name": "prism-visual-family",
+      "title": "语义方向到可见家族",
+      "description": "将已选H01问题转成可见的ID或CMF设计关系、比较尺度和候选材料范围。用于视觉方向定义与设计师参考校准；不改用研票、不把语义主题当现成视觉风格。",
+      "entry": "skills/prism-visual-family/SKILL.md"
+    },
+    {
+      "name": "prism-source-image-selection",
+      "title": "原图召回与目标选择",
+      "description": "依据已选视觉家族从趋势全库检索、查看原图并确定每来源的目标和备选，维护项目/文章/图片身份。用于选图及来源去重；不授予DNA或品质通过。",
+      "entry": "skills/prism-source-image-selection/SKILL.md"
+    },
+    {
+      "name": "prism-target-quality",
+      "title": "指定目标用途品质",
+      "description": "对已选原图目标检查可读性和具体可复用的设计关系，并独立核对证据归属。用于ID/CMF用途筛查；不以此推断奢华档次、用户喜好或整板一致性。",
+      "entry": "skills/prism-target-quality/SKILL.md"
+    },
+    {
+      "name": "prism-dna-sol-r5",
+      "title": "Sol R5 · 图片DNA解析",
+      "description": "使用冻结的Sol R5规则解析单张图片的ID与CMF可见特征，保留局部位置、未知和原始证据；适用于选定方向后的DNA提取及有界难项复核，不做主题握手、偏好判断或高级感筛查。",
+      "entry": "skills/prism-dna-sol-r5/SKILL.md"
+    },
+    {
+      "name": "prism-target-view-binding",
+      "title": "DNA目标绑定与可逆取景",
+      "description": "把原DNA已知位置绑定到选定对象，确定ID整体或CMF局部视窗并核对实际显示。用于解析后范围绑定；不创建新DNA、不用后期增强证据补齐不可见特征。",
+      "entry": "skills/prism-target-view-binding/SKILL.md"
+    },
+    {
+      "name": "prism-id-moodboard",
+      "title": "ID整体形态第二次握手",
+      "description": "按选定视觉家族比较完整对象的轮廓、比例、构造与主次，完成ID第二次视觉选组及整板复核。用于整体风格情绪卡；不把CMF局部或共同功能当成整体一致。",
+      "entry": "skills/prism-id-moodboard/SKILL.md"
+    },
+    {
+      "name": "prism-cmf-moodboard",
+      "title": "CMF表面细节第二次握手",
+      "description": "按选定家族比较同尺度的色域、表面、肌理、光感或局部界面，完成CMF视觉选组和整板审阅。用于局部CMF情绪卡；不把同题材、同颜色或真实工艺猜测当一致性。",
+      "entry": "skills/prism-cmf-moodboard/SKILL.md"
+    },
+    {
+      "name": "prism-moodboard-delivery",
+      "title": "图板审阅与离线交付",
+      "description": "整合ID/CMF图板、真实审阅状态、原图与取景，输出内嵌图片的离线HTML和可追溯交接包。用于结果交付和工作量说明；不生成新设计图或把包装成功当算法合格。",
+      "entry": "skills/prism-moodboard-delivery/SKILL.md"
+    }
+  ],
+  "shared_resource_directory": "skills/prism_skill_support",
+  "reused_portable_skills": [
+    "prism-research-semantic-clustering",
+    "prism-h01-semantic-handshake",
+    "prism-dna-sol-r5"
+  ],
+  "contains_raw_interviews": false,
+  "contains_account_credentials": false,
+  "automatic_model_execution": false,
+  "proposed_optimizations_are_not_claimed_verified": true
+}

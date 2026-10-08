@@ -1,0 +1,6 @@
+interface:
+  display_name: "高潜趋势 · 用研与趋势握手"
+  short_description: "结合用研聚类和趋势聚类筛选高潜设计方向，保留证据、条件与反向偏好"
+  default_prompt: "使用 $prism-h01-semantic-handshake，读取已完成的用研和趋势聚类，进行第一次语义握手并输出待确认的高潜设计方向。"
+policy:
+  allow_implicit_invocation: true

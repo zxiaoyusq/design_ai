@@ -1,0 +1,4 @@
+interface:
+  display_name: "视觉选组"
+  short_description: "在冻结条件下按ID整体或CMF表面独立选组，保留真实成员、排除理由和待审板缺口"
+  default_prompt: "使用 $prism-visual-grouping 按当前ID或CMF分支读取单图复核资料，输出原生选组结果与待审板。"

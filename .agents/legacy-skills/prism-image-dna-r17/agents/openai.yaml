@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜 · 图片DNA与局部CMF"
+  short_description: "提取或复核棱镜原图的对象、区域和DNA，并按冻结R17及local_cmf规则验收可用局部；用于图片解析和定点"
+  default_prompt: "使用 $prism-image-dna 处理当前职责范围的材料，记录真实输入输出和未决项。"

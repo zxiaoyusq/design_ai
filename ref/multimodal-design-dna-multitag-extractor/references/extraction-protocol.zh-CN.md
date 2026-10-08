@@ -44,6 +44,8 @@
 
 字段身份、类型、证据模式、profile、视角与派生依赖以 `field-registry.json` 为准，enum/multi_label 值域以知识库为准。模型每项只记录规范 `field_id`、值、可见描述、区域、可观察性、置信度和原始证据引用；名称、路径、类型、证据模式、计算状态和模块归属由宿主补全。
 
+知识库中的细节示例只用于已有 `raw_visual_description`：选有辨识价值且看得清的细节简述，不逐项补齐、不新增键或枚举。`value` 仍须独立满足原字段语义和值域；无法匹配时省略该字段，不借描述强配旧值。相关事实可留在其他语义匹配且有合法值的观察描述中；确有独立缺口再按步骤 F 提议候选。
+
 - `applicability_status` 表示品类或 profile 是否适用；
 - `observability` 表示输入是否可见；
 - `computation_status` 表示非直接字段能否计算；

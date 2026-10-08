@@ -1,0 +1,16 @@
+[
+  {
+    "input_key": "research_input",
+    "original_resolved": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\inputs\\research-input.synthetic.json",
+    "original_exists": true,
+    "frozen_resolved_by_documented_rule": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\run\\inputs\\research-input.synthetic.json",
+    "frozen_exists": false
+  },
+  {
+    "input_key": "trend_articles",
+    "original_resolved": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\inputs\\articles.synthetic.json",
+    "original_exists": true,
+    "frozen_resolved_by_documented_rule": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\forward-test\\new-project\\run\\inputs\\articles.synthetic.json",
+    "frozen_exists": false
+  }
+]

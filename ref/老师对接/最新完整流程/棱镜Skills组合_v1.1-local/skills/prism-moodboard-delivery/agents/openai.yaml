@@ -1,0 +1,4 @@
+interface:
+  display_name: "图板审阅与离线交付"
+  short_description: "图板审阅与离线交付：保留来源边界，按当前任务执行并交接可追溯结果"
+  default_prompt: "使用 $prism-moodboard-delivery 处理当前项目资料，并保留实际输入、判断和交接边界。"

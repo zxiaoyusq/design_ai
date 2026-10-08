@@ -1,0 +1,50 @@
+{
+  "baseline_id": "sol-coverage-dna-r5-20260929",
+  "model": "gpt-6-sol",
+  "reasoning_effort": "low",
+  "service_tier_requested": "default",
+  "fast_mode": false,
+  "algorithm_sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf",
+  "prompt_sha256": "cc32895b670d1cc2f41a82ecf34db551f015ae4e328a3da07beaef74201c0dae",
+  "schema_sha256": "2bcb2dabc6d8d81434eb8275a645e01c257b57dcc7d27abc6a7bfa5a0fd9c326",
+  "dictionary_sha256": "16c8ce855e8cd080b97fab7ed4c62b74e404436b25691101acd615f261fe9f50",
+  "representation": "flat_appearance_areas_and_image_feature_index",
+  "has_bounding_boxes_or_object_tree": false,
+  "runtime_few_shot": false,
+  "view_rule_from_r3": {
+    "EXCLUSIONS": {
+      "REL-012": "有序对象ID关系，不是独立视觉特征",
+      "REL-018": "区域引用，不是独立视觉特征",
+      "TXT-013": "符号来源需原文语境",
+      "EMI-014": "发光实现来源需源文件或产品资料"
+    },
+    "SHARED": [
+      "GEO-019",
+      "REL-009",
+      "REL-010",
+      "REL-011",
+      "REL-017",
+      "REL-021",
+      "STR-007",
+      "STR-011",
+      "STR-013",
+      "STR-019"
+    ],
+    "NON_FEATURE": [
+      "not_applicable",
+      "unknown",
+      "不可辨",
+      "不适用",
+      "其他",
+      "无",
+      "无后方内容",
+      "无明显",
+      "无明显形变",
+      "无独立罩层",
+      "未知",
+      "未观察",
+      "自定义"
+    ]
+  },
+  "binding_role": "Portable baseline configuration only; no previous human permission or account is inherited."
+}

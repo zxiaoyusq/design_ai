@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜 · 用研纯语义聚类"
+  short_description: "从用研原话归纳偏好主题，保留对象、正反态度、来源与按人去重统计"
+  default_prompt: "请使用 $prism-research-semantic-clustering 处理我提供的资料，保留原始证据并给出可复查的结果。"

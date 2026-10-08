@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜 · Sol R5 DNA解析"
+  short_description: "按冻结R5规则解析选定图片的ID与CMF，保留局部位置、未知和有界复核记录"
+  default_prompt: "使用 $prism-dna-sol-r5 解析我指定的图片，使用Sol low、标准档并关闭Fast，输出ID与CMF特征及未决项。"

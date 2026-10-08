@@ -1,0 +1,14 @@
+{
+  "project_id": "new-prism-project",
+  "design_question": "请按本次设计项目填写，不沿用旧六卡题目",
+  "input_paths": {"research_reports": "./inputs/research", "trend_articles": "./inputs/articles.json"},
+  "requested_direction_count": null,
+  "branches": ["ID", "CMF"],
+  "quantity_policy": {"target": 10, "native_minimum": null, "maximum": 12, "basis": "目标约10；是否硬下限在新项目登记，不能从历史示例自动继承"},
+  "model_policy": {"model": "gpt-6-sol", "reasoning_effort": "low", "service_tier_requested": "default", "fast_mode": false},
+  "execution_authorization": {"allowed": false, "basis": "当前任务的明确授权尚未登记", "maximum_attempts_per_request": 1},
+  "human_confirmation": {"actor_kind": "human", "AI_delegation_confirmed_for_this_project": false},
+  "strategy_version": "documented-six-card-workflow-v1",
+  "optional_proposed_preDNA_preboard_gate": false,
+  "note": "配置示例，不是可冒充用户选择或模型执行的回执"
+}

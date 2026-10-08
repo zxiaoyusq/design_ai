@@ -1,0 +1,72 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "same_person_repeat_does_not_add_support",
+      "passed": true
+    },
+    {
+      "name": "unclustered_negative_retained_in_coverage",
+      "passed": true
+    },
+    {
+      "name": "brand_and_example_not_direct_design_votes",
+      "passed": true
+    },
+    {
+      "name": "full_negative_degree_and_exception_survive",
+      "passed": true
+    },
+    {
+      "name": "rewritten_quote_rejected",
+      "passed": true
+    },
+    {
+      "name": "negative_to_positive_rejected",
+      "passed": true
+    },
+    {
+      "name": "background_to_design_vote_rejected",
+      "passed": true
+    },
+    {
+      "name": "concept_example_to_support_rejected",
+      "passed": true
+    },
+    {
+      "name": "missing_unit_coverage_rejected",
+      "passed": true
+    },
+    {
+      "name": "stale_input_binding_rejected",
+      "passed": true
+    },
+    {
+      "name": "coverage_and_membership_disagreement_rejected",
+      "passed": true
+    },
+    {
+      "name": "negative_disappears_as_generic_reference_rejected",
+      "passed": true
+    },
+    {
+      "name": "duplicate_member_rejected",
+      "passed": true
+    },
+    {
+      "name": "duplicate_source_unit_rejected",
+      "passed": true
+    },
+    {
+      "name": "complete_result_replays",
+      "passed": true
+    },
+    {
+      "name": "tampered_result_rejected",
+      "passed": true
+    }
+  ],
+  "passed": 16,
+  "model_calls": 0,
+  "semantic_accuracy_proven": false
+}

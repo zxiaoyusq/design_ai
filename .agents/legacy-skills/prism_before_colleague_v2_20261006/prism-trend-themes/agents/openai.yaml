@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜 · 多篇共识审美趋势"
+  short_description: "从文章标题与摘要寻找多篇共同支持的审美趋势，最多输出100条，单篇线索单独留档"
+  default_prompt: "使用 $prism-trend-themes 对 ref/趋势信息0930.xlsx 做纯文本审美趋势聚类，优先复用已有要点，寻找多篇共同主题，最终不超过100条；默认每条至少3个去重来源组，单篇线索进入证据池，不读取图片。"

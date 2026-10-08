@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "recorded_at": "2026-10-02T22:15:35.665793+08:00",
+  "skill_structure": {
+    "official_quick_validate": 13,
+    "all_entrypoint_links_resolve": true,
+    "maximum_SKILL_lines": 65
+  },
+  "offline_checks": {
+    "research_boundaries": 16,
+    "H01_boundaries": 20,
+    "native_ID": 15,
+    "native_CMF": 20,
+    "native_exact_byte_alias": 8,
+    "portable_helpers": 20,
+    "R5_saved_response_replay_passed": true
+  },
+  "relocation": {
+    "Chinese_and_spaces_path_tested": true,
+    "imports_from_relocated_suite_verified": true,
+    "R5_replay_passed": true,
+    "research_H01_replay_passed": true,
+    "native_ID_CMF_and_alias_passed": true,
+    "source_machine_workspace_not_required": true
+  },
+  "browser": {
+    "catalogue_skills": 13,
+    "catalogue_horizontal_overflow": false,
+    "fixture_tiles": 1,
+    "fixture_loaded": 1,
+    "modal_open_and_original_loaded": true,
+    "ROI_displayed": true,
+    "external_HTTP_resources": 0,
+    "Root_actually_viewed_screenshots": true
+  },
+  "repair_notes": [
+    {
+      "issue": "Synthetic PNG fixture had invalid CRC",
+      "repair": "Replaced only synthetic fixture bytes with a CRC-valid one-pixel PNG and added corrupt-image rejection check. Source images/quality expectations unchanged."
+    },
+    {
+      "issue": "Two alias negative-case files exceeded Windows path length during relocation suite",
+      "repair": "Only test artifact filenames shortened using a stable digest; predicates unchanged; all8 alias tests re-passed. ID15 and CMF20 passed in that relocated run."
+    },
+    {
+      "issue": "HTML renderer emitted a literal newline inside JavaScript text join",
+      "repair": "Changed text join to String.fromCharCode(10); actual browser rechecked one embedded image, modal and original ROI."
+    }
+  ],
+  "new_inference_or_paid_API_batches": 0,
+  "tests_are_not_new_visual_accuracy": true,
+  "skills_installed_into_user_live_environment": false,
+  "test_installation_only_inside_output_workspace": true,
+  "private_interviews_and_account_data_packaged": false
+}

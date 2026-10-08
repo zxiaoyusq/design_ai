@@ -1,0 +1,87 @@
+[
+  {
+    "step": "00",
+    "skill": "prism-run-contract",
+    "title": "范围与运行约定"
+  },
+  {
+    "step": "01",
+    "skill": "prism-research-intake",
+    "title": "用研证据入库"
+  },
+  {
+    "step": "02A",
+    "skill": "prism-research-semantic-clustering",
+    "title": "用研纯语义聚类"
+  },
+  {
+    "step": "02B",
+    "skill": "prism-trend-semantic-clustering",
+    "title": "趋势纯语义聚类"
+  },
+  {
+    "step": "03",
+    "skill": "prism-h01-semantic-handshake",
+    "title": "第一次语义握手"
+  },
+  {
+    "step": "04",
+    "skill": "prism-direction-selection",
+    "title": "设计选向"
+  },
+  {
+    "step": "05",
+    "skill": "prism-visual-family",
+    "title": "可见关系与选材说明"
+  },
+  {
+    "step": "06",
+    "skill": "prism-source-image-selection",
+    "title": "广候选池与素材计划"
+  },
+  {
+    "step": "07",
+    "skill": "prism-dna-sol-r5",
+    "title": "Sol R5原图DNA"
+  },
+  {
+    "step": "08",
+    "skill": "prism-target-view-binding",
+    "title": "当前对象与位置绑定"
+  },
+  {
+    "step": "09",
+    "skill": "prism-target-quality",
+    "title": "当前目标品质"
+  },
+  {
+    "step": "10A",
+    "skill": "prism-id-moodboard",
+    "title": "ID第二次握手"
+  },
+  {
+    "step": "10B",
+    "skill": "prism-cmf-moodboard",
+    "title": "CMF第二次握手"
+  },
+  {
+    "step": "11",
+    "skill": "prism-crop-enhancement",
+    "title": "裁切与展示增强"
+  },
+  {
+    "step": "12",
+    "skill": "prism-board-review",
+    "title": "整板独立审阅"
+  },
+  {
+    "step": "13",
+    "skill": "prism-moodboard-delivery",
+    "title": "离线交付"
+  },
+  {
+    "step": "贯穿",
+    "skill": "prism-independent-evaluation-loop",
+    "title": "独立评估与定点改良"
+  }
+]

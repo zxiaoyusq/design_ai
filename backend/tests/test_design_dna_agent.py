@@ -3,13 +3,15 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from deepagents.middleware.filesystem import FilesystemPermission
+from deepagents.middleware.filesystem import FilesystemMiddleware, FilesystemPermission
+from langchain_core.utils.function_calling import convert_to_openai_tool
 
 from app.agents.design_dna_extractor import (
     AGENT_SYSTEM_PROMPT,
     BOUND_SKILL_NAME,
     SKILLS_SOURCE,
     create_design_dna_agent,
+    create_style_semantic_review_agent,
     preloaded_skill_context,
     resolve_applicable_design_fields,
 )
@@ -63,6 +65,66 @@ class DesignDnaAgentTestCase(unittest.TestCase):
             "/ref/multimodal-design-dna-extractor/**",
             permissions[0].paths,
         )
+        filesystem_middleware = agent_factory.call_args.kwargs["middleware"][0]
+        self.assertIsInstance(filesystem_middleware, FilesystemMiddleware)
+        self.assertEqual(
+            [tool.name for tool in filesystem_middleware.tools],
+            ["read_file"],
+        )
+
+    @patch("app.agents.design_dna_extractor.create_deep_agent")
+    @patch("app.agents.design_dna_extractor.create_chat_model")
+    def test_restricted_filesystem_tools_are_provider_independent(
+        self,
+        _model_factory: Mock,
+        agent_factory: Mock,
+    ) -> None:
+        model_ids = (
+            "claude-opus-5-20260820",
+            "gpt-6-sol",
+            "gemini-3.7-flash",
+        )
+
+        for model_id in model_ids:
+            with self.subTest(model_id=model_id):
+                create_design_dna_agent(model_id)
+                middleware = agent_factory.call_args.kwargs["middleware"][0]
+                self.assertEqual(
+                    [tool.name for tool in middleware.tools],
+                    ["read_file"],
+                )
+
+    @patch("app.agents.design_dna_extractor.create_deep_agent")
+    @patch("app.agents.design_dna_extractor.create_chat_model")
+    def test_exposed_tool_properties_have_explicit_schema_types(
+        self,
+        _model_factory: Mock,
+        agent_factory: Mock,
+    ) -> None:
+        create_design_dna_agent("gemini-3.7-flash")
+        filesystem_tools = agent_factory.call_args.kwargs["middleware"][0].tools
+        exposed_tools = [*filesystem_tools, resolve_applicable_design_fields]
+
+        for exposed_tool in exposed_tools:
+            schema = convert_to_openai_tool(exposed_tool)["function"]["parameters"]
+            for property_name, property_schema in schema["properties"].items():
+                with self.subTest(
+                    tool=exposed_tool.name,
+                    property=property_name,
+                ):
+                    self.assertIn("type", property_schema)
+
+    @patch("app.agents.design_dna_extractor.create_deep_agent")
+    @patch("app.agents.design_dna_extractor.create_chat_model")
+    def test_style_review_agent_also_excludes_incompatible_filesystem_tools(
+        self,
+        _model_factory: Mock,
+        agent_factory: Mock,
+    ) -> None:
+        create_style_semantic_review_agent("gemini-3.7-flash")
+
+        middleware = agent_factory.call_args.kwargs["middleware"][0]
+        self.assertEqual([tool.name for tool in middleware.tools], ["read_file"])
 
     @patch("app.agents.design_dna_extractor.create_deep_agent")
     @patch("app.agents.design_dna_extractor.create_chat_model")
@@ -71,7 +133,7 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         model_factory: Mock,
         _agent_factory: Mock,
     ) -> None:
-        create_design_dna_agent("gpt-5.6-sol")
+        create_design_dna_agent("gpt-6-sol")
 
         self.assertNotIn("max_tokens", model_factory.call_args.kwargs)
 

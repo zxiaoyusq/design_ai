@@ -1,0 +1,4 @@
+interface:
+  display_name: "用研语义 v2 兼容入口"
+  short_description: "按同事 v2 原生规则执行，保留真实来源与独立审阅，网页仅作结果格式映射"
+  default_prompt: "使用 $user-research-design-clusterer 按同事 v2 基准处理当前项目并保留原始证据。"

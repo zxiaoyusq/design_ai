@@ -90,3 +90,16 @@ conda run -n 314 python backend/scripts/download_trend_images.py \
 ```
 
 此时图片写入 `data/trend_data/images/<趋势ID>/`，新版 JSON 中的 `local_path` 为相对其所在目录的 `../images/<趋势ID>/...`。图片编号、顺序与原始 URL 保持原样，同时更新 JSONL 和下载报告；运行前将旧索引备份到该数据集的 `backups/<时间戳>/`。重复运行复用有效图片，下载成功后清除旧失败信息。不凭其他目录中的相似文件名猜测 URL 对应关系。
+
+## 趋势信息 0930 全量图片
+
+`ref/趋势信息0930.xlsx` 使用独立脚本 `backend/scripts/download_trend_excel_images.py`。它只读取文章 `id`、标题及 `image_url`，按完整 URL 去重后创建一个下载任务，再把结果关联回每篇文章的全部原始图片位置；网络瞬时错误按 `--retries` 限次重试。不解析图片以外字段，也不调用模型。
+
+```bash
+conda run -n 314 python -B backend/scripts/download_trend_excel_images.py --dry-run
+conda run -n 314 python -B backend/scripts/download_trend_excel_images.py
+```
+
+图片仍存于共享 `data/trend_data/images/<文章ID>/`，新索引在 `data/trend_data/trend_info_0930/`。旧索引链接先按 URL 查找并校验 SHA-256 与可解码性；下载器还会复用共享目录中相同 ID、序号和 URL 哈希且通过图片校验的文件。每 100 个新 URL 写一次 `download-checkpoint.jsonl` 和进度；中断后用 `--resume` 续跑。`--retry-transient-failures` 仅与 `--resume` 一起使用，会重试超时、连接故障和 408/429/5xx，不重试明确的 404 或超大小限制。
+
+本轮 8,833 篇文章共 45,531 个图片引用、44,825 个去重 URL。复用旧索引 3,194 个 URL、复用共享图片目录中另 329 个有效文件；最终 44,800 个唯一 URL 成功，25 个失败，45,506 个文章图片引用具有本地文件。详情及错误原因见 `data/trend_data/trend_info_0930/download_report.json`，中断/完成状态见 `completion.json`。

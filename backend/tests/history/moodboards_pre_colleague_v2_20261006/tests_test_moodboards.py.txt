@@ -1,0 +1,564 @@
+"""用微型 DNA 文本和假模型验证真实 DeepAgents/API，不读取图片或调用付费服务。"""
+
+from copy import deepcopy
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from fastapi.testclient import TestClient
+from langchain_core.language_models.fake_chat_models import FakeMessagesListChatModel
+from langchain_core.messages import AIMessage
+from pydantic import Field
+
+from app.main import app
+from app.schemas.moodboards import MoodboardRequest
+from app.services.moodboards.tasks import (
+    MoodboardManager, dna_projection, read, resolve_pointer, validate_assignments, validate_clusters,
+    validate_clustering,
+)
+from app.agents.moodboard_generator import stage_prompt
+
+
+class TextFixtureModel(FakeMessagesListChatModel):
+    """保留真实 Agent 执行图，只替换模型响应并检查发送的消息。"""
+
+    requests: list = Field(default_factory=list)
+
+    def bind_tools(self, tools, **kwargs):
+        if tools:
+            raise AssertionError("情绪版模型不应获得图片、文件或委派工具")
+        return self
+
+    def _generate(self, messages, stop=None, run_manager=None, **kwargs):
+        self.requests.append(messages)
+        return super()._generate(messages, stop=stop, run_manager=run_manager, **kwargs)
+
+
+class MoodboardTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        # 历史恢复测试必须使用旧冻结协议，不随仓库中 Skill 升级改变测试含义。
+        self.skill_file = self.root / "SKILL.md"
+        self.skill_file.write_text("legacy moodboard fixture")
+        patcher = patch("app.services.moodboards.tasks.SKILL_FILE", self.skill_file)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.trend_id = "web_" + "a" * 32
+        self.directions = [
+            {"id": "D1", "title": "柔和哑光", "description": "柔和触感与低反射表面"},
+            {"id": "D2", "title": "几何秩序", "description": "清晰轮廓和规则节奏"},
+        ]
+        folder = self.root / "data/result/high_trend" / self.trend_id
+        folder.mkdir(parents=True)
+        (folder / "web_task.json").write_text(json.dumps({
+            "id": self.trend_id, "status": "completed", "created_at": "2026-09-01T00:00:00Z",
+        }))
+        (folder / "high_potential_trends.json").write_text(json.dumps({"trends": self.directions}))
+        self.business = {rid: {
+            "object": {"category": "椅子"},
+            "style": {"primary": "现代"},
+            "key_dna": [{"dimension": "surface", "value": "哑光"}],
+            "quality": {"uncertainty": "材质无法确证"},
+        } for rid in ["R1", "R2", "R3", "R4"]}
+        self.traces = {rid: {
+            "input_image": {"sha256": rid, "path": f"/private/{rid}.png"},
+            "model": "fixture-extractor", "prompt_version": "fixture-v1",
+        } for rid in self.business}
+        self.summaries = [{"id": rid, "created_at": f"2026-09-0{5-index}T00:00:00Z",
+                           "image_url": f"/api/v1/dna/results/{rid}/image"}
+                          for index, rid in enumerate(self.business)]
+        for target, kwargs in [
+            ("list_results", {"side_effect": lambda: deepcopy(self.summaries)}),
+            ("load_result", {"side_effect": lambda rid, variant: deepcopy(self.business[rid])}),
+            ("_trace_data", {"side_effect": lambda rid: deepcopy(self.traces[rid])}),
+        ]:
+            patcher = patch(f"app.services.moodboards.tasks.storage.{target}", **kwargs)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        self.manager = MoodboardManager(self.root)
+        self.addCleanup(self.manager._release)
+        patcher = patch("app.api.moodboards.moodboard_manager", self.manager)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.client = TestClient(app)
+        self.request = MoodboardRequest(
+            trend_task_id=self.trend_id, direction_ids=["D1", "D2"],
+            result_ids=list(self.business), model_id="gpt-5.6-sol", confirmed=True,
+        )
+
+    def assignments(self):
+        return {"assignments": [
+            {"result_id": rid, "direction_id": did, "reason": "依据哑光表面",
+             "evidence_paths": ["/key_dna/0/value"]}
+            for rid, did in [("R1", "D1"), ("R2", "D1"), ("R3", "D2"), ("R4", None)]
+        ]}
+
+    def cluster(self, ids, cid="C1"):
+        return {"id": cid, "name": "柔和触感" + cid,
+                "description": "共同哑光表面；轮廓差异构成内部变化。", "result_ids": ids}
+
+    def model(self, outputs):
+        return TextFixtureModel(responses=[AIMessage(
+            content=json.dumps(output, ensure_ascii=False),
+            response_metadata={"model_name": "fixture-model", "finish_reason": "stop"},
+            usage_metadata={"input_tokens": 20, "output_tokens": 10, "total_tokens": 30},
+        ) for output in outputs])
+
+    def step_output(self, output):
+        return {"text": json.dumps(output, ensure_ascii=False), "model_name": "fixture-model",
+                "seconds": 0.01, "telemetry": {}, "truncated": False}
+
+    def test_api_requires_confirmation_and_rejects_unknown_or_duplicate_selections(self):
+        data = self.request.model_dump()
+        cases = [
+            ({**data, "confirmed": False}, 422),
+            ({k: v for k, v in data.items() if k != "confirmed"}, 422),
+            ({**data, "direction_ids": ["D1", "D1"]}, 422),
+            ({**data, "result_ids": ["R1", "R1"]}, 422),
+            ({**data, "direction_ids": ["unknown"]}, 400),
+            ({**data, "result_ids": ["unknown"]}, 404),
+            ({**data, "trend_task_id": "web_" + "b" * 32}, 404),
+            ({**data, "model_id": "unknown"}, 400),
+        ]
+        with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+            for payload, status in cases:
+                with self.subTest(payload=payload):
+                    response = self.client.post("/api/v1/moodboards/tasks", json=payload)
+                    self.assertEqual(response.status_code, status, response.text)
+            runner.assert_not_called()
+        self.assertEqual(self.manager.list(), [])
+
+    def test_same_source_image_has_one_catalog_entry_and_cannot_be_selected_twice(self):
+        self.traces["R2"]["input_image"]["sha256"] = "R1"
+        catalog = self.client.get("/api/v1/moodboards/catalog").json()
+        self.assertEqual([item["id"] for item in catalog["dna_results"]], ["R1", "R3", "R4"])
+        response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+        self.assertEqual(response.status_code, 400)
+        self.assertIn("同一张图片", response.json()["detail"])
+        self.assertEqual(self.manager.list(), [])
+
+    def test_empty_dna_is_rejected_before_starting_paid_work(self):
+        self.business["R1"] = {}
+        with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+            self.assertEqual(response.status_code, 400, response.text)
+            self.assertIn("DNA", response.json()["detail"])
+            runner.assert_not_called()
+
+    def test_assignments_require_exact_partition_known_directions_and_real_evidence(self):
+        images = [{"result_id": rid, "dna": dna} for rid, dna in self.business.items()]
+        valid = self.assignments()
+        self.assertEqual(len(validate_assignments(valid, images, self.directions)), 4)
+        invalid = []
+        missing = deepcopy(valid)
+        missing["assignments"].pop()
+        invalid.append(missing)
+        duplicate = deepcopy(valid)
+        duplicate["assignments"][-1] = deepcopy(duplicate["assignments"][0])
+        invalid.append(duplicate)
+        for field, value in [("result_id", "foreign"), ("direction_id", "foreign"),
+                             ("evidence_paths", ["/key_dna/99/value"]), ("evidence_paths", [])]:
+            changed = deepcopy(valid)
+            changed["assignments"][0][field] = value
+            invalid.append(changed)
+        for payload in invalid:
+            with self.subTest(payload=payload), self.assertRaises(ValueError):
+                validate_assignments(payload, images, self.directions)
+
+    def test_json_pointer_escaping_arrays_and_empty_evidence(self):
+        value = {"a/b": {"~key": ["有效"]}, "empty": [], "blank": "", "null": None}
+        self.assertEqual(resolve_pointer(value, "/a~1b/~0key/0"), "有效")
+        for pointer in ["", "a/b", "/a~2b", "/a~1b/~0key/-1", "/a~1b/~0key/00",
+                        "/a~1b/~0key/1", "/empty", "/blank", "/null", "/missing"]:
+            with self.subTest(pointer=pointer), self.assertRaises(ValueError):
+                resolve_pointer(value, pointer)
+
+    def test_clusters_are_one_to_three_nonempty_unique_partitions(self):
+        ids = ["R1", "R2", "R3", "R4"]
+        for groups in [[ids], [["R1"], ["R2", "R3", "R4"]], [["R1"], ["R2"], ["R3", "R4"]]]:
+            clusters = [self.cluster(group, f"C{i}") for i, group in enumerate(groups)]
+            self.assertEqual(validate_clusters({"clusters": clusters}, ids), clusters)
+        bad_groups = [[], [[]], [[rid] for rid in ids], [["R1", "R2", "R3"]],
+                      [["R1", "R2"], ["R2", "R3", "R4"]], [["R1", "R2", "R3", "foreign"]]]
+        for groups in bad_groups:
+            with self.subTest(groups=groups), self.assertRaises(ValueError):
+                validate_clusters({"clusters": [self.cluster(group, f"C{i}")
+                                                for i, group in enumerate(groups)]}, ids)
+        for field in ["id", "name"]:
+            clusters = [self.cluster(ids[:2], "C1"), self.cluster(ids[2:], "C2")]
+            clusters[1][field] = clusters[0][field]
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                validate_clusters({"clusters": clusters}, ids)
+
+    def test_real_deepagent_api_two_stages_are_text_only_and_persist_provenance(self):
+        model = self.model([self.assignments(), {"clusters": [self.cluster(["R1", "R2"])]},
+                            {"clusters": [self.cluster(["R3"])]}])
+        with patch("app.agents.moodboard_generator.create_chat_model", return_value=model) as factory:
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+        self.assertEqual(response.status_code, 202, response.text)
+        task_id = response.json()["id"]
+        task = self.client.get(f"/api/v1/moodboards/tasks/{task_id}").json()
+        self.assertEqual(task["status"], "completed", task)
+        self.assertEqual(task["completed_jobs"], task["total_jobs"])
+        result = task["result"]
+        self.assertEqual(result["unmatched_result_ids"], ["R4"])
+        self.assertEqual(result["assignments"][0]["evidence"],
+                         [{"path": "/key_dna/0/value", "value": "哑光"}])
+        self.assertEqual([cluster["result_ids"] for direction in result["directions"]
+                          for cluster in direction["clusters"]], [["R1", "R2"], ["R3"]])
+        self.assertFalse(result["trace"]["image_input"])
+        self.assertEqual(len(model.requests), 3)
+        self.assertEqual(factory.call_count, 3)
+        for call in factory.call_args_list:
+            self.assertEqual(call.kwargs["max_retries"], 0)
+        for messages in model.requests:
+            self.assertTrue(all(isinstance(message.content, str) for message in messages))
+            user = json.loads([message.content for message in messages if message.type == "human"][-1])
+            self.assertTrue(all(set(image) == {"result_id", "dna"} for image in user["images"]))
+            serialized = json.dumps(user)
+            self.assertNotIn("image_url", serialized)
+            self.assertNotIn("/private/", serialized)
+        folder = self.manager.output / task_id
+        inputs = read(folder / "inputs.json")
+        self.assertEqual(len(inputs["sources"]), 4)
+        self.assertEqual(inputs["sources"][0]["extraction_trace"], self.traces["R1"])
+        self.assertEqual(inputs["sources"][0]["business"], self.business["R1"])
+        records = [read(path) for path in sorted((folder / "calls").glob("*.json"))]
+        self.assertEqual([record["stage"] for record in records], ["assignment", "clustering", "clustering"])
+        for record in records:
+            self.assertEqual(record["model_name"], "fixture-model")
+            self.assertTrue(record["started_at"])
+            self.assertTrue(record["completed_at"])
+            self.assertTrue(record["prompt_version"])
+            self.assertTrue(record["telemetry"])
+        self.assertEqual(self.client.get(f"/api/v1/moodboards/tasks/{task_id}/download").json(), result)
+        self.assertIsNone(self.client.get("/api/v1/moodboards/tasks").json()[0]["result"])
+        self.assertEqual(MoodboardManager(self.root).get(task_id)["result"], result)
+        with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+            response = self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json={"confirmed": True})
+            self.assertEqual(response.status_code, 400, response.text)
+            runner.assert_not_called()
+
+    def test_invalid_output_gets_at_most_one_repair_and_never_publishes_invalid_result(self):
+        model = self.model([{"assignments": []}])
+        with patch("app.agents.moodboard_generator.create_chat_model", return_value=model) as factory:
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+            task_id = response.json()["id"]
+            self.manager.run(task_id)
+        task = self.manager.get(task_id)
+        self.assertEqual(task["status"], "failed")
+        self.assertIsNone(task["result"])
+        self.assertEqual(factory.call_count, 2)
+        self.assertEqual(len(model.requests), 2)
+        folder = self.manager.output / task_id
+        first = read(folder / "calls/001.json")
+        repair = read(folder / "calls/002.json")
+        self.assertEqual(repair["input"]["correction"]["previous_output"], first["text"])
+        self.assertEqual({key: value for key, value in repair["input"].items() if key != "correction"},
+                         first["input"])
+        self.assertEqual(self.client.get(f"/api/v1/moodboards/tasks/{task_id}/download").status_code, 404)
+        # 显式继续也不能绕过同一阶段的修复上限，重复使用无效缓存后仍失败。
+        with patch("app.agents.moodboard_generator.create_chat_model") as factory:
+            response = self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json={"confirmed": True})
+            self.assertEqual(response.status_code, 202, response.text)
+            factory.assert_not_called()
+        self.assertEqual(self.manager.get(task_id)["status"], "failed")
+
+    def test_provider_failure_is_not_retried_and_does_not_leak_connection_details(self):
+        for error in [RuntimeError("secret-connection"), TimeoutError("secret-connection")]:
+            with self.subTest(error=type(error).__name__):
+                with patch("app.agents.moodboard_generator.create_chat_model", side_effect=error) as factory:
+                    response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+                task = self.manager.get(response.json()["id"])
+                self.assertEqual(task["status"], "failed")
+                self.assertNotIn("secret-connection", task["error"])
+                factory.assert_called_once()
+
+    def test_bad_evidence_is_repaired_once_using_the_same_text_inputs(self):
+        invalid = self.assignments()
+        invalid["assignments"][0]["evidence_paths"] = ["/key_dna/99/value"]
+        model = self.model([invalid, self.assignments(),
+                            {"clusters": [self.cluster(["R1", "R2"])]},
+                            {"clusters": [self.cluster(["R3"])]}])
+        with patch("app.agents.moodboard_generator.create_chat_model", return_value=model) as factory:
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+        task = self.manager.get(response.json()["id"])
+        self.assertEqual(task["status"], "completed", task)
+        self.assertEqual(factory.call_count, 4)
+        payloads = [json.loads([message.content for message in messages if message.type == "human"][-1])
+                    for messages in model.requests]
+        self.assertEqual(payloads[0]["images"], payloads[1]["images"])
+        self.assertEqual(payloads[0]["directions"], payloads[1]["directions"])
+        self.assertIn("/key_dna/99/value", payloads[1]["correction"]["validation_error"])
+        self.assertEqual(task["result"]["assignments"][0]["evidence"],
+                         [{"path": "/key_dna/0/value", "value": "哑光"}])
+
+    def test_resume_reuses_accepted_stages_and_frozen_inputs_after_service_failure(self):
+        first_outputs = [self.step_output(self.assignments()),
+                         self.step_output({"clusters": [self.cluster(["R1", "R2"])]}),
+                         TimeoutError("fixture interruption")]
+        with patch("app.services.moodboards.tasks.run_moodboard_step", side_effect=first_outputs) as runner:
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+        task_id = response.json()["id"]
+        self.assertEqual(runner.call_count, 3)
+        self.assertEqual(self.manager.get(task_id)["status"], "failed")
+        frozen = self.manager.output / task_id / "inputs.json"
+        original_inputs = frozen.read_bytes()
+        accepted = [(self.manager.output / task_id / f"calls/{index:03d}.json").read_bytes()
+                    for index in [1, 2]]
+        failed_payload = deepcopy(runner.call_args.args[2])
+        # 数据库中的新分析不能改变已确认任务；继续时使用任务的冻结快照。
+        self.business["R3"]["key_dna"][0]["value"] = "新提取的高光结果"
+        self.skill_file.write_text("moodboard-curation-v2")
+        with patch("app.services.moodboards.tasks.run_moodboard_step",
+                   return_value=self.step_output({"clusters": [self.cluster(["R3"])]})) as resumed:
+            response = self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json={"confirmed": True})
+        self.assertEqual(response.status_code, 202, response.text)
+        resumed.assert_called_once()
+        self.assertEqual(resumed.call_args.args[1], "clustering")
+        self.assertEqual(resumed.call_args.args[2], failed_payload)
+        self.assertEqual(resumed.call_args.args[3], "legacy moodboard fixture")
+        self.assertEqual(frozen.read_bytes(), original_inputs)
+        self.assertEqual([(self.manager.output / task_id / f"calls/{index:03d}.json").read_bytes()
+                          for index in [1, 2]], accepted)
+        task = self.manager.get(task_id)
+        self.assertEqual(task["status"], "completed", task)
+        self.assertEqual(task["request"], self.request.model_dump())
+        self.assertEqual(task["result"]["trace"]["prompt_version"], "moodboard-text-dna-v1")
+        self.assertNotIn("excluded", task["result"]["directions"][0])
+        calls = task["result"]["trace"]["calls"]
+        self.assertEqual(len(calls), 4)
+        self.assertEqual(calls[2]["error"], "TimeoutError")
+
+    def test_resume_runs_only_unfinished_repair_then_remaining_stages(self):
+        invalid = self.assignments()
+        invalid["assignments"][0]["evidence_paths"] = ["/missing"]
+        with patch("app.services.moodboards.tasks.run_moodboard_step", side_effect=[
+            self.step_output(invalid), TimeoutError("repair interrupted"),
+        ]) as runner:
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+        task_id = response.json()["id"]
+        self.assertEqual(runner.call_count, 2)
+        self.assertEqual(self.manager.get(task_id)["status"], "failed")
+        failed_repair_payload = deepcopy(runner.call_args.args[2])
+        with patch("app.services.moodboards.tasks.run_moodboard_step", side_effect=[
+            self.step_output(self.assignments()),
+            self.step_output({"clusters": [self.cluster(["R1", "R2"])]}),
+            self.step_output({"clusters": [self.cluster(["R3"])]}),
+        ]) as resumed:
+            response = self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json={"confirmed": True})
+        self.assertEqual(response.status_code, 202, response.text)
+        self.assertEqual(resumed.call_count, 3)
+        self.assertEqual(resumed.call_args_list[0].args[2], failed_repair_payload)
+        self.assertEqual([call.args[1] for call in resumed.call_args_list], ["assignment", "clustering", "clustering"])
+        self.assertEqual(self.manager.get(task_id)["status"], "completed")
+
+    def test_resume_requires_confirmation_failed_status_and_unchanged_frozen_input(self):
+        task = self.manager.create(self.request)
+        task_id = task["id"]
+        with patch("app.services.moodboards.tasks.run_moodboard_step", side_effect=TimeoutError()):
+            self.manager.run(task_id)
+        with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+            for payload in [{}, {"confirmed": False}]:
+                response = self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json=payload)
+                self.assertEqual(response.status_code, 422)
+            unknown = self.client.post("/api/v1/moodboards/tasks/mb_" + "b" * 32 + "/resume", json={"confirmed": True})
+            self.assertEqual(unknown.status_code, 404)
+            path = self.manager.output / task_id / "inputs.json"
+            inputs = read(path)
+            inputs["images"].pop()
+            path.write_text(json.dumps(inputs))
+            response = self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json={"confirmed": True})
+            self.assertEqual(response.status_code, 202)
+            runner.assert_not_called()
+        self.assertEqual(self.manager.get(task_id)["status"], "failed")
+
+    def test_restart_marks_queued_or_running_tasks_interrupted_without_model_call(self):
+        for status in ["queued", "running"]:
+            with self.subTest(status=status):
+                manager = MoodboardManager(self.root)
+                task = manager.create(self.request)
+                # 模拟进程退出：操作系统释放执行锁，任务中的原进程不再存活。
+                manager._update(task["id"], status=status, owner_pid=None)
+                manager._release()
+                with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+                    restarted = MoodboardManager(self.root)
+                    restarted.run(task["id"])
+                    runner.assert_not_called()
+                saved = restarted.get(task["id"])
+                self.assertEqual(saved["status"], "failed")
+                self.assertEqual(saved["stage"], "interrupted")
+
+    def test_other_manager_cannot_interrupt_or_claim_live_task_and_failure_releases_lock(self):
+        task = self.manager.create(self.request)
+        other = MoodboardManager(self.root)
+        self.addCleanup(other._release)
+        self.assertEqual(other.get(task["id"])["status"], "queued")
+        with self.assertRaises(RuntimeError):
+            other.create(self.request)
+        with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+            with self.assertRaises(RuntimeError):
+                other.run(task["id"])
+            runner.assert_not_called()
+        self.assertEqual(self.manager.get(task["id"])["status"], "queued")
+        with patch("app.services.moodboards.tasks.run_moodboard_step", side_effect=RuntimeError("fixture failure")):
+            self.manager.run(task["id"])
+        self.assertEqual(self.manager.get(task["id"])["status"], "failed")
+        new_task = other.create(self.request)
+        self.assertEqual(new_task["status"], "queued")
+
+    def test_legacy_live_owner_without_lease_is_not_treated_as_interrupted(self):
+        task = self.manager.create(self.request)
+        self.manager._release()
+        other = MoodboardManager(self.root)
+        self.addCleanup(other._release)
+        self.assertEqual(other.get(task["id"])["status"], "queued")
+        with self.assertRaises(RuntimeError):
+            other.create(self.request)
+
+    def test_frozen_inputs_are_checked_before_any_model_call(self):
+        task = self.manager.create(self.request)
+        path = self.manager.output / task["id"] / "inputs.json"
+        inputs = read(path)
+        inputs["images"][0]["dna"]["style"] = {"primary": "被改写"}
+        path.write_text(json.dumps(inputs))
+        with patch("app.services.moodboards.tasks.run_moodboard_step") as runner:
+            self.manager.run(task["id"])
+            runner.assert_not_called()
+        self.assertEqual(self.manager.get(task["id"])["status"], "failed")
+
+    def test_v2_does_not_force_small_pool_into_board_and_retains_exclusion_on_resume(self):
+        self.skill_file.write_text("moodboard-curation-v2")
+        assignments = self.assignments()
+        for item in assignments["assignments"]:
+            item.update(status="matched" if item["direction_id"] else "insufficient",
+                        dominant_style="温润极简", competing_direction_ids=[],
+                        dominance={"strength": "strong", "scope": "global", "salience": "primary"})
+        def excluded(ids):
+            return {"clusters": [], "excluded": [{"result_id": rid, "reason": "一致候选不足6张，不凑数"} for rid in ids]}
+        with patch("app.services.moodboards.tasks.run_moodboard_step", side_effect=[
+            self.step_output(assignments), self.step_output(excluded(["R1", "R2"])), TimeoutError(),
+        ]):
+            response = self.client.post("/api/v1/moodboards/tasks", json=self.request.model_dump())
+        task_id = response.json()["id"]
+        self.assertEqual(self.manager.get(task_id)["status"], "failed")
+        # 发布目录中的 Skill 变动不能改变该任务已经冻结的 v2 契约。
+        self.skill_file.write_text("different future skill")
+        with patch("app.services.moodboards.tasks.run_moodboard_step",
+                   return_value=self.step_output(excluded(["R3"]))) as runner:
+            self.client.post(f"/api/v1/moodboards/tasks/{task_id}/resume", json={"confirmed": True})
+        runner.assert_called_once()
+        self.assertEqual(runner.call_args.args[3], "moodboard-curation-v2")
+        task = self.manager.get(task_id)
+        self.assertEqual(task["status"], "completed", task)
+        self.assertEqual(task["result"]["trace"]["prompt_version"], "moodboard-text-dna-v2")
+        self.assertEqual(task["result"]["assignments"][3]["status"], "insufficient")
+        self.assertEqual(task["result"]["directions"][0]["excluded"], excluded(["R1", "R2"])["excluded"])
+
+
+class MoodboardCurationTests(unittest.TestCase):
+    """针对拒绝弱匹配、精选数量及候选账本的领域边界回归。"""
+
+    def setUp(self):
+        self.ids = [f"R{i}" for i in range(9)]
+        self.cluster = {"id": "C1", "name": "温润极简", "description": "暖浅低对比，轮廓圆润克制",
+                        "primary_axis": "圆润极简体量", "required_features": ["暖浅主体", "低反射主表面"],
+                        "exclusions": ["硬朗机械外骨架"], "result_ids": self.ids[:6]}
+        self.packet = {"clusters": [self.cluster], "excluded": [
+            {"result_id": rid, "reason": "同质备选或主结构冲突"} for rid in self.ids[6:]]}
+
+    def test_curated_subset_preserves_every_candidate_and_rejects_accounting_errors(self):
+        result = validate_clustering(self.packet, self.ids, "v2")
+        self.assertEqual(len(result["clusters"][0]["result_ids"]), 6)
+        for mutate in [
+            lambda p: p["excluded"].pop(),
+            lambda p: p["excluded"].append({"result_id": "R0", "reason": "重复"}),
+            lambda p: p["excluded"][0].update(result_id="unknown"),
+        ]:
+            data = deepcopy(self.packet)
+            mutate(data)
+            with self.assertRaises(ValueError):
+                validate_clustering(data, self.ids, "v2")
+
+    def test_cardinality_and_single_style_name_are_enforced(self):
+        for name in ["边界描饰与局部焦点", "织印图式和色彩重组", "纹理/配色", "冷色＋暖色", "木纹、金属", "亮面及哑光"]:
+            data = deepcopy(self.packet)
+            data["clusters"][0]["name"] = name
+            with self.assertRaises(ValueError):
+                validate_clustering(data, self.ids, "v2")
+        for count in [1, 5, 9]:
+            data = deepcopy(self.packet)
+            data["clusters"][0]["result_ids"] = self.ids[:count]
+            data["excluded"] = [{"result_id": rid, "reason": "备选"} for rid in self.ids[count:]]
+            with self.assertRaises(ValueError):
+                validate_clustering(data, self.ids, "v2")
+        empty = {"clusters": [], "excluded": [{"result_id": "R0", "reason": "不足6张"}]}
+        self.assertEqual(validate_clustering(empty, ["R0"], "v2"), empty)
+
+    def test_v3_four_images_form_a_board_without_weakening_v2_history(self):
+        four = deepcopy(self.packet)
+        four["clusters"][0]["result_ids"] = self.ids[:4]
+        four["excluded"] = [{"result_id": rid, "reason": "相近候选未精选"} for rid in self.ids[4:]]
+        self.assertEqual(len(validate_clustering(four, self.ids, "v3")["clusters"][0]["result_ids"]), 4)
+        with self.assertRaises(ValueError):
+            validate_clustering(four, self.ids, "v2")
+        eight = deepcopy(self.packet)
+        eight["clusters"][0]["result_ids"] = self.ids[:8]
+        eight["excluded"] = [{"result_id": "R8", "reason": "相近候选未精选"}]
+        self.assertEqual(len(validate_clustering(eight, self.ids, "v3")["clusters"][0]["result_ids"]), 8)
+        for count in (3, 9):
+            bad = deepcopy(self.packet)
+            bad["clusters"][0]["result_ids"] = self.ids[:count]
+            bad["excluded"] = [{"result_id": rid, "reason": "备选"} for rid in self.ids[count:]]
+            with self.assertRaises(ValueError):
+                validate_clustering(bad, self.ids, "v3")
+
+    def test_weak_local_unknown_cannot_be_matched_and_ambiguity_must_be_explicit(self):
+        image = {"result_id": "R0", "dna": {"style": "整体粉蜡柔软，局部金属亮饰"}}
+        dirs = [{"id": "D1"}, {"id": "D2"}]
+        assignment = {"result_id": "R0", "direction_id": "D1", "reason": "整体柔软主导，局部亮饰不支持金属主题",
+                      "evidence_paths": ["/style"], "status": "matched", "dominant_style": "柔软当代",
+                      "dominance": {"strength": "strong", "scope": "global", "salience": "primary"},
+                      "competing_direction_ids": ["D2"]}
+        def check(item):
+            return validate_assignments({"assignments": [item]}, [image], dirs, "v2")
+        check(assignment)
+        for field, bad in [("strength", "moderate"), ("scope", "local"), ("scope", "unknown"), ("salience", "secondary")]:
+            item = deepcopy(assignment)
+            item["dominance"][field] = bad
+            with self.assertRaises(ValueError):
+                check(item)
+        ambiguous = {**assignment, "status": "ambiguous", "direction_id": None, "competing_direction_ids": ["D1", "D2"]}
+        check(ambiguous)
+        for changed in [{"direction_id": "D1"}, {"competing_direction_ids": ["D1"]},
+                        {"competing_direction_ids": ["D1", "D1"]}, {"competing_direction_ids": ["D1", "unknown"]}]:
+            with self.assertRaises(ValueError):
+                check({**ambiguous, **changed})
+
+    def test_projection_retains_dominance_evidence_without_inventing_measurements(self):
+        candidate = {"style_id": "Soft", "rank": 1, "match_score": 88, "main_support": ["粉蜡色覆盖主体"],
+                     "main_conflicts": ["亮金仅在端帽"], "regions": ["主体"], "facet_ids": ["soft"]}
+        evidence = {"value": "金色", "evidence": "只见于微小端帽", "region": "端帽"}
+        projected = dna_projection({"style": {"style_candidates": [candidate]}, "key_dna": [evidence]})
+        self.assertEqual(projected["style"]["style_candidates"][0], candidate)
+        self.assertEqual(projected["key_dna"][0], evidence)
+        self.assertNotIn("coverage_ratio", json.dumps(projected))
+
+    def test_frozen_skill_selects_legacy_or_curated_protocol(self):
+        legacy = stage_prompt("clustering", "frozen legacy skill")
+        curated = stage_prompt("clustering", "moodboard-curation-v2")
+        revised = stage_prompt("clustering", "moodboard-curation-v3")
+        self.assertIn("1至3个非空", legacy)
+        self.assertNotIn('"excluded"', legacy)
+        self.assertIn('"excluded"', curated)
+        self.assertIn("6至8张", curated)
+        self.assertIn('"excluded"', revised)
+        self.assertIn("4至8张", revised)
+
+
+if __name__ == "__main__":
+    unittest.main()

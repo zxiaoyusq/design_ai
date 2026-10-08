@@ -1,0 +1,141 @@
+"""以单张 DNA 验证宿主结果登记边界，不执行宿主分析或外部模型调用。"""
+
+from hashlib import sha256
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from scripts import run_moodboard_host as host
+
+
+class MoodboardHostTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        patcher = patch.object(host, "PROJECT_ROOT", root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.run = root / "data/result/moodboards" / ("mb_" + "a" * 32)
+        self.direction = {"id": "D1", "title": "光泽", "description": "局部反光"}
+        self.image = {"result_id": "R1", "dna": {"key_dna": [{"value": "局部高光"}]}}
+        inputs = {"directions": [self.direction], "images": [self.image],
+                  "sources": [{"image_identity": "image-1"}], "image_summaries": [{"id": "R1"}]}
+        host.write(self.run / "inputs.json", inputs)
+        (self.run / "skill.md").write_text("fixture skill")
+        host.write(self.run / "host_manifest.json", {
+            "id": self.run.name, "created_at": "2026-09-22T00:00:00Z", "trend_task_id": "web_1",
+            "skill_sha256": sha256(b"fixture skill").hexdigest(),
+            "inputs_sha256": sha256(host.encode(inputs).encode()).hexdigest()})
+        host.write(self.run / "batches/001.json", {"directions": [self.direction], "images": [self.image]})
+        host.write(self.run / "assignments/001.json", {"assignments": [{"result_id": "R1", "direction_id": "D1",
+                   "reason": "局部高光呼应反射层次", "evidence_paths": ["/key_dna/0/value"]}]})
+        host.write(self.run / "clustering_inputs/D1.json", {"direction": self.direction, "images": [self.image]})
+        host.write(self.run / "clusters/D1.json", {"clusters": [{"id": "C1", "name": "局部亮泽", "description": "单张样本的局部高光", "result_ids": ["R1"]}]})
+        self.receipt("assignment", "001", "batches/001.json", "assignments/001.json")
+        self.receipt("clustering", "D1", "clustering_inputs/D1.json", "clusters/D1.json")
+
+    def receipt(self, stage, key, source, output):
+        host.write(self.run / "receipts" / f"{stage}-{key}.json", {
+            "model": host.HOST_MODEL, "started_at": "2026-09-22T00:00:00Z", "completed_at": "2026-09-22T00:01:00Z",
+            "input_sha256": sha256((self.run / source).read_bytes()).hexdigest(),
+            "output_sha256": sha256((self.run / output).read_bytes()).hexdigest()})
+
+    def test_valid_host_result_is_registered_without_fabricated_usage_and_cannot_overwrite(self):
+        task = host.publish(self.run)
+        self.assertEqual(task["status"], "completed")
+        self.assertEqual(task["result"]["assignments"][0]["evidence"][0]["value"], "局部高光")
+        self.assertIsNone(task["result"]["trace"]["actual_model_calls"])
+        self.assertEqual(task["result"]["trace"]["host_analysis_steps"], 2)
+        self.assertEqual(task["prompt_version"], "moodboard-codex-host-v1")
+        self.assertNotIn("excluded", task["result"]["directions"][0])
+        with self.assertRaises(ValueError):
+            host.publish(self.run)
+
+    def test_rehashed_changed_batch_cannot_replace_frozen_dna(self):
+        payload = host.read(self.run / "batches/001.json")
+        payload["images"][0]["dna"]["key_dna"][0]["value"] = "伪造值"
+        host.write(self.run / "batches/001.json", payload)
+        self.receipt("assignment", "001", "batches/001.json", "assignments/001.json")
+        with self.assertRaisesRegex(ValueError, "冻结"):
+            host.publish(self.run)
+        self.assertFalse((self.run / "task.json").exists())
+
+    def test_incomplete_clustering_input_or_missing_receipt_prevents_publication(self):
+        payload = host.read(self.run / "clustering_inputs/D1.json")
+        payload["images"] = []
+        host.write(self.run / "clustering_inputs/D1.json", payload)
+        self.receipt("clustering", "D1", "clustering_inputs/D1.json", "clusters/D1.json")
+        with self.assertRaisesRegex(ValueError, "全部冻结成员"):
+            host.publish(self.run)
+        (self.run / "receipts/assignment-001.json").unlink()
+        with self.assertRaises(FileNotFoundError):
+            host.publish(self.run)
+        self.assertFalse((self.run / "task.json").exists())
+
+    def test_curated_host_retains_insufficient_pool_in_excluded_without_one_image_board(self):
+        skill = "moodboard-curation-v2"
+        (self.run / "skill.md").write_text(skill)
+        manifest = host.read(self.run / "host_manifest.json")
+        manifest.update(skill_sha256=sha256(skill.encode()).hexdigest(), prompt_version="moodboard-codex-host-v2")
+        host.write(self.run / "host_manifest.json", manifest)
+        assignment = host.read(self.run / "assignments/001.json")
+        assignment["assignments"][0].update(
+            status="matched", dominant_style="柔润极简", competing_direction_ids=[],
+            dominance={"strength": "strong", "scope": "global", "salience": "primary"})
+        host.write(self.run / "assignments/001.json", assignment)
+        excluded = [{"result_id": "R1", "reason": "不足6张，不凑数"}]
+        host.write(self.run / "clusters/D1.json", {"clusters": [], "excluded": excluded})
+        self.receipt("assignment", "001", "batches/001.json", "assignments/001.json")
+        self.receipt("clustering", "D1", "clustering_inputs/D1.json", "clusters/D1.json")
+        task = host.publish(self.run)
+        self.assertEqual(task["prompt_version"], "moodboard-codex-host-v2")
+        self.assertEqual(task["result"]["directions"][0]["clusters"], [])
+        self.assertEqual(task["result"]["directions"][0]["excluded"], excluded)
+        self.assertEqual(task["result"]["assignments"][0]["status"], "matched")
+
+    def test_v3_host_publishes_four_image_board(self):
+        skill = "moodboard-curation-v3"
+        (self.run / "skill.md").write_text(skill)
+        images = [{"result_id": f"R{i}", "dna": {"key_dna": [{"value": "平直浅灰主体"}]}}
+                  for i in range(1, 5)]
+        inputs = host.read(self.run / "inputs.json")
+        inputs["images"] = images
+        inputs["sources"] = [{"image_identity": f"image-{i}"} for i in range(1, 5)]
+        host.write(self.run / "inputs.json", inputs)
+        host.write(self.run / "batches/001.json", {"directions": [self.direction], "images": images})
+        host.write(self.run / "clustering_inputs/D1.json", {"direction": self.direction, "images": images})
+        host.write(self.run / "assignments/001.json", {"assignments": [
+            {"result_id": item["result_id"], "direction_id": "D1", "reason": "整体浅灰秩序一致",
+             "evidence_paths": ["/key_dna/0/value"], "status": "matched", "dominant_style": "理性灰阶",
+             "dominance": {"strength": "strong", "scope": "global", "salience": "primary"},
+             "competing_direction_ids": []} for item in images]})
+        host.write(self.run / "clusters/D1.json", {"clusters": [{
+            "id": "C1", "name": "理性灰阶", "description": "平直浅灰主体与有序分区",
+            "primary_axis": "平直浅灰主体", "required_features": ["平直主体", "浅灰低彩"],
+            "exclusions": ["大面积强撞色"], "result_ids": [item["result_id"] for item in images]
+        }], "excluded": []})
+        manifest = host.read(self.run / "host_manifest.json")
+        manifest.update(skill_sha256=sha256(skill.encode()).hexdigest(),
+                        inputs_sha256=sha256(host.encode(inputs).encode()).hexdigest(),
+                        prompt_version="moodboard-codex-host-v3")
+        host.write(self.run / "host_manifest.json", manifest)
+        self.receipt("assignment", "001", "batches/001.json", "assignments/001.json")
+        self.receipt("clustering", "D1", "clustering_inputs/D1.json", "clusters/D1.json")
+        task = host.publish(self.run)
+        self.assertEqual(task["prompt_version"], "moodboard-codex-host-v3")
+        self.assertEqual(len(task["result"]["directions"][0]["clusters"][0]["result_ids"]), 4)
+        self.assertEqual(task["result"]["directions"][0]["excluded"], [])
+
+    def test_host_rejects_protocol_version_mismatch_before_publication(self):
+        manifest = host.read(self.run / "host_manifest.json")
+        manifest["prompt_version"] = "moodboard-codex-host-v2"
+        host.write(self.run / "host_manifest.json", manifest)
+        with self.assertRaisesRegex(ValueError, "版本"):
+            host.publish(self.run)
+        self.assertFalse((self.run / "task.json").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

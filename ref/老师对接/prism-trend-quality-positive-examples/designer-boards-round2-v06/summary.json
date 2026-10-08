@@ -1,0 +1,117 @@
+{
+  "version": "cmf-reference-signal-cascade-v0.6.0",
+  "model": "qwen3.8-flash",
+  "created_utc": "2026-09-26T09:48:55.234729+00:00",
+  "source_kind": "calibration",
+  "production_applicable": false,
+  "primary": {
+    "boards": {
+      "total": 16,
+      "pass": 16,
+      "fail": 0,
+      "invalid": 0
+    },
+    "tiles": {
+      "total": 103,
+      "pass": 99,
+      "fail": 1,
+      "invalid": 3
+    },
+    "all": {
+      "total": 119,
+      "pass": 115,
+      "fail": 1,
+      "invalid": 3
+    }
+  },
+  "final": {
+    "boards": {
+      "total": 16,
+      "pass": 16,
+      "fail": 0,
+      "invalid": 0
+    },
+    "tiles": {
+      "total": 103,
+      "pass": 103,
+      "fail": 0,
+      "invalid": 0
+    },
+    "all": {
+      "total": 119,
+      "pass": 119,
+      "fail": 0,
+      "invalid": 0
+    }
+  },
+  "all_new_designer_images_pass": true,
+  "all_board_children_pass": true,
+  "confirmation_ids": [
+    "B07-T04",
+    "B08-T03",
+    "B08-T04",
+    "B11-T01"
+  ],
+  "first_attempt_false_negative_count": 1,
+  "first_attempt_invalid_count": 3,
+  "final_invalid_count": 0,
+  "prior_gold": {
+    "images": 138,
+    "pass": 138,
+    "mode": "offline_replay",
+    "new_model_calls": 0
+  },
+  "sentinel": {
+    "id": "control04",
+    "decision": "FAIL",
+    "designer_gold": false
+  },
+  "model_calls": {
+    "primary": 119,
+    "explicit_confirmation": 5,
+    "total_new_this_round": 124,
+    "confirmation_for_positive_errors": 4,
+    "sentinel_confirmation": 1,
+    "automatic_retries": 0,
+    "extra_calls_for_adapter": 0
+  },
+  "usage": {
+    "input_tokens": 164590,
+    "output_tokens": 29118,
+    "total_tokens": 193708,
+    "image_tokens": 17789
+  },
+  "latency_seconds": {
+    "min": 0.8218,
+    "max": 6.2773,
+    "mean": 3.7467,
+    "median": 3.7283
+  },
+  "phase_wall_seconds": {
+    "primary": 250.742,
+    "confirmation": 18.396
+  },
+  "evidence_limitations": [
+    "这组103个画面由16张拼图确定性裁切；不是103件经逐件独立标定的实体产品。组合内的设计师正标签按用户对整组的明确确认继承。",
+    "旧138张和本组均已用于校准；最终全通过不是独立测试集准确率，也不能证明负例拦截率。",
+    "暂无设计师确认的负样本；普通白T恤仅是未标定的边界探针。",
+    "对照样本复核理由仍出现独特/创新措辞，说明提示词偏差仍有残留；不能据此宣称语义问题普遍解决。",
+    "模型关于真实材料、表面工艺、细金属丝等细节的陈述保留原话，不视为实物证实；裁切图分辨率有限。",
+    "只对已有输出离线回放验证旧正例；没有重复调用旧138张，也没有验证模型多次运行稳定性。"
+  ],
+  "timer_status": "PAUSED",
+  "production_modified": false,
+  "dna_calls": 0,
+  "labels_supplied_to_model": false,
+  "identity_whitelist": false,
+  "integrity": [
+    {
+      "root": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2",
+      "frozen_files_and_model_inputs_valid": true
+    },
+    {
+      "root": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2-v06",
+      "frozen_files_and_model_inputs_valid": true
+    }
+  ]
+}

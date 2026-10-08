@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜独立测试与定点改良"
+  short_description: "对新的有界交付冻结输入和依赖，运行受影响验证、保留最小失败并维护修复闭环。用于算法或流程改动评估；不重复同版本同输入的旧轮"
+  default_prompt: "使用 $prism-independent-evaluation-loop 完成本环节，保留实际输入输出、来源和未解决问题。"

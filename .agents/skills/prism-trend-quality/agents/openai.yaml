@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜 · 趋势图片入库判标"
+  short_description: "按棱镜来源路由和高级感规则导出、复核趋势图片的入库判定；用于趋势参考库资格检查，不给用研图片设高级感门槛。"
+  default_prompt: "使用 $prism-trend-quality 处理当前职责范围的材料，记录真实输入输出和未决项。"

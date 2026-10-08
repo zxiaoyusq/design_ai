@@ -1,0 +1,724 @@
+{
+  "recorded_utc": "2026-09-26T09:27:57.165932+00:00",
+  "authority": "User explicitly confirms these are also selected and passed by designers",
+  "user_statement": "这也都是设计师选择后通过的",
+  "scope": "16 supplied boards and their103 separated source reference frames",
+  "labels": [
+    {
+      "id": "B01",
+      "image_sha256": "302ae812e6abbc2781648aae0fb4073a2a2e3a406eff0cc59ac93d241d490e65",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B01-T01",
+      "image_sha256": "c6300a13bd09cc24654c1a491d74c7eb97e323116b1dd7dde9186db6ce60c962",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B01-T02",
+      "image_sha256": "e305e778488a38a2d9163cacd27814c2254b98f7d2ef795f5c7cea1bca748014",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B01-T03",
+      "image_sha256": "1345a18157bb07ba2309ebb9a1c02bef7bc503d5c220501bf5ac1f4dc9b6140d",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B01-T04",
+      "image_sha256": "56fa3080e9713d873e32d667c527afd622750d37aa123a4135b39c477b472772",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B01-T05",
+      "image_sha256": "c9868c8b4674ca87349607c7fc6766897cc7d3882a5a1dfef1e2adb0d3d26a81",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B01-T06",
+      "image_sha256": "f7f41a96cac67f645250b1f81ecde3e1084d31cb7930610e60245f3fd0518c7d",
+      "decision": "PASS",
+      "board_id": "B01"
+    },
+    {
+      "id": "B02",
+      "image_sha256": "2d095b42d4a6e37b362bb8c820d01c580e7d0f8c70c81d5beb3b96cdb01d0f9c",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T01",
+      "image_sha256": "f1b465fea165f8d30677da4534439c0737bad1d1be7f076b21ef9faaa645a5c7",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T02",
+      "image_sha256": "6f8ff6e5768ef7cbed0113b7504f6aa36e80f0e5f9297ddeef26fcd656c54982",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T03",
+      "image_sha256": "607a2fd970b015ce3718f143b446feef9b258e8eccf3bcbad236b9d9b6e0f375",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T04",
+      "image_sha256": "ad9019f98487ed8783fe391e9a89690c0a4b40206a2e8126d853c85c5ab3996e",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T05",
+      "image_sha256": "bf91c12c454f2c8c10768ea5c48305284c3fe1e1914653c9e9cdc816a792fb56",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T06",
+      "image_sha256": "9a0e2f4195d1f9977895eb99f040348b7e7d6f0fb3abd38b0065d7d5a1b55ccc",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B02-T07",
+      "image_sha256": "ce3100d84dc9c180868e71d6ad242fdf28a595c1c7771c2e0de6dc8e0b812e28",
+      "decision": "PASS",
+      "board_id": "B02"
+    },
+    {
+      "id": "B03",
+      "image_sha256": "5fc9a4abe8ed200064c8889fb4280a385da143f9c53297089d64b30bc68aa6ac",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B03-T01",
+      "image_sha256": "c6ab24b37fcb7d18f50ab232077e220b7fe6060749293d750a3483b58252bea7",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B03-T02",
+      "image_sha256": "5cc58684b7cf72b25a815d076b7dfe6e5988e6adabcd342db52ab8f1e90990f2",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B03-T03",
+      "image_sha256": "5ea68d8f3af31c2b4e16eae08ab8ca116d2d8e21204453aba677bb1f370acfd8",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B03-T04",
+      "image_sha256": "72048a3a18efea254a04b1f9710c5555feac0124832cc55c7fe1f579f9842093",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B03-T05",
+      "image_sha256": "51145d18b557765b0d10d86d9dcb9f50110f7c534e296fd055210e0064a543c7",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B03-T06",
+      "image_sha256": "245149567fa8ac5cfc32f5db1fa8ec8324d5313ddd9a3463357d0b17edc08961",
+      "decision": "PASS",
+      "board_id": "B03"
+    },
+    {
+      "id": "B04",
+      "image_sha256": "70fd382c9d2fd6e07b41fdf22cc838cdc8e7d538269d6dd08a9e3770b98d54d3",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T01",
+      "image_sha256": "fb1b796b6862539cbba6f597401f49b073b8d2e39a8b09a35dd2d69c49ecbf00",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T02",
+      "image_sha256": "86bdfcf4ed1ee5b7f4a3e11662199c3bf501d21b7a0f49409867d501173c2acd",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T03",
+      "image_sha256": "1ac923a7724bbb5b1150b992255a378c38ed58c0bb33398122739ebad487e741",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T04",
+      "image_sha256": "e5d22401ef7e956c8e5412262419ae9322deb8c314a975338cefeec6e8fe14ae",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T05",
+      "image_sha256": "102c234c16ed7a486d81507cbfffe4a6c4cb7c3804a53c0b806c3b84ce3629af",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T06",
+      "image_sha256": "20c9f26e271b27f3360724c085053cbb00538cfbe84d835632c2c20d4a1561ca",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B04-T07",
+      "image_sha256": "87576e85789fbe04891de84ed90d060f770802bf6a6c20ae3002444491c9ba7c",
+      "decision": "PASS",
+      "board_id": "B04"
+    },
+    {
+      "id": "B05",
+      "image_sha256": "bf576d0a69d69546452d15055b5959345850b70c202fedf2287a18259b5f8d30",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B05-T01",
+      "image_sha256": "0c9cba6cba8c10a8293f9ceb42757d57f66a645dc518349f1e8c8fe629ea53a7",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B05-T02",
+      "image_sha256": "907c764c99ba8404b67c10ab431708335945f619505b2218d171f599a589140a",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B05-T03",
+      "image_sha256": "f8c040fd11e74ece27ca02043385a3db794a37c5bf3eac4befda376a3a5b0fed",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B05-T04",
+      "image_sha256": "206a99dc1cdc62f5254a0f36f22a06721402bda6cf5205187a578c375fc21c25",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B05-T05",
+      "image_sha256": "a9f364eda1d2b4df7311746c51c24528b1de8060d19cd681f6a353cb6c16a189",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B05-T06",
+      "image_sha256": "8cf6c0ff7daa9d4e5d4a07c300774595ab35b4ff3638330a19a2abc1b73cc913",
+      "decision": "PASS",
+      "board_id": "B05"
+    },
+    {
+      "id": "B06",
+      "image_sha256": "46fb82e5ff6240e9b14fd0ac0403e19dba0b328f1d32b3d551a0b1959fb5346a",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B06-T01",
+      "image_sha256": "6a11754b54bdedb785d1bb0b345306f3377ee9d944cc4136f93c00b54067ac03",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B06-T02",
+      "image_sha256": "cacfb86cfba2d143368ea1479a267be438fff113c29855cbb0cd6706d304af4c",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B06-T03",
+      "image_sha256": "634b95944ee765b53f96120d58d30c6dad09e60a8260f8193352576b839be683",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B06-T04",
+      "image_sha256": "57de7b5235611611e7f85fff3c05d2b83a26e0bb3f6f584dd129036be28fd0ab",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B06-T05",
+      "image_sha256": "a1518e0888eeb58408df3ea50fbe48464c7776b3271b03e2d46adcbfd1bd5040",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B06-T06",
+      "image_sha256": "3dc704614e95ca444180a0eee2e1fd9ded489e55933ab718fc0af69e6dcbcf0c",
+      "decision": "PASS",
+      "board_id": "B06"
+    },
+    {
+      "id": "B07",
+      "image_sha256": "72899e1d8c5ea85c2c7e0aac0d811af000b8fabcd30f388b575c0da3d9def93c",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B07-T01",
+      "image_sha256": "52898cc335b16c93c9aecd672470dc21d391621812bda01b13de39b40aa7b14f",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B07-T02",
+      "image_sha256": "744dbb118f2e7a47b5692ac906bfe70f9823c2e319dc484ba5326df0247aafdf",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B07-T03",
+      "image_sha256": "daa3ef26864f16840adf6a48720b3bd109ee8a92531ac3cbc706ba8006183862",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B07-T04",
+      "image_sha256": "06b7a171f7ada532f2126f624f2c7c64b87dd380afe153ac3f6d70813c1cc657",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B07-T05",
+      "image_sha256": "57a6cbc44718d941f5fd008ac5669314a1ded6c082990c7bf9520aab7977443f",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B07-T06",
+      "image_sha256": "34b0b4444d87640834fb33f0ba0c6478253497f4c5990ead40427398b2b768da",
+      "decision": "PASS",
+      "board_id": "B07"
+    },
+    {
+      "id": "B08",
+      "image_sha256": "466981c09475381c0f9e37dea11d9c8648903ac6f39fe32aa9cae61f00917cd5",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B08-T01",
+      "image_sha256": "1ed15926c67a051e7f6eb4ee0ee6284d43ecdacd70b0294cdca83d4ae8a718e7",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B08-T02",
+      "image_sha256": "f3efa2deae53fe75fde2c9add63ddc6c5135c7b8d5d49b48e7c805e835a5e4cb",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B08-T03",
+      "image_sha256": "ae1a6f4bd968c62dad488fa240cebc0d0b18002418ff06d297d46847cb533da3",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B08-T04",
+      "image_sha256": "e34cae2bfd0872bc3da1d108c599ef1f8cd89e4f41d14abbd8eacfeed7eeabc9",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B08-T05",
+      "image_sha256": "106318d501a64a4dd4bb2b7d98f21921bb44092ce898b0f6cdc6fad16a978994",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B08-T06",
+      "image_sha256": "a9f5fb837f7cb55cf4b48efaf4fe6e5bd65f0f92aa669c25e565deb7fe6f8f37",
+      "decision": "PASS",
+      "board_id": "B08"
+    },
+    {
+      "id": "B09",
+      "image_sha256": "0329376a4c56e26fee3965b87e4cd264a19c61f5b3a2b4e8c3b9397852db6b51",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T01",
+      "image_sha256": "13b1e048817a9fbc0c9ff89c28f9350e01a910787106debeb17fa891fe5418e6",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T02",
+      "image_sha256": "34fbabae8ea2863c7e62d5d28ef86bd6ec456ee970a6c1ac174373faff10a97b",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T03",
+      "image_sha256": "f6c9185c85fe80230e6efd57cd466ff3ee1caae9f51a62042426061fc54a52db",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T04",
+      "image_sha256": "e8caf18b3367a1303a1127769c528135becda5ac9af7dc0cbfca8f9ee2e58f38",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T05",
+      "image_sha256": "00a7cdb86f40e50ad7a531cba78a454d435ddeb1a27bf5bf2d5dbca472aa48d6",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T06",
+      "image_sha256": "8e943d81b30eb4a8287215ee68de328c7610633e8032358074a6e22778738faf",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B09-T07",
+      "image_sha256": "58a2aa923bdc182b501a9b4cd5235987d8d0e6436a1a24e44c4b106c7ccb6ed9",
+      "decision": "PASS",
+      "board_id": "B09"
+    },
+    {
+      "id": "B10",
+      "image_sha256": "40bfe113966852c741c0fa6be996cf878e7e166e9b92b0eb5db48e809f2311b0",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B10-T01",
+      "image_sha256": "772fb1900855517a3e1468f91dc393350935403718b254c15d59530c3f203f53",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B10-T02",
+      "image_sha256": "5b5fc55970f6eb9abf16b442d40d9ea4be96ab308c6b2f17d5fd4e960e33772f",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B10-T03",
+      "image_sha256": "daf3e3f80b4a8516d31a108bd0525350760f7170b4f0ec52f7a752a17fe06a89",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B10-T04",
+      "image_sha256": "3548a0e682f6ece0720c714f5982a5d0a4d65e97283a452eff8c0870d7f498ff",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B10-T05",
+      "image_sha256": "195293631c335e0cebd34dcdd48fa55f0320f870e44aed6ff98d53372193aa72",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B10-T06",
+      "image_sha256": "3a8ac5ad24486642b7f806b7f118c0cc75147c8301a76921c3793a60005b9cd2",
+      "decision": "PASS",
+      "board_id": "B10"
+    },
+    {
+      "id": "B11",
+      "image_sha256": "6a0f92b35310ebd0df9e5a7e8d000ba339774bb9c1501ea9bfe085304e0905d9",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B11-T01",
+      "image_sha256": "67fa2757d76bee52ad8f3ea454f351edbd2557e6fdbf2bc51a7d427b51ccb2f9",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B11-T02",
+      "image_sha256": "1003d53da6f6bea602112bc7051ed5f52f4075b324ca40e12c9c21162da2584c",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B11-T03",
+      "image_sha256": "53d064753551cabdd2864b28ca539fca5dac0c8bc63981cbffbab2749f0f3589",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B11-T04",
+      "image_sha256": "3ef4314d7d9359421fe7d4d4e2609d809c3f34e364ba5ec39bc0c1f4aae060b0",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B11-T05",
+      "image_sha256": "5d63df68e7a563fb26bbf25aa3fc9cea6b1c43f4979f77282a0da7a0f5079e86",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B11-T06",
+      "image_sha256": "cddf0c81f1c6f4ea2eabd967b50827948ed35db226375f4429aad19c36d725bd",
+      "decision": "PASS",
+      "board_id": "B11"
+    },
+    {
+      "id": "B12",
+      "image_sha256": "41bcdadcfb3cd536201be544fb1d0d83b80b5ea15ae52833efefe4d0c312a4aa",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B12-T01",
+      "image_sha256": "cdc17a8874563dacad0d3f7211c385af36dba4e801ddf3c84ad9d22a6fabde98",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B12-T02",
+      "image_sha256": "61f1e36675072c081765ea0cae08d1e0eba8d5c6261de1dc1afa6ec7483d906c",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B12-T03",
+      "image_sha256": "488b072000df26505a839b902eecce69c8c46c943e751bd20e50bd442ce4cab4",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B12-T04",
+      "image_sha256": "617f90312471a27a14537c7d9769190b3d511809d051a2954662fb13f1bf081d",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B12-T05",
+      "image_sha256": "c1b799022c71ba733ffe2363ff5fa2d5663024c0b9a7a6f00c370459dd9e8695",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B12-T06",
+      "image_sha256": "b1bb2a5d6795f5d1d9a883dd795ad244910740ac563745ef2265ca7d731a9204",
+      "decision": "PASS",
+      "board_id": "B12"
+    },
+    {
+      "id": "B13",
+      "image_sha256": "40f17317b718247600591d23726b23f4fe47249e20d97e3cd4e2c269b2507525",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T01",
+      "image_sha256": "d346f0b4b84bbde2126b23abeaeb835d1bb3ad2798f504dba750743f5a4ace3c",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T02",
+      "image_sha256": "00412139b4988fcad931d641e79b7e5c23b517df585e2c0074b9ce9dcccf902e",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T03",
+      "image_sha256": "23a47dd754411317b0dc58b9084b7acdfda02a8d57cc41f35a1a232fef2cebad",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T04",
+      "image_sha256": "0c42cf2cab78bc05af13823f83705887ff88de4895d3e0469df17a10bf4c6183",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T05",
+      "image_sha256": "5926092ad6880b8f6c06e3bad00d204e5dcff07213d2e51370e5308e66aa7d42",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T06",
+      "image_sha256": "1bc99e697c5d5067666f441d8d8d98db9cac00bd770ea8e81f5a6add538e3f73",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B13-T07",
+      "image_sha256": "d43fd5e28cf5855e5e6d375c8c4a33601b49e433266ea6609b186695e1cca0a1",
+      "decision": "PASS",
+      "board_id": "B13"
+    },
+    {
+      "id": "B14",
+      "image_sha256": "892adae803576157bb31124cecd2a871e5487633d615636da24a8bfd1e8c8773",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T01",
+      "image_sha256": "d928b67034e381dafe15e3821d7033ea95fe1c4224e81e7695981daa30d64d18",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T02",
+      "image_sha256": "7e3b03ee73a97ceb6437bf081080e1e580048d07bb751809be00ec2618aa58b8",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T03",
+      "image_sha256": "7534d461ee73b1ec8553429469d5ae363e56ff9da25e0eadbcb6ff3cdc4c7d71",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T04",
+      "image_sha256": "ac4b329e49b418dbb345eb0b7c5ffd30fe73ecf8b212e6d2da6366387c311434",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T05",
+      "image_sha256": "531b03f20ee53a0c841d8ee899fa7f3fc2c065e2ad5b3d0c57b0bd746570a4c4",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T06",
+      "image_sha256": "2e49a06cf024ee546c88cf877854e2554608c3580be4108819e52947f1013f3d",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B14-T07",
+      "image_sha256": "3903383285713afc1946e1b5c432aec725d9ac8d39e65cbc9a4a1ec368cafa2f",
+      "decision": "PASS",
+      "board_id": "B14"
+    },
+    {
+      "id": "B15",
+      "image_sha256": "97a23551b86f11e3bbaa36082294f90977ca02e9b910f5c6281018a32bec2ce0",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T01",
+      "image_sha256": "4de3609625cf08bf467b2940f8e60c505448f3caceed2ef465de624def86a49b",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T02",
+      "image_sha256": "d1d55c49178c77710343bf02ec4fe67dd7cb733af8dfc190c807a335f0f99605",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T03",
+      "image_sha256": "79fc471205e9a2c9326038cf30281996e21028db311741d74f5de59f52e32432",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T04",
+      "image_sha256": "f6714cb67f7bab95a63fa6490b7409d5c83612cb2ede035058e53a93de9d7cc9",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T05",
+      "image_sha256": "b58a0e88af0e8b489890a6ee23244851f19ae043e60c3bdc9fe3f0e80a65af05",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T06",
+      "image_sha256": "eebab53ca639aadedf85cc0d74de3f00acb07e811edf65bc4bd2e1ca72971e2c",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B15-T07",
+      "image_sha256": "741c7e8364f9dfa632bbb7f6488fe6d5e7cd69a88c9c1320041cddb2c4cfac29",
+      "decision": "PASS",
+      "board_id": "B15"
+    },
+    {
+      "id": "B16",
+      "image_sha256": "8761d796068f2317bc9d4ac973115eb172846ce63a948360d989eba2378d79b6",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T01",
+      "image_sha256": "e28ac82e777a548d9c4b4764b3395be98485ee524495b5aa6ff44f5407485079",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T02",
+      "image_sha256": "b3a140918543591c5d56925fec766e257e2db1cef33519a1be83d10c0510e15c",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T03",
+      "image_sha256": "a7dd9081e759c30c575de2a2f9e3735830a4c966ce78229dcef00f8408b53a26",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T04",
+      "image_sha256": "b7d4c8661ef59525a9483236ab8b6b4fd9863aef4d2f0707e6e530ad6534b582",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T05",
+      "image_sha256": "6b20357f622479b5424fcf845543f815900fee0191bf9a8dd9eff20a2bba5148",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T06",
+      "image_sha256": "09ac9c534b173c9cff417f7f1946defb4c04ed631f5c4004670bd4711d7be429",
+      "decision": "PASS",
+      "board_id": "B16"
+    },
+    {
+      "id": "B16-T07",
+      "image_sha256": "f11af34e2ed94b2388d7be47e7721f32ffddbd285498cb93806c8c7d07d3405f",
+      "decision": "PASS",
+      "board_id": "B16"
+    }
+  ],
+  "negative_gold_available": false,
+  "labels_supplied_to_inference": false
+}

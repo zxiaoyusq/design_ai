@@ -1,0 +1,94 @@
+{
+  "decision": "freeze_current_parser_as_downstream_pilot_baseline",
+  "status": "selected_for_ID_CMF_clustering_validation_not_production_certification",
+  "selected_version": "r5",
+  "selected_utc": "2026-09-29T13:58:08.098989+00:00",
+  "user_direction": "那就按照这个来吧，我是觉得差不多了",
+  "model": "gpt-6-sol",
+  "reasoning_effort": "low",
+  "service_tier_requested": "default",
+  "fast_mode": false,
+  "policy": {
+    "stop_broad_prompt_optimization": true,
+    "do_not_chase_teacher_feature_counts": true,
+    "fix_only_clear_missing_fields_or_errors_that_affect_downstream_grouping": true,
+    "preserve_unknowns_and_evidence_provenance": true,
+    "no_automatic_semantic_value_filling": true,
+    "no_runtime_few_shot_examples": true,
+    "no_new_model_calls_for_this_freeze": true,
+    "no_new_user_report": true,
+    "production_deployment": false
+  },
+  "next_validation": "Evaluate actual ID-style and CMF moodboard grouping; reopen parser optimization only for consequential omissions or false features.",
+  "known_limits": [
+    "No human gold accuracy rate",
+    "Headphone still below Astra coverage",
+    "Initial HP call includes about97seconds before turn.started",
+    "Processing totals exclude deliberate between-phase research pauses",
+    "New images show extraction behavior, not proof of corpus-wide accuracy"
+  ],
+  "reference_counts": {
+    "Astra": {
+      "HP01": 41,
+      "MC01": 43
+    },
+    "fresh_R3": {
+      "HP01": 21,
+      "MC01": 22
+    },
+    "R5": {
+      "HP01": 30,
+      "MC01": 42
+    }
+  },
+  "rejected_routes": [
+    "r4-fewshot rule candidate",
+    "unbounded repeated whole-image review",
+    "repeated low-yield headphone refinement"
+  ],
+  "artifacts": [
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\algorithm.py",
+      "sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\run.py",
+      "sha256": "a1b9c299b67194d1da17f7df59eb006ca2d52a8232e7a1c1de04c715e0aba5f5"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\refine.py",
+      "sha256": "cd9c1bfa1115e0606886ad1574f3d3654355b86f1170ad22c38727c0e8c121aa"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\finalize.py",
+      "sha256": "2467fdee7182ee089c4701011ee307640f8b82da777f7ab93ca23ead43aba6bb"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\experiment.json",
+      "sha256": "773d6de9a45a597f76f3b7069f0d6dd62fd346e114524d7776953fd6a0619518"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\outcome.json",
+      "sha256": "cc90ea346b4e580fed33e8b9a9cf8c2bf7a4e432af8dcf3ac14b5e438c7d8b00"
+    }
+  ],
+  "accepted_test_outputs": [
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\accepted\\H11.json",
+      "sha256": "4fb72bbdf83e555f6e957c5466e77f60b1d02ce1b4c8b754a9cab181b85893d7"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\accepted\\H12.json",
+      "sha256": "3969d7c57b560c017e9b41f44149a88ec945a238584773ba0f3f7be9c6c4d1fd"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\accepted\\HP01.json",
+      "sha256": "33ca843371100556b4c9cde3ba0d13c502d268f5a8c9ee308bb39b47796885d3"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\accepted\\MC01.json",
+      "sha256": "ad8e3006a7d65fc6f55363d7888c58951ab1d3d98e5999c2341b24dd33142237"
+    }
+  ],
+  "note": "Frozen research baseline and example outputs; this does not assert human-gold accuracy, full216 visual qualification, or a deployed production pipeline."
+}

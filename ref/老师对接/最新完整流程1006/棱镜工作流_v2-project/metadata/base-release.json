@@ -1,0 +1,8 @@
+{
+  "base_release": "skills-suite-20261002-v1",
+  "base_manifest_sha256": "5b5e57661b54c80be36dfdb74196786e98f0550090072bfbc647a2be334952fd",
+  "release": "2.0.0",
+  "created_for": "2026-10-06 colleague handoff",
+  "live_skills_installed": false,
+  "new_model_calls": 0
+}

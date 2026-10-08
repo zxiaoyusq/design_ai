@@ -1,0 +1,206 @@
+{
+  "algorithm": "sol-coverage-dna-r5-20260929",
+  "skill_version": "1.0.0",
+  "files": [
+    {
+      "path": "00_转交说明.md",
+      "bytes": 886,
+      "sha256": "b7a1be3b2b1245e168bf333a587a03640467f4feaa9c433f1aa6961ae1433cfe"
+    },
+    {
+      "path": "prism-dna-sol-r5/agents/openai.yaml",
+      "bytes": 326,
+      "sha256": "de8e5b8e0c49ea33f2aae07319a22e5201543cae867632e63bd7164f043c3a0b"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/context.json",
+      "bytes": 9767,
+      "sha256": "e6bc175431ed20627bd8952833e83e9ebc98b4bf1982faffe8081f9c8102c01a"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/dictionary.json",
+      "bytes": 246315,
+      "sha256": "16c8ce855e8cd080b97fab7ed4c62b74e404436b25691101acd615f261fe9f50"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/primary.prompt.txt",
+      "bytes": 26012,
+      "sha256": "cc32895b670d1cc2f41a82ecf34db551f015ae4e328a3da07beaef74201c0dae"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/primary.schema.json",
+      "bytes": 119303,
+      "sha256": "2bcb2dabc6d8d81434eb8275a645e01c257b57dcc7d27abc6a7bfa5a0fd9c326"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/source-finalize.py",
+      "bytes": 4192,
+      "sha256": "2467fdee7182ee089c4701011ee307640f8b82da777f7ab93ca23ead43aba6bb"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/source-manifest.json",
+      "bytes": 2712,
+      "sha256": "74c23d424dc217c607dfd53a8c4a94b302352e115ef0f778beadbd92282c8443"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/source-r3.py",
+      "bytes": 9391,
+      "sha256": "f972c0d8ce662eff2acd1ec8d42fd3eaf1dba63b7d4c24f3bae2548ac26ee96d"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/source-r5.py",
+      "bytes": 14344,
+      "sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/source-refine.py",
+      "bytes": 5019,
+      "sha256": "cd9c1bfa1115e0606886ad1574f3d3654355b86f1170ad22c38727c0e8c121aa"
+    },
+    {
+      "path": "prism-dna-sol-r5/assets/vision-only.txt",
+      "bytes": 441,
+      "sha256": "1482e474b19687b7c842d526a8f52822ec13860878240b2226b5c5c1f36337f0"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H11/expected.json",
+      "bytes": 20929,
+      "sha256": "4fb72bbdf83e555f6e957c5466e77f60b1d02ce1b4c8b754a9cab181b85893d7"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H11/focus.json",
+      "bytes": 468,
+      "sha256": "76ec737f2528e627f8b81336754512ea71b41c9b34b31e31c5336722457bdc58"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H11/image.jpg",
+      "bytes": 252648,
+      "sha256": "9d1361c7869be2bddd7ad407d6e3ffefd87f3d91c6cc736c8eb8c82f3cb4e6d0"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H11/primary.json",
+      "bytes": 4016,
+      "sha256": "20d48bdc292366e1b5319a9e6730a5fc638f49e1625f0643badcf6f377d010ae"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H12/expected.json",
+      "bytes": 10911,
+      "sha256": "3969d7c57b560c017e9b41f44149a88ec945a238584773ba0f3f7be9c6c4d1fd"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H12/focus.json",
+      "bytes": 176,
+      "sha256": "1ddbbefb5a129e71b56f32daaf2461bbe55dabb34c855ca23420a8b9c131f251"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H12/image.jpg",
+      "bytes": 57575,
+      "sha256": "0780ca8586b2ecfec81db3bc6a8a7fa6a73ccfd2a65458c60160e9d865c2dda0"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/H12/primary.json",
+      "bytes": 3312,
+      "sha256": "ff1ef798ffed8b07376b8696901f1d84c55364be26f538fb413626b1cc50437f"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/HP01/expected.json",
+      "bytes": 34721,
+      "sha256": "33ca843371100556b4c9cde3ba0d13c502d268f5a8c9ee308bb39b47796885d3"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/HP01/focus.json",
+      "bytes": 1331,
+      "sha256": "67215f6628ea6f44f13f48877b979aa0ffac986e6fe47e13d58f9950397f7144"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/HP01/image.png",
+      "bytes": 230412,
+      "sha256": "5fcbfa4abcbc655eb0bf9fd1d8126bce97148423dca8a56419a90eb6eb82f808"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/HP01/primary.json",
+      "bytes": 5054,
+      "sha256": "317a84fdc00bcdf88b41ad775e0be3f7bdfb50ff209e0ff0a82b71dc06cb206d"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/HP01/refinement.json",
+      "bytes": 3919,
+      "sha256": "d7da4503ceaa9aedb48cc343f84f17fd54978d3703591985c99fbd372e03459a"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/index.json",
+      "bytes": 713,
+      "sha256": "30895001ee0390beeb39a056dc0b44146bc4f265a23701ca957857090e74939a"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/MC01/expected.json",
+      "bytes": 33514,
+      "sha256": "ad8e3006a7d65fc6f55363d7888c58951ab1d3d98e5999c2341b24dd33142237"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/MC01/focus.json",
+      "bytes": 277,
+      "sha256": "bc13f555bc3797c344237c7c202cd4a0ee37ac8abc08f15eca6ba9a97b24e5d6"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/MC01/image.png",
+      "bytes": 191847,
+      "sha256": "1a72e0c1ae47db5831d9b98fd5d8bc6ff3495ef3d104ae072311f12121a04e76"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/MC01/primary.json",
+      "bytes": 6442,
+      "sha256": "0e5c191bca13efa54405fad451cac3d8827748da16ebf162c016fb2de3fb012d"
+    },
+    {
+      "path": "prism-dna-sol-r5/examples/MC01/refinement.json",
+      "bytes": 2044,
+      "sha256": "61349dc7e32ceddf5cbd9dcfbcf6efad857c09a8269ecff5bb1baeda3e423913"
+    },
+    {
+      "path": "prism-dna-sol-r5/references/owner-baseline-selection.json",
+      "bytes": 4428,
+      "sha256": "e657fe69cabc55a7a0b697d482038cbe9c067d75879caf6285efea57fcdf80f8"
+    },
+    {
+      "path": "prism-dna-sol-r5/references/owner-outcome.json",
+      "bytes": 3074,
+      "sha256": "cc90ea346b4e580fed33e8b9a9cf8c2bf7a4e432af8dcf3ac14b5e438c7d8b00"
+    },
+    {
+      "path": "prism-dna-sol-r5/references/provenance.md",
+      "bytes": 1998,
+      "sha256": "bcafab1a478ec852fa311946445bbf5f3544ac089b26d9a082445b04f5581888"
+    },
+    {
+      "path": "prism-dna-sol-r5/references/release-validation.json",
+      "bytes": 1762,
+      "sha256": "1f3d8046205d9a36da79f70a8396b55c624e9d97265fac35c0f2808390228c28"
+    },
+    {
+      "path": "prism-dna-sol-r5/references/usage.md",
+      "bytes": 3072,
+      "sha256": "3d34472a0bebec3a5e970489dfd60fb34d32a595f5dd68e435f28f62c6cc4cf5"
+    },
+    {
+      "path": "prism-dna-sol-r5/requirements.txt",
+      "bytes": 133,
+      "sha256": "4eb9cfe0c3362dd936c342e18d06310a4046978fd002e96bb99bf68e7a9a532d"
+    },
+    {
+      "path": "prism-dna-sol-r5/scripts/cli.py",
+      "bytes": 11133,
+      "sha256": "4806480e3c3115fab350ff3bcee864be4aa1b2362b4637a8bab5966fbe636147"
+    },
+    {
+      "path": "prism-dna-sol-r5/scripts/engine.py",
+      "bytes": 10913,
+      "sha256": "f27a4d4c945b75d81d202e1101c0cc52bf329d82a3d7a343e60f411b6c722c2c"
+    },
+    {
+      "path": "prism-dna-sol-r5/SKILL.md",
+      "bytes": 3481,
+      "sha256": "2c0ac7b9ab1c4fbcccb9b1c0dac31fb40c02a9903c9e57d951399044a1f8df90"
+    }
+  ]
+}

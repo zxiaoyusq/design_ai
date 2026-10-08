@@ -1,0 +1,92 @@
+{
+  "strategy_version": "prism-workflow-skills-v2.0.0-project-20261006",
+  "canonical_skills": 17,
+  "compatibility_routers": 4,
+  "quick_validated_skills": 21,
+  "backend_tests_passed": 68,
+  "frontend_build": "passed",
+  "new_model_requests": 0,
+  "historical_round_receipts_unchanged_counts": {
+    "failed_no_retry": 5,
+    "completed": 195
+  },
+  "model_calls_paused": true,
+  "native_offline_checks": {
+    "status": "passed",
+    "results": [
+      {
+        "check": "native-doctor",
+        "exit_code": 0,
+        "wall_seconds": 0.182,
+        "stdout": "native-doctor.stdout.txt",
+        "stderr": "native-doctor.stderr.txt"
+      },
+      {
+        "check": "R5-replay",
+        "exit_code": 0,
+        "wall_seconds": 0.573,
+        "stdout": "R5-replay.stdout.txt",
+        "stderr": "R5-replay.stderr.txt"
+      },
+      {
+        "check": "research-boundaries",
+        "exit_code": 0,
+        "wall_seconds": 0.07,
+        "stdout": "research-boundaries.stdout.txt",
+        "stderr": "research-boundaries.stderr.txt"
+      },
+      {
+        "check": "H01-boundaries",
+        "exit_code": 0,
+        "wall_seconds": 0.239,
+        "stdout": "H01-boundaries.stdout.txt",
+        "stderr": "H01-boundaries.stderr.txt"
+      },
+      {
+        "check": "portable-glue",
+        "exit_code": 0,
+        "wall_seconds": 0.284,
+        "stdout": "portable-glue.stdout.txt",
+        "stderr": "portable-glue.stderr.txt"
+      },
+      {
+        "check": "v2-material-and-review-contracts",
+        "exit_code": 0,
+        "wall_seconds": 0.122,
+        "stdout": "v2-material-and-review-contracts.stdout.txt",
+        "stderr": "v2-material-and-review-contracts.stderr.txt"
+      },
+      {
+        "check": "future-reference-consumer",
+        "exit_code": 0,
+        "wall_seconds": 1.925,
+        "stdout": "future-reference-consumer.stdout.txt",
+        "stderr": "future-reference-consumer.stderr.txt"
+      },
+      {
+        "check": "native-ID-CMF-alias",
+        "exit_code": 0,
+        "wall_seconds": 38.766,
+        "stdout": "native-ID-CMF-alias.stdout.txt",
+        "stderr": "native-ID-CMF-alias.stderr.txt"
+      }
+    ],
+    "new_model_calls": 0,
+    "semantic_or_visual_accuracy_proven": false,
+    "recorded_at": "2026-10-06T11:34:52.580664+00:00"
+  },
+  "service_activation": {
+    "old_pid": 1129707,
+    "new_pid": 93558,
+    "model_calls_started": 0,
+    "native_route_available": true,
+    "legacy_execution": {
+      "supported": false,
+      "workflow": "colleague_v2_native",
+      "reason": "已切换同事 v2 原生视觉流程；旧 DNA 文本 4–8 张生成与续跑已停用。请使用原生设计转译、实际裁图、独立整板复核链，网页仅接收已校验的结果。"
+    }
+  },
+  "source_of_truth": "ref/老师对接/最新完整流程1006/棱镜工作流_v2-project/",
+  "legacy_backup": ".agents/legacy-skills/prism_before_colleague_v2_20261006/",
+  "project_config": "ref/老师对接/最新完整流程1006/project.v2.json"
+}

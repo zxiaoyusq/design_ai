@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜整板独立审阅"
+  short_description: "在最终显示尺度独立核对ID或CMF整板的共同关系、离群项、图数、来源与证据，形成可追溯结论。用于成板验收；单图合格不自动给"
+  default_prompt: "使用 $prism-board-review 完成本环节，保留实际输入输出、来源和未解决问题。"

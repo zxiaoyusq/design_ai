@@ -1,0 +1,1 @@
+{"stage":"visual-family","call_id":"FAMILY-001","prompt_path":"../inputs/prompt.txt","schema_path":"../inputs/schema.json","images":[],"model_policy":{"model":"gpt-6-sol","reasoning_effort":"low","service_tier_requested":"default","fast_mode":false},"timeout_seconds":600,"execution_authorization":{"allowed":false,"basis":"由当前用户任务登记；此模板不构成授权","maximum_attempts":1}}

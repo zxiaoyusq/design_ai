@@ -1,0 +1,9 @@
+{"evidence_id":"U1:original","person_id":"P1","source_id":"S1","text":"我喜欢这块背板的深灰色和哑光表面。","locator":"synthetic:P1/page/1","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U2:original","person_id":"P1","source_id":"S1","text":"这块背板太亮了，我不喜欢，但小边框亮一点可以。","locator":"synthetic:P1/page/2","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U3:original","person_id":"P2","source_id":"S2","text":"我喜欢这个深灰色哑光背板，看着比较安静。","locator":"synthetic:P2/page/3","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U4:original","person_id":"P3","source_id":"S3","text":"我更喜欢小边框有一点银色亮光。","locator":"synthetic:P3/page/4","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U5:original","person_id":"P3","source_id":"S3","text":"这个虚构品牌给我可靠、耐用的印象。","locator":"synthetic:P3/page/5","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U6:original","person_id":"P3","source_id":"S3","text":"我希望别人觉得我是一个可靠的人。","locator":"synthetic:P3/page/6","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U7:original","person_id":"P2","source_id":"S2","text":"如果要举一个奢华的例子，我会想到金色宫殿。","locator":"synthetic:P2/page/7","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U8:original","person_id":"P1","source_id":"S1","text":"我不喜欢这个颜色。","locator":"synthetic:P1/page/8","evidence_kind":"synthetic_fixture"}
+{"evidence_id":"U9:original","person_id":"P1","source_id":"S1","text":"同一款手机，我还是喜欢它不反光的背板。","locator":"synthetic:P1/page/9","evidence_kind":"synthetic_fixture"}

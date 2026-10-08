@@ -1,0 +1,5876 @@
+{
+  "type": "object",
+  "properties": {
+    "areas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 40
+          },
+          "base": {
+            "type": "object",
+            "properties": {
+              "COL-006": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/v_COL-006"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "OPT-001": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/v_OPT-001"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "OPT-002": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/v_OPT-002"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "OPT-007": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/v_OPT-007"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "COL-006",
+              "OPT-001",
+              "OPT-002",
+              "OPT-007"
+            ],
+            "additionalProperties": false
+          },
+          "texture": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "none",
+                      "uncertain"
+                    ]
+                  }
+                },
+                "required": [
+                  "state"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "state": {
+                    "type": "string",
+                    "enum": [
+                      "visible"
+                    ]
+                  },
+                  "dna": {
+                    "type": "object",
+                    "properties": {
+                      "TEX-001": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-001"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-002": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-002"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-005": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-005"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-007": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-007"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-010": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-010"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-011": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-011"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-014": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-014"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "TEX-018": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/v_TEX-018"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "TEX-001",
+                      "TEX-002",
+                      "TEX-005",
+                      "TEX-007",
+                      "TEX-010",
+                      "TEX-011",
+                      "TEX-014",
+                      "TEX-018"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "state",
+                  "dna"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "more": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/f_COL-001"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-002"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-003"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-004"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-005"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-007"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-008"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-009"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-010"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-011"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-012"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-013"
+                },
+                {
+                  "$ref": "#/$defs/f_COL-014"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-003"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-004"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-006"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-008"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-009"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-012"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-013"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-015"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-016"
+                },
+                {
+                  "$ref": "#/$defs/f_TEX-017"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-003"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-004"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-005"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-006"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-008"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-009"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-010"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-011"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-012"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-013"
+                },
+                {
+                  "$ref": "#/$defs/f_OPT-014"
+                }
+              ]
+            }
+          }
+        },
+        "required": [
+          "name",
+          "base",
+          "texture",
+          "more"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "overall": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 70
+          },
+          "dna": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/f_GEO-001"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-002"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-003"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-004"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-005"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-006"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-007"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-008"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-009"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-010"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-011"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-012"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-013"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-014"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-015"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-016"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-017"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-018"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-019"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-020"
+              },
+              {
+                "$ref": "#/$defs/f_STR-001"
+              },
+              {
+                "$ref": "#/$defs/f_STR-002"
+              },
+              {
+                "$ref": "#/$defs/f_STR-003"
+              },
+              {
+                "$ref": "#/$defs/f_STR-004"
+              },
+              {
+                "$ref": "#/$defs/f_STR-005"
+              },
+              {
+                "$ref": "#/$defs/f_STR-006"
+              },
+              {
+                "$ref": "#/$defs/f_STR-007"
+              },
+              {
+                "$ref": "#/$defs/f_STR-008"
+              },
+              {
+                "$ref": "#/$defs/f_STR-009"
+              },
+              {
+                "$ref": "#/$defs/f_STR-010"
+              },
+              {
+                "$ref": "#/$defs/f_STR-011"
+              },
+              {
+                "$ref": "#/$defs/f_STR-012"
+              },
+              {
+                "$ref": "#/$defs/f_STR-013"
+              },
+              {
+                "$ref": "#/$defs/f_STR-014"
+              },
+              {
+                "$ref": "#/$defs/f_STR-015"
+              },
+              {
+                "$ref": "#/$defs/f_STR-016"
+              },
+              {
+                "$ref": "#/$defs/f_STR-017"
+              },
+              {
+                "$ref": "#/$defs/f_STR-018"
+              },
+              {
+                "$ref": "#/$defs/f_STR-019"
+              },
+              {
+                "$ref": "#/$defs/f_COL-001"
+              },
+              {
+                "$ref": "#/$defs/f_COL-002"
+              },
+              {
+                "$ref": "#/$defs/f_COL-003"
+              },
+              {
+                "$ref": "#/$defs/f_COL-004"
+              },
+              {
+                "$ref": "#/$defs/f_COL-005"
+              },
+              {
+                "$ref": "#/$defs/f_COL-007"
+              },
+              {
+                "$ref": "#/$defs/f_COL-008"
+              },
+              {
+                "$ref": "#/$defs/f_COL-009"
+              },
+              {
+                "$ref": "#/$defs/f_COL-010"
+              },
+              {
+                "$ref": "#/$defs/f_COL-011"
+              },
+              {
+                "$ref": "#/$defs/f_COL-012"
+              },
+              {
+                "$ref": "#/$defs/f_COL-013"
+              },
+              {
+                "$ref": "#/$defs/f_COL-014"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-001"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-002"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-003"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-004"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-005"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-006"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-007"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-008"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-009"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-010"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-011"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-012"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-013"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-014"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-015"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-016"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-017"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-018"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-003"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-004"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-005"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-006"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-008"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-009"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-010"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-011"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-012"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-013"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-014"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-001"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-002"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-003"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-004"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-005"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-006"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-007"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-008"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-009"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-010"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-011"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-012"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-013"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-001"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-002"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-003"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-004"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-005"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-006"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-007"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-008"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-009"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-010"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-011"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-012"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-014"
+              },
+              {
+                "$ref": "#/$defs/f_REL-004"
+              },
+              {
+                "$ref": "#/$defs/f_REL-005"
+              },
+              {
+                "$ref": "#/$defs/f_REL-006"
+              },
+              {
+                "$ref": "#/$defs/f_REL-007"
+              },
+              {
+                "$ref": "#/$defs/f_REL-008"
+              },
+              {
+                "$ref": "#/$defs/f_REL-009"
+              },
+              {
+                "$ref": "#/$defs/f_REL-010"
+              },
+              {
+                "$ref": "#/$defs/f_REL-011"
+              },
+              {
+                "$ref": "#/$defs/f_REL-013"
+              },
+              {
+                "$ref": "#/$defs/f_REL-014"
+              },
+              {
+                "$ref": "#/$defs/f_REL-015"
+              },
+              {
+                "$ref": "#/$defs/f_REL-016"
+              },
+              {
+                "$ref": "#/$defs/f_REL-017"
+              },
+              {
+                "$ref": "#/$defs/f_REL-019"
+              },
+              {
+                "$ref": "#/$defs/f_REL-020"
+              },
+              {
+                "$ref": "#/$defs/f_REL-021"
+              },
+              {
+                "$ref": "#/$defs/f_REL-022"
+              },
+              {
+                "$ref": "#/$defs/f_REL-023"
+              }
+            ]
+          }
+        },
+        "required": [
+          "at",
+          "dna"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "uncertain": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "properties": {
+          "at": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 70
+          },
+          "dna": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/f_GEO-001"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-002"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-003"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-004"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-005"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-006"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-007"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-008"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-009"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-010"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-011"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-012"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-013"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-014"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-015"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-016"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-017"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-018"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-019"
+              },
+              {
+                "$ref": "#/$defs/f_GEO-020"
+              },
+              {
+                "$ref": "#/$defs/f_STR-001"
+              },
+              {
+                "$ref": "#/$defs/f_STR-002"
+              },
+              {
+                "$ref": "#/$defs/f_STR-003"
+              },
+              {
+                "$ref": "#/$defs/f_STR-004"
+              },
+              {
+                "$ref": "#/$defs/f_STR-005"
+              },
+              {
+                "$ref": "#/$defs/f_STR-006"
+              },
+              {
+                "$ref": "#/$defs/f_STR-007"
+              },
+              {
+                "$ref": "#/$defs/f_STR-008"
+              },
+              {
+                "$ref": "#/$defs/f_STR-009"
+              },
+              {
+                "$ref": "#/$defs/f_STR-010"
+              },
+              {
+                "$ref": "#/$defs/f_STR-011"
+              },
+              {
+                "$ref": "#/$defs/f_STR-012"
+              },
+              {
+                "$ref": "#/$defs/f_STR-013"
+              },
+              {
+                "$ref": "#/$defs/f_STR-014"
+              },
+              {
+                "$ref": "#/$defs/f_STR-015"
+              },
+              {
+                "$ref": "#/$defs/f_STR-016"
+              },
+              {
+                "$ref": "#/$defs/f_STR-017"
+              },
+              {
+                "$ref": "#/$defs/f_STR-018"
+              },
+              {
+                "$ref": "#/$defs/f_STR-019"
+              },
+              {
+                "$ref": "#/$defs/f_COL-001"
+              },
+              {
+                "$ref": "#/$defs/f_COL-002"
+              },
+              {
+                "$ref": "#/$defs/f_COL-003"
+              },
+              {
+                "$ref": "#/$defs/f_COL-004"
+              },
+              {
+                "$ref": "#/$defs/f_COL-005"
+              },
+              {
+                "$ref": "#/$defs/f_COL-006"
+              },
+              {
+                "$ref": "#/$defs/f_COL-007"
+              },
+              {
+                "$ref": "#/$defs/f_COL-008"
+              },
+              {
+                "$ref": "#/$defs/f_COL-009"
+              },
+              {
+                "$ref": "#/$defs/f_COL-010"
+              },
+              {
+                "$ref": "#/$defs/f_COL-011"
+              },
+              {
+                "$ref": "#/$defs/f_COL-012"
+              },
+              {
+                "$ref": "#/$defs/f_COL-013"
+              },
+              {
+                "$ref": "#/$defs/f_COL-014"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-001"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-002"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-003"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-004"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-005"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-006"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-007"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-008"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-009"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-010"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-011"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-012"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-013"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-014"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-015"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-016"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-017"
+              },
+              {
+                "$ref": "#/$defs/f_TEX-018"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-001"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-002"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-003"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-004"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-005"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-006"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-007"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-008"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-009"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-010"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-011"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-012"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-013"
+              },
+              {
+                "$ref": "#/$defs/f_OPT-014"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-001"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-002"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-003"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-004"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-005"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-006"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-007"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-008"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-009"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-010"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-011"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-012"
+              },
+              {
+                "$ref": "#/$defs/f_EMI-013"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-001"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-002"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-003"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-004"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-005"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-006"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-007"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-008"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-009"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-010"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-011"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-012"
+              },
+              {
+                "$ref": "#/$defs/f_TXT-014"
+              },
+              {
+                "$ref": "#/$defs/f_REL-004"
+              },
+              {
+                "$ref": "#/$defs/f_REL-005"
+              },
+              {
+                "$ref": "#/$defs/f_REL-006"
+              },
+              {
+                "$ref": "#/$defs/f_REL-007"
+              },
+              {
+                "$ref": "#/$defs/f_REL-008"
+              },
+              {
+                "$ref": "#/$defs/f_REL-009"
+              },
+              {
+                "$ref": "#/$defs/f_REL-010"
+              },
+              {
+                "$ref": "#/$defs/f_REL-011"
+              },
+              {
+                "$ref": "#/$defs/f_REL-013"
+              },
+              {
+                "$ref": "#/$defs/f_REL-014"
+              },
+              {
+                "$ref": "#/$defs/f_REL-015"
+              },
+              {
+                "$ref": "#/$defs/f_REL-016"
+              },
+              {
+                "$ref": "#/$defs/f_REL-017"
+              },
+              {
+                "$ref": "#/$defs/f_REL-019"
+              },
+              {
+                "$ref": "#/$defs/f_REL-020"
+              },
+              {
+                "$ref": "#/$defs/f_REL-021"
+              },
+              {
+                "$ref": "#/$defs/f_REL-022"
+              },
+              {
+                "$ref": "#/$defs/f_REL-023"
+              }
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 60
+          }
+        },
+        "required": [
+          "at",
+          "dna",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "areas",
+    "overall",
+    "uncertain"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "v_GEO-001": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "直线",
+            "圆弧",
+            "折线",
+            "自由曲线",
+            "复合路径"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-002": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "开放",
+            "闭合"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-003": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "v_GEO-004": {
+      "type": "number"
+    },
+    "v_GEO-005": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "直线",
+            "恒定曲率",
+            "连续变化",
+            "突变连接"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-006": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_GEO-007": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_GEO-008": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "圆形",
+            "椭圆",
+            "矩形",
+            "多边形",
+            "异形"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-009": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_GEO-010": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_GEO-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "均匀",
+            "中央鼓胀",
+            "端部增大",
+            "中部收束",
+            "分段变化"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-012": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "平面",
+            "单向弯曲",
+            "双向弯曲",
+            "复合曲面"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-013": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "平齐",
+            "外凸",
+            "内凹",
+            "混合分区"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-014": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_GEO-015": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "v_GEO-016": {
+      "type": "number"
+    },
+    "v_GEO-017": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_GEO-018": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "平截",
+            "圆头",
+            "尖头",
+            "渐细",
+            "异形"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-019": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "盲孔",
+            "通孔",
+            "开槽",
+            "网状镂空"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_GEO-020": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "平展",
+            "弯折",
+            "褶皱",
+            "垂坠",
+            "拉伸",
+            "扭转"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-001": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "体块",
+            "板片",
+            "框架",
+            "紧固件",
+            "操作件",
+            "窗口",
+            "装饰件"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-002": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "v_STR-003": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "v_STR-004": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "一体",
+            "螺接",
+            "卡接",
+            "粘接",
+            "缝合",
+            "嵌入",
+            "其他已说明方式"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-005": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "隐藏",
+            "局部显露",
+            "完整显露"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-006": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_STR-007": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "直线",
+            "弧线",
+            "折线",
+            "环绕",
+            "自由路径"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-008": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_STR-009": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "圆头",
+            "沉头",
+            "柱头",
+            "可见异形头"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-010": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "v_STR-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "圆孔",
+            "方孔",
+            "六角孔",
+            "狭缝",
+            "异形孔"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-012": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "v_STR-013": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "直槽",
+            "弧槽",
+            "环槽",
+            "自由路径"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-014": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "V形",
+            "U形",
+            "矩形",
+            "梯形",
+            "自定义截面"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-015": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "圆",
+            "椭圆",
+            "圆角矩形",
+            "多边形",
+            "自由形"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-016": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "模糊层次",
+            "内部结构",
+            "图案层",
+            "其他明确内容"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-017": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "按键",
+            "旋钮",
+            "拨杆",
+            "滑块",
+            "触摸区"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-018": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "固定",
+            "转轴",
+            "滑轨",
+            "折叠",
+            "伸缩",
+            "可拆换"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_STR-019": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "整面",
+            "局部",
+            "包边",
+            "套覆",
+            "嵌片"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_COL-001": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "string",
+            "enum": [
+              "无彩色",
+              "单色",
+              "多色",
+              "连续色场"
+            ]
+          },
+          {
+            "type": "object",
+            "properties": {
+              "custom": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 40
+              }
+            },
+            "required": [
+              "custom"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "v_COL-002": {
+      "type": "number"
+    },
+    "v_COL-003": {
+      "type": "number"
+    },
+    "v_COL-004": {
+      "type": "number"
+    },
+    "v_COL-005": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "v_COL-006": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_COL-007": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_COL-008": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_COL-009": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "v_COL-010": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "线性",
+            "径向",
+            "环向",
+            "沿路径",
+            "不规则"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_COL-011": {
+      "type": "number"
+    },
+    "v_COL-012": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "清晰",
+            "过渡",
+            "模糊"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_COL-013": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "均匀",
+            "中心突出",
+            "边缘变化",
+            "斑驳",
+            "渐变"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_COL-014": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "基材本色",
+            "工艺着色",
+            "印刷",
+            "发光",
+            "反射环境"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-001": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "真实起伏",
+            "颜色图案",
+            "光泽变化",
+            "透明变化",
+            "复合"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-002": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "点",
+            "线",
+            "网格",
+            "多边形",
+            "颗粒",
+            "纤维",
+            "斑块",
+            "具象纹样"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-003": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_TEX-004": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_TEX-005": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "统一",
+            "有限变体",
+            "连续变化",
+            "随机变化"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-006": {
+      "type": "number"
+    },
+    "v_TEX-007": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "无主方向",
+            "单向",
+            "交叉",
+            "放射",
+            "环向",
+            "流线"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-008": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_TEX-009": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_TEX-010": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "规则",
+            "轻微扰动",
+            "不规则"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "平移重复",
+            "镜像重复",
+            "旋转重复",
+            "尺度递进",
+            "非重复"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-012": {
+      "type": "number"
+    },
+    "v_TEX-013": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_TEX-014": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "锐利",
+            "圆润",
+            "破碎",
+            "羽化",
+            "混合"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-015": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "木纹",
+            "石纹",
+            "皮纹",
+            "纤维纹",
+            "其他有出处纹理"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-016": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "经纬交错",
+            "针圈",
+            "绳结",
+            "斜向编织",
+            "其他有图例组织"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-017": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "划痕",
+            "掉色",
+            "磨蚀",
+            "裂纹外观",
+            "斑驳"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TEX-018": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "全域",
+            "局部",
+            "边缘",
+            "分区",
+            "密度渐变"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-001": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "金属外观",
+            "玻璃外观",
+            "塑料外观",
+            "织物外观",
+            "木石外观"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-002": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "哑光",
+            "半光",
+            "高光",
+            "镜面外观"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-003": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "集中",
+            "中等",
+            "宽散"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-004": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "无明显方向",
+            "单轴拉长",
+            "环向",
+            "随表面变化"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-005": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_OPT-006": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "模糊",
+            "部分可辨",
+            "清晰"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-007": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "不透明",
+            "半透明",
+            "透明"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-008": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "清晰",
+            "轻雾",
+            "漫射"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-009": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "轻微",
+            "明显"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-010": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_OPT-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "局部柔化",
+            "明显透光层次"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-012": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "清晰罩层",
+            "雾化罩层"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-013": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "珠光",
+            "虹彩",
+            "其他角变"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_OPT-014": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "局部",
+            "连续边缘",
+            "视角相关"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-001": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "存在但关闭",
+            "开启"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-002": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "点",
+            "线",
+            "面",
+            "体积外观",
+            "复合"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-003": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "直线",
+            "圆弧",
+            "折线",
+            "环形",
+            "自由路径"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-004": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "连续",
+            "分段",
+            "点列",
+            "渐隐连接"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-005": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_EMI-006": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "弱",
+            "中",
+            "强"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-007": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "单色",
+            "多色分区",
+            "沿路径渐变",
+            "随时间变色"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-008": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_EMI-009": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "清晰边界",
+            "短距离柔化",
+            "长距离扩散"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-010": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_EMI-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "均匀",
+            "端部增强",
+            "中心增强",
+            "分段变化",
+            "渐变"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_EMI-012": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "v_EMI-013": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "v_TXT-001": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "文字",
+            "数字",
+            "编号",
+            "图标",
+            "徽记",
+            "混合"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TXT-002": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_TXT-003": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "v_TXT-004": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "衬线",
+            "无衬线",
+            "手写",
+            "等宽",
+            "装饰字形"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TXT-005": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_TXT-006": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_TXT-007": {
+      "type": "number"
+    },
+    "v_TXT-008": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_TXT-009": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_TXT-010": {
+      "type": "number"
+    },
+    "v_TXT-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "实心",
+            "空心描边",
+            "复合",
+            "镂空",
+            "图像填充"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TXT-012": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "几何抽象",
+            "象形",
+            "写实图形",
+            "混合"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_TXT-014": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "完整清晰",
+            "柔化",
+            "断裂",
+            "错位",
+            "遮挡"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-004": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "v_REL-005": {
+      "type": "number"
+    },
+    "v_REL-006": {
+      "type": "number",
+      "minimum": 0
+    },
+    "v_REL-007": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "左齐",
+            "右齐",
+            "居中",
+            "基线",
+            "轴线",
+            "自由对齐"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-008": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "镜像",
+            "旋转",
+            "近似对称",
+            "非对称"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-009": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "平移",
+            "旋转",
+            "镜像",
+            "阵列",
+            "路径分布",
+            "非重复"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-010": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "等距",
+            "递增",
+            "递减",
+            "周期变化",
+            "不规则"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-011": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "不附着",
+            "沿外轮廓",
+            "沿内轮廓",
+            "沿局部边缘"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-013": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "v_REL-014": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "分离",
+            "邻接",
+            "接触",
+            "穿插",
+            "嵌套",
+            "连接"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-015": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "主体",
+            "辅助",
+            "点缀",
+            "背景"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-016": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "v_REL-017": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "均匀",
+            "中心密集",
+            "边缘密集",
+            "分区",
+            "渐变"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-019": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "v_REL-020": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "近似",
+            "色相差异",
+            "明暗差异",
+            "彩度差异",
+            "复合对比"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-021": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "硬分界",
+            "包边",
+            "嵌接",
+            "覆盖",
+            "层叠",
+            "渐变过渡"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-022": {
+      "anyOf": [
+        {
+          "type": "string",
+          "enum": [
+            "相似",
+            "直曲对比",
+            "大小对比",
+            "软硬外观对比",
+            "粗细对比"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "custom": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 40
+            }
+          },
+          "required": [
+            "custom"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "v_REL-023": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 70
+    },
+    "f_GEO-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-015": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-015"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-015"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-016": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-016"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-016"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-017": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-017"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-017"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-018": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-018"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-018"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-019": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-019"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-019"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_GEO-020": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "GEO-020"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_GEO-020"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-015": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-015"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-015"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-016": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-016"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-016"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-017": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-017"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-017"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-018": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-018"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-018"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_STR-019": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "STR-019"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_STR-019"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_COL-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "COL-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_COL-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-015": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-015"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-015"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-016": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-016"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-016"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-017": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-017"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-017"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TEX-018": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TEX-018"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TEX-018"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_OPT-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "OPT-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_OPT-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_EMI-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "EMI-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_EMI-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-001": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-001"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-001"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-002": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-002"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-002"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-003": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-003"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-003"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-012": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-012"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-012"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_TXT-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "TXT-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_TXT-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-004": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-004"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-004"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-005": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-005"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-005"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-006": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-006"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-006"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-007": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-007"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-007"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-008": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-008"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-008"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-009": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-009"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-009"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-010": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-010"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-010"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-011": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-011"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-011"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-013": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-013"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-013"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-014": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-014"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-014"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-015": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-015"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-015"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-016": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-016"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-016"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-017": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-017"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-017"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-019": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-019"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-019"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-020": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-020"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-020"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-021": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-021"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-021"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-022": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-022"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-022"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    },
+    "f_REL-023": {
+      "type": "object",
+      "properties": {
+        "p": {
+          "type": "string",
+          "enum": [
+            "REL-023"
+          ]
+        },
+        "v": {
+          "$ref": "#/$defs/v_REL-023"
+        }
+      },
+      "required": [
+        "p",
+        "v"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

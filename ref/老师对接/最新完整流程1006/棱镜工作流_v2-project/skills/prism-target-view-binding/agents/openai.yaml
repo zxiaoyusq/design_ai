@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜DNA位置与当前对象绑定"
+  short_description: "将原图DNA的已知位置绑定到当前ID对象或CMF表面，区分品质父范围与实际比较视窗。用于解析后的证据绑定；不跨对象补特征。"
+  default_prompt: "使用 $prism-target-view-binding 完成本环节，保留实际输入输出、来源和未解决问题。"

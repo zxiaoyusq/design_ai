@@ -1,0 +1,62 @@
+[
+  {
+    "id": "B07-T04",
+    "model_input": "inputs/B07-T04.jpg",
+    "input_sha256": "fa32573750af26ccb05fbd5d5ce28be28ce527169ed58c19e0cb2dac8aae46c8",
+    "original": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\tiles\\B07-T04.png",
+    "original_sha256": "06b7a171f7ada532f2126f624f2c7c64b87dd380afe153ac3f6d70813c1cc657",
+    "primary_result": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\runs\\B07-T04\\result.json",
+    "primary_result_sha256": "aab21ef7f51078d7dae0ccf679b537b0188f5b66163884be10de28267015aafe",
+    "label_for_evaluation_only": "designer_PASS",
+    "source_kind": "calibration",
+    "applicable": false
+  },
+  {
+    "id": "B08-T03",
+    "model_input": "inputs/B08-T03.jpg",
+    "input_sha256": "ddc70ec53125a18e6851b0a04d37d8b9e6f61d435579100e51255c48c17b66cb",
+    "original": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\tiles\\B08-T03.png",
+    "original_sha256": "ae1a6f4bd968c62dad488fa240cebc0d0b18002418ff06d297d46847cb533da3",
+    "primary_result": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\runs\\B08-T03\\result.json",
+    "primary_result_sha256": "601d0ca7996bfd6e5f3048076593f591360242eab44da805aa18454808299e9d",
+    "label_for_evaluation_only": "designer_PASS",
+    "source_kind": "calibration",
+    "applicable": false
+  },
+  {
+    "id": "B08-T04",
+    "model_input": "inputs/B08-T04.jpg",
+    "input_sha256": "473ae89dce2def96ce2622f0cbe7cd03da73408d64f6a169c3d813da3427c242",
+    "original": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\tiles\\B08-T04.png",
+    "original_sha256": "e34cae2bfd0872bc3da1d108c599ef1f8cd89e4f41d14abbd8eacfeed7eeabc9",
+    "primary_result": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\runs\\B08-T04\\result.json",
+    "primary_result_sha256": "e4bec149ee036c20141017884aa3b833fb2b2c4b5002eba6688db9ecbfd1cf2f",
+    "label_for_evaluation_only": "designer_PASS",
+    "source_kind": "calibration",
+    "applicable": false
+  },
+  {
+    "id": "B11-T01",
+    "model_input": "inputs/B11-T01.jpg",
+    "input_sha256": "7cf5975c3536dcb1ede30711b507c5d161bad5d680b26ddd11cddd8d1207f18d",
+    "original": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\tiles\\B11-T01.png",
+    "original_sha256": "67fa2757d76bee52ad8f3ea454f351edbd2557e6fdbf2bc51a7d427b51ccb2f9",
+    "primary_result": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\designer-boards-round2\\runs\\B11-T01\\result.json",
+    "primary_result_sha256": "f6090e0713ce2d0bcd68fdead5e2dcb27fbf65848d84e87e7c0112024f810ecf",
+    "label_for_evaluation_only": "designer_PASS",
+    "source_kind": "calibration",
+    "applicable": false
+  },
+  {
+    "id": "control04",
+    "model_input": "inputs/control04.jpg",
+    "input_sha256": "73ea3fc302da16259a3a794529a9b3fdac5a4dd0581d758e1bde784eaa11cfc9",
+    "original": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\ee1-cmf-calibration-v052\\originals\\control04.jpg",
+    "original_sha256": "51d93e15ac76d8cff67dad0d5ff42ca9a1dd8f9f5189c28ce3c1e65193327a21",
+    "primary_result": "D:\\Codex\\传音AI创客营\\outputs\\prism-quality-pilot-20260926\\ee1-cmf-calibration-v052\\runs\\control04\\result.json",
+    "primary_result_sha256": "7980035b02c9a99c4a11e6b4d339577fbfd7439d9881914ba73aec1601ec8f41",
+    "label_for_evaluation_only": "unlabelled_sentinel",
+    "source_kind": "calibration",
+    "applicable": false
+  }
+]

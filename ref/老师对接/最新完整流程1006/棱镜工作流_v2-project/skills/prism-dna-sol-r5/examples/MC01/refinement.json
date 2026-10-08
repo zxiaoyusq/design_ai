@@ -1,0 +1,76 @@
+{
+  "answer": {
+    "checks": {
+      "0": {
+        "decision": "uncertain",
+        "value": null,
+        "evidence": "车头黑色风挡可见表面反光，但未见可明确辨认的透射内容，无法据此判断材料透光程度。"
+      },
+      "1": {
+        "decision": "unsupported",
+        "value": null,
+        "evidence": "风挡后方没有可判断的透射图像，无法评估透射模糊程度；表面反光不构成依据。"
+      },
+      "2": {
+        "decision": "uncertain",
+        "value": null,
+        "evidence": "后轮上方红色尾灯可见红色外观，但未见能区分透光与表面反射的内容，无法确认半透明。"
+      }
+    }
+  },
+  "receipt": {
+    "state": "response_received",
+    "finished_at": "2026-09-29T08:56:34.973806+00:00",
+    "exit_code": 0,
+    "timed_out": false,
+    "wall_seconds": 10.0622,
+    "usage": {
+      "input_tokens": 6208,
+      "cached_input_tokens": 0,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 160,
+      "reasoning_output_tokens": 0
+    },
+    "event_counts": {
+      "thread.started": 1,
+      "turn.started": 1,
+      "item.completed": 2,
+      "turn.completed": 1
+    },
+    "tool_events": [],
+    "notices": [
+      {
+        "id": "item_0",
+        "type": "error",
+        "message": "Exceeded skills context budget. All skill descriptions were removed and 24 additional skills were not included in the model-visible skills list."
+      }
+    ],
+    "schema_valid": true,
+    "validation_errors": []
+  },
+  "targets": [
+    {
+      "p": "OPT-007",
+      "v": "半透明",
+      "at": "车头风挡",
+      "source": "P-MC01",
+      "path": "/areas/5/base/OPT-007"
+    },
+    {
+      "p": "OPT-008",
+      "v": "轻雾",
+      "at": "车头风挡",
+      "source": "P-MC01",
+      "path": "/areas/5/more/0"
+    },
+    {
+      "p": "OPT-007",
+      "v": "半透明",
+      "at": "后轮上方尾灯透镜",
+      "source": "P-MC01",
+      "path": "/areas/16/base/OPT-007"
+    }
+  ],
+  "seconds": 11.0431,
+  "cost": 0.014016
+}

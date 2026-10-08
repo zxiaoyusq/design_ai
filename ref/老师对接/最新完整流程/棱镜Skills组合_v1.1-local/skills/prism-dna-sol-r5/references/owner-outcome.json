@@ -1,0 +1,95 @@
+{
+  "status": "direct_coverage_candidate_with_remaining_headphone_gap",
+  "rows": [
+    {
+      "image_id": "H11",
+      "final_local_features": 62,
+      "final_local_CMF": 39,
+      "image_unique_features": 46,
+      "image_unique_CMF": 25,
+      "processing_seconds": 46.4623,
+      "token_cost_estimate_usd": 0.097086,
+      "pending_count": 3
+    },
+    {
+      "image_id": "H12",
+      "final_local_features": 30,
+      "final_local_CMF": 16,
+      "image_unique_features": 29,
+      "image_unique_CMF": 15,
+      "processing_seconds": 36.2659,
+      "token_cost_estimate_usd": 0.085346,
+      "pending_count": 1
+    },
+    {
+      "image_id": "HP01",
+      "final_local_features": 88,
+      "final_local_CMF": 64,
+      "image_unique_features": 54,
+      "image_unique_CMF": 30,
+      "processing_seconds": 176.8518,
+      "token_cost_estimate_usd": 0.144842,
+      "pending_count": 11
+    },
+    {
+      "image_id": "MC01",
+      "final_local_features": 134,
+      "final_local_CMF": 114,
+      "image_unique_features": 60,
+      "image_unique_CMF": 42,
+      "processing_seconds": 67.756,
+      "token_cost_estimate_usd": 0.108478,
+      "pending_count": 5
+    }
+  ],
+  "new_model_requests": 10,
+  "total_token_price_estimate_usd": 0.435752,
+  "original_sources_verified": 35,
+  "new_user_report_created": false,
+  "method_decisions": {
+    "few_shot_candidate": "rejected",
+    "flat_CMF_region_coverage": "retain",
+    "repeated_headphone_mixed_region_recovery": "do_not_expand_low_yield",
+    "unclear_optics": "withhold"
+  },
+  "same_scope_CMF_reference": {
+    "Astra": {
+      "HP01": 41,
+      "MC01": 43
+    },
+    "fresh_R3": {
+      "HP01": 21,
+      "MC01": 22
+    },
+    "R5": {
+      "HP01": 30,
+      "MC01": 42
+    }
+  },
+  "known_limits": [
+    "No human gold accuracy rate",
+    "Headphone still below Astra coverage",
+    "Initial HP call includes about97seconds before turn.started",
+    "Processing totals exclude deliberate between-phase research pauses",
+    "New images show extraction behavior, not proof of corpus-wide accuracy"
+  ],
+  "algorithm_artifacts": [
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\algorithm.py",
+      "sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\run.py",
+      "sha256": "a1b9c299b67194d1da17f7df59eb006ca2d52a8232e7a1c1de04c715e0aba5f5"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\refine.py",
+      "sha256": "cd9c1bfa1115e0606886ad1574f3d3654355b86f1170ad22c38727c0e8c121aa"
+    },
+    {
+      "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0c2a0-b850-7fd1-a032-78e192743557\\sol-dna-optimization-20260929\\r5\\finalize.py",
+      "sha256": "2467fdee7182ee089c4701011ee307640f8b82da777f7ab93ca23ead43aba6bb"
+    }
+  ],
+  "production_deployed": false
+}

@@ -1,0 +1,29 @@
+{
+  "dataset_mode": "synthetic_fixture",
+  "items": [
+    {
+      "image_id": "DEMO-01",
+      "article_id": "ARTICLE-01",
+      "source_group_id": "article:ARTICLE-01",
+      "source_project_id": null,
+      "identity_basis": "项目归属尚待核实",
+      "image_ref": {
+        "path": "替换为当前真实图像路径",
+        "sha256": "替换为当前真实SHA256"
+      },
+      "current_target": "替换为看图后确认的对象",
+      "comparison_scope": "替换为当前比较部位",
+      "primary_relation_evidence": "填实际看见的关系，不复制示例",
+      "secondary_signal": "填可能干扰的其他信号",
+      "rectangle": {
+        "x": 0,
+        "y": 0,
+        "width": 1,
+        "height": 1
+      },
+      "treatment": "crop",
+      "reason": "填取景的实际理由",
+      "read_trace_ref": null
+    }
+  ]
+}

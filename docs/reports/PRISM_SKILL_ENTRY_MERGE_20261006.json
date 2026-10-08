@@ -1,0 +1,33 @@
+{
+  "main_skill_count": 13,
+  "new_merged_entries": [
+    "prism-visual-material-planning",
+    "prism-reference-image-preparation",
+    "prism-visual-grouping"
+  ],
+  "retired_entries": [
+    "prism-visual-family",
+    "prism-source-image-selection",
+    "prism-target-view-binding",
+    "prism-target-quality",
+    "prism-crop-enhancement",
+    "prism-id-moodboard",
+    "prism-cmf-moodboard"
+  ],
+  "validated_entrypoints": 6,
+  "local_links_checked": 47,
+  "errors": [],
+  "model_calls": 0,
+  "native_original_bundle_verify": "273 files / 17 original modules passed",
+  "native_contract_tests_passed": 15,
+  "independent_forward_check": {
+    "local_links": 32,
+    "native_describe_modules": [
+      "quality",
+      "id",
+      "cmf"
+    ],
+    "passed": true,
+    "model_calls": 0
+  }
+}

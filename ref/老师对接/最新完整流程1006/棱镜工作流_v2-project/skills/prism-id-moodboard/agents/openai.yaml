@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜ID风格第二次握手"
+  short_description: "基于已选语义方向、DNA和当前目标品质，按整件轮廓比例与结构关系进行ID视觉选组。用于ID情绪卡候选；不以同色同品类代替风"
+  default_prompt: "使用 $prism-id-moodboard 完成本环节，保留实际输入输出、来源和未解决问题。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜候选方向选择"
+  short_description: "把第一次语义握手候选转成有明确选择依据和ID/CMF路线的设计决策。用于设计师选向或当次授权AI代选；不制造高潜分数。"
+  default_prompt: "使用 $prism-direction-selection 完成本环节，保留实际输入输出、来源和未解决问题。"

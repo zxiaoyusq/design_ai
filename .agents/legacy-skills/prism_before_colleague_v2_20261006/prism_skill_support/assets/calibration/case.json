@@ -1,0 +1,34 @@
+{
+  "case_id": "six-cards-20261002",
+  "roles": "human_positive_visual_calibration_not_unseen_gold",
+  "user_feedback": "那6个情绪卡做得不错",
+  "cards": [
+    {
+      "id": "ID01",
+      "count": 7
+    },
+    {
+      "id": "ID02",
+      "count": 8
+    },
+    {
+      "id": "ID03",
+      "count": 7
+    },
+    {
+      "id": "CMF01",
+      "count": 9
+    },
+    {
+      "id": "CMF02",
+      "count": 8
+    },
+    {
+      "id": "CMF03",
+      "count": 9
+    }
+  ],
+  "historical_complete_native_qualification": 0,
+  "reason": "Historical strict minimum10 and evidence gates were not all passed; user visual feedback is separate.",
+  "not_runtime_answers": true
+}

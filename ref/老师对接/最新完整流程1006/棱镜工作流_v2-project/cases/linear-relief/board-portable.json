@@ -1,0 +1,248 @@
+{
+  "schema_version": "prism.portable_board_case.v1",
+  "title": "连续槽纹与线性起伏",
+  "branch": "CMF",
+  "stage_status": "historical_AI_visual_trial_pass_not_native_H01_H2",
+  "tiles": [
+    {
+      "image_id": "N003",
+      "article_id": "21971",
+      "source_group_id": "article:21971",
+      "source_project_id": "article:21971",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N003.png",
+        "sha256": "b95dbdb053a1d090e20c22f371027b4406850c44d3c0829db98dbeeafe039ec0"
+      },
+      "rectangle": {
+        "x": 0.205,
+        "y": 0.25,
+        "width": 0.28,
+        "height": 0.487
+      },
+      "scope": "一盏灯的波纹外壳",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "去掉另一盏灯、电线和插座；保留银灰波纹与透光区的连续关系。",
+      "source_url": "https://www.wgsnchina.cn/mywgsn/feed#story-69fdff6f20389d1192b0f782"
+    },
+    {
+      "image_id": "N025",
+      "article_id": "18739",
+      "source_group_id": "article:18739",
+      "source_project_id": "article:18739",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N025.jpg",
+        "sha256": "25b26ed17aa807049aeee5020cd0a7cef6c80aaf5aab1224be7d1b1ad1245090"
+      },
+      "rectangle": {
+        "x": 0.54,
+        "y": 0,
+        "width": 0.46,
+        "height": 0.37
+      },
+      "scope": "白色陈设的竖向褶面",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "目标是后方陈设，重新审它；不沿用前景彩色产品的品质。下方露出的彩色产品再裁掉。",
+      "source_url": "https://www.designboom.com/design/transparent-keycaps-retro-tv-design-1984-apple-macintosh-128k-jelly-key-10-31-2025/"
+    },
+    {
+      "image_id": "N054",
+      "article_id": "19564",
+      "source_group_id": "article:19564",
+      "source_project_id": "article:19564",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N054.jpg",
+        "sha256": "4675339442b4621d0896b64c0cf082fe7790df35e1b2aa6744a07e4facc2aa7c"
+      },
+      "rectangle": {
+        "x": 0.14,
+        "y": 0.31,
+        "width": 0.29,
+        "height": 0.46
+      },
+      "scope": "箱体侧面的连续凸棱",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "把正面横向槽纹压到边缘，以侧面竖向起伏为主，保留箱体圆角。",
+      "source_url": "https://www.core77.com/posts/140107/Rimowa-and-Vitras-Luggage-like-Aluminum-Stool?utm_source=core77&utm_medium=from_title"
+    },
+    {
+      "image_id": "N016",
+      "article_id": "12111",
+      "source_group_id": "article:12111",
+      "source_project_id": "article:12111",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N016.jpg",
+        "sha256": "13cbb68812935c6affaa62ded0564d63ddffa58c83eaed45fffbb9e27aea028a"
+      },
+      "rectangle": {
+        "x": 0.368,
+        "y": 0.3,
+        "width": 0.265,
+        "height": 0.64
+      },
+      "scope": "石质外观支柱的竖向槽纹",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "留下槽纹的起止和物件边界，移除水龙头及大面积空背景。",
+      "source_url": "https://www.designboom.com/design/paolo-ulian-sculpts-carsico-washbasin-from-marble-for-antoniolupi/"
+    },
+    {
+      "image_id": "N036",
+      "article_id": "21300",
+      "source_group_id": "article:21300",
+      "source_project_id": "article:21300",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N036.png",
+        "sha256": "0ffcefa6452459b63319c017969dcafc4604c39bdf42475a555616cafcdfe527"
+      },
+      "rectangle": {
+        "x": 0.231,
+        "y": 0.381,
+        "width": 0.211,
+        "height": 0.326
+      },
+      "scope": "筒身的斜向凹槽",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "只比较一侧握持面；保留侧轮廓，紫色旋钮不作为主角。",
+      "source_url": "https://www.wgsnchina.cn/mywgsn/feed#story-69e79618563ac3c4b6e1e913"
+    },
+    {
+      "image_id": "N008",
+      "article_id": "9984",
+      "source_group_id": "article:9984",
+      "source_project_id": "article:9984",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N008.jpg",
+        "sha256": "24cb5e524cdf5328a23c9b92b9454932edd01d44f04baf9e87e82e4ab01e4237"
+      },
+      "rectangle": {
+        "x": 0.644,
+        "y": 0.736,
+        "width": 0.277,
+        "height": 0.17
+      },
+      "scope": "盖面上的平行筋纹",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "从多件物品中选右下盖面；保留有界盖面与把手，不将石地背景当作材质。",
+      "source_url": "https://www.designboom.com/design/addi-saute-pan-geometry-octagonal-raw-aluminum-form-steka-mozambique/"
+    },
+    {
+      "image_id": "N001",
+      "article_id": "10436",
+      "source_group_id": "article:10436",
+      "source_project_id": "article:10436",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N001.jpg",
+        "sha256": "bd2905593cdaf4930970f3e40d1ac38d41e8d40c28ea755fb12be0905252a55e"
+      },
+      "rectangle": {
+        "x": 0.052,
+        "y": 0.545,
+        "width": 0.39,
+        "height": 0.312
+      },
+      "scope": "围板的等距波纹",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "只取前景独立围板，避开树、后景板和座椅；上下边界仍在。",
+      "source_url": "https://www.designboom.com/architecture/four-inclined-metal-planes-bridge-place-leaning-drawing-observing-easel-bridge-xbtw-office/"
+    },
+    {
+      "image_id": "N038",
+      "article_id": "9814",
+      "source_group_id": "article:9814",
+      "source_project_id": "article:9814",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N038.jpg",
+        "sha256": "20e4d6574837ccf5ade3ccaed48017adc40b113ca38c42207346664d9efe2076"
+      },
+      "rectangle": {
+        "x": 0.293,
+        "y": 0.277,
+        "width": 0.257,
+        "height": 0.148
+      },
+      "scope": "墙板的密集细肋",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "移除蓝天，保留右侧白墙与肋纹墙板边界，不把树影当槽纹。",
+      "source_url": "https://www.designboom.com/architecture/bronze-corrugated-metal-spf-architects-multifamily-housing-west-hollywood-harper-avenue-apartments/"
+    },
+    {
+      "image_id": "N062",
+      "article_id": "22432",
+      "source_group_id": "article:22432",
+      "source_project_id": "article:22432",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N062.png",
+        "sha256": "73973f7223b37bcd1730e26761f1f63c39027be53a80862e438dc82d34ef3606"
+      },
+      "rectangle": {
+        "x": 0.19,
+        "y": 0.51,
+        "width": 0.61,
+        "height": 0.3
+      },
+      "scope": "灯罩上的环向褶纹",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "只取下部圆鼓灯罩，保留两侧轮廓；把环向起伏作为本组有限变体。",
+      "source_url": "https://www.wgsnchina.cn/mywgsn/feed#story-6a1fe3407d0eefef2b92d8c9"
+    },
+    {
+      "image_id": "N080",
+      "article_id": "9102",
+      "source_group_id": "article:9102",
+      "source_project_id": "article:9102",
+      "project_identity_basis": "Original catalogue project identity plus Root visual crosscheck; not an assertion of globally resolved provenance.",
+      "image_ref": {
+        "path": "originals/N080.jpg",
+        "sha256": "9e8b6db5c8819688357197b246d99c0cfe6991e44331bbab7e36aa74b5b57448"
+      },
+      "rectangle": {
+        "x": 0.012,
+        "y": 0.603,
+        "width": 0.241,
+        "height": 0.227
+      },
+      "scope": "握持面上的环绕凹槽",
+      "limits": [
+        "实际材质成分未验证",
+        "本例是可见表面试板，未重跑正式H01/H2"
+      ],
+      "processing_instruction": "从前景握柄左端裁取连续槽纹，保留弧形边界；避开文字、锤头与交叠位置。",
+      "source_url": "https://www.core77.com/posts/144364/From-Japan-a-Sexy-Matte-Black-Sledge?utm_source=core77&utm_medium=from_title"
+    }
+  ]
+}

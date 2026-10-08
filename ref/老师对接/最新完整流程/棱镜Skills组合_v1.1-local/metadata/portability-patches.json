@@ -1,0 +1,62 @@
+[
+  {
+    "path": "skills/prism_skill_support/runtime/prism_sidecars/quality_selected_target_v2/protocol.py",
+    "before_sha256": "73d83cf7d48f87051318f7ac6f74ae758d8a81603a9a025fa3fe70d32198ca76",
+    "after_sha256": "5f8dda60c5f220ad13b9956497782a304b8eba6bea286fabaeb04e947cf22a68",
+    "reason": "Replace historical chat identity with a local logical executor label. Grants are local records, not inherited user authorization. Quality rules unchanged."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/common.py",
+    "before_sha256": "daaf9c32fa689c2b59b91eec3b3b019781ccbfe7314ca74993a04e8d784a4fed",
+    "after_sha256": "3965a9bfaf00b86cd05559e14e0e13f5ed912989ae667054d58d189fc8a5768a",
+    "reason": "Resolve bundled dependency pins relative to the installed module; hashes still checked."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/common.py",
+    "before_sha256": "6fe2a18556cc3403ba1692cc22652e30e78af4c18c6cc98081c13e346f00ebb7",
+    "after_sha256": "8b259880c9d1fd2c48108d692732faace43a6c611e48e6417a52af2c10a5fd2c",
+    "reason": "Resolve bundled dependency pins relative to the installed module; hashes still checked."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_dual_v2/adapter.py",
+    "before_sha256": "c2ad9a18489d55e98f1c204ea0be6feddcc74bf6e3df303746a6f8d1d314cf03",
+    "after_sha256": "52e8011a666f0707ed2988454b6a18db826e0e8142d9f3b1a302a02ac8c8fe54",
+    "reason": "Resolve unchanged R5 engine and portable baseline pins at the current package location."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/registry.py",
+    "before_sha256": "9952442ddec87ba4c9983b228a3f1a6e019c49b2d9be1d30f7a6023b48ee7b71",
+    "after_sha256": "b14db61bde87dcc8ed4fc484300729ae9218e19ba426982fa61552632441e638",
+    "reason": "Resolve exact-byte alias module pins relative to this installation."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/tests.py",
+    "before_sha256": "3f67c543711849741159a75f8f56ee54a2e338efc8acee6fb6ee82da280f7276",
+    "after_sha256": "10481f416b5cb2283807b4da6d17d9e3fd3b31ed3312b31243d8e3e7e77e453d",
+    "reason": "Keep temporary synthetic fixtures short and in caller-selected TEMP, avoiding Windows MAX_PATH."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/tests.py",
+    "before_sha256": "e6b03ab9417dfead3d215ab5a0b0c9324054353857799f675eb92f9c31c39291",
+    "after_sha256": "673f6ef5dbce3416e8f732f9cb283d10d02b8fab4c7c78becb192a897f84bb2b",
+    "reason": "Keep temporary synthetic fixtures short and in caller-selected TEMP, avoiding Windows MAX_PATH."
+  },
+  {
+    "path": "skills/prism-dna-sol-r5/scripts/cli.py",
+    "before_sha256": "4806480e3c3115fab350ff3bcee864be4aa1b2362b4637a8bab5966fbe636147",
+    "after_sha256": "0931d6f77bc60554bffecb436fda984d630bc8916d766e0e75273c679be59168",
+    "reason": "File-backed stdin/stdout with bounded wait and only-owned-process cleanup. R5 prompts, schemas, dictionary, decoder, focus selection and model config unchanged."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/tests.py",
+    "before_sha256": "a621c45a79c4f585b67db1818f41bf26fa075cdf666fe6d31165e11abc5cec7e",
+    "after_sha256": "2b80011e72517b770215c2dd7a9e69e52c9a644bf1f8491afde30415e3d736e7",
+    "reason": "Only synthetic alias-test temporary directory is relocated to caller TEMP; assertions unchanged."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/r5_exact_byte_alias_v1/tests.py",
+    "before_sha256": "2b80011e72517b770215c2dd7a9e69e52c9a644bf1f8491afde30415e3d736e7",
+    "after_sha256": "6b74b89dcad49773065b9495811e73d8803b232ae373cc7c401dffb441f490d4",
+    "reason": "Shorten only alias-test artifact filenames after two Windows path-length errors in relocated tests. Assertions and production rules unchanged."
+  }
+]

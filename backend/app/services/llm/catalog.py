@@ -40,8 +40,8 @@ _MODELS = (
         model_provider=ModelProvider.OPENAI,
     ),
     ModelDefinition(
-        id="gpt-5.6-sol",
-        name="GPT-5.6 Sol",
+        id="gpt-6-sol",
+        name="GPT-6 Sol",
         model_provider=ModelProvider.OPENAI,
     ),
     ModelDefinition(
@@ -62,6 +62,11 @@ _MODELS = (
     ModelDefinition(
         id="gemini-3.7-flash",
         name="gemini 3.7 flash",
+        model_provider=ModelProvider.OPENAI,
+    ),
+    ModelDefinition(
+        id="gemini-3.8-flash",
+        name="gemini 3.8 flash",
         model_provider=ModelProvider.OPENAI,
     ),
 )

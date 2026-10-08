@@ -1,0 +1,19 @@
+{
+  "schema_version": "prism.research_semantic_clustering.v1",
+  "proposal_required": ["schema_version", "input_binding", "analyst", "clusters", "coverage"],
+  "cluster_types": ["shared_theme", "exploratory_signal", "design_issue", "background_theme"],
+  "cluster_required": ["cluster_id", "title", "kind", "definition", "common_meaning", "boundaries", "handshake_question", "members"],
+  "member_required": ["unit_id", "quote", "relation", "facet", "rationale", "limits"],
+  "member_relations": ["support", "boundary", "alternative", "context", "illustration", "mention"],
+  "coverage_dispositions": ["clustered", "partially_clustered", "reference_only", "insufficient_specificity", "unclustered_boundary", "context_only"],
+  "counting": {
+    "direct_design_support": "Unique person IDs from support members whose original kind is selected_board_reason, selected_style_word, phone_preference_reason or explicit_cmf_caption and whose original attitude is positive.",
+    "brand_impression_support": "Separate unique people; never mixed into direct design support.",
+    "boundary": "Unique people with related source dislikes; not an anti-cluster vote.",
+    "context_and_illustration": "No direct support votes.",
+    "country_population_rate": "Not estimated."
+  },
+  "preserve": ["whole_source_unit", "quote_evidence_refs", "attitude", "scope", "contrast_or_limit_markers", "image_link_status"],
+  "case_decisions_are_not_reusable_classifier_rules": true,
+  "formal_semantic_approval_created": false
+}

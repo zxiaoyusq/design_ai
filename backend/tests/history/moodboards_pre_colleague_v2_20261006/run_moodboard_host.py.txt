@@ -1,0 +1,166 @@
+"""冻结全量情绪版文本供 Codex 宿主分析，严格校验后登记网页；不调用模型 API。"""
+
+import argparse
+from hashlib import sha256
+from pathlib import Path
+import re
+import sys
+from uuid import uuid4
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.services.dna import storage
+from app.agents.moodboard_generator import skill_version
+from app.services.moodboards.tasks import (
+    PROJECT_ROOT, SKILL_FILE, dna_projection, encode, moodboard_manager,
+    now, read, resolve_pointer, validate_assignments, validate_clustering, write,
+)
+
+HOST_MODEL = "Codex GPT-6 Astra"
+PROMPT_VERSION = "moodboard-codex-host-v3"
+
+
+def prepare():
+    """只冻结最新趋势的全部方向、全部图片的最新成功 DNA，不受网页模型上下文上限影响。"""
+    catalog = moodboard_manager.catalog()
+    if not catalog["trend_tasks"] or not catalog["dna_results"]:
+        raise ValueError("缺少已有高潜趋势或 DNA 结果")
+    trend = catalog["trend_tasks"][0]
+    _, trend_result = moodboard_manager._trend(trend["id"])
+    images, sources = [], []
+    for item in catalog["dna_results"]:
+        rid = item["id"]
+        business = storage.load_result(rid, "business")
+        trace = storage._trace_data(rid) or {}
+        images.append({"result_id": rid, "dna": dna_projection(business)})
+        sources.append({"result_id": rid, "image_identity": moodboard_manager._identity(rid, trace),
+                        "business_sha256": sha256(encode(business).encode()).hexdigest(),
+                        "business": business, "extraction_trace": trace})
+    run = PROJECT_ROOT / "data/result/moodboards" / ("mb_" + uuid4().hex)
+    inputs = {"directions": trend["directions"], "images": images, "sources": sources,
+              "image_summaries": catalog["dna_results"], "trend": {
+                  "task_id": trend["id"], "created_at": trend["created_at"],
+                  "result_sha256": sha256(encode(trend_result).encode()).hexdigest(),
+                  "directions": trend_result["trends"]}}
+    write(run / "inputs.json", inputs)
+    skill = SKILL_FILE.read_text()
+    storage._atomic_write(run / "skill.md", skill.encode())
+    aliases = {f"I{n:04}": image["result_id"] for n, image in enumerate(images, 1)}
+    write(run / "aliases.json", aliases)
+    write(run / "directions_input.json", trend["directions"])
+    for start in range(0, len(images), 35):
+        # 短别名只帮助宿主阅读；发布前仍转换并校验原始结果 ID。
+        batch = [{"image_key": f"I{n+1:04}", **images[n]} for n in range(start, min(start+35, len(images)))]
+        write(run / "batches" / f"{start//35+1:03}.json", {"directions": trend["directions"], "images": batch})
+    manifest = {"id": run.name, "created_at": now(), "model": HOST_MODEL,
+                "prompt_version": f"moodboard-codex-host-{skill_version(skill)}",
+                "user_request": "以最新高潜趋势全部方向及全部已完成DNA，使用当前Codex Astra执行情绪版Skill；只输入文字，按冻结Skill筛选并保留未入选原因。",
+                "image_count": len(images), "direction_count": len(trend["directions"]),
+                "trend_task_id": trend["id"], "skill_sha256": sha256(skill.encode()).hexdigest(),
+                "inputs_sha256": sha256(encode(read(run / "inputs.json")).encode()).hexdigest(),
+                "assignment_batches": len(list((run / "batches").glob("*.json"))),
+                "selected_result_ids": list(aliases.values()),
+                "excluded_older_result_ids": [item["id"] for item in storage.list_results() if item["id"] not in aliases.values()],
+                "engine": "Codex host", "status": "prepared"}
+    write(run / "host_manifest.json", manifest)
+    return run
+
+
+def publish(run):
+    """全部输入都有去向且冻结来源未变才发布；按冻结 Skill 保留旧任务分区语义。"""
+    run = Path(run).resolve()
+    if run.parent != PROJECT_ROOT / "data/result/moodboards" or not re.fullmatch(r"mb_[a-f0-9]{32}", run.name):
+        raise ValueError("运行目录不属于情绪版结果库")
+    if (run / "task.json").exists():
+        raise ValueError("该运行已登记，不能覆盖历史结果")
+    manifest, inputs = read(run / "host_manifest.json"), read(run / "inputs.json")
+    if sha256(encode(inputs).encode()).hexdigest() != manifest["inputs_sha256"]:
+        raise ValueError("冻结输入已发生变化")
+    if sha256((run / "skill.md").read_bytes()).hexdigest() != manifest["skill_sha256"]:
+        raise ValueError("冻结 Skill 已发生变化")
+    version = skill_version((run / "skill.md").read_text())
+    frozen_prompt_version = f"moodboard-codex-host-{version}"
+    if manifest.get("prompt_version", frozen_prompt_version) != frozen_prompt_version:
+        raise ValueError("宿主协议版本与冻结 Skill 不一致")
+    assignments, receipts = [], []
+    frozen_dna = {image["result_id"]: image["dna"] for image in inputs["images"]}
+
+    def receipt(stage, key, input_path, output_path):
+        """宿主步骤的回执绑定实际输入输出，内部调用次数无法从文件数推算。"""
+        record = read(run / "receipts" / f"{stage}-{key}.json")
+        if record.get("model") != HOST_MODEL or not record.get("started_at") or not record.get("completed_at"):
+            raise ValueError("宿主步骤缺少 Astra 模型标识或执行时间")
+        if record.get("prompt_version", frozen_prompt_version) != frozen_prompt_version:
+            raise ValueError("宿主步骤协议版本与冻结 Skill 不一致")
+        for role, path in (("input", input_path), ("output", output_path)):
+            if record.get(f"{role}_sha256") != sha256(path.read_bytes()).hexdigest():
+                raise ValueError(f"宿主步骤{role}哈希不一致：{key}")
+        return {**record, "stage": stage, "receipt_file": f"receipts/{stage}-{key}.json"}
+
+    for batch_path in sorted((run / "batches").glob("*.json")):
+        path = run / "assignments" / batch_path.name
+        packet = read(path)
+        batch = read(batch_path)
+        if batch["directions"] != inputs["directions"] or any(
+            image["dna"] != frozen_dna.get(image["result_id"]) for image in batch["images"]
+        ):
+            raise ValueError("分包内容与冻结的全方向/DNA输入不一致")
+        assignments.extend(validate_assignments(packet, batch["images"], inputs["directions"], version))
+        receipts.append(receipt("assignment", batch_path.stem, batch_path, path))
+    assignments = validate_assignments({"assignments": assignments}, inputs["images"], inputs["directions"], version)
+    directions = []
+    for direction in inputs["directions"]:
+        ids = [a["result_id"] for a in assignments if a["direction_id"] == direction["id"]]
+        classified = {"clusters": [], "excluded": []}
+        if ids:
+            path = run / "clusters" / f"{direction['id']}.json"
+            cluster_input = read(run / "clustering_inputs" / path.name)
+            if cluster_input["direction"] != direction or sorted(i["result_id"] for i in cluster_input["images"]) != sorted(ids) or any(
+                image["dna"] != frozen_dna.get(image["result_id"]) for image in cluster_input["images"]
+            ):
+                raise ValueError("方向聚类输入未覆盖其全部冻结成员")
+            classified = validate_clustering(read(path), ids, version)
+            receipts.append(receipt("clustering", direction["id"], run / "clustering_inputs" / f"{direction['id']}.json", path))
+        directions.append({**direction, "clusters": classified["clusters"],
+                           **({"excluded": classified["excluded"]} if version in {"v2", "v3"} else {})})
+    if len({source["image_identity"] for source in inputs["sources"]}) != len(inputs["images"]):
+        raise ValueError("同一原图出现多个版本")
+    known = {image["result_id"]: image["dna"] for image in inputs["images"]}
+    for item in assignments:
+        item["evidence"] = [{"path": p, "value": resolve_pointer(known[item["result_id"]], p)} for p in item["evidence_paths"]]
+    completed = now()
+    trace = {"engine": "Codex host", "model_id": HOST_MODEL, "prompt_version": frozen_prompt_version,
+             "skill_sha256": manifest["skill_sha256"], "inputs_sha256": manifest["inputs_sha256"],
+             "trend_task_id": manifest["trend_task_id"], "created_at": manifest["created_at"], "completed_at": completed,
+             "image_input": False, "host_analysis_steps": len(receipts), "receipts": receipts,
+             "actual_model_calls": None, "input_tokens": None, "output_tokens": None,
+             "usage_note": "当前 Codex GPT-6 Astra 宿主执行；未取得宿主精确Token和内部模型请求次数，不用零代替未知。"}
+    result = {"directions": directions, "assignments": assignments, "images": inputs["image_summaries"],
+              "unmatched_result_ids": [a["result_id"] for a in assignments if a["direction_id"] is None], "trace": trace}
+    write(run / "result.json", result)
+    task = {"id": run.name, "status": "completed", "stage": "completed", "message": "Codex GPT-6 Astra 情绪版已生成",
+            "created_at": manifest["created_at"], "updated_at": completed,
+            "request": {"trend_task_id": manifest["trend_task_id"], "direction_ids": [d["id"] for d in directions],
+                        "result_ids": [i["result_id"] for i in inputs["images"]], "model_id": HOST_MODEL, "confirmed": True},
+            "completed_jobs": len(receipts), "total_jobs": len(receipts), "error": None, "result": result,
+            "prompt_version": frozen_prompt_version, "skill_sha256": manifest["skill_sha256"],
+            "inputs_sha256": manifest["inputs_sha256"], "events": [{"time": completed, "stage": "completed", "message": "输入去向及证据校验通过"}]}
+    write(run / "task.json", task)
+    write(run / "host_manifest.json", {**manifest, "status": "completed", "completed_at": completed})
+    return task
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("action", choices=["prepare", "publish"])
+    parser.add_argument("--run", type=Path)
+    parser.add_argument("--confirm", action="store_true")
+    args = parser.parse_args()
+    if not args.confirm:
+        parser.error("冻结或发布需明确 --confirm；用户已授权本次范围时可直接使用")
+    if args.action == "prepare":
+        print(prepare())
+    elif args.run:
+        print(publish(args.run)["id"])
+    else:
+        parser.error("publish 必须指定 --run")

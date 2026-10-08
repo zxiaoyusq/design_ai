@@ -1,0 +1,97 @@
+{
+  "skills": [
+    {
+      "skill": "prism-cmf-moodboard",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 20
+    },
+    {
+      "skill": "prism-dna-sol-r5",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 42
+    },
+    {
+      "skill": "prism-h01-semantic-handshake",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 65
+    },
+    {
+      "skill": "prism-id-moodboard",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 20
+    },
+    {
+      "skill": "prism-moodboard-delivery",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 23
+    },
+    {
+      "skill": "prism-research-intake",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 24
+    },
+    {
+      "skill": "prism-research-semantic-clustering",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 60
+    },
+    {
+      "skill": "prism-source-image-selection",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 20
+    },
+    {
+      "skill": "prism-target-quality",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 23
+    },
+    {
+      "skill": "prism-target-view-binding",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 20
+    },
+    {
+      "skill": "prism-trend-semantic-clustering",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 27
+    },
+    {
+      "skill": "prism-visual-family",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 22
+    },
+    {
+      "skill": "prism-workflow",
+      "valid": true,
+      "official_result": "Skill is valid!",
+      "missing_references": [],
+      "body_lines": 29
+    }
+  ],
+  "all_python_sources_compile": true,
+  "model_calls": 0
+}

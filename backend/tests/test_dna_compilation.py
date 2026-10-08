@@ -159,6 +159,58 @@ class DnaCompilationTestCase(unittest.TestCase):
         )
         self._assert_compiled_result_is_valid(compiled)
 
+    def test_visual_details_survive_without_expanding_observation_contract(self) -> None:
+        """细节沿用原描述字段，编译后不丢失，也不派生新字段或风格。"""
+
+        observation = _lean_observation(self.full)
+        observation["style_observations"] = {
+            "candidate_tags": [],
+            "composition_summary": "离线结构样例，不判断风格。",
+        }
+        cases = [
+            ("FORM-14", "局部鼓胀", "中央曲面鼓胀，两端逐渐收细。"),
+            ("PRT-11", ["孔"], "背板排列六角孔，无法确认是否贯穿。"),
+            ("TEX-01", "编织感", "细线经纬交错，呈交叉纹理。"),
+            ("OPT-08", {"type": "线", "region": "back_cover"}, "环形光带分段发光。"),
+            ("IDG-06", "几何", "字形由等宽直线和圆弧构成，无衬线、空心描边。"),
+            ("CMF-09", "半透明", "可透光但后方轮廓模糊，前侧边界清晰。"),
+        ]
+        observation["design_observations"] = []
+        observation["evidence"] = []
+        for index, (field_id, value, description) in enumerate(cases):
+            evidence = copy.deepcopy(self.full["evidence"][0])
+            evidence.update(
+                evidence_id=f"EV-detail-{index}",
+                region="back_cover",
+                description=description,
+            )
+            observation["evidence"].append(evidence)
+            observation["design_observations"].append({
+                "field_id": field_id,
+                "value": value,
+                "raw_visual_description": description,
+                "region": "back_cover",
+                "observability": "observed",
+                "confidence": 0.85,
+                "evidence_refs": [evidence["evidence_id"]],
+            })
+
+        compiled, _ = _compile_model_result(observation)
+        elements = {
+            item["field_id"]: item
+            for module in compiled["design_elements"]["extended_dna_modules"]
+            for item in module["elements"]
+        }
+
+        self.assertEqual(set(elements), {field_id for field_id, _, _ in cases})
+        for field_id, value, description in cases:
+            with self.subTest(field_id=field_id):
+                self.assertEqual(elements[field_id]["value"], value)
+                self.assertEqual(elements[field_id]["raw_visual_description"], description)
+        self.assertEqual(compiled["style_result"]["style_candidates"], [])
+        self.assertNotIn("uncertain_fields", compiled)
+        self._assert_compiled_result_is_valid(compiled)
+
     def test_image_quality_description_and_strength_aliases_compile_in_code(self) -> None:
         observation = _lean_observation(self.full)
         expected_schema_version = observation.pop("schema_version")

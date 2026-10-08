@@ -1,0 +1,6 @@
+{
+  "relative_config_paths": "Rebound against original config location; preserve raw source config and evidence.",
+  "test_filenames": "Only synthetic test artifact names shortened using digest; no assertion changes.",
+  "archived_content_filenames": "20 hexadecimal filename prefix; full 64-character SHA256 remains identity and collision guard.",
+  "new_network_or_model_calls": 0
+}

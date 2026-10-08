@@ -1,0 +1,104 @@
+{
+  "prompt_sha256": "6b221dba80c172041e945882f6c29b8118a6554fb283affa227ac5c6e92613da",
+  "started_at": "2026-10-02 05:12:30 UTC",
+  "finished_at": "2026-10-02 05:13:43 UTC",
+  "model_identity": null,
+  "model_identity_source": "宿主子代理上下文未暴露可核验的精确模型版本标识；不依据角色说明推断。",
+  "usage": {
+    "input_tokens": null,
+    "output_tokens": null,
+    "total_tokens": null,
+    "execution_method": "宿主子代理单轮视觉检查，逐一查看4张图片；并非4次API请求。",
+    "external_vision_api_requests": 0,
+    "images_reviewed": 4,
+    "additional_review_rounds": 0
+  },
+  "results": [
+    {
+      "image_path": "/root/dev/work/design_ai/data/trend_data/images/8497/005_3c69de2afec39fe8a01a.jpg",
+      "image_sha256": "068612d9f5aea3247d66a891008f4cbe6861844eed84d6edcb59a0ee5d55b03f",
+      "model_features": {
+        "image_type": "whole_object",
+        "design_reference": true,
+        "signal_level": "basic",
+        "reference_readiness": "weak",
+        "image_quality": "sufficient",
+        "veto": "none",
+        "evidence": [
+          {
+            "region": "center",
+            "feature": "composition",
+            "observation": "银色梯架内叠放木箱与折椅，交叉杆件被零散物件遮断。"
+          }
+        ],
+        "limits": [],
+        "reason": "最强候选仍依赖物件拼装与人物叙事，未呈现足够清楚的形色或连接统合关系。"
+      }
+    },
+    {
+      "image_path": "/root/dev/work/design_ai/data/trend_data/images/8616/006_efc6bf98fd38ff357028.jpg",
+      "image_sha256": "6b10d381607eab21d9c7d646de1fe7c33b664a0af3d8d849c566e3140c38becb",
+      "model_features": {
+        "image_type": "whole_object",
+        "design_reference": true,
+        "signal_level": "distinct",
+        "reference_readiness": "ready",
+        "image_quality": "sufficient",
+        "veto": "none",
+        "evidence": [
+          {
+            "region": "lower",
+            "feature": "form",
+            "observation": "细长扁平的银色柄在颈部收窄弯折，与粉色椭圆刷头形成宽窄过渡。"
+          }
+        ],
+        "limits": [],
+        "reason": "刷柄到刷头的轮廓转折与表面分区完整可读，可直接作为细长器物造型参考。"
+      }
+    },
+    {
+      "image_path": "/root/dev/work/design_ai/data/trend_data/images/8543/005_368f12f8a4532da6fc94.jpg",
+      "image_sha256": "4db23cc37785e70c039f7304ec52107efa5fd7dc3e173a575aa0a8ed0b018b4d",
+      "model_features": {
+        "image_type": "whole_object",
+        "design_reference": true,
+        "signal_level": "basic",
+        "reference_readiness": "weak",
+        "image_quality": "limited",
+        "veto": "none",
+        "evidence": [
+          {
+            "region": "right",
+            "feature": "color",
+            "observation": "右侧折椅呈橙色大面与青色横条，接缝和支撑连接因失焦难以辨读。"
+          }
+        ],
+        "limits": [
+          "前景折椅失焦且局部出框，结构细节不可辨。"
+        ],
+        "reason": "最强候选仅保留一般撞色特征，画面主要提供户外场景记录，尚不足以提取明确设计组织。"
+      }
+    },
+    {
+      "image_path": "/root/dev/work/design_ai/data/trend_data/images/8800/007_443b253eafccd76212b6.jpg",
+      "image_sha256": "122e875a3b6ea6ab3b5118a85f9be72e80bd3c82ae3ad5b46fc74f6100247dc3",
+      "model_features": {
+        "image_type": "color_optical",
+        "design_reference": true,
+        "signal_level": "distinct",
+        "reference_readiness": "ready",
+        "image_quality": "sufficient",
+        "veto": "none",
+        "evidence": [
+          {
+            "region": "whole",
+            "feature": "color",
+            "observation": "大面积深紫底衬托斜向黄色长块，玫红圆弧从画缘包入并形成明暗体积。"
+          }
+        ],
+        "limits": [],
+        "reason": "色块比例、嵌套轮廓与明暗塑形在完整画面中清楚成立，可直接作为配色与构成参考。"
+      }
+    }
+  ]
+}

@@ -1,0 +1,256 @@
+{
+  "skill": "prism-trend-quality",
+  "workflow_id": "D03",
+  "skill_version": "1.2.0",
+  "policy_version": "cmf-reference-curation-v0.8.0",
+  "extracted_at": "2026-10-02",
+  "scope": "极简判标与固定预处理；配套工程单次 DeepAgents 调用，保留旧规则与来源路由，不做生产入库。",
+  "files": [
+    {
+      "path": "agents/openai.yaml",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": ".agents/skills/prism-trend-quality/agents/openai.yaml",
+      "source_sha256": "14d869d75fcd8fa7d6651862354ed5d95b2cac283593c5a00d8a7685f4ca0b1b",
+      "sha256": "14d869d75fcd8fa7d6651862354ed5d95b2cac283593c5a00d8a7685f4ca0b1b",
+      "adapted": false
+    },
+    {
+      "path": "references/io.md",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": ".agents/skills/prism-trend-quality/references/io.md",
+      "source_sha256": "eb2e52263f9044ae46b0e0fd40521659c6945c3da19cbc0d3ca1e4e28cb0bf40",
+      "sha256": "9d8981a551e50e47f4743780bec9a6a11e144160cd53ba4f19357b9a99833ef8",
+      "adapted": true,
+      "previous_local_sha256": "089149b55b81a6675aa308af6c3219c00ecccd575df8227d9e6f0fb593bd0d37"
+    },
+    {
+      "path": "SKILL.md",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": ".agents/skills/prism-trend-quality/SKILL.md",
+      "source_sha256": "df692cf1c894e6b48d6022198a2430689d7c6e1cf6da584c144ba8b1f683f710",
+      "sha256": "b4970010c75d71d6f1e90c5bbf2b064170f750ce1aaac197b98b073f41777d7f",
+      "adapted": true,
+      "previous_local_sha256": "22b1df3549da0497a5f820704e66fe8870b3c94674657fd4a8818a3cbca63b26"
+    },
+    {
+      "path": "runtime/prism_runtime/__init__.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/__init__.py",
+      "source_sha256": "2dd16dadf2a6d4703f66b59b38b5096775c673aa19eebbd89ad6a5e212af76a8",
+      "sha256": "2dd16dadf2a6d4703f66b59b38b5096775c673aa19eebbd89ad6a5e212af76a8",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/CONTRACT.md",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/CONTRACT.md",
+      "source_sha256": "e2643d7eb747f8919277e1779cdeda02235ff6e14d5fbbad87b09f0521675324",
+      "sha256": "e2643d7eb747f8919277e1779cdeda02235ff6e14d5fbbad87b09f0521675324",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/__init__.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/__init__.py",
+      "source_sha256": "a6eebd0b6d275d552d577136ce9972c784c60a593f50d39bd784c5628cb7d625",
+      "sha256": "a6eebd0b6d275d552d577136ce9972c784c60a593f50d39bd784c5628cb7d625",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/__main__.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/__main__.py",
+      "source_sha256": "5305254a2eb765df25ac24079a77138cd95559b8998e6b78845d2965a9396d9c",
+      "sha256": "5305254a2eb765df25ac24079a77138cd95559b8998e6b78845d2965a9396d9c",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/adapter.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/adapter.py",
+      "source_sha256": "6a815eb751a506c28c702b40b3439f69de4a42b9a9f2a4a39e67060a66cde42c",
+      "sha256": "89bab49295e19b309bc52cd7dc56adaa3ce9d69375376cc0dadb0a3360959e07",
+      "adapted": true,
+      "previous_local_sha256": "aaff842ac2b86a2645d1dc782e2aeaad37e04a2c6217da10e3c04a2d60ed2260"
+    },
+    {
+      "path": "runtime/prism_runtime/quality/build_handoff.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/build_handoff.py",
+      "source_sha256": "adbe4c62fff1a409f5052e0e964ef38d45cb678f91558b57cccf0d1d134ffdd9",
+      "sha256": "adbe4c62fff1a409f5052e0e964ef38d45cb678f91558b57cccf0d1d134ffdd9",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/export_examples.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/export_examples.py",
+      "source_sha256": "653eac66ea8beda2143fcf80b41acae7144b74e081225c2c41c3c6a895d8a78f",
+      "sha256": "653eac66ea8beda2143fcf80b41acae7144b74e081225c2c41c3c6a895d8a78f",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/policy.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/policy.py",
+      "source_sha256": "e61ce9068b378a4ff935299c0ca58ee229b6e849669b1b68e31c5ea8387fcfa8",
+      "sha256": "e61ce9068b378a4ff935299c0ca58ee229b6e849669b1b68e31c5ea8387fcfa8",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/README.md",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/README.md",
+      "source_sha256": "3d1f2efc3720f24a27871756a62714012ff6e6b83f64df40be43125082b2ad97",
+      "sha256": "3d1f2efc3720f24a27871756a62714012ff6e6b83f64df40be43125082b2ad97",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/signal_gate.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/signal_gate.py",
+      "source_sha256": "ae36295c7a573b4a7423803a05d56cf0b27389bfa4202f269549d743ae1ec39e",
+      "sha256": "ae36295c7a573b4a7423803a05d56cf0b27389bfa4202f269549d743ae1ec39e",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/test_quality.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/test_quality.py",
+      "source_sha256": "62ff16bb1b75e0bb5b0b33127e3721185b3a2c1317da62f41214071432640ac0",
+      "sha256": "62ff16bb1b75e0bb5b0b33127e3721185b3a2c1317da62f41214071432640ac0",
+      "adapted": false
+    },
+    {
+      "path": "runtime/prism_runtime/quality/verify.py",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/runtime/prism_runtime/quality/verify.py",
+      "source_sha256": "ac76193899503453b744987a4506cb07c432213f0547eaaae50633ebfdd55b15",
+      "sha256": "ac76193899503453b744987a4506cb07c432213f0547eaaae50633ebfdd55b15",
+      "adapted": false
+    },
+    {
+      "path": "references/capabilities.md",
+      "source_archive": "ref/老师对接/棱镜_10项工作流Skills_20260928.zip",
+      "source_member": "prism_skill_support/docs/capabilities.md",
+      "source_sha256": "8d88c62fc4e346ca3de8a95e21590959f4bb1727c94a219052f1ced69532b4fb",
+      "sha256": "8d88c62fc4e346ca3de8a95e21590959f4bb1727c94a219052f1ced69532b4fb",
+      "adapted": false
+    },
+    {
+      "path": "references/prompts/primary-v0.5.2.txt",
+      "source_archive": "ref/老师对接/棱镜_完整交接包_20260928.zip",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2/prompt-v0.5.txt",
+      "source_sha256": "e03e2ff9c3da9fcbbf38b78ba905a03c33494590b8283ce26fa885510bd01048",
+      "sha256": "e03e2ff9c3da9fcbbf38b78ba905a03c33494590b8283ce26fa885510bd01048",
+      "adapted": false
+    },
+    {
+      "path": "references/prompts/confirmation-v0.6.0.txt",
+      "source_archive": "ref/老师对接/棱镜_完整交接包_20260928.zip",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/prompt-v0.5.txt",
+      "source_sha256": "131ba739bc69ec09fe065e6237fc384fef8f89d6426b76bbc733462f922babc3",
+      "sha256": "131ba739bc69ec09fe065e6237fc384fef8f89d6426b76bbc733462f922babc3",
+      "adapted": false
+    },
+    {
+      "path": "references/original-release-v0.6.0.json",
+      "source_archive": "ref/老师对接/棱镜_完整交接包_20260928.zip",
+      "source_member": "project/outputs/prism-quality-pilot-20260926/designer-boards-round2-v06/RELEASE.json",
+      "source_sha256": "b7f99707f2e150408984d4c70ff62e625d7014a675b40c5a66e8153fd56eed21",
+      "sha256": "b7f99707f2e150408984d4c70ff62e625d7014a675b40c5a66e8153fd56eed21",
+      "adapted": false
+    },
+    {
+      "path": "references/prompts/curation-v0.7.0.txt",
+      "origin": "local_user_sample_calibration_20261002",
+      "sha256": "6b221dba80c172041e945882f6c29b8118a6554fb283affa227ac5c6e92613da",
+      "created_locally": true
+    },
+    {
+      "path": "references/calibration-20261002.md",
+      "origin": "local_user_sample_calibration_20261002",
+      "sha256": "0e28b721f0ecd53c712ca16a998a61d2f01de498bb04eacc224896359ef69821",
+      "created_locally": true
+    },
+    {
+      "path": "references/calibration-20261002.json",
+      "origin": "local_user_sample_calibration_20261002",
+      "sha256": "04173320580c0aba99641e021114990b10ab36251f0d61b058018f75be4f2b4a",
+      "created_locally": true
+    },
+    {
+      "path": "references/calibration-probe-20261002.json",
+      "origin": "local_user_sample_calibration_20261002",
+      "sha256": "4002647f48b977ec93626b65de9b6b8c83641689fc55cb6eae4429a1f4867e12",
+      "created_locally": true
+    },
+    {
+      "path": "runtime/prism_runtime/quality/curation.py",
+      "origin": "local_user_sample_calibration_20261002",
+      "sha256": "c629236456810f4df048fb106af715287f08b47a0fa73106a9c92e4a1361fda1",
+      "created_locally": true
+    },
+    {
+      "path": "runtime/prism_runtime/quality/test_curation.py",
+      "origin": "local_user_sample_calibration_20261002",
+      "sha256": "1a86273af743c8ab7209daba5a2717c17ff35038d6c6a669abd05105265c992f",
+      "created_locally": true
+    },
+    {
+      "path": "references/prompts/curation-v0.8.0.txt",
+      "origin": "local_compact_output_optimization_20261002",
+      "created_locally": true,
+      "sha256": "4ae61d0a910b8fd5fc3b8d5892d976f247a8888368aae73b120dcba39634dad4"
+    },
+    {
+      "path": "runtime/prism_runtime/quality/compact.py",
+      "origin": "local_compact_output_optimization_20261002",
+      "created_locally": true,
+      "sha256": "469e97e93551de25bb4e77aa64c71296844ea7357ccf4bf2632288936adf521c"
+    }
+  ],
+  "legacy_policy_version": "cmf-reference-signal-cascade-v0.6.1",
+  "updated_at": "2026-10-02",
+  "active_prompt": "references/prompts/curation-v0.8.0.txt",
+  "calibration": "references/calibration-20261002.json",
+  "prior_validation_v07": {
+    "offline_tests_run": 40,
+    "offline_tests_passed": 39,
+    "offline_tests_skipped": 1,
+    "host_probe_images": 4,
+    "host_probe_matches": 4,
+    "independent_holdout": false,
+    "exact_model_identity": null,
+    "exact_tokens": null,
+    "external_vision_api_requests": 0
+  },
+  "validation": {
+    "offline_tests_run": 50,
+    "offline_tests_passed": 49,
+    "offline_tests_skipped": 1,
+    "external_vision_api_requests": 11,
+    "comparison_images": 5,
+    "gemini_labelled_matches": 3,
+    "labelled_images": 3,
+    "gpt_labelled_matches": 1,
+    "gpt_connection_errors": 1,
+    "independent_holdout": false,
+    "report": "data/result/trend_quality/benchmarks/compact5_20261002/summary.json",
+    "old_prompt_control": "data/result/trend_quality/benchmarks/v07_negative_control_20261002/result.json"
+  },
+  "project_dependencies": [
+    {
+      "path": "backend/app/agents/trend_quality.py",
+      "sha256": "0c8a033bdc9bc9a5770936a05ac9d9229dab69c503ce8cbb0750953f6e9dcea1"
+    },
+    {
+      "path": "backend/scripts/run_trend_quality_compact.py",
+      "sha256": "7ad1b79f9bf09d11087b39c071fa74f6a24e67327c3a65edeb45fdad5cfc8423"
+    },
+    {
+      "path": "backend/tests/test_trend_quality_compact.py",
+      "sha256": "17b9accdbf7dd8b5cfe4ae3ec501d889250f1c503c28d06fac87e6a773522d9d"
+    }
+  ]
+}

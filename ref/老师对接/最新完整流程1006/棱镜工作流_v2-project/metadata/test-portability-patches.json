@@ -1,0 +1,14 @@
+[
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/id_reference_board_v5/tests.py",
+    "before_sha256": "b0f8d23a935077cfa8de6cd735073e0ebfc6a15fd3d604d933695be1cce922fd",
+    "after_sha256": "15661dfe1570bb3297f7af84abe5e38f7d3786e78b90b03b58763f0acd45b002",
+    "scope": "Only synthetic test filenames shortened; all predicates and algorithm files unchanged."
+  },
+  {
+    "path": "skills/prism_skill_support/runtime/prism_runtime/clustering/cmf_reference_board_v4/tests.py",
+    "before_sha256": "561d293a6ce60cf29003622d295787a966a81a6e218356574f9321827269375e",
+    "after_sha256": "931aec3bff6f110fc18132cfd9bd6da57815d5458cf63ed1195c39a0ea0bf9b9",
+    "scope": "Only synthetic test filenames shortened; all predicates and algorithm files unchanged."
+  }
+]
