@@ -12,11 +12,12 @@ class ModelCatalogTestCase(unittest.TestCase):
             [
                 "claude-opus-5-20260820",
                 "gpt-5.6-terra",
-                "gpt-5.6-sol",
+                "gpt-6-sol",
                 "MiniMax-M3",
                 "qwen3.8-max-20260820",
                 "deepseek-v4-pro-official",
                 "gemini-3.7-flash",
+                "gemini-3.8-flash",
             ],
         )
 

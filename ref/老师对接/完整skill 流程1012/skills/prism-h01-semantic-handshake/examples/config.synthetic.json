@@ -1,0 +1,15 @@
+{
+  "research_dataset_path": "research/dataset",
+  "research_run_path": "research/run",
+  "trend_catalogue_path": "trend-catalogue.synthetic.json",
+  "trend_clusters_path": "trend-clusters.synthetic.json",
+  "brief": {
+    "brief_id": "synthetic:brief",
+    "design_question": "虚构练习：如何组织背板和小边框的光泽？",
+    "scope": "synthetic_fixture_only"
+  },
+  "mode": "consensus",
+  "dataset_mode": "synthetic_fixture",
+  "max_directions": 4,
+  "requested_selection_count": 1
+}

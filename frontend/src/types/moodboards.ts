@@ -85,3 +85,135 @@ export interface MoodboardTask {
   error?: string | null
   result?: MoodboardResult | null
 }
+
+/** 新聚类协议独立于旧纯文本归属协议，历史结果不能被标成当前 Skill 已验收。 */
+export interface ClusteringCatalog {
+  results: { id: string; title: string; created_at: string; directions: (MoodboardDirection & { image_reference_count?: number })[] }[]
+  default_model: string
+  models: { id: string; name: string }[]
+  rules: { min_images: number; max_images: number; category_max_ratio: number }
+  warnings: string[]
+}
+
+export interface ClusteringCounts {
+  total_images: number
+  ready_images: number
+  missing_dna: number
+  unavailable_images: number
+  excluded_images: number
+  ready_cards: number
+}
+
+export interface ClusteringPreview {
+  preview_id: string
+  counts: ClusteringCounts
+  images: {
+    id: string
+    image_name: string
+    preview_url: string | null
+    status: 'ready' | 'missing_dna' | 'unavailable' | 'excluded'
+    reason?: string
+    category?: string
+    card_count?: number
+  }[]
+  warnings: string[]
+  source: { title?: string; [key: string]: unknown }
+  /** 不可用和人工排除是来源缺口，不混进可读图片池或冒充模型拒绝。 */
+  unavailable?: unknown[]
+  excluded?: unknown[]
+}
+
+/** 预览快照是实际执行边界；只有人工确认后才允许模型调用与缺失 DNA 补查。 */
+export interface ClusteringRequest {
+  preview_id: string
+  model_id: string
+  prepare_missing: boolean
+  max_calls: number
+  workers: number
+  confirmed: true
+}
+
+export interface ClusteringBoard {
+  id: string
+  title: string
+  description: string
+  status: string
+  members: { id: string; image_name: string; preview_url: string | null; original_url: string | null; category?: string; reason?: string }[]
+  constraints?: Record<string, unknown>
+}
+
+export interface ClusteringTask {
+  id: string
+  status: 'queued' | 'running' | 'completed' | 'partial' | 'failed'
+  stage: string
+  message: string
+  created_at: string
+  updated_at: string
+  request: ClusteringRequest
+  counts: ClusteringCounts
+  progress: { calls_started: number; max_calls: number }
+  result?: { boards: ClusteringBoard[]; small_groups: unknown[]; summary: Record<string, unknown> } | null
+  error?: string | null
+  can_resume: false
+}
+
+/** 已有 Skill 产物的只读投影，沿用该次运行的原始成员与评审结论。 */
+export interface SavedMoodboardMember {
+  id: string
+  image_id: string
+  image_name: string
+  preview_url: string | null
+  original_url: string | null
+  category: string | null
+  reason?: string | null
+  strongest_difference?: string | null
+  why_coordinated?: string | null
+  source_label?: string | null
+  display_bbox?: number[]
+  /** 未标记不等于认可，原人工排除意见直接随历史结果展示。 */
+  feedback?: { status: 'rejected' | 'unmarked'; reason?: string | null; updated_at?: string | null }
+}
+
+export interface SavedMoodboard {
+  id: string
+  title: string
+  description: string
+  status_label: string
+  status_tone: 'success' | 'warning' | 'default' | 'error'
+  review_notes: string[]
+  relations?: { label: string; value: string | number }[]
+  constraints?: { label: string; value: string | number; status?: string }[]
+  members: SavedMoodboardMember[]
+  hardest_pair?: { comparison?: string; [key: string]: unknown } | null
+  design_quality_choice?: string | null
+  source_links?: { label: string; url: string }[]
+  feedback_summary?: { rejected: number; unmarked: number }
+}
+
+export interface SavedMoodboardSummary {
+  id: string
+  title: string
+  created_at: string
+  board_count: number
+  image_count: number
+  status_label: string
+  notes: string[]
+}
+
+export interface SavedMoodboardCatalog {
+  default_result_id: string | null
+  results: SavedMoodboardSummary[]
+}
+
+export interface SavedMoodboardResult {
+  id: string
+  title: string
+  created_at: string
+  model_id?: string | null
+  prompt_version?: string | null
+  status_label: string
+  notes: string[]
+  summary: { label: string; value: string | number }[]
+  boards: SavedMoodboard[]
+  downloads?: { label: string; url: string }[]
+}

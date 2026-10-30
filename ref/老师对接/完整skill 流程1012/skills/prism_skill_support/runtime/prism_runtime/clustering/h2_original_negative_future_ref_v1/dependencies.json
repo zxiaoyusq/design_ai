@@ -1,0 +1,28 @@
+{
+  "alias_adapter_pins": [
+    {
+      "path": "../r5_exact_byte_alias_v1/__init__.py",
+      "sha256": "5ce03f5c1adc8228e2d394d64a4d8427c00168bfd8f84ca348c33d528e77c17b"
+    },
+    {
+      "path": "../r5_exact_byte_alias_v1/adapter.py",
+      "sha256": "6303cafac3ac6c387c48abf0a72ed568687399ec16bbd7b20a4e7f3ac2e5b2bf"
+    },
+    {
+      "path": "../r5_exact_byte_alias_v1/registry.py",
+      "sha256": "b14db61bde87dcc8ed4fc484300729ae9218e19ba426982fa61552632441e638"
+    },
+    {
+      "path": "../r5_exact_byte_alias_v1/consumers.py",
+      "sha256": "c4817f7ee83dfc8b0a607e6b8daa8deca2aeb00c66c31b823a4240a6c6533443"
+    },
+    {
+      "path": "../r5_exact_byte_alias_v1/dependencies.json",
+      "sha256": "fbb1828c6057d0d1ce4880b80099b4102ffdab9de277f9d461ea3217fa17d69f"
+    }
+  ],
+  "base_consumer_registry_ref": {
+    "path": "../r5_exact_byte_alias_v1/dependencies.json",
+    "sha256": "fbb1828c6057d0d1ce4880b80099b4102ffdab9de277f9d461ea3217fa17d69f"
+  }
+}

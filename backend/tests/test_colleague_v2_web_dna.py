@@ -121,16 +121,20 @@ class V2ApiBoundaryTests(unittest.TestCase):
         app.include_router(moodboards.router)
         self.client = TestClient(app)
 
-    def test_dna_fixed_model_pause_and_history_are_separate(self):
+    def test_dna_preparation_uses_catalog_and_keeps_history_separate(self):
         from app.api import dna_v2
         body = {"image_ids": ["fixture"], "model_id": "gemini-3.8-flash", "prompt": ""}
-        self.assertEqual(self.client.post("/dna-v2/extractions", json=body).status_code, 400)
-        body["model_id"] = "gpt-6-sol"
-        with patch.object(dna_v2, "ensure_r5_execution_allowed", side_effect=RuntimeError("已暂停")), patch.object(dna_v2.prism_task_manager, "create") as create:
-            self.assertEqual(self.client.post("/dna-v2/extractions", json=body).status_code, 409)
+        for model_id in ("gemini-3.8-flash", "gpt-6-sol"):
+            body["model_id"] = model_id
+            with patch.object(dna_v2.prism_task_manager, "create", side_effect=FileNotFoundError("图片不存在")) as create:
+                self.assertEqual(self.client.post("/dna-v2/extractions", json=body).status_code, 404)
+                create.assert_called_once_with(["fixture"], model_id, "")
+        body["model_id"] = "gpt-6.1-sol"
+        with patch.object(dna_v2.prism_task_manager, "create") as create:
+            self.assertEqual(self.client.post("/dna-v2/extractions", json=body).status_code, 400)
             create.assert_not_called()
         with patch.object(dna_v2, "load_prism_result", return_value={"id": "fixture", "schema_version": "prism_d02_candidate_v1"}):
-            self.assertEqual(self.client.get("/dna-v2/results/fixture").status_code, 200)
+            self.assertEqual(self.client.get("/dna-v2/results/" + "a" * 32).status_code, 200)
 
     def test_legacy_create_and_resume_return_explicit_conflict(self):
         body = {"trend_task_id": "fixture", "direction_ids": ["direction"], "result_ids": ["result"], "model_id": "fixture", "confirmed": True}

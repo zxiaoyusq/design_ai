@@ -5,7 +5,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from unittest import TestCase
 from PIL import Image
-from app.agents.trend_quality import prepare_image, compact, SingleRequestTelemetry
+from app.agents.trend_quality import prepare_image, compact, classify
 from prism_runtime.quality.adapter import export_existing_result
 
 
@@ -68,7 +68,21 @@ class CompactQualityTests(TestCase):
         self.assertEqual(metadata['input_pixels'], [600, 900])
 
     def test_internal_retry_is_blocked(self):
-        callback = SingleRequestTelemetry()
-        callback.on_chat_model_start({}, [], run_id=None)
-        with self.assertRaises(RuntimeError):
-            callback.on_chat_model_start({}, [], run_id=None)
+        import asyncio
+        from hashlib import sha256
+        from unittest.mock import patch
+        from langchain_core.language_models.fake_chat_models import FakeMessagesListChatModel
+        from langchain_core.messages import AIMessage
+
+        model = FakeMessagesListChatModel(responses=[AIMessage(content='', tool_calls=[{
+            'name': 'task', 'args': {}, 'id': 'unexpected',
+        }])])
+        image_bytes = b'offline-image-fixture'
+        metadata = {'version': 'fixture', 'mime_type': 'image/png',
+                    'input_image_sha256': sha256(image_bytes).hexdigest()}
+        with patch('app.agents.trend_quality.create_chat_model', return_value=model):
+            record = asyncio.run(classify(image_bytes, metadata, image_id='fixture', model_id='gpt-6-sol'))
+        self.assertEqual(record['status'], 'execution_error')
+        self.assertFalse(record['valid'])
+        self.assertIn('禁止调用工具或子代理', record['error'])
+        self.assertEqual(record['usage']['llm_request_count'], 1)

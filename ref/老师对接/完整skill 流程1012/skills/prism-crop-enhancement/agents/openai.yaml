@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜原图裁切与编排"
+  short_description: "以可追溯原图进行裁切、等比缩放和精致拼贴，保留关键设计关系及编辑参数，不重绘改色。"
+  default_prompt: "使用 $prism-crop-enhancement 完成当前环节，保留用研依据、原图来源和未决状态。"

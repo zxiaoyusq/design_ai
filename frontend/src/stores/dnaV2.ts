@@ -1,17 +1,16 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
-import { deleteUploadedImage, fetchUploadedImages, uploadImages } from '@/api/dna'
+import { deleteUploadedImage, fetchModels, fetchUploadedImages, uploadImages } from '@/api/dna'
 import {
   createD02Extraction,
-  deleteD02Result,
-  fetchD02PptBatch,
+  fetchDnaPreparation,
   fetchD02Extraction,
   fetchD02Result,
   fetchD02Results,
 } from '@/api/dnaV2'
 import type { ModelInfo, UploadedImage } from '@/types/dna'
-import type { D02PptBatch, D02Result, D02ResultSummary, D02Task } from '@/types/dnaV2'
+import type { PreparedCoverage, PreparedDnaResult, PreparedResultSummary, D02Task } from '@/types/dnaV2'
 
 const terminal = new Set(['completed', 'partial', 'failed'])
 const delay = (ms: number) => new Promise<void>((resolve) => window.setTimeout(resolve, ms))
@@ -25,24 +24,25 @@ export const useDnaV2Store = defineStore('dna-v2', () => {
   const uploading = ref(false)
   const deletingImageIds = ref<string[]>([])
   const currentTask = ref<D02Task | null>(null)
-  const results = ref<D02ResultSummary[]>([])
+  const results = ref<PreparedResultSummary[]>([])
   const activeResultId = ref<string | null>(null)
-  const result = ref<D02Result | null>(null)
+  const result = ref<PreparedDnaResult | null>(null)
   const loadingResult = ref(false)
-  const deletingResultIds = ref<string[]>([])
-  const pptBatch = ref<D02PptBatch | null>(null)
+  const preparation = ref<PreparedCoverage | null>(null)
+  let resultRequest = 0
   const taskRunning = computed(() => currentTask.value !== null && !terminal.has(currentTask.value.status))
 
   async function initialize() {
-    const [uploaded, saved] = await Promise.all([
-      fetchUploadedImages(), fetchD02Results(),
+    const [uploaded, saved, coverage, configuredModels] = await Promise.all([
+      fetchUploadedImages(), fetchD02Results(), fetchDnaPreparation(), fetchModels(),
     ])
-    models.value = [{ id: 'gpt-6-sol', name: 'gpt-6-sol · 冻结 Sol R5', model_provider: 'openai' }]
+    models.value = coverage.available_models?.length ? coverage.available_models : configuredModels
     images.value = uploaded
     results.value = saved
-    selectedModelId.value = 'gpt-6-sol'
+    preparation.value = coverage
+    const defaultModel = coverage.default_model || 'gemini-3.8-flash'
+    selectedModelId.value = models.value.find((model) => model.id === defaultModel)?.id ?? models.value[0]?.id ?? ''
     prompt.value = ''
-    if (!activeResultId.value && saved.length) await selectResult(saved[0].id)
   }
 
   async function addImages(files: File[]) {
@@ -81,7 +81,8 @@ export const useDnaV2Store = defineStore('dna-v2', () => {
     currentTask.value = await createD02Extraction({
       image_ids: selectedImageIds.value,
       model_id: selectedModelId.value,
-      prompt: prompt.value,
+      // Skill 的事实提取规则保持冻结，模型选择不允许顺带注入额外 Prompt。
+      prompt: '',
     })
     const taskId = currentTask.value.id
     while (currentTask.value && !terminal.has(currentTask.value.status)) {
@@ -94,50 +95,33 @@ export const useDnaV2Store = defineStore('dna-v2', () => {
   }
 
   async function refreshResults() {
-    results.value = await fetchD02Results()
+    const [saved, coverage] = await Promise.all([fetchD02Results(), fetchDnaPreparation()])
+    results.value = saved
+    preparation.value = coverage
     if (!results.value.some((item) => item.id === activeResultId.value)) {
       result.value = null
       activeResultId.value = null
-      if (results.value.length) await selectResult(results.value[0].id)
-    }
-  }
-
-  async function refreshPptBatch() {
-    try {
-      const next = await fetchD02PptBatch()
-      const previousCompleted = pptBatch.value?.counts.completed ?? 0
-      pptBatch.value = next
-      if (next.counts.completed !== previousCompleted) await refreshResults()
-    } catch (error) {
-      const status = (error as { response?: { status?: number } }).response?.status
-      if (status !== 404) throw error
     }
   }
 
   async function selectResult(resultId: string) {
+    const request = ++resultRequest
+    activeResultId.value = resultId
+    result.value = null
     loadingResult.value = true
     try {
-      result.value = await fetchD02Result(resultId)
-      activeResultId.value = resultId
+      const saved = await fetchD02Result(resultId)
+      // 连续切换图片时只接收最后一次请求，避免慢响应覆盖当前对象。
+      if (request === resultRequest) result.value = saved
     } finally {
-      loadingResult.value = false
-    }
-  }
-
-  async function removeResult(resultId: string) {
-    deletingResultIds.value.push(resultId)
-    try {
-      await deleteD02Result(resultId)
-      await refreshResults()
-    } finally {
-      deletingResultIds.value = deletingResultIds.value.filter((id) => id !== resultId)
+      if (request === resultRequest) loadingResult.value = false
     }
   }
 
   return {
     models, images, selectedImageIds, selectedModelId, prompt, uploading, deletingImageIds,
-    currentTask, taskRunning, results, activeResultId, result, loadingResult, deletingResultIds, pptBatch,
+    currentTask, taskRunning, results, activeResultId, result, loadingResult, preparation,
     initialize, addImages, toggleImage, selectAllImages, clearSelectedImages,
-    removeImage, startExtraction, refreshResults, refreshPptBatch, selectResult, removeResult,
+    removeImage, startExtraction, refreshResults, selectResult,
   }
 })

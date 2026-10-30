@@ -14,6 +14,8 @@ from PIL import Image, ImageOps
 from app.services.high_trends.image_review import read, write_atomic, file_hash, timestamp, IMAGE_SUFFIXES
 
 COLLECTION_ID = 'handshake-astra-20261001'
+REMAINING_COLLECTION_ID = 'dna-cluster-remaining2224-20261011'
+COLLECTION_IDS = (COLLECTION_ID, REMAINING_COLLECTION_ID)
 BATCHES = ('handshake_gpt6sol_first1000_20261002', 'handshake_gpt6sol_remaining7670_20261002')
 MODEL_CATEGORIES = ('PASS', 'FAIL', 'REVIEW', 'ERROR')
 
@@ -21,9 +23,13 @@ MODEL_CATEGORIES = ('PASS', 'FAIL', 'REVIEW', 'ERROR')
 class TrendQualityReview:
     """按原图哈希同步人工状态；分页接口不向浏览器发送整库和模型原回执。"""
 
-    def __init__(self, root):
+    def __init__(self, root, collection_id=COLLECTION_ID):
+        if collection_id not in COLLECTION_IDS:
+            raise ValueError('未知人工审核图库')
         self.root = Path(root).resolve()
-        self.folder = self.root / 'data/result/trend_quality/manual_review' / COLLECTION_ID
+        # 每个冻结图库有独立状态、版本锁与图片索引，同SHA不会串用其他图库的人工标签。
+        self.collection_id = collection_id
+        self.folder = self.root / 'data/result/trend_quality/manual_review' / collection_id
         self._lock = RLock()
         self._catalog = None
         self._by_id = {}
@@ -53,6 +59,8 @@ class TrendQualityReview:
             if catalog_path.is_file():
                 self._load()
                 return self._counts(self._state())
+            if self.collection_id != COLLECTION_ID:
+                raise FileNotFoundError('该图库需先按原图清单准备，不能套用旧模型批次')
             images, source_batches, seen = [], [], set()
             model_options = prompt_hash = source_hash = None
             batch_root = self.root / 'data/result/trend_quality/batches'
@@ -126,12 +134,12 @@ class TrendQualityReview:
                 raise ValueError('本次握手图库应覆盖8670张去重图，当前数据范围不匹配')
             created = timestamp()
             write_atomic(catalog_path, {'schema_version': 'prism.quality_manual_catalog.v1',
-                'collection_id': COLLECTION_ID, 'title': '握手趋势图片 · 人工筛选',
+                'collection_id': self.collection_id, 'title': '握手趋势图片 · 人工筛选',
                 'created_at': created, 'source_batches': source_batches, 'images': images})
             # 人工标签为空即未审核，模型PASS绝不能自动冒充人工通过。
             if not (self.folder / 'selections.json').is_file():
                 write_atomic(self.folder / 'selections.json', {'schema_version': 'prism.quality_manual_selection.v1',
-                    'collection_id': COLLECTION_ID, 'catalog_sha256': file_hash(catalog_path),
+                    'collection_id': self.collection_id, 'catalog_sha256': file_hash(catalog_path),
                     'revision': 1, 'updated_at': created, 'labels': {}, 'history': []})
             self._load()
             return self._counts(self._state())
@@ -140,6 +148,9 @@ class TrendQualityReview:
         with self._lock:
             if self._catalog is None:
                 self._catalog = read(self.folder / 'catalog.json')
+                if self._catalog.get('collection_id') != self.collection_id:
+                    self._catalog = None
+                    raise RuntimeError('图库身份与请求集合不一致')
                 self._by_id = {item['id']: item for item in self._catalog['images']}
                 self._catalog_hash = file_hash(self.folder / 'catalog.json')
                 directions = Counter(d['id'] for image in self._catalog['images'] for d in image['directions'])
@@ -168,9 +179,10 @@ class TrendQualityReview:
         result = {key: value for key, value in image.items()
                   if key not in {'references', 'snapshot_path', 'model_record_path', 'model_record_sha256', 'input_image_sha256'}}
         label = state['labels'].get(image['id'], {})
+        query = '' if self.collection_id == COLLECTION_ID else f'?collection={self.collection_id}'
         result.update(manual_decision=label.get('decision'), manual_updated_at=label.get('updated_at'),
-                      image_url=f'/api/v1/trend-quality/review/images/{image["id"]}',
-                      thumbnail_url=f'/api/v1/trend-quality/review/images/{image["id"]}?thumbnail=true')
+                      image_url=f'/api/v1/trend-quality/review/images/{image["id"]}{query}',
+                      thumbnail_url=f'/api/v1/trend-quality/review/images/{image["id"]}{query}{"&" if query else "?"}thumbnail=true')
         return result
 
     def page(self, *, model_category='all', manual='all', direction_id='', q='', page=1, page_size=60):
@@ -182,7 +194,7 @@ class TrendQualityReview:
                     and (not direction_id or any(d['id'] == direction_id for d in image['directions']))
                     and all(word in self._search[image['id']] for word in words)]
         page = min(page, max(1, (len(filtered) + page_size - 1) // page_size))
-        return {'collection_id': COLLECTION_ID, 'title': self._catalog['title'],
+        return {'collection_id': self.collection_id, 'title': self._catalog['title'],
                 'revision': state['revision'], 'updated_at': state['updated_at'],
                 'counts': self._counts(state), 'directions': sorted(self._directions.values(), key=lambda x: x['id']),
                 'filtered_count': len(filtered), 'page': page, 'page_size': page_size,
@@ -238,7 +250,10 @@ class TrendQualityReview:
             return path
         target = self.folder / 'thumbnails' / (image_id + '.webp')
         if not target.is_file():
-            snapshot = self._safe_path(item['snapshot_path'], self.root / 'data/result/trend_quality/batches')
+            # 未抽样图没有模型输入副本，从原图生成仅供网页显示的缩略图。
+            allowed = (self.root / 'data/result/trend_quality/batches'
+                       if self.collection_id == COLLECTION_ID else self.root / 'data/trend_data/images')
+            snapshot = self._safe_path(item['snapshot_path'], allowed)
             self._verify_file(snapshot, item['input_image_sha256'])
             target.parent.mkdir(exist_ok=True)
             temporary = target.with_name('.' + uuid4().hex + '.tmp')
@@ -260,7 +275,7 @@ class TrendQualityReview:
                        manual_updated_at=state['labels'].get(image['id'], {}).get('updated_at'))
                   for image in self._catalog['images']
                   if selection == 'all' or state['labels'].get(image['id'], {}).get('decision') == selection]
-        return {'schema_version': 'prism.quality_manual_export.v1', 'collection_id': COLLECTION_ID,
+        return {'schema_version': 'prism.quality_manual_export.v1', 'collection_id': self.collection_id,
                 'revision': state['revision'], 'exported_at': timestamp(), 'selection': selection,
                 'counts': self._counts(state), 'source_batches': self._catalog['source_batches'],
                 'production_admission': False, 'images': images}

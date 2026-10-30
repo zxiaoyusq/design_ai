@@ -1,0 +1,8 @@
+/* 正文、图片默认就绪，脚本只增强交互；被浏览器阻止或执行失败也不留白。 */
+.fallback-status{margin:20px auto 0;padding:13px 20px;max-width:1196px;font-size:14px;line-height:1.8;color:#c9e8e4;background:#12364b}
+.viewer-ready .fallback-status{display:none}
+html:not(.viewer-ready) .toolbar,html:not(.viewer-ready) .progress{display:none}
+dialog:not([open]){display:none}
+html:not(.viewer-ready) .viewport{padding-bottom:20px}
+@media(max-width:900px){.fallback-status{margin:10px;padding:12px 16px;font-size:13px}}
+@media print{.fallback-status{display:none!important}}

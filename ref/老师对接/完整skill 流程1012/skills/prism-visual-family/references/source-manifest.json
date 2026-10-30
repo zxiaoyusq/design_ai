@@ -1,0 +1,171 @@
+{
+  "created_utc": "2026-10-09T12:15:56.177447+00:00",
+  "skill_version": "3.1.0",
+  "status": "reference_grounded_ai_translation_pending_human_semantic_review",
+  "canonical_source": {
+    "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\250221 CMF image test for EE1.pdf",
+    "sha256": "867003e655274b0080d2eda35124135ec3b5beee166ab8e36864cf5489752dfa",
+    "portable_asset": "assets/designer-reference/reference.pdf",
+    "page_count": 14,
+    "original_labels": [
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "G9",
+      "G10",
+      "G11",
+      "G12",
+      "G13",
+      "G14"
+    ]
+  },
+  "preserved_previous_skill": {
+    "path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\package\\skills\\prism-visual-family\\SKILL.md",
+    "sha256": "bb67c7e366ed2f4c22cb74d3e52c5db443fbd029979e3a2bfbe74ce4dafaaae3",
+    "version": "2.0.0"
+  },
+  "pages": [
+    {
+      "page": 1,
+      "label": "G1",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-01.jpg",
+      "source_sha256": "ab6a6d9ac9fe39f8c2cb53d7d115bb2e82f148063b4b16721d37a17a08413470",
+      "asset": "assets/designer-reference/page-01.jpg",
+      "asset_sha256": "ab6a6d9ac9fe39f8c2cb53d7d115bb2e82f148063b4b16721d37a17a08413470",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 2,
+      "label": "G2",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-02.jpg",
+      "source_sha256": "b7b3b809c47b18eae33040bea2cca02327d65df7eb8ab7a0109f2e071950f140",
+      "asset": "assets/designer-reference/page-02.jpg",
+      "asset_sha256": "b7b3b809c47b18eae33040bea2cca02327d65df7eb8ab7a0109f2e071950f140",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 3,
+      "label": "G3",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-03.jpg",
+      "source_sha256": "a615e80ec291073be958342adb2ab07af0d9e6a4890bf329d3940afdecd4e2cb",
+      "asset": "assets/designer-reference/page-03.jpg",
+      "asset_sha256": "a615e80ec291073be958342adb2ab07af0d9e6a4890bf329d3940afdecd4e2cb",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 4,
+      "label": "G4",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-04.jpg",
+      "source_sha256": "84508d045d23ee56eb0a50535503c32a18a5aeda5c124cc5be29f2933c7af010",
+      "asset": "assets/designer-reference/page-04.jpg",
+      "asset_sha256": "84508d045d23ee56eb0a50535503c32a18a5aeda5c124cc5be29f2933c7af010",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 5,
+      "label": "G5",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-05.jpg",
+      "source_sha256": "f54ab1f0b43537ebc006f40d03971dcbb89892629d1d520efecb7d15c46ca7b9",
+      "asset": "assets/designer-reference/page-05.jpg",
+      "asset_sha256": "f54ab1f0b43537ebc006f40d03971dcbb89892629d1d520efecb7d15c46ca7b9",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 6,
+      "label": "G6",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-06.jpg",
+      "source_sha256": "eae7349ee98f521bf22e1cdd59c2852221d90f72febef8d505adcbc3ad6a6328",
+      "asset": "assets/designer-reference/page-06.jpg",
+      "asset_sha256": "eae7349ee98f521bf22e1cdd59c2852221d90f72febef8d505adcbc3ad6a6328",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 7,
+      "label": "G7",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-07.jpg",
+      "source_sha256": "d256ce4c8834fb6c6f5ce21f1169f1e3f518d2a7954cb2c0b19eede73a05f510",
+      "asset": "assets/designer-reference/page-07.jpg",
+      "asset_sha256": "d256ce4c8834fb6c6f5ce21f1169f1e3f518d2a7954cb2c0b19eede73a05f510",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 8,
+      "label": "G8",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-08.jpg",
+      "source_sha256": "573dde5419259db6e2c171008355a08fbdd61c3a08994b13fc44aa8cc0eb16ff",
+      "asset": "assets/designer-reference/page-08.jpg",
+      "asset_sha256": "573dde5419259db6e2c171008355a08fbdd61c3a08994b13fc44aa8cc0eb16ff",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 9,
+      "label": "G9",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-09.jpg",
+      "source_sha256": "8094ca20b91af54ad4f5ecf75d5e3769c34dd3094cd0a710a12fb990da84f647",
+      "asset": "assets/designer-reference/page-09.jpg",
+      "asset_sha256": "8094ca20b91af54ad4f5ecf75d5e3769c34dd3094cd0a710a12fb990da84f647",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 10,
+      "label": "G10",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-10.jpg",
+      "source_sha256": "275acdd6c0e2ae3cc327109be1ed1ec762f4e53c0a6e4e8f1fc5d17fd9bb0030",
+      "asset": "assets/designer-reference/page-10.jpg",
+      "asset_sha256": "275acdd6c0e2ae3cc327109be1ed1ec762f4e53c0a6e4e8f1fc5d17fd9bb0030",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 11,
+      "label": "G11",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-11.jpg",
+      "source_sha256": "737f064f7eec199647b3a94b8951dd4853828bb8415427684e96032eeb192a54",
+      "asset": "assets/designer-reference/page-11.jpg",
+      "asset_sha256": "737f064f7eec199647b3a94b8951dd4853828bb8415427684e96032eeb192a54",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 12,
+      "label": "G12",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-12.jpg",
+      "source_sha256": "8a321aedd659eba46cc9587ed3a1d42e15e5a05e840b4e6d45288c69ec60adef",
+      "asset": "assets/designer-reference/page-12.jpg",
+      "asset_sha256": "8a321aedd659eba46cc9587ed3a1d42e15e5a05e840b4e6d45288c69ec60adef",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 13,
+      "label": "G13",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-13.jpg",
+      "source_sha256": "54790db0ffa5acfdcdbba9133c714e2e7bd962ada718d7729a7b0cf4c75dd6b8",
+      "asset": "assets/designer-reference/page-13.jpg",
+      "asset_sha256": "54790db0ffa5acfdcdbba9133c714e2e7bd962ada718d7729a7b0cf4c75dd6b8",
+      "rendered_before_this_translation": true
+    },
+    {
+      "page": 14,
+      "label": "G14",
+      "source_path": "D:\\Codex\\传音AI创客营\\outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\designer-reference-reset-20261001\\pdf-pages\\page-14.jpg",
+      "source_sha256": "1416b0b8e4ae2a02dde0382ff77672a773822bfa528732599fc808a6b265e906",
+      "asset": "assets/designer-reference/page-14.jpg",
+      "asset_sha256": "1416b0b8e4ae2a02dde0382ff77672a773822bfa528732599fc808a6b265e906",
+      "rendered_before_this_translation": true
+    }
+  ],
+  "policy_origin": {
+    "min_images_per_board": "用户本轮要求至少8张",
+    "ten_images": "参考PDF每页10图，仅记录其实际布局"
+  },
+  "assumptions": [
+    "材料名称仅为照片外观判断",
+    "ID延伸没有独立ID设计师参考校准",
+    "G13和G14不作为单一视觉家族的完整正例"
+  ],
+  "authorization_scope": "创建项目本地新版skill及共享包，不扩板、不付费采图、不发布、不安装到全局",
+  "revision_basis": "用户转述设计师对多维不一致叠加造成设计情绪差异的补充"
+}

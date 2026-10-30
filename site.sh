@@ -21,6 +21,8 @@ BACKEND_LOG_FILE="${LOG_DIR}/backend.log"
 FRONTEND_LOG_FILE="${LOG_DIR}/frontend.log"
 BACKEND_PID=""
 FRONTEND_PID=""
+START_LOCK_FILE="${RUNTIME_DIR}/site.lock"
+STOP_REQUEST_FILE="${RUNTIME_DIR}/site.stop"
 
 fail() {
   echo "操作失败：$1" >&2
@@ -31,7 +33,7 @@ usage() {
   cat <<'EOF'
 用法：./site.sh <start|stop|restart|status>
 
-  start   启动固定域名站点（前台运行，按 Ctrl+C 也会停止）
+  start   自动释放目标端口并启动固定域名站点（前台运行，Ctrl+C 停止）
   stop    仅停止本脚本启动的前后端进程
   restart 先停止再启动
   status  查看本脚本管理的服务状态
@@ -40,6 +42,8 @@ usage() {
   DESIGN_AI_DOMAIN          默认 gamedevcenter.ahagamecenter.com
   DESIGN_AI_BACKEND_PORT    默认 8000，仅本机监听
   DESIGN_AI_FRONTEND_PORT   默认 80，对外监听
+
+注意：启动会停止上述端口原有的监听进程、对应容器或系统服务，不会自动恢复它们。
 EOF
 }
 
@@ -62,11 +66,22 @@ is_expected_process() {
   pid="$(read_pid "${pid_file}")" || return 1
   kill -0 "${pid}" 2>/dev/null || return 1
   command="$(ps -p "${pid}" -o args= 2>/dev/null || true)"
-  [[ "${command}" == *"${expected_command}"* ]]
+  [[ "${command}" == *"${expected_command}"* ]] || return 1
+  # 过期 PID 即使复用给同类命令，也不能据此停止另一个工程的服务。
+  case "${pid_file}" in
+    "${BACKEND_PID_FILE}") [[ "$(readlink -f "/proc/${pid}/cwd")" == "${BACKEND_DIR}" ]] ;;
+    "${FRONTEND_PID_FILE}") [[ "$(readlink -f "/proc/${pid}/cwd")" == "${FRONTEND_DIR}" ]] ;;
+  esac
 }
 
 remove_pid_file() {
   rm -f "$1"
+}
+
+private_group_running() {
+  # 同时核对 PGID 与 SID，并忽略已退出的僵尸进程；父进程退出不代表监听子进程都已退出。
+  ps -eo pgid=,sid=,stat= | awk -v owner="$1" \
+    '$1 == owner && $2 == owner && $3 !~ /^Z/ { found = 1 } END { exit !found }'
 }
 
 stop_component() {
@@ -76,6 +91,8 @@ stop_component() {
   local pid
   local child_pid
   local attempt
+  local process_group
+  local started_at
 
   if ! pid="$(read_pid "${pid_file}")"; then
     echo "${service_name}未运行。"
@@ -95,14 +112,23 @@ stop_component() {
     return
   fi
 
-  # pnpm 会派生 Vite；先结束直接子进程，避免只杀包装进程留下监听端口的 Vite。
-  while IFS= read -r child_pid; do
-    [[ -n "${child_pid}" ]] && kill -TERM "${child_pid}" 2>/dev/null || true
-  done < <(pgrep -P "${pid}" 2>/dev/null || true)
-  kill -TERM "${pid}"
+  started_at="$(ps -p "${pid}" -o lstart= 2>/dev/null || true)"
+  process_group="$(ps -p "${pid}" -o pgid= 2>/dev/null || true)"
+  process_group="${process_group//[[:space:]]/}"
+  if [[ "${process_group}" == "${pid}" ]]; then
+    # 新启动的服务使用独立会话；一起停止 pnpm、shell 和 Vite，避免留下孙进程监听端口。
+    kill -TERM -- "-${pid}" 2>/dev/null || true
+  else
+    # 兼容旧脚本留下的非独立会话进程，不能向其共享进程组发信号。
+    while IFS= read -r child_pid; do
+      [[ -n "${child_pid}" ]] && kill -TERM "${child_pid}" 2>/dev/null || true
+    done < <(pgrep -P "${pid}" 2>/dev/null || true)
+    kill -TERM "${pid}" 2>/dev/null || true
+  fi
 
   for ((attempt = 1; attempt <= 100; attempt++)); do
-    if ! kill -0 "${pid}" 2>/dev/null; then
+    if { [[ "${process_group}" == "${pid}" ]] && ! private_group_running "${pid}"; } \
+      || { [[ "${process_group}" != "${pid}" ]] && ! is_expected_process "${pid_file}" "${expected_command}"; }; then
       remove_pid_file "${pid_file}"
       echo "已停止${service_name}（PID ${pid}）。"
       return
@@ -110,36 +136,46 @@ stop_component() {
     sleep 0.1
   done
 
-  # 正常退出超时后只终止已确认属于本工程的主进程。
-  kill -KILL "${pid}" 2>/dev/null || true
-  remove_pid_file "${pid_file}"
-  echo "已强制停止${service_name}（PID ${pid}）。"
+  # 独立会话的父进程可能先退出，仍需清理同一会话内拒绝退出的子进程。
+  if [[ "${process_group}" == "${pid}" ]] && private_group_running "${pid}"; then
+    kill -KILL -- "-${pid}" 2>/dev/null || true
+  elif is_expected_process "${pid_file}" "${expected_command}" \
+    && [[ "$(ps -p "${pid}" -o lstart= 2>/dev/null || true)" == "${started_at}" ]]; then
+    kill -KILL "${pid}" 2>/dev/null || true
+  fi
+  for ((attempt = 1; attempt <= 20; attempt++)); do
+    if ! private_group_running "${pid}" && ! is_expected_process "${pid_file}" "${expected_command}"; then
+      remove_pid_file "${pid_file}"
+      echo "已强制停止${service_name}（PID ${pid}）。"
+      return
+    fi
+    sleep 0.1
+  done
+  fail "${service_name}仍未退出（PID ${pid}），已保留状态便于排查"
 }
 
 cleanup() {
   local exit_code="$?"
 
   trap - EXIT INT TERM HUP
-  stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm" || true
-  stop_component "后端服务" "${BACKEND_PID_FILE}" "uvicorn app.main:app" || true
+  # 只清理本次成功创建且仍对应同一 PID 的服务，启动预检失败不能误停旧站点。
+  if [[ -n "${FRONTEND_PID}" && "$(read_pid "${FRONTEND_PID_FILE}" || true)" == "${FRONTEND_PID}" ]]; then
+    stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm" || true
+  fi
+  if [[ -n "${BACKEND_PID}" && "$(read_pid "${BACKEND_PID_FILE}" || true)" == "${BACKEND_PID}" ]]; then
+    stop_component "后端服务" "${BACKEND_PID_FILE}" "uvicorn app.main:app" || true
+  fi
   exit "${exit_code}"
 }
 
-ensure_port_available() {
-  local port="$1"
-  local pids
-
-  pids="$(lsof -nP -t -iTCP:"${port}" -sTCP:LISTEN 2>/dev/null || true)"
-  [[ -z "${pids}" ]] || fail "端口 ${port} 已被其他进程占用（PID：${pids//$'\n'/, }）"
-}
-
-ensure_not_running() {
-  if is_expected_process "${BACKEND_PID_FILE}" "uvicorn app.main:app" \
-    || is_expected_process "${FRONTEND_PID_FILE}" "pnpm"; then
-    fail "站点已在运行；请使用 ./site.sh status 或 ./site.sh stop"
-  fi
-  remove_pid_file "${BACKEND_PID_FILE}"
-  remove_pid_file "${FRONTEND_PID_FILE}"
+validate_ports() {
+  local port
+  for port in "${DESIGN_AI_BACKEND_PORT}" "${DESIGN_AI_FRONTEND_PORT}"; do
+    [[ "${port}" =~ ^[1-9][0-9]{0,4}$ ]] && (( port <= 65535 )) \
+      || fail "端口必须是 1–65535 的十进制整数：${port}"
+  done
+  [[ "${DESIGN_AI_BACKEND_PORT}" != "${DESIGN_AI_FRONTEND_PORT}" ]] \
+    || fail "前后端不能使用相同端口"
 }
 
 activate_runtime() {
@@ -149,6 +185,11 @@ activate_runtime() {
 
   [[ -d "${FRONTEND_DIR}/node_modules" ]] || fail "请先在 frontend 目录执行 pnpm install"
   [[ -f "${BACKEND_DIR}/.env" ]] || fail "缺少 backend/.env"
+  command -v lsof >/dev/null 2>&1 || fail "缺少 lsof"
+  command -v flock >/dev/null 2>&1 || fail "缺少 flock"
+  command -v setsid >/dev/null 2>&1 || fail "缺少 setsid"
+  command -v curl >/dev/null 2>&1 || fail "缺少 curl"
+  [[ -f "${BACKEND_DIR}/scripts/release_site_ports.py" ]] || fail "缺少端口接管脚本"
   if (( DESIGN_AI_FRONTEND_PORT < 1024 )) && (( EUID != 0 )); then
     fail "监听 ${DESIGN_AI_FRONTEND_PORT} 端口需要 root 权限"
   fi
@@ -172,10 +213,11 @@ activate_runtime() {
   source "${conda_profile}"
   conda activate 314
   command -v pnpm >/dev/null 2>&1 || fail "314 环境未找到 pnpm"
+  pnpm --version >/dev/null 2>&1 || fail "314 环境中的 pnpm 无法运行"
   (
     cd "${BACKEND_DIR}"
     python -c "import app.main, fastapi, uvicorn, deepagents"
-  ) >/dev/null 2>&1 || fail "314 环境缺少后端依赖，请先安装 backend/requirements.txt"
+  ) 9>&- >/dev/null 2>&1 || fail "314 环境缺少后端依赖，请先安装 backend/requirements.txt"
 }
 
 wait_for_backend() {
@@ -183,11 +225,12 @@ wait_for_backend() {
   local backend_url="http://${DESIGN_AI_BACKEND_HOST}:${DESIGN_AI_BACKEND_PORT}/openapi.json"
 
   for ((attempt = 1; attempt <= 100; attempt++)); do
+    [[ ! -f "${STOP_REQUEST_FILE}" ]] || exit 0
     if ! kill -0 "${BACKEND_PID}" 2>/dev/null; then
       tail -n 30 "${BACKEND_LOG_FILE}" >&2 || true
       fail "后端服务启动失败"
     fi
-    if curl --fail --silent --show-error --max-time 1 "${backend_url}" >/dev/null 2>&1; then
+    if curl --noproxy '*' --fail --silent --show-error --max-time 1 "${backend_url}" >/dev/null 2>&1; then
       return
     fi
     sleep 0.1
@@ -201,11 +244,12 @@ wait_for_frontend() {
   local frontend_url="http://127.0.0.1:${DESIGN_AI_FRONTEND_PORT}/"
 
   for ((attempt = 1; attempt <= 100; attempt++)); do
+    [[ ! -f "${STOP_REQUEST_FILE}" ]] || exit 0
     if ! kill -0 "${FRONTEND_PID}" 2>/dev/null; then
       tail -n 30 "${FRONTEND_LOG_FILE}" >&2 || true
       fail "前端服务启动失败"
     fi
-    if curl --fail --silent --show-error --max-time 1 \
+    if curl --noproxy '*' --fail --silent --show-error --max-time 1 \
       -H "Host: ${DESIGN_AI_DOMAIN}" "${frontend_url}" >/dev/null 2>&1; then
       return
     fi
@@ -217,17 +261,31 @@ wait_for_frontend() {
 
 start() {
   mkdir -p "${LOG_DIR}"
-  ensure_not_running
-  ensure_port_available "${DESIGN_AI_BACKEND_PORT}"
-  ensure_port_available "${DESIGN_AI_FRONTEND_PORT}"
+  validate_ports
+  command -v flock >/dev/null 2>&1 || fail "缺少 flock"
+  exec 9>"${START_LOCK_FILE}"
+  if ! flock -n 9; then
+    echo "站点已在运行或启动中；无需重复启动。"
+    status
+    return
+  fi
+  remove_pid_file "${STOP_REQUEST_FILE}"
+  # 先确认依赖可用，再接管端口，避免依赖缺失时先停掉仍可用的旧服务。
   activate_runtime
+  trap cleanup EXIT
+  trap 'exit 130' INT TERM HUP
+  stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm"
+  stop_component "后端服务" "${BACKEND_PID_FILE}" "uvicorn app.main:app"
+  python "${BACKEND_DIR}/scripts/release_site_ports.py" \
+    "${DESIGN_AI_BACKEND_PORT}" "${DESIGN_AI_FRONTEND_PORT}" 9>&- \
+    || fail "无法接管目标端口，未启动新服务"
 
   (
     cd "${BACKEND_DIR}"
-    exec python -m uvicorn app.main:app \
+    exec setsid python -m uvicorn app.main:app \
       --host "${DESIGN_AI_BACKEND_HOST}" \
       --port "${DESIGN_AI_BACKEND_PORT}"
-  ) >"${BACKEND_LOG_FILE}" 2>&1 &
+  ) 9>&- >"${BACKEND_LOG_FILE}" 2>&1 &
   BACKEND_PID=$!
   printf '%s\n' "${BACKEND_PID}" >"${BACKEND_PID_FILE}"
   wait_for_backend
@@ -235,11 +293,11 @@ start() {
   (
     cd "${FRONTEND_DIR}"
     export VITE_BACKEND_URL="http://${DESIGN_AI_BACKEND_HOST}:${DESIGN_AI_BACKEND_PORT}"
-    exec pnpm dev \
+    exec setsid pnpm dev \
       --host "${DESIGN_AI_FRONTEND_HOST}" \
       --port "${DESIGN_AI_FRONTEND_PORT}" \
       --strictPort
-  ) >"${FRONTEND_LOG_FILE}" 2>&1 &
+  ) 9>&- >"${FRONTEND_LOG_FILE}" 2>&1 &
   FRONTEND_PID=$!
   printf '%s\n' "${FRONTEND_PID}" >"${FRONTEND_PID_FILE}"
   wait_for_frontend
@@ -249,6 +307,10 @@ start() {
   echo "按 Ctrl+C 或执行 ./site.sh stop 可停止站点。"
 
   while true; do
+    if [[ -f "${STOP_REQUEST_FILE}" ]]; then
+      echo "站点已停止。"
+      return
+    fi
     if ! kill -0 "${BACKEND_PID}" 2>/dev/null; then
       wait "${BACKEND_PID}" || true
       fail "后端服务已退出"
@@ -259,6 +321,18 @@ start() {
     fi
     sleep 1
   done
+}
+
+stop() {
+  mkdir -p "${RUNTIME_DIR}"
+  # 正常 stop/restart 不是服务故障，通知原前台守护按成功状态退出。
+  : >"${STOP_REQUEST_FILE}"
+  stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm"
+  stop_component "后端服务" "${BACKEND_PID_FILE}" "uvicorn app.main:app"
+  # 等待旧的前台守护退出并释放锁，restart 才不会把尚在清理的旧实例当作新实例。
+  if [[ -f "${START_LOCK_FILE}" ]]; then
+    flock -w 15 "${START_LOCK_FILE}" true || fail "等待旧站点退出超时"
+  fi
 }
 
 status() {
@@ -276,19 +350,13 @@ status() {
 
 case "${1:-}" in
   start)
-    trap cleanup EXIT
-    trap 'exit 130' INT TERM HUP
     start
     ;;
   stop)
-    stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm"
-    stop_component "后端服务" "${BACKEND_PID_FILE}" "uvicorn app.main:app"
+    stop
     ;;
   restart)
-    stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm"
-    stop_component "后端服务" "${BACKEND_PID_FILE}" "uvicorn app.main:app"
-    trap cleanup EXIT
-    trap 'exit 130' INT TERM HUP
+    stop
     start
     ;;
   status)

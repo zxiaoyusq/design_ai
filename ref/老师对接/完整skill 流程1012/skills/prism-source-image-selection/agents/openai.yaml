@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜扩充候选与选图"
+  short_description: "从选中语义方向扩充可追溯原图候选，记录实际读图覆盖并进行设计语言筛选，不把少量样本当全库结论。"
+  default_prompt: "使用 $prism-source-image-selection 完成当前环节，保留用研依据、原图来源和未决状态。"

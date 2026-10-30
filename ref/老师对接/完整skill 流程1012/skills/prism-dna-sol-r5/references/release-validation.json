@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "skill_format": "Skill is valid!",
+  "offline_replay": {
+    "passed": true,
+    "cases": [
+      {
+        "image_id": "HP01",
+        "passed": true,
+        "mismatched_fields": [],
+        "ID_features": 18,
+        "CMF_features": 43,
+        "pending": 11
+      },
+      {
+        "image_id": "MC01",
+        "passed": true,
+        "mismatched_fields": [],
+        "ID_features": 13,
+        "CMF_features": 52,
+        "pending": 5
+      },
+      {
+        "image_id": "H11",
+        "passed": true,
+        "mismatched_fields": [],
+        "ID_features": 19,
+        "CMF_features": 28,
+        "pending": 3
+      },
+      {
+        "image_id": "H12",
+        "passed": true,
+        "mismatched_fields": [],
+        "ID_features": 7,
+        "CMF_features": 22,
+        "pending": 1
+      }
+    ],
+    "new_model_calls": 0,
+    "scope": "saved_response_replay_not_new_visual_accuracy_test"
+  },
+  "checks": [
+    "prepare_without_CLI_or_model_calls",
+    "explicit_model_low_default_fast_off_and_isolated_context",
+    "one_attempt_budget_and_raw_response_receipt_preserved",
+    "unexpected_tools_rejected_without_retry",
+    "two_stage_wrapper_end_to_end_with_saved_responses_and_no_network",
+    "existing_run_refused",
+    "relocated_copy_replay_without_original_checkout_network_or_processes"
+  ],
+  "cli_help_preflight": {
+    "ready": true,
+    "cli": "C:/Users/Admin/AppData/Local/OpenAI/Codex/bin/faa963e871dd422c\\codex.exe",
+    "missing_flags": [],
+    "account_or_model_access_verified": false,
+    "model_request_sent": false
+  },
+  "mock_transports_not_real_inference": true,
+  "new_model_calls": 0,
+  "live_colleague_machine_execution_verified": false
+}

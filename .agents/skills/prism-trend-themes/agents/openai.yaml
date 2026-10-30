@@ -1,4 +1,4 @@
 interface:
-  display_name: "趋势语义 v2 兼容入口"
-  short_description: "按同事 v2 原生规则执行，保留真实来源与独立审阅，网页仅作结果格式映射"
-  default_prompt: "使用 $prism-trend-themes 按同事 v2 基准处理当前项目并保留原始证据。"
+  display_name: "趋势语义 3.0 兼容入口"
+  short_description: "纯文本归纳多篇共同支持的趋势，独立复核后按来源支持排序，不设数量上限"
+  default_prompt: "使用 $prism-trend-themes 对所选文章进行纯文本共同主题聚类，保留主次关系、来源和独立复核证据。未经明确授权不全量重跑。"

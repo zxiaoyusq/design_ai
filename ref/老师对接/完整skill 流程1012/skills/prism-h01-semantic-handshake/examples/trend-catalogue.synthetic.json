@@ -1,0 +1,36 @@
+{
+  "articles": [
+    {
+      "source_id": "T1",
+      "title": "虚构来源一"
+    },
+    {
+      "source_id": "T2",
+      "title": "虚构来源二"
+    }
+  ],
+  "evidence": [
+    {
+      "evidence_id": "TE1",
+      "source_id": "T1",
+      "source_group_id": "T1",
+      "claim_origin_id": "T1",
+      "text": "合成趋势原文：深灰低光泽面与窄银色边框形成局部对比。",
+      "text_kind": "original_text",
+      "locator": "synthetic:paragraph/1",
+      "source_url": "synthetic:T1",
+      "original_text_excerpt": "合成趋势原文：深灰低光泽面与窄银色边框形成局部对比。"
+    },
+    {
+      "evidence_id": "TE2",
+      "source_id": "T2",
+      "source_group_id": "T2",
+      "claim_origin_id": "T2",
+      "text": "合成趋势原文：主要表面保持低反射，局部细节承担明亮变化。",
+      "text_kind": "original_text",
+      "locator": "synthetic:paragraph/1",
+      "source_url": "synthetic:T2",
+      "original_text_excerpt": "合成趋势原文：主要表面保持低反射，局部细节承担明亮变化。"
+    }
+  ]
+}

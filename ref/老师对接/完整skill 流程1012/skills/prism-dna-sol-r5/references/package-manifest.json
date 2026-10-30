@@ -1,0 +1,207 @@
+{
+  "algorithm": "sol-coverage-dna-r5-20260929",
+  "skill_version": "1.0.0",
+  "files": [
+    {
+      "path": "agents/openai.yaml",
+      "sha256": "de8e5b8e0c49ea33f2aae07319a22e5201543cae867632e63bd7164f043c3a0b",
+      "bytes": 326
+    },
+    {
+      "path": "assets/context.json",
+      "sha256": "e6bc175431ed20627bd8952833e83e9ebc98b4bf1982faffe8081f9c8102c01a",
+      "bytes": 9767
+    },
+    {
+      "path": "assets/dictionary.json",
+      "sha256": "16c8ce855e8cd080b97fab7ed4c62b74e404436b25691101acd615f261fe9f50",
+      "bytes": 246315
+    },
+    {
+      "path": "assets/primary.prompt.txt",
+      "sha256": "cc32895b670d1cc2f41a82ecf34db551f015ae4e328a3da07beaef74201c0dae",
+      "bytes": 26012
+    },
+    {
+      "path": "assets/primary.schema.json",
+      "sha256": "2bcb2dabc6d8d81434eb8275a645e01c257b57dcc7d27abc6a7bfa5a0fd9c326",
+      "bytes": 119303
+    },
+    {
+      "path": "assets/source-finalize.py",
+      "sha256": "2467fdee7182ee089c4701011ee307640f8b82da777f7ab93ca23ead43aba6bb",
+      "bytes": 4192
+    },
+    {
+      "path": "assets/source-manifest.json",
+      "sha256": "74c23d424dc217c607dfd53a8c4a94b302352e115ef0f778beadbd92282c8443",
+      "bytes": 2712
+    },
+    {
+      "path": "assets/source-r3.py",
+      "sha256": "f972c0d8ce662eff2acd1ec8d42fd3eaf1dba63b7d4c24f3bae2548ac26ee96d",
+      "bytes": 9391
+    },
+    {
+      "path": "assets/source-r5.py",
+      "sha256": "6352cea050a4d622b830f48d6d089e63b234e2ec1ac941c3dc722b85cb657edf",
+      "bytes": 14344
+    },
+    {
+      "path": "assets/source-refine.py",
+      "sha256": "cd9c1bfa1115e0606886ad1574f3d3654355b86f1170ad22c38727c0e8c121aa",
+      "bytes": 5019
+    },
+    {
+      "path": "assets/vision-only.txt",
+      "sha256": "1482e474b19687b7c842d526a8f52822ec13860878240b2226b5c5c1f36337f0",
+      "bytes": 441
+    },
+    {
+      "path": "examples/H11/expected.json",
+      "sha256": "4fb72bbdf83e555f6e957c5466e77f60b1d02ce1b4c8b754a9cab181b85893d7",
+      "bytes": 20929
+    },
+    {
+      "path": "examples/H11/focus.json",
+      "sha256": "76ec737f2528e627f8b81336754512ea71b41c9b34b31e31c5336722457bdc58",
+      "bytes": 468
+    },
+    {
+      "path": "examples/H11/image.jpg",
+      "sha256": "9d1361c7869be2bddd7ad407d6e3ffefd87f3d91c6cc736c8eb8c82f3cb4e6d0",
+      "bytes": 252648
+    },
+    {
+      "path": "examples/H11/primary.json",
+      "sha256": "20d48bdc292366e1b5319a9e6730a5fc638f49e1625f0643badcf6f377d010ae",
+      "bytes": 4016
+    },
+    {
+      "path": "examples/H12/expected.json",
+      "sha256": "3969d7c57b560c017e9b41f44149a88ec945a238584773ba0f3f7be9c6c4d1fd",
+      "bytes": 10911
+    },
+    {
+      "path": "examples/H12/focus.json",
+      "sha256": "1ddbbefb5a129e71b56f32daaf2461bbe55dabb34c855ca23420a8b9c131f251",
+      "bytes": 176
+    },
+    {
+      "path": "examples/H12/image.jpg",
+      "sha256": "0780ca8586b2ecfec81db3bc6a8a7fa6a73ccfd2a65458c60160e9d865c2dda0",
+      "bytes": 57575
+    },
+    {
+      "path": "examples/H12/primary.json",
+      "sha256": "ff1ef798ffed8b07376b8696901f1d84c55364be26f538fb413626b1cc50437f",
+      "bytes": 3312
+    },
+    {
+      "path": "examples/HP01/expected.json",
+      "sha256": "33ca843371100556b4c9cde3ba0d13c502d268f5a8c9ee308bb39b47796885d3",
+      "bytes": 34721
+    },
+    {
+      "path": "examples/HP01/focus.json",
+      "sha256": "67215f6628ea6f44f13f48877b979aa0ffac986e6fe47e13d58f9950397f7144",
+      "bytes": 1331
+    },
+    {
+      "path": "examples/HP01/image.png",
+      "sha256": "5fcbfa4abcbc655eb0bf9fd1d8126bce97148423dca8a56419a90eb6eb82f808",
+      "bytes": 230412
+    },
+    {
+      "path": "examples/HP01/primary.json",
+      "sha256": "317a84fdc00bcdf88b41ad775e0be3f7bdfb50ff209e0ff0a82b71dc06cb206d",
+      "bytes": 5054
+    },
+    {
+      "path": "examples/HP01/refinement.json",
+      "sha256": "d7da4503ceaa9aedb48cc343f84f17fd54978d3703591985c99fbd372e03459a",
+      "bytes": 3919
+    },
+    {
+      "path": "examples/index.json",
+      "sha256": "30895001ee0390beeb39a056dc0b44146bc4f265a23701ca957857090e74939a",
+      "bytes": 713
+    },
+    {
+      "path": "examples/MC01/expected.json",
+      "sha256": "ad8e3006a7d65fc6f55363d7888c58951ab1d3d98e5999c2341b24dd33142237",
+      "bytes": 33514
+    },
+    {
+      "path": "examples/MC01/focus.json",
+      "sha256": "bc13f555bc3797c344237c7c202cd4a0ee37ac8abc08f15eca6ba9a97b24e5d6",
+      "bytes": 277
+    },
+    {
+      "path": "examples/MC01/image.png",
+      "sha256": "1a72e0c1ae47db5831d9b98fd5d8bc6ff3495ef3d104ae072311f12121a04e76",
+      "bytes": 191847
+    },
+    {
+      "path": "examples/MC01/primary.json",
+      "sha256": "0e5c191bca13efa54405fad451cac3d8827748da16ebf162c016fb2de3fb012d",
+      "bytes": 6442
+    },
+    {
+      "path": "examples/MC01/refinement.json",
+      "sha256": "61349dc7e32ceddf5cbd9dcfbcf6efad857c09a8269ecff5bb1baeda3e423913",
+      "bytes": 2044
+    },
+    {
+      "path": "references/owner-baseline-selection.json",
+      "sha256": "e657fe69cabc55a7a0b697d482038cbe9c067d75879caf6285efea57fcdf80f8",
+      "bytes": 4428
+    },
+    {
+      "path": "references/owner-outcome.json",
+      "sha256": "cc90ea346b4e580fed33e8b9a9cf8c2bf7a4e432af8dcf3ac14b5e438c7d8b00",
+      "bytes": 3074
+    },
+    {
+      "path": "references/provenance.md",
+      "sha256": "bcafab1a478ec852fa311946445bbf5f3544ac089b26d9a082445b04f5581888",
+      "bytes": 1998
+    },
+    {
+      "path": "references/release-validation.json",
+      "sha256": "1f3d8046205d9a36da79f70a8396b55c624e9d97265fac35c0f2808390228c28",
+      "bytes": 1762
+    },
+    {
+      "path": "references/usage.md",
+      "sha256": "3d34472a0bebec3a5e970489dfd60fb34d32a595f5dd68e435f28f62c6cc4cf5",
+      "bytes": 3072
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "4eb9cfe0c3362dd936c342e18d06310a4046978fd002e96bb99bf68e7a9a532d",
+      "bytes": 133
+    },
+    {
+      "path": "scripts/bounded_process.py",
+      "sha256": "5f31758a08056dc0d80c01945faa9190cb91921142c0319b9e468a9bdd1a8a13",
+      "bytes": 1571
+    },
+    {
+      "path": "scripts/cli.py",
+      "sha256": "0931d6f77bc60554bffecb436fda984d630bc8916d766e0e75273c679be59168",
+      "bytes": 10835
+    },
+    {
+      "path": "scripts/engine.py",
+      "sha256": "f27a4d4c945b75d81d202e1101c0cc52bf329d82a3d7a343e60f411b6c722c2c",
+      "bytes": 10913
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "3f206faf3f0d0794191fa019559806ac8eb8ac1743579c6f4a8525e5c7822c17",
+      "bytes": 3850
+    }
+  ],
+  "suite_portability_note": "Current suite layer adds only integration guidance and bounded transport; original algorithm assets remain unchanged."
+}

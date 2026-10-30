@@ -2,12 +2,12 @@
 name: prism-moodboard-delivery
 description: 将当前情绪板、原图取景、真实审阅状态和工作量整理为图片内嵌HTML及可审计交接包。用于结果交付；不把包装完成当算法合格。
 metadata:
-  version: "2.0.0"
+  version: "2.1.0"
 ---
 
 # 棱镜｜离线HTML与同事交接
 
-输入当前分组、独立整板审阅、原图/视窗/展示增强记录、来源索引和实际调用账本。读取 [交付合同](../prism_skill_support/references/contracts.md) 与 [指标和评估边界](../prism_skill_support/references/evaluation-contract.md)。
+输入当前分组、已有独立整板审阅（若有）、原图/视窗/展示增强记录、来源索引和实际调用账本。读取 [交付合同](../prism_skill_support/references/contracts.md) 与 [指标和评估边界](../prism_skill_support/references/evaluation-contract.md)。没有当次审阅要求时，不为了交付自动追加模型审阅；未审如实展示。
 
 展示当前板、每张为何选、原图→取景→处理的对照、离群替换及未解决问题。说明H01/原生H2是否实际跑过，分别显示视觉、数量、来源/证据和用户反馈；单板AI视觉PASS不重写此前六板原生失败。
 
@@ -20,6 +20,16 @@ python -B -X utf8 ../prism_skill_support/scripts/render_board.py --manifest boar
 实际CLI参数先看--help；也可--native-group接原分组。脚本只渲染和核哈希/排重，不替代视觉验收。
 
 使用当前可用浏览器实查图片加载、原图与范围、弹窗/切换、桌面和窄屏，并亲自看整板。离线打开时图片不能依赖HTTP或作者绝对文件路径。校准截图不当新候选。
+
+## 模型 DNA 聚类页面与显示修订
+
+仅当项目已安装 `prism-dna-cluster-moodboard` 时，其候选页使用该 Skill 的 `scripts/render_delivery.py`，并阅读其“小样验证与覆盖边界”参考；按本机 Skill 目录定位，不假定本交接包附带该扩展。这是另一种展示格式，不冒充完成原生 H01/H2。按 ID／CMF 显示实际候选／看图覆盖、残余、AI 对照和人工状态，不把两张 CMF 板的结果扩写成全库或 ID 已合格。
+
+原图和冻结裁片本身可读、实际版面太小时，优先以 `--layout-overrides <JSON>` 调整指定图位列宽、桌面／窄屏高度，保持 contain 原比例、原像素、对象和 ROI；不通过增强或裁掉强反证修饰成相似。配置绑定当前 unit_id，交付记录布局身份，不写死某轮板号或图号。原图本身缺证据时，放大不能宣称已解决。
+
+显示变化不触发 DNA 或全库聚类。事实／对象归属和关系问题交该 Skill 的“定点修订入口”参考，不在 renderer 中偷偷换成员或改事实。成员、视窗或实际显示尺度改变后，旧审阅不能给新版作证；明确显示待审并保留原反馈。浏览器 QA 只验证布局和交互，不能授予视觉或人工通过。
+
+## 交接
 
 交接包含START-HERE、完整流程、每步skill及资源、安装/环境检查、版本哈希、模型设置、输入输出契约、实际案例和未完成边界。原始证据可分数据包；私人访谈、认证、SQLite、个人账号与自动化权限不随通用技能传播。
 

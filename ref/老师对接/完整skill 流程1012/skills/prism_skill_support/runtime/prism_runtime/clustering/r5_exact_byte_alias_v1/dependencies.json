@@ -1,0 +1,88 @@
+{
+  "consumers": {
+    "CMF": {
+      "package_name": "cmf_reference_board_v4",
+      "init_ref": {
+        "path": "../cmf_reference_board_v4/__init__.py",
+        "sha256": "80473504cb0821b6e2f76e8391a73564692e6fa5c58862b919803bc8187e2992"
+      }
+    },
+    "ID": {
+      "package_name": "id_reference_board_v5",
+      "init_ref": {
+        "path": "../id_reference_board_v5/__init__.py",
+        "sha256": "bcc5036c28aa220323f44667ffab0020bdf5c016b3da43d25396bc9886909709"
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "../cmf_reference_board_v4/__init__.py",
+      "sha256": "80473504cb0821b6e2f76e8391a73564692e6fa5c58862b919803bc8187e2992"
+    },
+    {
+      "path": "../cmf_reference_board_v4/protocol.py",
+      "sha256": "75db1dfdc07e3842041cc4d6a6b5fecea9f8bb63a6ce69a391ce1897e926d3e3"
+    },
+    {
+      "path": "../cmf_reference_board_v4/common.py",
+      "sha256": "8b259880c9d1fd2c48108d692732faace43a6c611e48e6417a52af2c10a5fd2c"
+    },
+    {
+      "path": "../cmf_reference_board_v4/quality.py",
+      "sha256": "93e0aa583ecd8f392bd2e1e252f5008e21f56fdaf75ad4cf6dcbc68b6769fbab"
+    },
+    {
+      "path": "../cmf_reference_board_v4/dependencies.json",
+      "sha256": "8a614e1523de18e0952af91e1beb0dddb62f38260a1fce6027886d07ac37f5c7"
+    },
+    {
+      "path": "../id_reference_board_v5/__init__.py",
+      "sha256": "bcc5036c28aa220323f44667ffab0020bdf5c016b3da43d25396bc9886909709"
+    },
+    {
+      "path": "../id_reference_board_v5/protocol.py",
+      "sha256": "12d36341cc2f342998344fd439a5874bfb24f78212b9b364398946cedcd283b6"
+    },
+    {
+      "path": "../id_reference_board_v5/common.py",
+      "sha256": "3965a9bfaf00b86cd05559e14e0e13f5ed912989ae667054d58d189fc8a5768a"
+    },
+    {
+      "path": "../id_reference_board_v5/quality.py",
+      "sha256": "7798a2921af680c1b57915948f8f20612e7c8e3f07b334c01627d858eaf73a6a"
+    },
+    {
+      "path": "../id_reference_board_v5/dependencies.json",
+      "sha256": "8a614e1523de18e0952af91e1beb0dddb62f38260a1fce6027886d07ac37f5c7"
+    },
+    {
+      "path": "../r5_dual_v2/adapter.py",
+      "sha256": "52e8011a666f0707ed2988454b6a18db826e0e8142d9f3b1a302a02ac8c8fe54"
+    },
+    {
+      "path": "../r5_dual_v2/common.py",
+      "sha256": "56b2f1fdba805c38d02d324dc6fbe472392f2fd7caea5562231cba7e1c6374ed"
+    },
+    {
+      "path": "../r5_dual_v2/producer.json",
+      "sha256": "923c16ad6924fad235a188b1a06e083d94cfe0dc2d744502ebaaa64ded89ba2d"
+    },
+    {
+      "path": "../../../prism_sidecars/quality_selected_target_v2/protocol.py",
+      "sha256": "5f8dda60c5f220ad13b9956497782a304b8eba6bea286fabaeb04e947cf22a68"
+    },
+    {
+      "path": "../../../prism_sidecars/quality_selected_target_v2/prompt.txt",
+      "sha256": "2b2dcbd3f558270cadb9f5594bf819248cb0dbe816069046159a9796748718a8"
+    },
+    {
+      "path": "../r5_dual_v2/__init__.py",
+      "sha256": "1da41c3e4c119fc442f53a85b17f1e2a5f6d5b11bf405e8a89d09c20ec6df6ed"
+    }
+  ],
+  "native_adapter_ref": {
+    "path": "../r5_dual_v2/adapter.py",
+    "sha256": "52e8011a666f0707ed2988454b6a18db826e0e8142d9f3b1a302a02ac8c8fe54"
+  }
+}

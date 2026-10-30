@@ -1,0 +1,23 @@
+{
+  "historical_run_date": "2026-10-03",
+  "candidate_scope": "existing parsed original cache, not a new full-corpus H01 run",
+  "previewed_unique": 93,
+  "formal_candidates": 20,
+  "existing_DNA_records_revalidated": 20,
+  "new_R5_calls": 0,
+  "new_CLI_calls": 6,
+  "material_calls": 4,
+  "whole_board_calls": 2,
+  "one_targeted_replacement": {
+    "removed": "N111",
+    "added": "N080",
+    "reason": "colour pattern and crossing lines distracted from the frozen primary relation"
+  },
+  "final_images": 10,
+  "independent_source_projects": 10,
+  "first_AI_board": "revise",
+  "final_AI_board": "pass",
+  "native_H01_H2_full_requalification": false,
+  "human_new_board_approval": false,
+  "source_refs_are_historical": true
+}

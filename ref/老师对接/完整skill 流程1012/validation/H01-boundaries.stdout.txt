@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "passed": 20,
+  "checks": [
+    {
+      "name": "dataset_embedded_python_not_executed",
+      "passed": true
+    },
+    {
+      "name": "missing_negative_row_rejected",
+      "passed": true
+    },
+    {
+      "name": "missing_negative_direction_cell_rejected",
+      "passed": true
+    },
+    {
+      "name": "duplicated_negative_direction_rejected",
+      "passed": true
+    },
+    {
+      "name": "rewritten_research_quote_rejected",
+      "passed": true
+    },
+    {
+      "name": "negative_to_direct_support_rejected",
+      "passed": true
+    },
+    {
+      "name": "brand_is_not_direct_design_preference",
+      "passed": true
+    },
+    {
+      "name": "trend_text_kind_relabelling_rejected",
+      "passed": true
+    },
+    {
+      "name": "invented_boundary_rejected",
+      "passed": true
+    },
+    {
+      "name": "hidden_extension_under_direct_support_rejected",
+      "passed": true
+    },
+    {
+      "name": "consensus_mode_does_not_allow_extension",
+      "passed": true
+    },
+    {
+      "name": "missing_cluster_outcome_rejected",
+      "passed": true
+    },
+    {
+      "name": "stale_request_snapshot_rejected",
+      "passed": true
+    },
+    {
+      "name": "complete_bound_result_replays",
+      "passed": true
+    },
+    {
+      "name": "configurable_count_and_no_preselection_image_jobs",
+      "passed": true
+    },
+    {
+      "name": "unknown_negative_not_silently_not_applicable",
+      "passed": true
+    },
+    {
+      "name": "pending_is_not_confirmation",
+      "passed": true
+    },
+    {
+      "name": "AI_selection_requires_current_scope_delegation",
+      "passed": true
+    },
+    {
+      "name": "explicit_synthetic_selection_works_only_as_fixture",
+      "passed": true
+    },
+    {
+      "name": "frozen_input_change_rejected",
+      "passed": true
+    }
+  ],
+  "model_calls": 0,
+  "semantic_accuracy_proven": false
+}

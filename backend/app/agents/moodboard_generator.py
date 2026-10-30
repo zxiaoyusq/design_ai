@@ -3,17 +3,11 @@
 import json
 from time import monotonic
 
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.backends.utils import create_file_data
-from langchain.agents.middleware import wrap_model_call
-from langchain_core.messages import SystemMessage
-
+from app.agents.bounded import AGENT_RUNTIME_VERSION, create_bounded_agent
 from app.services.llm import create_chat_model
 from app.services.llm.telemetry import ModelCallTelemetry
 
 PROMPT_VERSION = "moodboard-text-dna-v3"
-SKILL_PATH = "/skills/moodboard-generator/SKILL.md"
 
 
 def skill_version(skill_text):
@@ -69,25 +63,12 @@ def run_moodboard_step(model_id, stage, payload, skill_text):
     if len(system) + len(content) > 360_000:
         raise ValueError("本阶段 DNA 文本超过上下文预算，请减少图片后新建任务")
     telemetry = ModelCallTelemetry()
-    invoked = False
-
-    @wrap_model_call
-    def text_only(request, handler):
-        nonlocal invoked
-        if invoked:
-            raise RuntimeError("本阶段禁止追加模型调用")
-        invoked = True
-        return handler(request.override(tools=[], system_message=SystemMessage(content=system)))
-
     model = create_chat_model(model_id, temperature=0, streaming=True, timeout=240, max_retries=0)
-    agent = create_deep_agent(model=model, tools=[], subagents=[], backend=StateBackend(),
-                              skills=["/skills/"], middleware=[text_only],
-                              system_prompt=system, name="moodboard-generator")
+    agent = create_bounded_agent(model=model, system_prompt=system, name="moodboard-generator")
     started = monotonic()
     try:
-        output = agent.invoke({"messages": [{"role": "user", "content": content}],
-                               "files": {SKILL_PATH: create_file_data(skill_text)}},
-                              config={"callbacks": [telemetry], "recursion_limit": 4})
+        output = agent.invoke({"messages": [{"role": "user", "content": content}]},
+                              config={"callbacks": [telemetry], "recursion_limit": 40})
         message = output["messages"][-1]
         if getattr(message, "tool_calls", None):
             raise ValueError("模型返回了工具操作，阶段已停止")
@@ -96,6 +77,7 @@ def run_moodboard_step(model_id, stage, payload, skill_text):
         text = message.content if isinstance(message.content, str) else "".join(
             b.get("text", "") for b in message.content if isinstance(b, dict) and b.get("type") == "text")
         return {"text": text, "seconds": monotonic() - started, "telemetry": telemetry.snapshot(),
+                "agent_runtime_version": AGENT_RUNTIME_VERSION,
                 "model_name": metadata.get("model_name", metadata.get("model", model_id)),
                 "finish_reason": finish, "truncated": finish in {"length", "max_tokens"}}
     except Exception as exc:

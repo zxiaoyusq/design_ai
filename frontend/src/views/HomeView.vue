@@ -11,6 +11,7 @@ import {
 } from '@ant-design/icons-vue'
 
 import ExtractionComposer from '@/components/ExtractionComposer.vue'
+import MainNavigation from '@/components/MainNavigation.vue'
 import ImageUploadPanel from '@/components/ImageUploadPanel.vue'
 import ResultViewer from '@/components/ResultViewer.vue'
 import { useDnaStore } from '@/stores/dna'
@@ -150,16 +151,7 @@ async function changeResultView(view: 'business' | 'detail') {
           <strong>用户审美洞察与趋势捕捉</strong>
         </span>
       </a>
-      <nav>
-        <a class="active" href="#extract">DNA 提取</a>
-        <RouterLink to="/dna-v2">DNA 提取 V2</RouterLink>
-        <RouterLink to="/article-trends">趋势洞察</RouterLink>
-        <RouterLink to="/trend-quality/review">趋势图片筛选</RouterLink>
-        <RouterLink to="/high-trends">高潜趋势</RouterLink><RouterLink to="/moodboards">情绪版生成</RouterLink>
-        <RouterLink to="/design-modification">设计修改</RouterLink>
-        <RouterLink to="/user-research">用研聚合</RouterLink>
-        <RouterLink to="/projects">我的项目</RouterLink>
-      </nav>
+      <MainNavigation />
       <div class="system-state"><span></span> Agent 服务在线</div>
     </header>
 

@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜趋势纯语义聚类"
+  short_description: "从趋势图文库的文字归纳可供设计选向的语义簇并按受支持主成员规模排名。用于一级趋势聚类；不把图片像素或旧DNA作为入簇门槛。"
+  default_prompt: "使用 $prism-trend-semantic-clustering 完成本环节，保留实际输入输出、来源和未解决问题。"

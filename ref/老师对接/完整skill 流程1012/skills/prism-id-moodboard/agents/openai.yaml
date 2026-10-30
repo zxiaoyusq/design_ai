@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜ID与总体风格"
+  short_description: "按形体、比例、构造及色材共同组织的设计情绪选组，形成对后续产品ID有价值的原图风格板。"
+  default_prompt: "使用 $prism-id-moodboard 完成当前环节，保留用研依据、原图来源和未决状态。"

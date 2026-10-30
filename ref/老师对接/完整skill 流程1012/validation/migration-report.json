@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "path_test": "relocated under a new Chinese directory with spaces",
+  "results": [
+    {
+      "check": "doctor",
+      "exit_code": 0
+    },
+    {
+      "check": "native-doctor",
+      "exit_code": 0
+    },
+    {
+      "check": "style-synthetic-demo",
+      "exit_code": 0
+    },
+    {
+      "check": "historical-case-replay",
+      "exit_code": 0
+    },
+    {
+      "check": "install-dry-run",
+      "exit_code": 0
+    },
+    {
+      "check": "install-empty-project",
+      "exit_code": 0
+    },
+    {
+      "check": "installed-native-doctor",
+      "exit_code": 0
+    }
+  ],
+  "relocated_file_bytes_identical": true,
+  "installed_skill_bytes_identical": true,
+  "installed_skill_count": 18,
+  "new_pipeline_model_calls": 0,
+  "synthetic_demo_is_not_real_moodboard": true,
+  "aesthetic_validation": false
+}

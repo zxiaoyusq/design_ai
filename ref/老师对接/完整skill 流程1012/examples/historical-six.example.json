@@ -1,0 +1,12 @@
+{
+  "fixture_only": true,
+  "case": "2026-10-02 six-card historical configuration, not a new-project default",
+  "requested_direction_count": 6,
+  "branch_allocation": {"ID": 3, "CMF": 3},
+  "count_policy": {"target": 10, "minimum": 10, "maximum": 12},
+  "result_counts": [7, 8, 7, 9, 8, 9],
+  "historical_native_complete": 0,
+  "later_user_visual_feedback": "positive",
+  "new_project_execution_authorized": false,
+  "old_model_answers_are_runtime_input": false
+}

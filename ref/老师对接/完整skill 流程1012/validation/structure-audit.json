@@ -1,0 +1,129 @@
+{
+  "skill_count": 18,
+  "skill_validation": [
+    {
+      "name": "prism-board-review",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-cmf-moodboard",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-crop-enhancement",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-direction-selection",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-dna-clustering",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-dna-sol-r5",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-h01-semantic-handshake",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-id-moodboard",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-independent-evaluation-loop",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-moodboard-delivery",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-research-intake",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-research-semantic-clustering",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-run-contract",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-source-image-selection",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-target-quality",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-target-view-binding",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-trend-semantic-clustering",
+      "valid": true,
+      "message": "Skill is valid!"
+    },
+    {
+      "name": "prism-visual-family",
+      "valid": true,
+      "message": "Skill is valid!"
+    }
+  ],
+  "python_files_parsed": 82,
+  "python_syntax_errors": [],
+  "original_algorithm_identity": {
+    "research_core": {
+      "files_compared": 7,
+      "identical": true,
+      "differences": []
+    },
+    "H01_core": {
+      "files_compared": 13,
+      "identical": true,
+      "differences": []
+    },
+    "Sol_R5_frozen": {
+      "files_compared": 43,
+      "identical": true,
+      "differences": []
+    },
+    "native_runtime": {
+      "files_compared": 44,
+      "identical": true,
+      "differences": []
+    },
+    "DNA_trial5": {
+      "files_compared": 1,
+      "identical": true,
+      "sha256": "f98192af90f7e6d433f1fd35752c944dd06bee8ad25ffe5a4c7fc6a29cd4eb31"
+    }
+  },
+  "markdown_links_checked": 105,
+  "missing_current_markdown_links": [],
+  "forbidden_artifacts": [],
+  "credential_pattern_hit_files": [],
+  "passed": true
+}

@@ -1,0 +1,87 @@
+{
+  "release": "4.3.0",
+  "recorded_at": "2026-10-12T09:47:51.225965+00:00",
+  "status": "passed",
+  "skills": 18,
+  "shared_support_folders": 1,
+  "technical_checks": {
+    "status": "passed",
+    "results": [
+      {
+        "check": "native-doctor",
+        "exit_code": 0,
+        "wall_seconds": 1.172,
+        "stdout": "native-doctor.stdout.txt",
+        "stderr": "native-doctor.stderr.txt"
+      },
+      {
+        "check": "R5-replay",
+        "exit_code": 0,
+        "wall_seconds": 2.203,
+        "stdout": "R5-replay.stdout.txt",
+        "stderr": "R5-replay.stderr.txt"
+      },
+      {
+        "check": "research-boundaries",
+        "exit_code": 0,
+        "wall_seconds": 0.859,
+        "stdout": "research-boundaries.stdout.txt",
+        "stderr": "research-boundaries.stderr.txt"
+      },
+      {
+        "check": "H01-boundaries",
+        "exit_code": 0,
+        "wall_seconds": 2.906,
+        "stdout": "H01-boundaries.stdout.txt",
+        "stderr": "H01-boundaries.stderr.txt"
+      },
+      {
+        "check": "portable-glue",
+        "exit_code": 0,
+        "wall_seconds": 6.438,
+        "stdout": "portable-glue.stdout.txt",
+        "stderr": "portable-glue.stderr.txt"
+      },
+      {
+        "check": "v2-material-and-review-contracts",
+        "exit_code": 0,
+        "wall_seconds": 2.953,
+        "stdout": "v2-material-and-review-contracts.stdout.txt",
+        "stderr": "v2-material-and-review-contracts.stderr.txt"
+      },
+      {
+        "check": "future-reference-consumer",
+        "exit_code": 0,
+        "wall_seconds": 18.937,
+        "stdout": "future-reference-consumer.stdout.txt",
+        "stderr": "future-reference-consumer.stderr.txt"
+      },
+      {
+        "check": "style-v4-boundaries",
+        "exit_code": 0,
+        "wall_seconds": 5.329,
+        "stdout": "style-v4-boundaries.stdout.txt",
+        "stderr": "style-v4-boundaries.stderr.txt"
+      },
+      {
+        "check": "native-ID-CMF-alias",
+        "exit_code": 0,
+        "wall_seconds": 294.656,
+        "stdout": "native-ID-CMF-alias.stdout.txt",
+        "stderr": "native-ID-CMF-alias.stderr.txt"
+      }
+    ],
+    "new_model_calls": 0,
+    "semantic_or_visual_accuracy_proven": false,
+    "recorded_at": "2026-10-12T09:47:15.339685+00:00"
+  },
+  "structure_audit": "structure-audit.json",
+  "portability_check": "migration-report.json",
+  "independent_review": "independent-review.json",
+  "environment_note": "Initial offline attempts lacked jsonschema. Dependencies were installed into the project Python environment from requirements.txt; the final offline-r3 run passed. Initial report summaries are retained under history/.",
+  "method_scope": "Complete reusable workflow skills and tools, not the private project data archive.",
+  "new_pipeline_model_calls": 0,
+  "aesthetic_accuracy_proven": false,
+  "new_user_research_results": false,
+  "designer_approval_granted": false
+}

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DNA 提取与图片聚类 · 双 Skill 交接说明</title>
+<style>
+:root{color-scheme:light;--ink:#203c35;--muted:#60716c;--line:#dce4dd;--paper:#f3f5f0}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1060px;margin:auto;padding:44px 28px 76px}header{padding:25px 0 30px;border-bottom:1px solid var(--line)}.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--muted)}h1{font-size:34px;line-height:1.35;font-weight:650;margin:12px 0}h2{font-size:24px;margin:34px 0 12px}h3{font-size:18px;margin:20px 0 8px}p{margin:10px 0}a{color:#276b53;text-underline-offset:4px}nav{display:flex;gap:10px 20px;flex-wrap:wrap;margin:20px 0}.lead{font-size:18px}.note{border-left:4px solid #80a090;background:#eaf0e8;padding:12px 18px;margin:16px 0}.muted,figcaption{color:var(--muted);font-size:14px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;background:#fffefa;font-size:15px}th,td{text-align:left;vertical-align:top;padding:12px 15px;border:1px solid var(--line)}th{background:#eaf0e8;white-space:nowrap}code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;overflow-wrap:anywhere}pre{padding:18px;background:#203c35;color:#eff5ee;border-radius:8px;overflow:auto;line-height:1.65}pre code{overflow-wrap:normal}.refs{display:grid;grid-template-columns:1fr 1fr;gap:20px}figure{margin:0;padding:14px;background:#fffefa;border:1px solid var(--line);border-radius:8px}figure img{width:100%;height:230px;object-fit:contain}ul,ol{padding-left:24px}li{margin:7px 0}footer{border-top:1px solid var(--line);padding-top:20px;margin-top:36px;color:var(--muted);font-size:14px}@media(max-width:650px){main{padding:24px 16px 40px}h1{font-size:27px}.refs{grid-template-columns:1fr}th,td{padding:10px}figure img{height:auto}}
+</style>
+</head>
+<body><main>
+<header><p class="eyebrow">PRISM · TWO-STAGE WORKFLOW · 2026-10-21</p>
+<h1>DNA 提取与图片聚类<br>双 Skill 交接说明</h1>
+<p class="lead">先复用和补齐单图设计 DNA，冻结设计卡；再由大模型比较设计关系、跨批归并，并结合真实图片组成情绪板。</p>
+<p class="muted">这是当前工作区文件的原字节快照。两个主 Skill、脚本、规则、已有测试和必要支持文件均随包提供。打开本 HTML 即可离线阅读。</p>
+<nav><a href="#skills">两个入口</a><a href="#flow">流程与复用</a><a href="#rules">成板标准</a><a href="#usage">接手使用</a><a href="#references">参考图例</a><a href="#boundary">迁移与边界</a></nav>
+</header>
+
+<section id="skills"><h2>1. 当前使用的两个 Skill</h2>
+<div class="table-wrap"><table><thead><tr><th>阶段</th><th>入口与版本</th><th>职责和交付</th></tr></thead><tbody>
+<tr><td>A · DNA 提取／补缺</td><td><a href=".agents/skills/prism-design-dna-preparation/SKILL.md">prism-design-dna-preparation</a><br>v0.4.1</td><td>复用旧 R5 和可验证的已有卡，按对象补七组关系、风格候选、反向信号及取景。输出 <code>design-cards.json</code>、<code>prepared-manifest.json</code>，连同原请求、原答、回执和覆盖清单。</td></tr>
+<tr><td>B · 图片聚类</td><td><a href=".agents/skills/prism-dna-cluster-moodboard/SKILL.md">prism-dna-cluster-moodboard</a><br>v0.13.0</td><td>比较冻结设计卡，发现关系、跨批合并和召回；再看原图与真实裁片选员。输出分组、候选板、输入去向、实际模型证据及未决问题。</td></tr>
+</tbody></table></div>
+<p>R5 是已有可见事实的来源；本包的 A 是当前用于聚类前准备的入口。风格知识库和模型传输文件属于支持依赖，不是额外增加的流程阶段。</p>
+<pre><code>解压后的项目根目录/
+├── index.html                         ← 本交接说明
+├── .agents/skills/
+│   ├── prism-design-dna-preparation/   ← A：完整规则、脚本、测试
+│   └── prism-dna-cluster-moodboard/    ← B：完整规则、脚本、测试
+├── backend/app/services/visual_workflow/codex_transport.py
+├── ref/multimodal-design-dna-multitag-extractor/references/
+├── ref/参考情绪版/                     ← 现行教材引用的四张原板
+├── ref/问题反馈/三个情绪版_问题圈注.html
+├── requirements-runtime.txt
+├── runtime-versions.json
+├── manifest.json                      ← 来源、大小与 SHA256
+└── verify_package.py                  ← 离线完整性核验</code></pre>
+</section>
+
+<section id="flow"><h2>2. 两步怎么衔接</h2>
+<h3>A：先完成当次图片清单的设计卡准备</h3>
+<p>输入包括图片清单、原图路径与 SHA256、已有 R5／旧观察及来源。A 选取主物品或同级、具有独立设计表达的对象，保存对象框、事实框和展示框；三个框均为原图归一化 <code>[x, y, width, height]</code>。整体与代表性局部均可，图片中的细小背景碎片不应成为凑相似的依据。</p>
+<p>每个对象记录配色、廓形、块面、线条、光学、纹理和构造细节，以及支持证据、未知项、竞争焦点和可读性限制；再提取同层风格候选与单图设计情绪。当前紧凑预算每图最多 1 张 ID 卡、2 张 CMF 卡。全部输入有成功／失败终态并冻结后，再交给 B。</p>
+<h3>B：先比较 DNA，再看真实图片选员</h3>
+<ol>
+<li><strong>文字发现：</strong>默认每批最多 32 张设计卡，让大模型归纳有依据的共同关系及边界。</li>
+<li><strong>跨批归并与召回：</strong>比较各批提出的关系及代表卡，把所有相关批次的卡路由到合适方向；后续批次的图片可以加入先前发现的方向。</li>
+<li><strong>文字提名：</strong>从方向内的卡中提名视觉候选。预算会限制进入实际看图阶段的数量，未入选不等于素材没有价值。</li>
+<li><strong>真实看图：</strong>默认每窗 16 个候选，比较原图与按冻结框生成的真实裁片。先明确共同关系和破坏条件，再逐个判断差异是否协调，最后组成板；多窗结果作有界合流。</li>
+</ol>
+<p class="note">32 是文字请求容量，不是一个板的来源边界。当前默认统一按设计情绪比较，ID／CMF 仅保留为原卡的事实出处；新组使用 <code>DESIGN</code>。聚类阶段不补写 DNA，也不临时换框。</p>
+<h3>已有 DNA 是否需要重跑</h3>
+<div class="table-wrap"><table><thead><tr><th>现状</th><th>处理</th></tr></thead><tbody>
+<tr><td>已有可追溯的冻结设计卡，事实足够</td><td>直接将 <code>prepared-manifest.json</code> 交给 B；无需先再跑 A。</td></tr>
+<tr><td>只有旧 R5，缺少当前所需的关系或取景</td><td>由 A 复用 R5 的事实，补明确缺项；保留旧结果。</td></tr>
+<tr><td>新一轮 A 希望复用旧设计卡</td><td>显式传 <code>--reuse-prepared</code>。会核对原图、路径、对象／视窗、实际 Prompt／Schema／模型和原始证据，不是仅凭文件名或 SHA 命中。</td></tr>
+<tr><td>DNA 已写出冲突，组板仍把图片放在一起</td><td>这是 B 的关系判断问题，针对该组合重选或扩充候选。</td></tr>
+<tr><td>原图细节可读，但板上显示太小</td><td>调整展示布局；原图本身看不清的细节，放大无法补出证据。</td></tr>
+</tbody></table></div>
+<p>历史 v1 卡可在核验后供 B 消费，但不等于已按 A 的 v2 Prompt 补齐。把旧全量图片清单重新传给新版 A，可能产生大量未命中请求；应先确定实际缺口。</p>
+</section>
+
+<section id="rules"><h2>3. 当前成板标准</h2>
+<ul>
+<li><strong>整体设计情绪一致：</strong>配色角色、廓形比例、块面、线条、光学、纹理和细节组合后，应指向相近感受。不能仅凭“都是黑色”“都有圆角”或“都是金属”入板。</li>
+<li><strong>跨品类、跨材质允许：</strong>服装、家具、汽车、电子产品和空间可以同板；各维度可以变化，变化要协调。现代服装的肩线、剪裁、分片也可形成结构化廓形。</li>
+<li><strong>有设计表达且关系成立：</strong>优先比例、构造、色面和细节组织清楚的图片。单图有设计感，不自动证明与其他图协调。</li>
+<li><strong>同品类最多 50%：</strong>按对象功能归一，每板同类最多 <code>floor(N/2)</code> 张。不同椅子仍属椅子，不同房间整体装修仍属室内空间；未知不当新品类。</li>
+<li><strong>默认 6–10 张，目标 8 张：</strong>不足保留小组，不为凑数接纳明显离群项。此前某轮“每板至少 5 张、最多两小时”是该轮约定，没有改写当前 Skill 的默认规则。</li>
+<li><strong>保留真实取景和证据限制：</strong>局部可以进板，但应代表物品的设计关系；不能裁掉冲突，也不能借背景或光晕替产品描述材质。</li>
+<li><strong>核对最不一致成员对：</strong>A 接近 B、B 接近 C，并不自动证明 A 与 C 可以同板。主导冲突或未决成员不能靠宽泛标题保住名额。</li>
+<li><strong>来源与反馈：</strong>每文章／已知项目最多一张，秀场最多 <code>floor(0.3×N)</code>；未知保留未核。具体反馈绑定对象、视窗和原组合，换目录或板名不会消除问题。</li>
+</ul>
+<p>规则详见 <a href=".agents/skills/prism-dna-cluster-moodboard/references/unified-selection-policy.md">统一生产判断</a>、<a href=".agents/skills/prism-dna-cluster-moodboard/references/llm-grouping.md">规模化聚类</a>及 <a href=".agents/skills/prism-dna-cluster-moodboard/references/targeted-revision.md">定点修订</a>。</p>
+</section>
+
+<section id="usage"><h2>4. 接手与运行入口</h2>
+<p>保留包内目录层级，在解压后的项目根目录执行。脚本按相对位置查找两个 Skill、风格库与传输依赖；只拷贝两个 <code>SKILL.md</code> 不能运行完整脚本。接收方需准备 Linux／WSL 环境、Python 3.14（本项目为 conda <code>314</code>）、Python 依赖，以及脚本兼容的模型执行与登录环境。</p>
+<p><a href="requirements-runtime.txt">requirements-runtime.txt</a> 与 <a href="runtime-versions.json">runtime-versions.json</a> 记录打包时当前环境的直接依赖版本。源码中模型配置为 <code>gpt-6.1-sol / high</code>，实际请求通过 DeepAgents 和现有 CLI 适配器执行；能否在接收环境使用须由该环境核实。包内没有账号凭证、第三方安装包或模型程序。</p>
+<h3>先核验文件与查看参数</h3>
+<pre><code>python verify_package.py
+python .agents/skills/prism-design-dna-preparation/scripts/design_cards.py --help
+python .agents/skills/prism-dna-cluster-moodboard/scripts/llm_group.py --help</code></pre>
+<h3>A：仅生成准备计划的示例</h3>
+<pre><code>python .agents/skills/prism-design-dna-preparation/scripts/design_cards.py \
+  --sample /absolute/path/sample.json \
+  --prior-observations /absolute/path/prior-observations.json \
+  --out /absolute/path/new-preparation \
+  --batch-size 1 --workers 10</code></pre>
+<p><code>sample.json</code> 的 <code>images</code> 条目需包含唯一 <code>image_id</code>、<code>sha256</code>、真实 <code>local_path</code>，并沿用已有来源和 DNA 引用。已有冻结卡直接走 B；A 的跨运行复用另加 <code>--reuse-prepared /absolute/path/old/prepared-manifest.json</code>。输入范式可对照包内 <a href=".agents/skills/prism-design-dna-preparation/tests/test_design_cards.py">既有测试夹具</a>，其中假数据仅解释协议。</p>
+<h3>B：优先少量板的计划示例</h3>
+<pre><code>python .agents/skills/prism-dna-cluster-moodboard/scripts/llm_group.py \
+  --prepared /absolute/path/preparation/prepared-manifest.json \
+  --out /absolute/path/new-grouping \
+  --comparison-mode unified --mode priority_boards \
+  --target-boards 3 --direction-limit 4 \
+  --workers 10 --card-batch-size 32 --visual-batch-size 16 \
+  --max-calls 30</code></pre>
+<p>示例中的方向数、调用预算和并发需要按本次任务约定设置，30 次不保证能产出三张达标板。两个入口默认显示计划，追加 <code>--execute</code> 才启动真实调用；已有具体反馈时为 B 追加 <code>--feedback /absolute/path/registry.json</code>。全目录探索使用 <code>--mode full_catalogue</code>，并去掉仅用于优先模式的板数和方向数参数。</p>
+<p>跨批复用旧方向可用 <code>--templates-from</code>；同计划接续使用 <code>--resume</code>，只复用身份一致的真实成功回执，失败不会自动重发。当前无自动额度兑换或购买。调用预算与墙钟时限不同，主入口没有通用“两小时结束”的命令行开关，需要运行调度另行落实。</p>
+<h3>展示与修订</h3>
+<p><code>render_delivery.py</code> 将已有输入、观察、分组和板数据编成离线页面；需要通过参数绑定相应文件。<code>capture_boards.cjs</code> 是可选浏览器截图工具，需要 Node.js、Playwright 和 Chromium。<code>revise_llm_boards.py</code> 处理有明确问题的事实、关系或显示修订，详细协议见上述定点修订说明。</p>
+<p class="note">目录中 <code>freeze_prepared.py</code>、<code>observe_sample.py</code>、<code>cluster_sample.py</code> 等旧脚本为历史兼容保留。当前主流程入口是 <code>design_cards.py → llm_group.py</code>；不要把旧代码距离聚类当作现行大模型聚类。</p>
+</section>
+
+<section id="references"><h2>5. 四张参考图例与反馈教材</h2>
+<p>四张原板用于教学和明确要求的效果对照。迁移的是“事实如何形成共同设计关系”的判断方法；参考板的颜色、材质、物品类型和版式不应变成全局偏好。当前生产请求不自动附带这些教材图片。</p>
+<div class="refs">
+<figure><a href="ref/参考情绪版/20261010-015937.jpeg"><img src="ref/参考情绪版/20261010-015937.jpeg" alt="浅色体量与结构化表达参考板"></a><figcaption>浅色体量与结构化表达：色块、转折、分隔与体量共同组织；材质差异仍可协调。</figcaption></figure>
+<figure><a href="ref/参考情绪版/20261010-015957.jpeg"><img src="ref/参考情绪版/20261010-015957.jpeg" alt="有机纹理与明确边界参考板"></a><figcaption>有机表面与明确边界：比较纹理、载体与外形的关系，不把所有随机粗糙归为一类。</figcaption></figure>
+<figure><a href="ref/参考情绪版/screenshot-20261010-015930.png"><img src="ref/参考情绪版/screenshot-20261010-015930.png" alt="骨架虚实与集中反光参考板"></a><figcaption>骨架、虚实与集中反光：线面转换和亮边位置共同支撑表达，银色本身不足以成板。</figcaption></figure>
+<figure><a href="ref/参考情绪版/img_v3_0216b_b557ea20-5a93-49a6-8816-0d5c1896eafg.jpg"><img src="ref/参考情绪版/img_v3_0216b_b557ea20-5a93-49a6-8816-0d5c1896eafg.jpg" alt="多色相跨品类参考板"></a><figcaption>多色相中的配色组织：主辅色、边界和细节强度有呼应，不要求全部同色或同材质。</figcaption></figure>
+</div>
+<p><a href=".agents/skills/prism-dna-cluster-moodboard/references/moodboard-casebook.md">完整图例教学</a> · <a href=".agents/skills/prism-dna-cluster-moodboard/references/feedback-casebook.md">反馈案例解析</a> · <a href="ref/问题反馈/三个情绪版_问题圈注.html">三板问题圈注原件</a></p>
+<p>历史反馈集中在：次要共同点掩盖主导差异；把无纹样当成形态简单；忽略背景、光晕或文字的竞争影响；把微纹理和宏观起伏等同；放大了低清局部却没有补出证据。未圈注不等于通过，反馈也不是永久图片黑名单。</p>
+</section>
+
+<section id="boundary"><h2>6. 迁移范围与已知边界</h2>
+<ul>
+<li>本包包含两个主 Skill 的全部有效源文件及现有测试、风格参考依赖、传输适配源码、四张教材原图和问题圈注 HTML；不含 1600 张原图库、全量 DNA、历史执行回执、账号、密钥或运行中的服务。</li>
+<li>复用历史结果需另外携带原图及被引用的样本、旧 DNA、原请求／回答／回执。只拿 <code>prepared-manifest.json</code> 或一份设计卡 JSON 通常不够。</li>
+<li>现有冻结证据使用绝对路径并绑定 SHA。跨服务器迁移时须保留可解析的来源路径，或另行设计可追溯的迁移映射；简单改 JSON 路径可能破坏证据链。本包没有自动迁移历史运行的功能。</li>
+<li>历史脚本和文档中的 <code>data/result/…</code> 路径是原项目档案引用，未随包携带；可选旧流程依赖并不等于当前两个入口的运行必需项。</li>
+<li>版本更新、结构校验成功、DNA 可消费、图片选组、正式整板验收与设计师批准分别记录。现有规则仍可能出现错误组合，目标板数不构成质量保证。</li>
+<li>打包只做文件完整性、链接和入口加载核验，没有执行新的 DNA 提取或图片聚类任务。</li>
+</ul>
+<p>文件来源与 SHA 见 <a href="manifest.json">manifest.json</a>。解压后运行 <code>python verify_package.py</code>，可离线检查所有已登记文件的大小与 SHA256。</p>
+</section>
+<footer>交接日期：2026-10-21（北京时间）。两个 Skill 保持工作区原字节；本文为交接导读，执行细节以同包对应版本的 Skill、协议与脚本为准。参考图片版权归原作者所有。</footer>
+</main></body></html>

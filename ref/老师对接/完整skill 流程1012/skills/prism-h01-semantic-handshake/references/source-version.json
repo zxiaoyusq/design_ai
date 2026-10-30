@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "sources": [
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/prepare.py",
+      "source_sha256": "a1bc13f5abb104d3fbffa9a5e379451653a97b0709f1a9e22f79b9405945d2ba",
+      "bundled": "prism-h01-semantic-handshake/scripts/research_core/prepare.py",
+      "bundled_sha256": "1ddbb818c2093c34e8fecb0005f03e272351306a555c09a45f3367efff45764e",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/compile.py",
+      "source_sha256": "bf1a5dc69fcd65929c130429d1d1e0cfff4f410093c7cd9f07cd7e8322800529",
+      "bundled": "prism-h01-semantic-handshake/scripts/research_core/compile.py",
+      "bundled_sha256": "212005d708a6469d8ed626d238a12c803c731e8f48c7a9c88d517a0604db3555",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/contract.json",
+      "source_sha256": "b6550f4a761a6eec5a664339249741a1d7b23b473d93f1ddb17892804ddcf217",
+      "bundled": "prism-h01-semantic-handshake/scripts/research_core/contract.json",
+      "bundled_sha256": "815452233ce925a0cd09350314cf086ae1087a90b0cdbea50cd99f802f38f27c",
+      "adapted": false
+    },
+    {
+      "source": "prism_sidecars/research_semantic_clustering_v1/prompts/cluster.md",
+      "source_sha256": "efbfe644a11766619250614c84010daf7dc3c2801289aa83375164c3236e9f6e",
+      "bundled": "prism-h01-semantic-handshake/scripts/research_core/prompts/cluster.md",
+      "bundled_sha256": "4d9bdc112d5aae2d8b5831e0373ed074381b698619c779457e5f412b7efb6895",
+      "adapted": false
+    },
+    {
+      "source": "prism_sidecars/handshake_semantic_v2/common.py",
+      "source_sha256": "989dcd996b223508bbd0125a875d307a050b23662efbb866167cb61e7b7454f3",
+      "bundled": "prism-h01-semantic-handshake/scripts/h01_core/common.py",
+      "bundled_sha256": "0d2ebd2bf9b3d53f0b3b5ffd651f955b0c8d316a0ae50c7897dc61f43e61ab5a",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/handshake_semantic_v2/h01.py",
+      "source_sha256": "f10bcd5f7a36d65f2a7327dc71028fba29517bcf3aa1e3fd797285ac9392630e",
+      "bundled": "prism-h01-semantic-handshake/scripts/h01_core/h01.py",
+      "bundled_sha256": "8769ad59114b6eef54bb86dcbad4f2808db0d28945c472f77097edb5d473dfa1",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/handshake_semantic_v2/research.py",
+      "source_sha256": "4e8348b88dfb08721236608776e4e2980537477f3bc37f0c2539217b50db629c",
+      "bundled": "prism-h01-semantic-handshake/scripts/h01_core/research.py",
+      "bundled_sha256": "8727c78943e3f071c108ceec9d088f5a6151c4a362759d8d3a00a9065bf62e82",
+      "adapted": true
+    },
+    {
+      "source": "prism_sidecars/handshake_semantic_v2/trends.py",
+      "source_sha256": "acf2a0f2f9030f8ebea7a197000a06910ff40a8e6e9364a03bde090a85188d37",
+      "bundled": "prism-h01-semantic-handshake/scripts/h01_core/trends.py",
+      "bundled_sha256": "275c17d924c005ba5461a00280324222f538518678087cabe3c256d98770599d",
+      "adapted": false
+    },
+    {
+      "source": "outputs/01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de/prism-evaluation-loop/workflow-v2-20260929/workflow.py",
+      "source_sha256": "9b879cc88e8b78cf29fa30bcd8e01d3895f4d176dd0ddef0a8fac5187095c16b",
+      "bundled": "prism-h01-semantic-handshake/scripts/workflow_h01.py",
+      "bundled_sha256": "f9c603c076e1176e16399cc375cf46b56f14ac23a85a45136854d71bccbc9237",
+      "adapted": true
+    }
+  ],
+  "validation_scope": "structure, citation, role, coverage and replay; not independent semantic accuracy",
+  "model_decisions": "produced by the invoking assistant under the included prompts; not keyword rules or K-means",
+  "source_date": "2026-09-30"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜设计情绪与整板评审"
+  short_description: "实际审阅原图和整板，联查用研绑定、核心设计语言、局部差异及跨品类情绪一致性，记录真实反馈。"
+  default_prompt: "使用 $prism-board-review 完成当前环节，保留用研依据、原图来源和未决状态。"

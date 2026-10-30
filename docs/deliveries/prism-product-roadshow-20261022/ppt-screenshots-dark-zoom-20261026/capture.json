@@ -1,0 +1,167 @@
+{
+  "source": "/root/dev/work/design_ai/docs/deliveries/prism-product-roadshow-20261022/index.html",
+  "source_sha256": "20abdfbf88afefe7bccf731c846e70396c405706975fce9518387a18ddd6f256",
+  "captured_at": "2026-10-26T12:46:50.802Z",
+  "slides": [
+    {
+      "number": 1,
+      "id": "slide-1",
+      "title": "棱镜： 让每一次设计选择， 更贴近用户期待",
+      "backup": false,
+      "filename": "slide-01.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "41a64360958f6a0b07d3889452dd7b2a5c30f2cd3ef355153f98352297b9b3a7"
+    },
+    {
+      "number": 2,
+      "id": "slide-2",
+      "title": "我们已经听了很多用户，怎样影响下一代产品？",
+      "backup": false,
+      "filename": "slide-02.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "76e8791f915516a64d7429fba2e4573b1f333269ae93d8f6f9174b55dcc3d01f"
+    },
+    {
+      "number": 3,
+      "id": "slide-3",
+      "title": "怎样让用户需求，走到最终方案仍然有分量？",
+      "backup": false,
+      "filename": "slide-03.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "b1ba4aa50bccf4377e9f2873d653b13e967dcf1c33cc47ca29805ce5e064e971"
+    },
+    {
+      "number": 4,
+      "id": "slide-4",
+      "title": "既要译得准，又要传得下去，难在哪里？",
+      "backup": false,
+      "filename": "slide-04.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "4591466b860535faf2abef79086aadf750790c98d11486859d73fc2a507a9b43",
+      "zoom_hotspots": [
+        {
+          "key": "dnaimage",
+          "title": "10607_001-gemini-sample.jpg · 原图截图",
+          "image_width": 1100,
+          "image_height": 936,
+          "bounds": [
+            0.0425,
+            0.5067013888888889,
+            0.10625,
+            0.17666666666666667
+          ],
+          "filename": "zoom-04-dnaimage.png",
+          "sha256": "4edf5dc3849f2d3a6165c43baff019415bd92cafde64c9f64db802cdb7ce7f96"
+        },
+        {
+          "key": "dnarelations",
+          "title": "七组设计关系 · 真实 DNA 结果",
+          "image_width": 1132,
+          "image_height": 730,
+          "bounds": [
+            0.158125,
+            0.5067013888888889,
+            0.10625,
+            0.17666666666666667
+          ],
+          "filename": "zoom-04-dnarelations.png",
+          "sha256": "af79bdc0aa4a1f1a88b9f59796a5e8dc343a362f62188cb568f1d663626f3a6c"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "slide-5",
+      "title": "情绪板聚类生成，是棱镜的技术最高点。",
+      "backup": false,
+      "filename": "slide-05.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "1f38fd0d3918ef398a702fb1fe06b094d3b127f42f32696c96d554d9d2812868"
+    },
+    {
+      "number": 6,
+      "id": "slide-6",
+      "title": "先看作品：你认为哪张来自 AI？",
+      "backup": false,
+      "filename": "slide-06.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "50e068fe587e5854ac764376b7e0b126b4195144a60b2651a39616bde07c5c53"
+    },
+    {
+      "number": 7,
+      "id": "slide-7",
+      "title": "A 来自 AI。下一轮判断，已经交给用户。",
+      "backup": false,
+      "filename": "slide-07.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "c9c1ae81a41229cefb4aabd30c11cc7317f44a18ec44d394bd3205b2297bb2a8"
+    },
+    {
+      "number": 8,
+      "id": "slide-8",
+      "title": "从八千多组资料，到一批情绪板。",
+      "backup": false,
+      "filename": "slide-08.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "8a3656b708918f233e68e873cf894578e2d5f5045e473c9e726a298fa5b014e8"
+    },
+    {
+      "number": 9,
+      "id": "slide-9",
+      "title": "成功落地后，用户会得到什么？",
+      "backup": false,
+      "filename": "slide-09.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "463ca4f08d10681bcf302759d2fe9154ed05cb7994831abb181c641975ecf3fc"
+    },
+    {
+      "number": 10,
+      "id": "slide-10",
+      "title": "AI 会不会替设计师决定什么是美？",
+      "backup": true,
+      "filename": "slide-10.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "2e582bb6330b33e4ffdbf63ea2f7ccf982e9b37e0a7ce593a35f687405ae0d87"
+    },
+    {
+      "number": 11,
+      "id": "slide-11",
+      "title": "什么时候能证明用户真的喜欢这些方向？",
+      "backup": true,
+      "filename": "slide-11.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "6110c6ed9d15b5cc05ed8f844b045c2cfb0f3ec9be51fb571463e6cbb7618dd8"
+    },
+    {
+      "number": 12,
+      "id": "slide-12",
+      "title": "怎样算被采用，避免指标好看但实际没用？",
+      "backup": true,
+      "filename": "slide-12.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "7939ceaa7384ea11bf192848985edb78cbbcd235828955c4be9f44d758a1cba9"
+    },
+    {
+      "number": 13,
+      "id": "slide-13",
+      "title": "AI 理解错了，会不会把团队带偏？",
+      "backup": true,
+      "filename": "slide-13.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "5d01790a7d84f6d728498dd922c6fd34fad02398a7b999d8035533b7278540f9"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "status": "verified",
+  "archive_path": "/root/dev/work/design_ai/ref/棱镜_高潜关联原图3824_20261010.zip",
+  "archive_sha256": "bdfcb3600918028322802485eb99362b40735528f95e59ddde3c8679b8f329fc",
+  "archive_size_bytes": 3133295004,
+  "image_count": 3824,
+  "all_image_file_sha256_verified": true,
+  "zip_crc_checked_while_reading": true,
+  "original_bytes": 3115379827,
+  "article_count": 548,
+  "original_image_reference_count": 3851,
+  "deduplication_key": "sha256",
+  "pool_ref": {
+    "path": "/root/dev/work/design_ai/data/result/dna_cluster_moodboard/sample500_20261009/pool.json",
+    "sha256": "f407f89d4442d3eb097f181bbbe94d76bfc904d3405e6dea1a899dddd1e759f3"
+  },
+  "source_page": "https://gamedevcenter.ahagamecenter.com/visual-workflow/dna-cluster-sample1600-reference-20261010/index.html",
+  "page_sha256": "df830bd1b6f41cc785f373ebc1d54f792b804f7857805fbad6df8744ff3e09f7",
+  "verified_at": "2026-10-10T05:55:39.061943+00:00"
+}

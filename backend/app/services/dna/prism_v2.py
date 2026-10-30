@@ -17,6 +17,7 @@ from uuid import uuid4
 from jsonschema import Draft202012Validator
 from langchain_core.messages import HumanMessage
 
+from app.agents.bounded import AGENT_RUNTIME_VERSION
 from app.agents.prism_image_dna import (
     PROMPT_PATH,
     PROMPT_VERSION,
@@ -333,6 +334,7 @@ def run_prism_v2_extraction(
             "research": source_record,
         },
         "execution": {
+            "agent_runtime_version": AGENT_RUNTIME_VERSION,
             "model_id": model_id, "user_prompt": user_prompt, "started_at": started.isoformat(),
             "finished_at": finished.isoformat(), "duration_seconds": round(monotonic() - timer, 3),
             "prompt_version": PROMPT_VERSION, "prompt_sha256": _sha(PROMPT_PATH),

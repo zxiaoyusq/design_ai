@@ -1,0 +1,115 @@
+{
+  "release": "4.3.0",
+  "skill_count": 18,
+  "shared_support_folder": "prism_skill_support",
+  "skills": [
+    {
+      "skill": "prism-board-review",
+      "version": "4.3.0",
+      "description": "实际审阅原图和整板，联查用研绑定、核心设计语言、局部差异及跨品类情绪一致性，记录真实反馈。",
+      "path": "skills/prism-board-review/SKILL.md"
+    },
+    {
+      "skill": "prism-cmf-moodboard",
+      "version": "4.3.0",
+      "description": "联合检查配色、材料外观、表面与形体关系，形成可迁移到产品设计的CMF板，避免单一材质标签分组。",
+      "path": "skills/prism-cmf-moodboard/SKILL.md"
+    },
+    {
+      "skill": "prism-crop-enhancement",
+      "version": "4.3.0",
+      "description": "以可追溯原图进行裁切、等比缩放和精致拼贴，保留关键设计关系及编辑参数，不重绘改色。",
+      "path": "skills/prism-crop-enhancement/SKILL.md"
+    },
+    {
+      "skill": "prism-direction-selection",
+      "version": "4.3.0",
+      "description": "从用研与趋势语义握手候选中选择探索方向，保留双侧依据、负向条件与选择身份。",
+      "path": "skills/prism-direction-selection/SKILL.md"
+    },
+    {
+      "skill": "prism-dna-clustering",
+      "version": "4.3.0",
+      "description": "对已有可见DNA作可追溯候选分组，保留未知和对象范围，作为视觉与解析联合筛选的可选辅助。",
+      "path": "skills/prism-dna-clustering/SKILL.md"
+    },
+    {
+      "skill": "prism-dna-sol-r5",
+      "version": "1.0.0",
+      "description": "使用冻结的Sol R5规则解析单张图片的ID与CMF可见特征，保留局部位置、未知和原始证据；适用于选定方向后的DNA提取及有界难项复核，不做主题握手、偏好判断或高级感筛查。",
+      "path": "skills/prism-dna-sol-r5/SKILL.md"
+    },
+    {
+      "skill": "prism-h01-semantic-handshake",
+      "version": "4.3.0",
+      "description": "对齐趋势语义簇与用研语义簇，完成第一次握手，输出可选择的方向、双侧原文依据、条件和完整负向审计。用于H01语义候选筛选；不做图片解析、高级感、H02视觉握手或情绪板。",
+      "path": "skills/prism-h01-semantic-handshake/SKILL.md"
+    },
+    {
+      "skill": "prism-id-moodboard",
+      "version": "4.3.0",
+      "description": "按形体、比例、构造及色材共同组织的设计情绪选组，形成对后续产品ID有价值的原图风格板。",
+      "path": "skills/prism-id-moodboard/SKILL.md"
+    },
+    {
+      "skill": "prism-independent-evaluation-loop",
+      "version": "4.3.0",
+      "description": "以真实反例校准语义、视觉及交付环节，分开技术复验与审美判断，保留失败和覆盖范围。",
+      "path": "skills/prism-independent-evaluation-loop/SKILL.md"
+    },
+    {
+      "skill": "prism-moodboard-delivery",
+      "version": "4.3.0",
+      "description": "交付纯图片版、板内说明版、独立原图、可编辑排版与用研来源链，便于同事改版和追溯。",
+      "path": "skills/prism-moodboard-delivery/SKILL.md"
+    },
+    {
+      "skill": "prism-research-intake",
+      "version": "4.3.0",
+      "description": "从用研报告提取原话、角色、对象和图片出现关系，建立可回查的来源。用于原始材料整理；不从同页图片猜偏好。",
+      "path": "skills/prism-research-intake/SKILL.md"
+    },
+    {
+      "skill": "prism-research-semantic-clustering",
+      "version": "4.3.0",
+      "description": "将用研原话按含义归纳为偏好主题、单人线索与设计议题，保留正反态度、对象范围和来源。用于用研偏好纯语义聚类；不用于图片聚类、DNA解析、趋势排名或市场比例推断。",
+      "path": "skills/prism-research-semantic-clustering/SKILL.md"
+    },
+    {
+      "skill": "prism-run-contract",
+      "version": "4.3.0",
+      "description": "启动或接续用研、趋势语义握手和原图风格情绪板工作流，冻结资料、模型、数量和实际完成状态。",
+      "path": "skills/prism-run-contract/SKILL.md"
+    },
+    {
+      "skill": "prism-source-image-selection",
+      "version": "4.3.0",
+      "description": "从选中语义方向扩充可追溯原图候选，记录实际读图覆盖并进行设计语言筛选，不把少量样本当全库结论。",
+      "path": "skills/prism-source-image-selection/SKILL.md"
+    },
+    {
+      "skill": "prism-target-quality",
+      "version": "4.3.0",
+      "description": "核对当前对象和视窗的可读性、材质外观、细节和背景干扰，区分图片品质与风格相容性。",
+      "path": "skills/prism-target-quality/SKILL.md"
+    },
+    {
+      "skill": "prism-target-view-binding",
+      "version": "4.3.0",
+      "description": "实际看原图，将可见观察与DNA绑定到当前对象、部位和裁切范围，避免跨对象拼接或以局部替代整体。",
+      "path": "skills/prism-target-view-binding/SKILL.md"
+    },
+    {
+      "skill": "prism-trend-semantic-clustering",
+      "version": "4.3.0",
+      "description": "从趋势图文库的文字归纳可供设计选向的语义簇并按受支持主成员规模排名。用于一级趋势聚类；不把图片像素或旧DNA作为入簇门槛。",
+      "path": "skills/prism-trend-semantic-clustering/SKILL.md"
+    },
+    {
+      "skill": "prism-visual-family",
+      "version": "4.3.0",
+      "description": "按设计师标准板转译并筛选总体设计风格或ID/CMF视觉家族，区分整套设计语言与局部元素，制作无需解释的访谈情绪板及精致风格提案；保留来源、材料干扰与不确定边界。",
+      "path": "skills/prism-visual-family/SKILL.md"
+    }
+  ]
+}

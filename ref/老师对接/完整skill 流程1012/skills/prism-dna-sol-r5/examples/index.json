@@ -1,0 +1,26 @@
+[
+  {
+    "image_id": "HP01",
+    "split": "development",
+    "image_sha256": "5fcbfa4abcbc655eb0bf9fd1d8126bce97148423dca8a56419a90eb6eb82f808",
+    "refinement_mode": "mixed-areas"
+  },
+  {
+    "image_id": "MC01",
+    "split": "development",
+    "image_sha256": "1a72e0c1ae47db5831d9b98fd5d8bc6ff3495ef3d104ae072311f12121a04e76",
+    "refinement_mode": "optics"
+  },
+  {
+    "image_id": "H11",
+    "split": "heldout",
+    "image_sha256": "9d1361c7869be2bddd7ad407d6e3ffefd87f3d91c6cc736c8eb8c82f3cb4e6d0",
+    "refinement_mode": null
+  },
+  {
+    "image_id": "H12",
+    "split": "heldout",
+    "image_sha256": "0780ca8586b2ecfec81db3bc6a8a7fa6a73ccfd2a65458c60160e9d865c2dda0",
+    "refinement_mode": null
+  }
+]

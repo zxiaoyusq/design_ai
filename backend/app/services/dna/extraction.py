@@ -17,6 +17,7 @@ from pathlib import Path
 from threading import Lock
 from typing import Any
 
+from app.agents.bounded import AGENT_RUNTIME_VERSION
 from app.agents.design_dna_extractor import (
     AGENT_PROMPT_VERSION,
     BOUND_SKILL_NAME,
@@ -1009,6 +1010,7 @@ def run_design_dna_extraction(
             "model_id": model_id,
             "user_prompt": user_prompt,
             "agent_prompt_version": AGENT_PROMPT_VERSION,
+            "agent_runtime_version": AGENT_RUNTIME_VERSION,
             "skill": BOUND_SKILL_NAME,
             "started_at": started_at.isoformat(),
             "completed_at": datetime.now(UTC).isoformat(),
@@ -1104,6 +1106,7 @@ def run_design_dna_extraction(
             "model_id": model_id,
             "user_prompt": user_prompt,
             "agent_prompt_version": AGENT_PROMPT_VERSION,
+            "agent_runtime_version": AGENT_RUNTIME_VERSION,
             "skill": BOUND_SKILL_NAME,
             "schema_version": compiled_data.get("schema_version"),
             "model_output_schema_version": model_data.get("schema_version"),

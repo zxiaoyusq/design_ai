@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '@/views/HomeView.vue'
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
@@ -57,3 +57,11 @@ export default createRouter({
     },
   ],
 })
+
+// 保留原始导航异常，并把懒加载故障交给独立提示；普通业务错误不会触发自动重载。
+router.onError((error: Error) => {
+  console.error(error)
+  window.dispatchEvent(new CustomEvent('app:module-load-error', { detail: error.message }))
+})
+
+export default router

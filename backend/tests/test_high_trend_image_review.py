@@ -60,6 +60,72 @@ class ImageReviewTests(unittest.TestCase):
         self.assertEqual(self.service.image(self.task, shared["id"]).read_bytes(), self.original)
         self.assertEqual(len(list((self.run / "image_review/images").iterdir())), 2)
 
+    def test_module_associated_extension_and_imported_images_keep_distinct_origins(self):
+        imported = self.root / "data/result/user_research_intake" / ("b" * 32) / "prepared/media/user.png"
+        imported.parent.mkdir(parents=True)
+        Image.new("RGB", (4, 3), "green").save(imported)
+        associated = {**self.refs[0], "association_note": "同簇配图，未直接引用"}
+        extension = {**self.refs[2], "association_note": "后续视觉补充"}
+        imported_ref = {**self.refs[1], "image_id": "imported", "path": str(imported),
+                        "absolute_path": str(imported), "emotion_tag": "ENJOY"}
+        value = {"trends": [
+            {"id": "D1", "title": "摘要方向", "image_refs": [imported_ref],
+             "associated_image_refs": [associated], "visual_extension_image_refs": [extension]},
+            {"id": "D2", "title": "历史方向", "image_refs": [self.refs[0]]},
+        ]}
+        write_atomic(self.run / "high_potential_trends.json", value)
+        review = self.service.create(self.task)
+        self.assertEqual(review["counts"]["total"], 3)
+        self.assertEqual(review["counts"]["reference_count"], 4)
+        self.assertEqual(review["counts"]["missing"], 0)
+        shared = next(item for item in review["images"] if "t1" in item["image_ids"])
+        self.assertEqual({o["association_type"] for o in shared["origins"]},
+                         {"same_cluster_association", "direct_reference"})
+        self.assertEqual({d["id"] for d in shared["directions"]}, {"D1", "D2"})
+        same_cluster = next(o for o in shared["origins"] if o["association_type"] == "same_cluster_association")
+        self.assertEqual(same_cluster["source_aliases"], ["T1"])
+        self.assertEqual(same_cluster["source_records"][0]["record_id"], "trend:1")
+        self.assertFalse(same_cluster["visual_verified"])
+        imported_item = next(item for item in review["images"] if "imported" in item["image_ids"])
+        self.assertEqual(self.service.image(self.task, imported_item["id"]).read_bytes(), imported.read_bytes())
+        visual = next(item for item in review["images"] if "u2" in item["image_ids"])
+        self.assertEqual(visual["origins"][0]["association_type"], "visual_extension")
+
+    def test_intake_image_escape_and_non_image_are_not_copied(self):
+        intake = self.root / "data/result/user_research_intake" / ("b" * 32) / "prepared/media"
+        intake.mkdir(parents=True)
+        outside = self.root / "private.png"
+        outside.write_bytes(self.original)
+        symlink = intake / "escape.png"
+        symlink.symlink_to(outside)
+        not_image = intake / "private.json"
+        not_image.write_bytes(self.original)
+        other_result = self.root / "data/result/private.png"
+        other_result.write_bytes(self.original)
+        refs = [{**self.refs[1], "absolute_path": str(path)} for path in (symlink, not_image, other_result)]
+        write_atomic(self.run / "high_potential_trends.json", {"trends": [
+            {"id": "D1", "title": "不可用来源", "image_refs": refs}]})
+        review = self.service.create(self.task)
+        self.assertEqual(review["counts"]["total"], 0)
+        self.assertEqual(review["counts"]["missing"], 3)
+
+    def test_frozen_input_uses_original_directory_and_export_keeps_image_urls(self):
+        frozen = self.run / "inputs/0001.json"
+        frozen.parent.mkdir()
+        write_atomic(frozen, {"images": [{"local_path": "a.png", "url": "https://source.test/original.png"}]})
+        write_atomic(self.run / "manifest.json", {"inputs": {"trends": {
+            "path": str(frozen), "original_path": str(self.trend.parent / "source.json")}}})
+        ref = {**self.refs[0], "image_url": "https://source.test/compiler-image.png"}
+        write_atomic(self.run / "high_potential_trends.json", {"trends": [
+            {"id": "D1", "title": "同簇图库", "image_refs": [], "associated_image_refs": [ref]}]})
+        self.service.create(self.task)
+        exported = read(self.service.download(self.task, "json"))
+        origin = exported["images"][0]["origins"][0]
+        self.assertEqual(origin["association_type"], "same_cluster_association")
+        self.assertEqual(origin["urls"], ["https://source.test/compiler-image.png", "https://source.test/original.png"])
+        self.assertEqual(origin["source_file"], str(frozen))
+        self.assertEqual(origin["source_records"][0]["source_file"], str(frozen))
+
     def test_selection_survives_reentry_and_export_keeps_only_retained_files(self):
         review = self.service.create(self.task)
         excluded = review["images"][0]["id"]

@@ -176,19 +176,52 @@ def build_sources(trends_path, users_path, project_root, start_date=None, end_da
     }
 
 
+def _model_context(record, catalog):
+    """包内相同父主题定义只发一次；成员角色、原话和条件仍随记录保留。"""
+    context = dict(record.get("semantic_context") or {})
+    if "memberships" not in context:
+        return context
+    memberships = []
+    common_keys = {"theme_id", "cluster_id", "title", "definition", "boundary", "boundaries",
+                   "design_question", "unknowns", "inclusion", "exclusion"}
+    for member in context["memberships"]:
+        definition = {key: value for key, value in member.items() if key in common_keys}
+        if definition:
+            identifier = "theme_" + hashlib.sha256(_compact(definition).encode()).hexdigest()[:16]
+            catalog.setdefault(identifier, definition)
+            memberships.append({"definition_ref": identifier,
+                                **{key: value for key, value in member.items() if key not in common_keys}})
+        else:
+            memberships.append(member)
+    context["memberships"] = memberships
+    return context
+
+
 def _pack_text(side, items):
+    catalog = {}
     if side == "trend":
         trends = []
         for alias, record in items:
             fields = record["fields"]
             row = {"id": alias, "date": record.get("release_time")}
+            if record.get("semantic_context", {}).get("input_text_kind") == "upstream_summary":
+                row["clustering_label"] = record.get("clustering_label", "未分类")
             for original, compact in (("title_zh", "title"), ("summary_zh", "summary"),
                                       ("primary_category", "category"), ("subcategory", "subcategory"),
                                       ("tags", "tags")):
                 if original in fields:
                     row[compact] = fields[original]
+            if record.get("semantic_context"):
+                row["semantic_context"] = _model_context(record, catalog)
             trends.append(row)
-        return _compact({"clustering_label": items[0][1].get("clustering_label", "未分类"), "trends": trends})
+        payload = {"clustering_label": items[0][1].get("clustering_label", "未分类"), "trends": trends}
+        if all(record.get("semantic_context", {}).get("input_text_kind") == "upstream_summary"
+               for _, record in items):
+            payload.pop("clustering_label")
+            payload["input_mode"] = "upstream_theme_summaries"
+        if catalog:
+            payload["semantic_catalog"] = catalog
+        return _compact(payload)
 
     contexts, context_ids, profiles, rows = {}, {}, {}, []
     for alias, record in items:
@@ -206,7 +239,13 @@ def _pack_text(side, items):
             context_ids[signature] = cid
             contexts[cid] = context
         rows.append([alias, uid, context_ids[signature], fields[answer_key]])
-    return _compact({"contexts": contexts, "profiles": profiles, "rows": rows})
+    payload = {"contexts": contexts, "profiles": profiles, "rows": rows}
+    semantic = {alias: _model_context(record, catalog) for alias, record in items if record.get("semantic_context")}
+    if semantic:
+        payload["semantic_contexts"] = semantic
+    if catalog:
+        payload["semantic_catalog"] = catalog
+    return _compact(payload)
 
 
 def pack_sources(sources, max_chars):
@@ -217,12 +256,14 @@ def pack_sources(sources, max_chars):
     """
     if type(max_chars) is not int or max_chars < 1:
         raise ValueError("max_chars 必须为正整数")
-    trend_groups, user_items = {}, []
+    trend_groups, user_items, theme_summaries = {}, [], []
     for alias, record in sources.items():
         kind = record["kind"]
         if kind not in {"trend", "user_qa", "user_demand"}:
             raise ValueError(f"来源 {alias} 的类型不受支持：{kind}")
-        if kind == "trend":
+        if kind == "trend" and record.get("semantic_context", {}).get("input_text_kind") == "upstream_summary":
+            theme_summaries.append((alias, record))
+        elif kind == "trend":
             label = record.get("clustering_label", "未分类")
             trend_groups.setdefault(label, []).append((alias, record))
         else:
@@ -231,6 +272,9 @@ def pack_sources(sources, max_chars):
     packs = []
     # 同类文章即使在原文件中不相邻，也先合在一起；不同大类绝不混进归纳包。
     partitions = [("trend", label, items) for label, items in trend_groups.items()]
+    # 已形成的主题可跨主题合包握手；原始文章模式仍不混类别。
+    if theme_summaries:
+        partitions.append(("trend", None, theme_summaries))
     partitions.append(("user", None, user_items))
     for side, label, items in partitions:
         current, current_text = [], ""

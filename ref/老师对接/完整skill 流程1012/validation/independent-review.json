@@ -1,0 +1,9 @@
+{
+  "reviewer": "Astra independent read-only review",
+  "scope": "entrypoint instructions, composition contracts, renderer and source-binding verifier",
+  "findings_fixed": [
+    "Preserve upstream research evidence kind and text kind; do not upgrade paraphrases, analysis notes or brand impressions to direct user preference.",
+    "Use display-oriented EXIF coordinates consistently for source-image crops."
+  ],
+  "validation_note": "Reviewer inspected code and instructions; parent executed regression checks. No new semantic-accuracy or visual-quality claim."
+}

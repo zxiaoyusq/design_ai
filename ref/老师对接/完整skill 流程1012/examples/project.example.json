@@ -1,0 +1,71 @@
+{
+  "project_id": "new-prism-project",
+  "design_question": "探索对后续产品ID/CMF有价值、设计情绪一致的总体风格",
+  "input_paths": {
+    "research_reports": "./inputs/research",
+    "trend_articles": "./inputs/articles.json"
+  },
+  "requested_direction_count": null,
+  "branches": [
+    "ID",
+    "CMF"
+  ],
+  "quantity_policy": {
+    "target": 10,
+    "minimum": 8,
+    "native_minimum": 8,
+    "maximum": 12,
+    "basis": "当前项目至少8张原图，不硬凑；新项目按当前用户要求修改"
+  },
+  "model_policy": {
+    "model": null,
+    "reasoning_effort": null,
+    "service_tier_requested": null,
+    "fast_mode": null,
+    "basis": "使用当前用户指定/当前助手实际配置，冻结R5另按自身协议"
+  },
+  "execution_authorization": {
+    "allowed": false,
+    "basis": "当前任务的明确授权尚未登记",
+    "maximum_attempts_per_request": 1
+  },
+  "human_confirmation": {
+    "actor_kind": "human",
+    "AI_delegation_confirmed_for_this_project": false
+  },
+  "strategy_version": "prism-workflow-4.3.0",
+  "note": "配置示例，不是可冒充用户选择或模型执行的回执",
+  "run_mode": "end_to_end",
+  "candidate_pool_policy": {
+    "target": null,
+    "basis": "先登记真实候选与实际阅读覆盖，再冻结有界处理范围；最终图数不限制召回",
+    "frozen_before_final_selection": true
+  },
+  "historical_proxy_permissions_inherited": false,
+  "material_brief_status": "draft_to_be_frozen_before_final_selection",
+  "research_level": "overall_style",
+  "source_policy": {
+    "one_per_known_project": true,
+    "one_per_article": true,
+    "runway_max_fraction": null,
+    "cross_category": "prefer_when_style_coherent",
+    "visual_extensions": "record_separately"
+  },
+  "image_policy": {
+    "originals_only": true,
+    "allow_repaint": false,
+    "allow_recolour": false,
+    "allowed_operations": [
+      "crop",
+      "proportional_resize",
+      "layout",
+      "in_board_text"
+    ]
+  },
+  "analysis_policy": {
+    "visual_plus_analysis": true,
+    "preserve_research_semantics": true,
+    "DINO": "stopped",
+    "R5": "optional_frozen_route"
+  }
+}

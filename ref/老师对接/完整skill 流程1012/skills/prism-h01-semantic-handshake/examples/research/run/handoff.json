@@ -1,0 +1,45 @@
+{
+  "schema_version": "prism.research_semantic_handoff.v1",
+  "input_binding": {
+    "dataset_id": "synthetic:two-semantic-skills-v1",
+    "files": {
+      "semantic-units.jsonl": "a04331f0b15b15e72a651841b97731e813c7930f5df7fd2184662f5be11ab5b0",
+      "people.json": "7ea14e40de2b64d09a0857d6d33053713e4c4ffa5f69aa2c9c8c21c2d565cd73",
+      "raw-evidence.jsonl": "da900af3e649cc91be38bde24dbba92d15a90b2d83936494b0dfcefa57ff8398",
+      "picture-contexts.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "image-display-views.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "selection-groups.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "concept-example-links.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "data-contract.json": "a52aee745b7fc9b74f28af0469df466893525c1d6aabef60b6020fe2e55d2031"
+    }
+  },
+  "summary": {
+    "input_units": 9,
+    "people": 3,
+    "cluster_count": 4,
+    "clusters_by_kind": {
+      "shared_theme": 1,
+      "design_issue": 2,
+      "background_theme": 1
+    },
+    "membership_count": 9,
+    "units_with_cluster_membership": 8,
+    "coverage_dispositions": {
+      "clustered": 8,
+      "unclustered_boundary": 1
+    },
+    "all_units_have_explicit_outcome": true,
+    "original_negative_units": 2,
+    "negative_units_retained": 2,
+    "source_unchanged": true,
+    "external_model_API_calls": 0,
+    "cross_person_semantic_clustering_performed": true,
+    "image_reclustering_performed": false,
+    "independent_semantic_review_performed": false
+  },
+  "negative_unit_ids": [
+    "U2",
+    "U8"
+  ],
+  "semantic_truth_verified": false
+}

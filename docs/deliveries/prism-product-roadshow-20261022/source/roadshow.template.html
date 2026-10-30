@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="PRISM 棱镜领导汇报：让每一次设计选择，更贴近用户期待，__MAIN_COUNT__ 页主讲与 4 页独立备答。"><title>棱镜：让每一次设计选择，更贴近用户期待</title><style>__STYLE__</style></head>
+<body class="reading">
+<aside class="fallback-status" id="fallback-status" role="status">兼容阅读模式：向下滚动即可查看全部 __TOTAL_COUNT__ 页。浏览器允许脚本且初始化成功后，会自动启用翻页、讲者提示和图片放大。</aside>
+<main class="viewport" aria-label="PRISM 棱镜领导汇报"><div class="stage" id="stage">__SLIDES__</div></main>
+<nav class="toolbar" aria-label="演示控制">
+<button type="button" class="key-button" id="prev" aria-label="上一页">←</button><span class="counter" id="counter">主讲 01/__MAIN_COUNT__</span><button type="button" class="key-button" id="next" aria-label="下一页">→</button><span class="separator"></span>
+<button type="button" id="overview-button">目录</button><button type="button" id="notes-button" title="N 打开当前页讲稿">讲稿</button><button type="button" id="qa-button" title="向后进入 4 张备用页">备答</button><span class="separator"></span>
+<button type="button" id="timer-button" class="timer" aria-label="开始 15 分钟计时">15:00 开始</button>
+<button type="button" id="reading-button" class="desktop-control">阅读</button><button type="button" id="fullscreen-button" class="desktop-control">全屏</button><button type="button" id="sources-button" class="desktop-control">说明</button>
+</nav>
+<div class="progress" aria-hidden="true"><span id="progress-bar"></span></div><p class="sr-only" id="live-status" role="status" aria-live="polite"></p>
+<dialog id="notes-dialog" aria-labelledby="notes-heading"><div class="dialog-head"><h2 id="notes-heading">当前页讲稿</h2><button type="button" data-close aria-label="关闭讲稿">×</button></div><div class="dialog-body" id="notes-body"></div><div class="dialog-foot"><button type="button" id="notes-prev">← 上一页</button><button type="button" id="notes-next">下一页 →</button></div></dialog>
+<dialog id="overview-dialog" aria-labelledby="overview-heading"><div class="dialog-head"><h2 id="overview-heading">__MAIN_COUNT__ 页主讲 · 4 页备用</h2><button type="button" data-close aria-label="关闭目录">×</button></div><div class="dialog-body"><div class="overview-list" id="overview-list"></div><p class="help-line">← → / 空格翻页 · N 讲者提示 · F 全屏 · Esc 关闭弹层<br>第 __MAIN_COUNT__ 页结束主讲；继续向后翻即进入备用页。备用页按问题选用，不全部连讲。</p><button type="button" class="source-original" id="mobile-sources">资料来源与使用说明</button></div></dialog>
+<dialog id="sources-dialog" aria-labelledby="sources-heading"><div class="dialog-head"><h2 id="sources-heading">资料与使用说明</h2><button type="button" data-close aria-label="关闭说明">×</button></div><div class="dialog-body" id="sources-body"></div><div class="dialog-foot"><button type="button" id="reset-timer">重置计时</button><button type="button" id="print-button">打印 / 保存 PDF</button></div></dialog>
+<dialog id="image-dialog" class="lightbox" aria-labelledby="image-heading"><div class="dialog-head"><h2 id="image-heading">完整原图</h2><button type="button" class="image-size" id="image-size" aria-pressed="false" aria-controls="image-viewport">原始尺寸</button><button type="button" data-close aria-label="关闭原图">×</button></div><div class="image-viewport" id="image-viewport" tabindex="0" aria-label="图片查看区；原始尺寸下可滚动查看细节"><img id="full-image" alt=""></div><p id="image-caption">图片按原始比例完整显示。Esc 关闭。</p></dialog>
+<script id="talk-data" type="application/json">__TALK_JSON__</script>
+<script>__VIEWER__</script>
+</body></html>

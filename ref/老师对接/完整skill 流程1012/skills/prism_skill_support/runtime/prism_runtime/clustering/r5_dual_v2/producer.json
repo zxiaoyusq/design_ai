@@ -1,0 +1,28 @@
+{
+  "baseline_id": "sol-coverage-dna-r5-20260929",
+  "engine_path": "../../../../../prism-dna-sol-r5/scripts/engine.py",
+  "pins": [
+    {
+      "path": "../../../../../prism-dna-sol-r5/scripts/engine.py",
+      "sha256": "f27a4d4c945b75d81d202e1101c0cc52bf329d82a3d7a343e60f411b6c722c2c"
+    },
+    {
+      "path": "../../../../../prism-dna-sol-r5/assets/source-manifest.json",
+      "sha256": "74c23d424dc217c607dfd53a8c4a94b302352e115ef0f778beadbd92282c8443"
+    },
+    {
+      "path": "../../../../../prism-dna-sol-r5/assets/context.json",
+      "sha256": "e6bc175431ed20627bd8952833e83e9ebc98b4bf1982faffe8081f9c8102c01a"
+    },
+    {
+      "path": "../../../../../prism-dna-sol-r5/assets/dictionary.json",
+      "sha256": "16c8ce855e8cd080b97fab7ed4c62b74e404436b25691101acd615f261fe9f50"
+    }
+  ],
+  "root_baseline_identity": {
+    "path": "baseline.json",
+    "sha256": "ba4b63bfdbddfd1728c04df4715e5ad5b7213ba22c775bed7b26fd4d78a3b8c4"
+  },
+  "model_execution_available": false,
+  "validation_scope": "Original R5 normalization and pins, not visual accuracy or inherited execution rights."
+}

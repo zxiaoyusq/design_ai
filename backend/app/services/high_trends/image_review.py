@@ -124,7 +124,8 @@ class HighTrendImageReview:
         if path is None:
             return None
         path = (path if path.is_absolute() else self.root / path).resolve()
-        roots = [self.root / "data/trend_data", self.root / "data/userreseach_data"]
+        roots = [self.root / "data/trend_data", self.root / "data/userreseach_data",
+                 self.root / "data/result/user_research_intake"]
         if (is_generated_research_result(path, self.root)
                 or not any(path.is_relative_to(root.resolve()) for root in roots)
                 or path.suffix.lower() not in IMAGE_SUFFIXES or not path.is_file()):
@@ -155,7 +156,11 @@ class HighTrendImageReview:
             path = Path(entry.get("path", ""))
             path = (path if path.is_absolute() else self.root / path).resolve()
             if (path.is_relative_to(self.root / "data") and path.suffix == ".json" and path.is_file()):
-                visit(read(path), path.parent)
+                # 冻结输入只改变保存位置；原文内相对图片路径仍按原文件目录解释。
+                original = Path(entry.get("original_path") or path)
+                original = (original if original.is_absolute() else self.root / original).resolve()
+                if original.is_relative_to(self.root / "data"):
+                    visit(read(path), original.parent)
         return index
 
     @staticmethod
@@ -236,7 +241,7 @@ class HighTrendImageReview:
                       "source_result_sha256": file_hash(result_path),
                       "source_result_file": str(result_path), "skill_version": manifest.get("skill_version"),
                       "model_profile": manifest.get("model_profile"),
-                      "scope": "仅方向卡片引用的图片；不包含未关联方向的用户图片库存。",
+                      "scope": "方向卡片的直接引用、同簇关联与后续视觉补充图片，分别保留关联类型；不包含未关联方向的用户图片库存。",
                       "deduplication": "sha256_exact_bytes", "reference_count": 0,
                       "images": [], "missing": [], "history": []}
             by_hash, by_path = {}, {}
@@ -244,7 +249,14 @@ class HighTrendImageReview:
                 staging = Path(temporary) / "image_review"
                 (staging / "images").mkdir(parents=True)
                 for card in cards:
-                    for ref in card.get("image_refs", []):
+                    # 三类来源一并可人工选图，但同簇和视觉补充关系绝不升级为直接证据。
+                    references = ((ref, association_type)
+                                  for field, association_type in (
+                                      ("image_refs", "direct_reference"),
+                                      ("associated_image_refs", "same_cluster_association"),
+                                      ("visual_extension_image_refs", "visual_extension"))
+                                  for ref in card.get(field, []))
+                    for ref, association_type in references:
                         review["reference_count"] += 1
                         aliases = ref.get("evidence_ids", [])
                         matched = [(alias, sources[alias]) for alias in aliases if alias in sources]
@@ -253,11 +265,14 @@ class HighTrendImageReview:
                                        if src["id"] == ref.get("source_record_id")]
                         source = matched[0][1] if matched else {}
                         kind = "trend" if source.get("kind") == "trend" or ref.get("role") == "trend_reference" else "user"
-                        raw_path = ref.get("absolute_path") or ref.get("path")
+                        raw_path = ref.get("absolute_path") or ref.get("path") or ref.get("declared_path")
                         path = self._source_path(raw_path)
+                        urls = set(url_index.get(str(path), []))
+                        urls.update(ref[key] for key in ("image_url", "url", "download_url", "resolved_url")
+                                    if isinstance(ref.get(key), str) and ref[key].startswith(("https://", "http://")))
                         origin = {
                             "source_kind": kind, "image_id": ref.get("image_id"),
-                            "source_record_id": ref.get("source_record_id"), "source_aliases": aliases,
+                            "source_record_id": ref.get("source_record_id"), "source_aliases": [alias for alias, _ in matched],
                             "source_title": source.get("fields", {}).get("title_zh"),
                             "user_id": source.get("user_id"), "code": ref.get("code"),
                             "emotion_tag": ref.get("emotion_tag"), "original_path": ref.get("path"),
@@ -266,10 +281,14 @@ class HighTrendImageReview:
                             "json_pointer": source.get("json_pointer"),
                             "source_records": [{"alias": alias, "record_id": src["id"],
                                                 "json_pointer": src.get("json_pointer"),
+                                                "source_file": inputs.get(src.get("source_file"), {}).get("path"),
                                                 "user_id": src.get("user_id")} for alias, src in matched],
-                            "urls": sorted(url_index.get(str(path), [])),
+                            "urls": sorted(urls),
                             "direction_id": card["id"], "direction_title": card["title"],
                             "association_level": ref.get("association_level"),
+                            "association_type": association_type,
+                            "association_note": ref.get("association_note"),
+                            "visual_verified": ref.get("visual_verified", False),
                         }
                         if path is None:
                             review["missing"].append({**origin, "reason": "文件不存在、格式不支持或路径不在研究目录"})

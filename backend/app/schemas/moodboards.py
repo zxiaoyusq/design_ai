@@ -4,6 +4,33 @@ from typing import Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
+class MoodboardScopeRequest(BaseModel):
+    """高潜结果只限定候选来源，不预先决定情绪板的类别。"""
+
+    model_config = ConfigDict(extra="forbid")
+    source_result_id: str = Field(min_length=1, max_length=100)
+    direction_ids: list[str] = Field(min_length=1, max_length=1000)
+
+    @field_validator("direction_ids")
+    @classmethod
+    def unique_directions(cls, value):
+        if len(value) != len(set(value)):
+            raise ValueError("选择方向不能重复")
+        return value
+
+
+class MoodboardClusteringRequest(BaseModel):
+    """人工确认只绑定服务端预览；不接受任意原图路径或客户端 DNA。"""
+
+    model_config = ConfigDict(extra="forbid")
+    preview_id: str = Field(pattern=r"^mbp_[a-f0-9]{32}$")
+    model_id: str
+    prepare_missing: bool = False
+    max_calls: int = Field(default=100, ge=1, le=2000)
+    workers: int = Field(default=4, ge=1, le=10)
+    confirmed: Literal[True]
+
+
 class MoodboardRequest(BaseModel):
     """确认后冻结趋势方向和 DNA 结果；不接受图片内容或任意路径。"""
 

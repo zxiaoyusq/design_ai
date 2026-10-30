@@ -1,0 +1,22 @@
+{
+  "source_url": "https://gamedevcenter.ahagamecenter.com/dna-v2",
+  "result_url": "https://gamedevcenter.ahagamecenter.com/api/v1/dna-v2/results/prep-07f2bdcd956b44cea121e6d6ad2b22a4",
+  "record_id": "prep-07f2bdcd956b44cea121e6d6ad2b22a4",
+  "image_filename": "10607_001-gemini-sample.jpg",
+  "captured_at": "2026-10-25T16:13:32.622Z",
+  "captured_local_date": "2026-10-26 Asia/Shanghai",
+  "card_id": "10607_001:ID:1",
+  "actual_model": "gemini-3.8-flash",
+  "prompt_version": "prism-relational-design-cards-20261010-v2",
+  "extracted_at": "2026-10-21T07:56:35.853685+00:00",
+  "human_approved": false,
+  "visual_accuracy_claimed": false,
+  "new_model_calls_for_read": 0,
+  "assets": {
+    "dna-10607-result.png": "完整 ID 卡原生页面长截图，含图片、七组关系、候选、限制；来源追溯保持默认折叠。",
+    "dna-10607-original.png": "同一记录的查看完整原图弹层截图，保留环境与其他物品。",
+    "dna-10607-relations.png": "同一记录的七组可见设计关系区块原样截图。"
+  },
+  "scope": "仅调整浏览器视窗与页面原生交互，未修改 DOM、CSS、结果或图片内容。该单条记录不是 200+ 维度全部正确或全量素材已验收的证据。",
+  "capture_archive": ".runtime/prism-dna-evidence-20261026/"
+}

@@ -17,6 +17,7 @@ const props = defineProps<{
   selectedIds: string[]
   uploading: boolean
   deletingIds: string[]
+  description?: string
 }>()
 
 const emit = defineEmits<{
@@ -61,7 +62,7 @@ function formatBytes(bytes: number) {
       <div>
         <span class="eyebrow">01 / 输入素材</span>
         <h2>选择需要理解的图片</h2>
-        <p>每张图片独立提取一个主物品，批量任务会逐张执行。</p>
+        <p>{{ description || '每张图片独立提取一个主物品，批量任务会逐张执行。' }}</p>
       </div>
       <div v-if="images.length" class="selection-actions">
         <button type="button" @click="emit('selectAll')">全选</button>

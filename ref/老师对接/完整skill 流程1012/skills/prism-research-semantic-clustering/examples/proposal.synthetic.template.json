@@ -1,0 +1,214 @@
+{
+  "schema_version": "prism.research_semantic_clustering.v1",
+  "input_binding": null,
+  "analyst": {
+    "actor_kind": "synthetic_fixture",
+    "actor_id": "package-example",
+    "model": "none",
+    "review_status": "not_performed"
+  },
+  "clusters": [
+    {
+      "cluster_id": "RC1",
+      "title": "深灰、低光泽的背板",
+      "kind": "shared_theme",
+      "definition": "两位虚构人物对背板低光泽的直接表达。",
+      "common_meaning": "特定背板上的安静、低反光观感。",
+      "boundaries": [
+        "不扩展为所有对象都不能亮",
+        "虚构甲的重复表达只算一个人"
+      ],
+      "handshake_question": "如何以深灰低光泽组织背板，同时给小边框留出差异？",
+      "members": [
+        {
+          "unit_id": "U1",
+          "quote": "我喜欢这块背板的深灰色和哑光表面。",
+          "relation": "support",
+          "facet": "背板低光泽",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "仅所指背板"
+        },
+        {
+          "unit_id": "U3",
+          "quote": "我喜欢这个深灰色哑光背板，看着比较安静。",
+          "relation": "support",
+          "facet": "背板低光泽",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "仅所指背板"
+        },
+        {
+          "unit_id": "U9",
+          "quote": "同一款手机，我还是喜欢它不反光的背板。",
+          "relation": "support",
+          "facet": "背板低光泽",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "与U1同一人，不能新增人数"
+        },
+        {
+          "unit_id": "U2",
+          "quote": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "relation": "boundary",
+          "facet": "背板过亮",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "保留太亮的程度及小边框例外"
+        }
+      ]
+    },
+    {
+      "cluster_id": "RC2",
+      "title": "背板与小边框的光泽差异",
+      "kind": "design_issue",
+      "definition": "比较不同载体和程度下的光泽接受范围。",
+      "common_meaning": "边框可以有亮点，不能由此推导全背板镜面。",
+      "boundaries": [
+        "不同部位不直接当作态度冲突"
+      ],
+      "handshake_question": "小边框怎样有亮点又不让背板整体过亮？",
+      "members": [
+        {
+          "unit_id": "U2",
+          "quote": "这块背板太亮了，我不喜欢，但小边框亮一点可以。",
+          "relation": "boundary",
+          "facet": "背板过亮",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "原句含边框例外"
+        },
+        {
+          "unit_id": "U4",
+          "quote": "我更喜欢小边框有一点银色亮光。",
+          "relation": "support",
+          "facet": "小边框亮光",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "仅局部银色边框"
+        }
+      ]
+    },
+    {
+      "cluster_id": "RC3",
+      "title": "可靠感的背景关联",
+      "kind": "background_theme",
+      "definition": "个人目标背景，不能作为外观支持票。",
+      "common_meaning": "对可靠身份的期望。",
+      "boundaries": [
+        "不把人格推导为哑光或金属"
+      ],
+      "handshake_question": "可靠感是否存在直接的设计表达证据？",
+      "members": [
+        {
+          "unit_id": "U6",
+          "quote": "我希望别人觉得我是一个可靠的人。",
+          "relation": "context",
+          "facet": "个人目标",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "不计外观偏好"
+        }
+      ]
+    },
+    {
+      "cluster_id": "RC4",
+      "title": "品牌印象与概念举例的证据限制",
+      "kind": "design_issue",
+      "definition": "保留关联材料供参考，不混作直接审美偏好。",
+      "common_meaning": "不同来源角色各有解释边界。",
+      "boundaries": [
+        "品牌可靠不证明喜欢具体材料",
+        "举奢华例子不等于想拥有金色产品"
+      ],
+      "handshake_question": "哪些关联还需要直接偏好证据？",
+      "members": [
+        {
+          "unit_id": "U5",
+          "quote": "这个虚构品牌给我可靠、耐用的印象。",
+          "relation": "support",
+          "facet": "品牌印象",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "单列品牌关联，不计直接支持"
+        },
+        {
+          "unit_id": "U7",
+          "quote": "如果要举一个奢华的例子，我会想到金色宫殿。",
+          "relation": "illustration",
+          "facet": "概念举例",
+          "rationale": "合成示例：依原句对象和态度归纳，供协议测试。",
+          "limits": "不可反推喜欢金色产品"
+        }
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "unit_id": "U1",
+      "cluster_ids": [
+        "RC1"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U2",
+      "cluster_ids": [
+        "RC1",
+        "RC2"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U3",
+      "cluster_ids": [
+        "RC1"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U4",
+      "cluster_ids": [
+        "RC2"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U5",
+      "cluster_ids": [
+        "RC4"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U6",
+      "cluster_ids": [
+        "RC3"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U7",
+      "cluster_ids": [
+        "RC4"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    },
+    {
+      "unit_id": "U8",
+      "cluster_ids": [],
+      "disposition": "unclustered_boundary",
+      "reason": "原颜色和对象未记录；保留原始否定，不补造色相。"
+    },
+    {
+      "unit_id": "U9",
+      "cluster_ids": [
+        "RC1"
+      ],
+      "disposition": "clustered",
+      "reason": "合成记录按原始关系保留；未作市场比例推断。"
+    }
+  ],
+  "case_notes": [
+    "All people, quotes and conclusions are fictional protocol examples."
+  ]
+}

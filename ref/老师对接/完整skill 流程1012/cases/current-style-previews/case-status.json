@@ -1,0 +1,42 @@
+[
+  {
+    "id": "01-soft-r4",
+    "preview": "01-soft-r4.jpg",
+    "sha256": "0b5d97f93057a79582201ca04bc8879333cab5a3f88822313be479e2c006723b",
+    "status": "截图对应R4：设计师总体正面反馈，仍提到灯具局部边缘偏利；不是所有图片无条件通过。",
+    "role": "layout_and_version_example",
+    "new_user_study_validation": false
+  },
+  {
+    "id": "02-quiet-r6",
+    "preview": "02-quiet-r6.jpg",
+    "sha256": "29e7a6ac419b26676b271c810b0df28e547787dada517da1b2268cbaf4d4f982",
+    "status": "深色有序R6：重要迭代候选；历史灯具形态杂乱和光哑问题须按具体版本重审。",
+    "role": "layout_and_version_example",
+    "new_user_study_validation": false
+  },
+  {
+    "id": "03-silver-r11",
+    "preview": "03-silver-r11.jpg",
+    "sha256": "e21b695a1bc63fb42e7a9c6bf0433ed99fd4ae5491d63312b6a15e885b559aa3",
+    "status": "银壳精整R11：迭代候选；方整实体与薄片/尖锐/整体圆润需持续区分，未记为设计师终审通过。",
+    "role": "layout_and_version_example",
+    "new_user_study_validation": false
+  },
+  {
+    "id": "04-soft-order-r2",
+    "preview": "04-soft-order-r2.jpg",
+    "sha256": "7f497e5e0940bf5c2d76e68eec855b146e54d15535cb3494daacfff1ddb8e834",
+    "status": "清浅有序R2：候选案例，不标新增真人验证。",
+    "role": "layout_and_version_example",
+    "new_user_study_validation": false
+  },
+  {
+    "id": "05-soft-r7",
+    "preview": "05-soft-r7.jpg",
+    "sha256": "bbe255cbbee44b43059a1645b2a4e376cd2a4448bbe26962dc0d3b66a0c67e2c",
+    "status": "柔塑静物R7：另一版本；不能继承针对R4的正面反馈。",
+    "role": "layout_and_version_example",
+    "new_user_study_validation": false
+  }
+]

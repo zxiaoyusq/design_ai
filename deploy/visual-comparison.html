@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>棱镜 · guojianfei / zhangxiaoyu</title>
+  <style>
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; height: 100vh; height: 100dvh; display: flex; flex-direction: column; background: #f5f4f0; color: #273431; font: 15px/1.5 system-ui, sans-serif; }
+    .switcher { flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 24px; border-bottom: 1px solid #dce2da; background: #fafaf7; }
+    .brand { font-size: 15px; font-weight: 600; white-space: nowrap; }
+    .tabs { display: flex; gap: 6px; padding: 4px; border: 1px solid #dce2da; border-radius: 28px; background: #efefe9; }
+    .tabs button { border: 0; border-radius: 22px; background: transparent; color: #5b6a61; font: inherit; padding: 8px 20px; cursor: pointer; }
+    .tabs button[aria-selected="true"] { background: #284c3b; color: white; }
+    .tabs button:focus-visible, a:focus-visible { outline: 3px solid #749984; outline-offset: 3px; }
+    .direct-link { color: #456258; text-decoration: none; white-space: nowrap; font-size: 13px; }
+    .direct-link:hover { text-decoration: underline; }
+    .content { flex: 1; min-height: 0; }
+    .panel { width: 100%; height: 100%; }
+    iframe { display: block; width: 100%; height: 100%; border: 0; }
+    @media (max-width: 650px) {
+      .switcher { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+      .tabs { order: 3; width: 100%; }
+      .tabs button { flex: 1; padding: 8px 10px; }
+      .brand { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="switcher">
+    <span class="brand">棱镜 · 参考图板</span>
+    <div class="tabs" role="tablist" aria-label="选择作者">
+      <button id="tab-guojianfei" type="button" role="tab" aria-selected="false" aria-controls="panel-guojianfei" tabindex="-1" data-author="guojianfei">guojianfei</button>
+      <button id="tab-zhangxiaoyu" type="button" role="tab" aria-selected="true" aria-controls="panel-zhangxiaoyu" data-author="zhangxiaoyu">zhangxiaoyu</button>
+    </div>
+    <a class="direct-link" id="direct-link" href="zhangxiaoyu.html" target="_blank" rel="noopener">单独打开 ↗</a>
+  </header>
+  <main class="content">
+    <section class="panel" id="panel-guojianfei" role="tabpanel" aria-labelledby="tab-guojianfei" hidden>
+      <iframe title="guojianfei · 实际试板与取景" data-src="guojianfei.html"></iframe>
+    </section>
+    <section class="panel" id="panel-zhangxiaoyu" role="tabpanel" aria-labelledby="tab-zhangxiaoyu">
+      <iframe title="zhangxiaoyu · 七方向参考图板" data-src="zhangxiaoyu.html"></iframe>
+    </section>
+  </main>
+  <script>
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    function selectAuthor(author) {
+      const selected = tabs.find(tab => tab.dataset.author === author) || tabs[1];
+      for (const tab of tabs) {
+        const active = tab === selected;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        document.getElementById(tab.getAttribute('aria-controls')).hidden = !active;
+      }
+      const frame = document.querySelector('#panel-' + selected.dataset.author + ' iframe');
+      // 首次选中才请求该页面；切换时保留已载入的文档、筛选与滚动位置。
+      if (!frame.hasAttribute('src')) frame.src = frame.dataset.src;
+      document.getElementById('direct-link').href = frame.dataset.src;
+      // 作者写入锚点，刷新及分享链接都能恢复当前选择。
+      if (location.hash !== '#' + selected.dataset.author) {
+        history.replaceState(null, '', '#' + selected.dataset.author);
+      }
+    }
+    for (const tab of tabs) {
+      tab.addEventListener('click', () => selectAuthor(tab.dataset.author));
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const next = event.key === 'Home' ? tabs[0] : event.key === 'End' ? tabs[1] : tabs[1 - tabs.indexOf(tab)];
+        selectAuthor(next.dataset.author);
+        next.focus();
+      });
+    }
+    window.addEventListener('hashchange', () => selectAuthor(location.hash.slice(1)));
+    selectAuthor(location.hash.slice(1));
+  </script>
+</body>
+</html>

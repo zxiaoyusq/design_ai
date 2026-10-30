@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 import re
+import hashlib
 
 from core import atomic_text, encode, timestamp, write
 from lean_images import is_positive_user_image
@@ -19,6 +20,48 @@ COUNT_NOTE = "人数是正文已引用来源中去重用户的提及下限，包
 GAP_SCOPE = "缺乏趋势覆盖是模型对所读文本的摘要判断，未执行逐篇原文覆盖审核，不代表市场空白。"
 SOURCE_SCOPE = "核心来源用于分类、人数与图片关联；背景参考仅供查阅。来源须存在于索引中，未执行全量来源覆盖或额外语义审核。"
 BACKGROUND_LINE = re.compile(r"^\s*(?:[-*]\s+)?(?:\*\*)?背景参考(?:\*\*)?\s*[:：]\s*(?:\*\*)?\s*(.*)$")
+
+RELATION_BASES = {"direct_support", "anchored_extension", "exploratory_hypothesis", "unknown"}
+FUSION_LABELS = {"依据类型": "relation_basis", "共同原则": "shared_design_principle",
+                 "适用边界": "conditions_and_limits", "反向与未决": "unresolved_questions"}
+
+
+def fusion_fields(text):
+    """宽松提取标签；缺少字段保留未知，不用编译成功冒充语义审阅。"""
+    values = {field: "" for field in FUSION_LABELS.values()}
+    for line in text.splitlines():
+        cleaned = re.sub(r"^\s*[-*]\s+", "", line).replace("**", "").strip()
+        for label, field in FUSION_LABELS.items():
+            match = re.match(re.escape(label) + r"\s*[:：]\s*(.*)$", cleaned)
+            if match:
+                values[field] = match[1].strip()
+    basis = values["relation_basis"].strip("` ")
+    values["relation_basis"] = basis if basis in RELATION_BASES else "unknown"
+    values["evidence_review_status"] = "not_reviewed"
+    return values
+
+
+def _parent_clusters(record):
+    context = record.get("semantic_context", {})
+    return {(context.get("upstream_output_id"), member.get("theme_id") or member.get("cluster_id"))
+            for member in context.get("memberships", [])
+            if member.get("theme_id") or member.get("cluster_id")}
+
+
+def _image_identity(path, cache):
+    # 同一路径可能被多卡/多来源引用；本次发布仅读取和哈希一次，不做视觉分析。
+    key = str(path) if path else None
+    if key not in cache:
+        identity = {"sha256": None, "byte_size": None, "identity_status": "missing"}
+        if path and path.is_file():
+            try:
+                with path.open("rb") as stream:
+                    identity = {"sha256": hashlib.file_digest(stream, "sha256").hexdigest(),
+                                "byte_size": path.stat().st_size, "identity_status": "hashed"}
+            except OSError:
+                identity["identity_status"] = "unreadable"
+        cache[key] = identity
+    return cache[key]
 
 
 def _clean_markdown(text):
@@ -131,12 +174,19 @@ def _source_record(short_id, record, manifest):
               "json_pointer": record.get('json_pointer'), "title": record.get('fields', {}).get('title_zh')}
     input_file = manifest.get("inputs", {}).get(record.get("source_file"), {})
     source["source_path"] = input_file.get("path") if isinstance(input_file, dict) else input_file
+    source["source_id"] = record.get("source_id")
+    source["source_sha256"] = input_file.get("sha256") if isinstance(input_file, dict) else None
+    source["association_type"] = "direct_reference"
+    for key in ("semantic_context", "source_lineage", "article_url", "original_text_role"):
+        if key in record:
+            source[key] = record[key]
     if record.get("kind") == "trend":
         source["clustering_label"] = record.get("clustering_label", "未分类")
     return source
 
 
-def _images(ids, sources, project_root, warnings):
+def _images(ids, sources, project_root, warnings, identity_cache=None):
+    identity_cache = {} if identity_cache is None else identity_cache
     evidence, records = [], {}
     for short_id in ids:
         record = sources[short_id]
@@ -173,6 +223,16 @@ def _images(ids, sources, project_root, warnings):
                          "file_exists": path.is_file() if path else False,
                          "emotion_tag": original_ref.get("emotion_tag"), "visual_verified": False})
     for ref in refs:
+        path = _ref_path(ref, project_root)
+        ref.update(_image_identity(path, identity_cache))
+        record = records[ref["source_record_id"]]
+        original = next((item for item in record.get("image_refs", [])
+                         if item.get("image_id") == ref.get("image_id")
+                         and item.get("code") == ref.get("code")
+                         and _ref_path(item, project_root) == path), {})
+        ref["image_url"] = original.get("image_url") or original.get("url")
+        ref["association_type"] = "direct_reference"
+        ref["association_note"] = "引用文章或原回答的配图关联，未证明图中视觉支持方向。"
         if not ref["file_exists"]:
             # 缺失文件不作为可用路径交付，仍保留来源声明路径以便人工排查。
             ref["declared_path"] = ref["absolute_path"]
@@ -261,7 +321,7 @@ def _image_path_report(items, sources, project_root, inventory=None):
         return lines
 
     lines = ["# 图片路径汇总", "",
-             "仅汇总来源索引中的既有路径，按规范化绝对路径去重；图片未被读取或视觉核验。", "",
+             "仅汇总来源索引中的既有路径，按规范化绝对路径去重；图片仅读取字节核对身份，未做视觉核验。", "",
              "## 与结果相关的所有图片路径", "",
              f"共 {len(result_images)} 条去重路径。", ""]
     lines += render(result_images, "本轮结果没有可关联的图片路径。")
@@ -343,6 +403,8 @@ def publish(run, manifest, sources, text, aliases=None, execution=None, image_so
     warnings.extend((execution or {}).get('warnings', []))
     population = _population(manifest, sources, warnings)
     cards, gaps, diagnostics, unlinked = [], [], [], []
+    identity_cache = {}
+    all_sources = sources if image_sources is None else image_sources
     for index, note in enumerate(notes, 1):
         ids = note["source_ids"]
         if not ids:
@@ -351,7 +413,11 @@ def publish(run, manifest, sources, text, aliases=None, execution=None, image_so
         users = sorted({sources[sid]["user_id"] for sid in ids
                         if sources[sid].get("kind") in USER_KINDS and sources[sid].get("user_id") is not None}, key=str)
         has_trends = any(sources[sid].get("kind") == "trend" for sid in ids)
-        item = {"id": f"D{index:04d}", "title": note["title"], "description": note["text"],
+        fields = fusion_fields(note["text"])
+        if fields["relation_basis"] == "unknown" or any(not fields[key] for key in
+                ("shared_design_principle", "conditions_and_limits", "unresolved_questions")):
+            warnings.append(f"方向 {note['title']} 的依据或边界字段未完整给出；保留未知，待人工审阅。")
+        item = {**fields, "id": f"D{index:04d}", "title": note["title"], "description": note["text"],
                 "kind": note["kind"], "source_ids": ids,
                 "background_text": note["background_text"],
                 "background_source_ids": note["background_source_ids"],
@@ -361,10 +427,24 @@ def publish(run, manifest, sources, text, aliases=None, execution=None, image_so
                     sources[sid].get("clustering_label", "未分类") for sid in ids
                     if sources[sid].get("kind") == "trend")),
                 "source_records": [_source_record(sid, sources[sid], manifest) for sid in ids],
-                "image_refs": _images(ids, sources, project_root, warnings), "cited_user_ids": users,
+                "image_refs": _images(ids, sources, project_root, warnings, identity_cache), "cited_user_ids": users,
                 "mention_statistics": {"unique_mentioned_users": len(users), "population_count": population,
                                        "count_type": "cited_mentions_lower_bound", "note": COUNT_NOTE},
                 "human_review_status": "pending"}
+        # 同父簇的未引用文章只进入关联旁表，不补人数/双侧证据或直接图库。
+        clusters = set().union(*(_parent_clusters(sources[sid]) for sid in ids
+                                 if sources[sid].get("kind") == "trend"))
+        associated_ids = [sid for sid, record in all_sources.items()
+                          if sid not in ids and record.get("kind") == "trend"
+                          and clusters.intersection(_parent_clusters(record))]
+        item["associated_source_records"] = [
+            {**_source_record(sid, all_sources[sid], manifest), "association_type": "same_cluster_association"}
+            for sid in associated_ids]
+        item["associated_image_refs"] = [
+            {**ref, "association_type": "same_cluster_association",
+             "association_note": "同父簇关联配图，未被正文直接引用，未做视觉核验。"}
+            for ref in _images(associated_ids, all_sources, project_root, warnings, identity_cache)]
+        item["visual_extension_image_refs"] = []
         if has_trends and users:
             cards.append(item)
         elif note["kind"] == "user_gap" and not has_trends and users and population > 0 and len(users) * 2 > population:
@@ -404,7 +484,11 @@ def publish(run, manifest, sources, text, aliases=None, execution=None, image_so
                   for category in category_sources]
     document = {"schema_version": "design_trend_insights_v3", "generated_at": generated,
                 "selection": manifest.get("selection", {}), "input_counts": manifest.get("counts", {}),
-                "source_inputs": manifest.get("inputs", {}), "trends": cards, "user_research_gaps": gap_section,
+                "source_inputs": manifest.get("inputs", {}),
+                "upstream_selection": manifest.get("upstream_selection"),
+                "model_input_scope": manifest.get("model_input_scope"),
+                "skill_version": manifest.get("skill_version"),
+                "evidence_review_status": "not_reviewed", "handoff_file": "handoff.json", "trends": cards, "user_research_gaps": gap_section,
                 "trend_categories": categories, "user_images": user_images,
                 "user_image_filter": "like_or_enjoy",
                 "user_images_scope_note": "仅包含明确标记 LIKE / ENJOY 的用户本地图片；DISLIKE、REFERENCE 和未标注图片不展示。linked_to_result 只表示路径与正文引用相连，未做视觉分析。",
@@ -423,16 +507,25 @@ def publish(run, manifest, sources, text, aliases=None, execution=None, image_so
                   "missing_image_references": sum(not ref["file_exists"] for item in cards + gaps + diagnostics for ref in item["image_refs"]),
                   **image_path_counts}
     selection = manifest.get("selection", {})
-    lines = ["# 通用设计趋势洞察", "", SOURCE_SCOPE, "", COUNT_NOTE, "",
-             f"趋势日期范围：{selection.get('start_date') or '不限'} 至 {selection.get('end_date') or '不限'}；用户文本不按趋势日期过滤。",
-             f"本轮纳入趋势 {manifest.get('counts', {}).get('selected_trends', 0)} 条；用户统计分母 {population} 人。", ""]
+    model_scope = manifest.get("model_input_scope") or {}
+    module_mode = model_scope.get("mode") == "existing_theme_handshake"
+    lines = ["# 通用设计趋势洞察", "", SOURCE_SCOPE, "", COUNT_NOTE, ""]
+    if module_mode:
+        lines += [f"本轮读取 {model_scope.get('trend_theme_count', '未知')} 个既有趋势主题的定义、边界和代表引文，"
+                  f"结合 {model_scope.get('research_records_read', '未知')} 条用研记录；用户统计分母 {population} 人。",
+                  f"关联归档成员文章 {model_scope.get('full_member_articles_archived', '未知')} 篇；"
+                  "本轮未逐篇复读或复核全部成员原文。主题摘要保持上游分析角色，不作为新增用户原话。", ""]
+    else:
+        lines += [f"趋势日期范围：{selection.get('start_date') or '不限'} 至 {selection.get('end_date') or '不限'}；用户文本不按趋势日期过滤。",
+                  f"本轮纳入趋势 {manifest.get('counts', {}).get('selected_trends', 0)} 条；用户统计分母 {population} 人。", ""]
     if not has_content:
         lines += ["本轮没有可交付的研究正文。", ""]
     lines += ["# 趋势与用户共同方向", ""]
     rendered_ids = set()
     for category in categories:
         lines += [f"# 大趋势分类：{category['clustering_label']}", "",
-                  f"本类文章 {category['article_count']} 篇。", ""]
+                  (f"本类关联成员文章 {category['article_count']} 篇，数量为归档关联口径，不表示本轮逐篇阅读。"
+                   if module_mode else f"本类文章 {category['article_count']} 篇。"), ""]
         for card in cards:
             if card["id"] not in category["trend_ids"]:
                 continue
@@ -459,12 +552,42 @@ def publish(run, manifest, sources, text, aliases=None, execution=None, image_so
             lines += [f"## {note['title']}", "", note["text"], ""]
     if warnings:
         lines += ["# 编译提示", ""] + [f"- {warning}" for warning in warnings]
+    associated_lines = ["", "## 同簇关联图片路径", "",
+                        "来自引用趋势的同父簇成员文章；未被正文直接引用，不代表直接支持该方向。", ""]
+    associated_entries, associated_by_path = [], {}
+    for card in cards:
+        for ref in card["associated_image_refs"]:
+            _append_image(associated_entries, associated_by_path, ref, project_root, result=card["id"])
+    for entry in associated_entries:
+        associated_lines.append(f"- `{entry['path']}` — 关联方向：{'、'.join(entry['results'])}" +
+                                ("；文件不存在" if not entry["file_exists"] else ""))
+    if not associated_entries:
+        associated_lines.append("没有额外的同簇图片路径。")
+    image_path_text += "\n".join(associated_lines) + "\n"
     write(run / "high_potential_trends.json", document)
     if not (run / 'sources.json').exists():
         write(run / 'sources.json', sources if image_sources is None else image_sources)
     atomic_text(run / "high_potential_trends.jsonl", "".join(encode(card) + "\n" for card in cards))
     atomic_text(run / "report.md", "\n".join(lines) + "\n")
     atomic_text(run / "image_paths.md", image_path_text)
+    # 下游读取冻结来源和原角色；新视觉材料只能追加visual_extension，不能改写语义依据。
+    write(run / "handoff.json", {
+        "schema_version": "design_trend_handoff_v1", "generated_at": generated,
+        "source_inputs": manifest.get("inputs", {}),
+        "upstream_selection": manifest.get("upstream_selection"),
+        "model_input_scope": manifest.get("model_input_scope"),
+        "source_index_file": "sources.json", "source_index_sha256": manifest.get("source_index_sha256"),
+        "execution": execution, "execution_receipts_dir": "accepted",
+        "model_profile": manifest.get("model_profile"),
+        "semantic_review": "not_performed", "human_review_status": "pending",
+        "directions": [{key: item[key] for key in (
+            "id", "title", "relation_basis", "shared_design_principle", "conditions_and_limits",
+            "unresolved_questions", "evidence_review_status", "source_records", "image_refs",
+            "background_source_records", "associated_source_records", "associated_image_refs",
+            "visual_extension_image_refs")} for item in cards],
+        "rules": {"source_roles_and_conditions": "Preserve frozen semantic_context and original source roles.",
+                  "visual_additions": "visual_extension; must not replace original semantic evidence.",
+                  "negative_scope": "Provided inputs only; no full negative matrix or H01 verification."}})
     write(run / "validation_report.json", validation)
     # 完成文件最后写入；调用方仍须检查 has_content，不能把文件存在等同于研究成功。
     write(run / "completion.json", summary)

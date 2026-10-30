@@ -11,6 +11,7 @@ from threading import RLock
 from time import monotonic
 from uuid import uuid4
 
+from app.agents.bounded import AGENT_RUNTIME_VERSION
 from app.agents.design_trend_synthesizer import (
     AGENT_PROMPT_VERSION, agent_messages, prompt_prefix, run_trend_step, user_request_message,
 )
@@ -18,6 +19,7 @@ from app.services.high_trends.skill import PROJECT_ROOT, SKILL_ROOT, lean, prepa
 from app.services.high_trends.errors import error_detail
 from app.services.high_trends.image_inventory import is_generated_research_result
 from app.services.high_trends.scope import resolve_user_scope
+from app.services.high_trends.upstream import build_source_data, list_inputs
 from app.services.llm.catalog import get_model
 
 logger = logging.getLogger(__name__)
@@ -30,6 +32,12 @@ def now():
 
 def read(path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def card_images(card):
+    """直接引证、同簇资料和视觉补充分开呈现，供图索引使用固定顺序。"""
+    return [ref for key in ("image_refs", "associated_image_refs", "visual_extension_image_refs")
+            for ref in card.get(key, [])]
 
 
 class HighTrendManager:
@@ -65,22 +73,58 @@ class HighTrendManager:
                 "min_date": dates[0] if dates else None, "max_date": dates[-1] if dates else None,
                 "undated_count": len(trends)-len(dates)}
 
-    def preview(self, request):
+    def inputs(self):
+        return list_inputs(self.root)
+
+    def _input_context(self, request):
+        """预估与创建共用同一资料解析；摘要绑定所选产物、生成要求和实际 Skill。"""
         get_model(request.model_id)
-        scope = resolve_user_scope(request)
-        request = request.model_copy(update={"user_limit": scope["user_limit"]})
+        if request.input_mode == "module_outputs":
+            data = build_source_data(self.root, request.research_output_ids, request.trend_result_id)
+            scope = {"user_limit": None, "origin": "module_outputs",
+                     "label": f"已选 {len(request.research_output_ids)} 份用研聚合结果",
+                     "note": "仅使用已选模块结果，用户数量和趋势范围不再按原始资料重新筛选。"}
+        else:
+            scope = resolve_user_scope(request)
+            trends, users = dataset_paths(self.root, request.dataset)
+            data = lean.build_sources(trends, users, self.root,
+                request.start_date.isoformat() if request.start_date and not request.all_dates else None,
+                request.end_date.isoformat() if request.end_date and not request.all_dates else None,
+                "include" if request.all_dates else "exclude", scope["user_limit"])
         skill_text = (SKILL_ROOT / "SKILL.md").read_text()
+        # 文件格式/编译规则发生变化也使旧预估失效，而不只比较说明文档。
+        skill_files = {str(path.relative_to(SKILL_ROOT)): sha256(path.read_bytes()).hexdigest()
+                       for path in sorted(SKILL_ROOT.rglob("*"))
+                       if path.is_file() and path.suffix in {".py", ".md", ".yaml"}
+                       and "__pycache__" not in path.parts and "tests" not in path.parts}
+        identity = {"request": request.model_dump(mode="json", exclude={"input_digest"}),
+                    "inputs": data["inputs"], "sources": data["sources"],
+                    "upstream_selection": data.get("upstream_selection"),
+                    "skill_files": skill_files, "agent_prompt": prompt_prefix(skill_text)}
+        input_digest = sha256(json.dumps(identity, ensure_ascii=False, sort_keys=True,
+                                        separators=(",", ":")).encode()).hexdigest()
+        return data, scope, skill_text, input_digest
+
+    def preview(self, request):
+        data, scope, skill_text, input_digest = self._input_context(request)
+        request = request.model_copy(update={"user_limit": scope["user_limit"]})
         overhead = len(prompt_prefix(skill_text)) + len(user_request_message(request.prompt))
         manifest = prepare(self.root, request, self.output / "preview", dry_run=True,
-                           overhead=overhead)
+                           overhead=overhead, source_data=data)
         manifest["plan"]["agent_context_chars_per_call"] = overhead
         return {"counts": manifest["counts"], "plan": manifest["plan"],
                 "selection": manifest["selection"], "settings": manifest["settings"], "scope": scope,
-                "trend_categories": manifest.get("trend_categories", [])}
+                "trend_categories": manifest.get("trend_categories", []),
+                "input_digest": input_digest, "upstream_selection": data.get("upstream_selection"),
+                "model_input_scope": data.get("model_input_scope"),
+                "warnings": data.get("warnings", [])}
 
     def create(self, request):
-        get_model(request.model_id)
-        scope = resolve_user_scope(request)
+        data, scope, skill_text, input_digest = self._input_context(request)
+        if request.input_mode == "module_outputs" and not request.input_digest:
+            raise ValueError("请先预估所选模块结果，再确认开始生成")
+        if request.input_digest is not None and request.input_digest != input_digest:
+            raise ValueError("输入结果、生成要求或 Skill 已变化，请重新预估后提交")
         # 保存原始选项；只有进入 Skill 的参数使用解析后的数量，便于追溯二者。
         original_request = request.model_dump(mode="json")
         request = request.model_copy(update={"user_limit": scope["user_limit"]})
@@ -89,14 +133,16 @@ class HighTrendManager:
                 raise RuntimeError("已有高潜趋势任务正在运行，请等待完成后再启动。")
             task_id = "web_" + uuid4().hex
             folder = self.output / task_id
-            skill_text = (SKILL_ROOT / "SKILL.md").read_text()
             manifest = prepare(self.root, request, folder, dry_run=False,
-                               overhead=len(prompt_prefix(skill_text)) + len(user_request_message(request.prompt)))
+                               overhead=len(prompt_prefix(skill_text)) + len(user_request_message(request.prompt)),
+                               source_data=data)
             lean.atomic_text(folder / "agent_skill.md", skill_text)
             created = now()
             task = {"id": task_id, "status": "queued", "stage": "queued", "message": "资料已整理，等待开始",
                     "created_at": created, "updated_at": created, "request": original_request,
                     "scope": scope, "selection": manifest["selection"], "source_inputs": manifest["inputs"],
+                    "input_digest": input_digest, "upstream_selection": data.get("upstream_selection"),
+                    "model_input_scope": data.get("model_input_scope"),
                     "completed_jobs": 0, "total_jobs": manifest["plan"]["planned_calls"],
                     "counts": manifest["counts"], "plan": manifest["plan"], "events": [],
                     "skill_version": manifest["skill_version"], "agent_prompt_version": AGENT_PROMPT_VERSION,
@@ -173,7 +219,8 @@ class HighTrendManager:
             return None
         path = Path(raw)
         path = (path if path.is_absolute() else self.root / path).resolve()
-        roots = [self.root / "data/trend_data", self.root / "data/userreseach_data"]
+        roots = [self.root / "data/trend_data", self.root / "data/userreseach_data",
+                 self.root / "data/result/user_research_intake"]
         # 只提供既有研究图片，拒绝越界路径、软链接逃逸及可执行网页内容。
         if (is_generated_research_result(path, self.root)
                 or not any(path.is_relative_to(root.resolve()) for root in roots)
@@ -194,7 +241,7 @@ class HighTrendManager:
         sources = read(folder / "sources.json") if excerpts else {}
         images = []
         for card in result["trends"] + result["user_research_gaps"]["directions"]:
-            for ref in card["image_refs"]:
+            for ref in card_images(card):
                 index = len(images)
                 path = self._safe_image(ref.get("absolute_path"))
                 images.append(path)
@@ -202,7 +249,7 @@ class HighTrendManager:
                 ref["file_exists"] = bool(path)
             if excerpts:
                 # 背景可查看原文，但不进入上方图片索引或核心来源统计。
-                for source in card["source_records"] + card.get("background_source_records", []):
+                for source in card["source_records"] + card.get("background_source_records", []) + card.get("associated_source_records", []):
                     original = sources.get(source["short_id"], {}).get("fields", {})
                     source["excerpt"] = original.get("summary_zh", original.get("ai_analysis", original.get("ai_index", "")))
                     source["question"] = original.get("question", original.get("scenario"))
@@ -232,7 +279,7 @@ class HighTrendManager:
         # 与详情接口保持相同顺序，但单图请求只检查目标文件，避免每次遍历图库做磁盘校验。
         images = [ref.get("absolute_path")
                   for card in result["trends"] + result["user_research_gaps"]["directions"]
-                  for ref in card["image_refs"]]
+                  for ref in card_images(card)]
         images.extend(ref.get("path") for ref in result.get("user_images", []))
         path = self._safe_image(images[index]) if 0 <= index < len(images) else None
         if path is None:
@@ -242,7 +289,8 @@ class HighTrendManager:
     def download(self, task_id, format):
         folder = self._folder(task_id)
         names = {"markdown": "report.md", "json": "high_potential_trends.json",
-                 "images_markdown": "image_paths.md", "performance": "performance_report.json"}
+                 "images_markdown": "image_paths.md", "performance": "performance_report.json",
+                 "handoff": "handoff.json", "sources": "sources.json"}
         if format not in names:
             raise ValueError("不支持的下载格式")
         path = folder / names[format]
@@ -303,6 +351,7 @@ class HighTrendManager:
                 trace = {
                     "messages": agent_messages(job, skill_text),
                     "model_profile": job["model_profile"], "agent_prompt_version": AGENT_PROMPT_VERSION,
+                    "agent_runtime_version": AGENT_RUNTIME_VERSION,
                     "skill_sha256": task["skill_sha256"], "created_at": now()}
                 trace_path = folder / "requests" / f"{jid}.agent.json"
                 if not trace_path.exists():

@@ -1,0 +1,45 @@
+{
+  "schema_version": "prism.trends.semantic_clusters.v0.1",
+  "clusters": [
+    {
+      "cluster_id": "TC1",
+      "title": "低光泽主体与局部亮点",
+      "definition": "主体与细节有不同光泽角色。",
+      "design_question": "怎样让低光泽主体与亮点细节共存？",
+      "boundaries": {
+        "shared_design_mechanism": "主体与细节的分工",
+        "includes": [
+          "主要面低反射",
+          "局部亮点"
+        ],
+        "excludes": [
+          "整面镜面效果"
+        ]
+      },
+      "evidence_refs": [
+        "TE1",
+        "TE2"
+      ],
+      "source_ids": [
+        "T1",
+        "T2"
+      ],
+      "source_group_ids": [
+        "T1",
+        "T2"
+      ],
+      "claim_origin_ids": [
+        "T1",
+        "T2"
+      ],
+      "hypotheses": [],
+      "unknowns": [
+        "实际材质和工艺未做验证"
+      ],
+      "route_relevance": {
+        "ID": false,
+        "CMF": true
+      }
+    }
+  ]
+}

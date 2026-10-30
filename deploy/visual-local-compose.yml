@@ -1,0 +1,9 @@
+services:
+  visual-local:
+    image: nginx:stable-alpine
+    container_name: design-ai-local-site
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ../frontend/dist:/usr/share/nginx/html:ro
+      - ./visual-local.nginx.conf:/etc/nginx/conf.d/default.conf:ro

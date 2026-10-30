@@ -5,11 +5,73 @@ from fastapi.responses import FileResponse
 from pydantic import BaseModel, ConfigDict, Field
 from typing import Literal
 
-from app.schemas.moodboards import MoodboardRequest
+from app.schemas.moodboards import MoodboardRequest, MoodboardScopeRequest, MoodboardClusteringRequest
+from app.services.moodboards.clustering import moodboard_clustering_manager
+from app.services.moodboards.saved_results import saved_moodboard_results
 from app.services.moodboards.tasks import moodboard_manager
 from app.services.visual_workflow.web_adapter import native_asset, preview_handoff
 
 router = APIRouter(prefix="/moodboards", tags=["Moodboards"])
+
+
+@router.get("/clustering/saved-results")
+def saved_results():
+    """读取登记的 Skill 交付目录，保留原运行与评审身份。"""
+    return call(saved_moodboard_results.list)
+
+
+@router.get("/clustering/saved-results/{result_id}")
+def saved_result(result_id: str):
+    return call(saved_moodboard_results.get, result_id)
+
+
+@router.get("/clustering/saved-results/{result_id}/download")
+def saved_result_download(result_id: str):
+    return FileResponse(call(saved_moodboard_results.download, result_id), filename=f"{result_id}.json")
+
+
+@router.get("/clustering/saved-results/{result_id}/images/{token}")
+def saved_result_image(result_id: str, token: str, original: bool = False):
+    return FileResponse(call(saved_moodboard_results.image, result_id, token, original),
+                        content_disposition_type="inline", headers={"X-Content-Type-Options": "nosniff"})
+
+
+@router.get("/clustering/catalog")
+def clustering_catalog():
+    return call(moodboard_clustering_manager.catalog)
+
+
+@router.post("/clustering/preview")
+def clustering_preview(request: MoodboardScopeRequest):
+    return call(moodboard_clustering_manager.preview, request)
+
+
+@router.post("/clustering/tasks", status_code=202)
+def clustering_create(request: MoodboardClusteringRequest, background_tasks: BackgroundTasks):
+    task = call(moodboard_clustering_manager.create, request)
+    background_tasks.add_task(moodboard_clustering_manager.run, task["id"])
+    return task
+
+
+@router.get("/clustering/tasks")
+def clustering_tasks():
+    return call(moodboard_clustering_manager.list)
+
+
+@router.get("/clustering/tasks/{task_id}")
+def clustering_task(task_id: str):
+    return call(moodboard_clustering_manager.get, task_id)
+
+
+@router.get("/clustering/tasks/{task_id}/download")
+def clustering_download(task_id: str):
+    return FileResponse(call(moodboard_clustering_manager.download, task_id), filename=f"{task_id}.json")
+
+
+@router.get("/clustering/tasks/{task_id}/images/{token}")
+def clustering_image(task_id: str, token: str, original: bool = False):
+    return FileResponse(call(moodboard_clustering_manager.image, task_id, token, original),
+                        content_disposition_type="inline", headers={"X-Content-Type-Options": "nosniff"})
 
 
 def call(action, *args):

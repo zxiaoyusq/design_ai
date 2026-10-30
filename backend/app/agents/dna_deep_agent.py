@@ -2,12 +2,7 @@
 
 from pathlib import Path
 
-from deepagents import create_deep_agent
-from deepagents.backends.filesystem import FilesystemBackend
-from deepagents.middleware.filesystem import FilesystemMiddleware, FilesystemPermission
-from langchain.agents.middleware import ModelCallLimitMiddleware
-from langchain.agents.middleware.types import AgentMiddleware
-
+from app.agents.bounded import create_bounded_agent
 from app.services.llm import create_chat_model
 from app.services.llm.catalog import get_model
 
@@ -32,39 +27,9 @@ def _model_options(model_id: str, *, reasoning_effort: str = "low") -> dict:
     return options
 
 
-class SingleImageRequestMiddleware(AgentMiddleware):
-    """批量单图阶段不暴露内建工具；拒绝意外工具调用，防止子代理增加费用。"""
-
-    def wrap_model_call(self, request, handler):
-        return handler(request.override(tools=[], tool_choice=None))
-
-    async def awrap_model_call(self, request, handler):
-        return await handler(request.override(tools=[], tool_choice=None))
-
-    def wrap_tool_call(self, request, handler):
-        raise RuntimeError("单图DNA阶段禁止调用工具或子代理")
-
-    async def awrap_tool_call(self, request, handler):
-        raise RuntimeError("单图DNA阶段禁止调用工具或子代理")
-
-
 def create_dna_agent(model_id: str, system_prompt: str, name: str, *, reasoning_effort: str = "low",
-                     single_request: bool = False):
-    """只允许模型看传入图片和提示；模型选择由工程目录校验，网络失败不自动重试。"""
+                     single_request: bool = True):
+    """只分析传入图片；兼容旧 single_request 参数，所有无工具阶段均限制单次请求。"""
 
     model = create_chat_model(model_id, **_model_options(model_id, reasoning_effort=reasoning_effort))
-    permissions = [FilesystemPermission(operations=["read", "write"], paths=["/**"], mode="deny")]
-    backend = FilesystemBackend(root_dir=PROJECT_ROOT)
-    middleware = [FilesystemMiddleware(backend=backend, tools=["read_file"], _permissions=permissions)]
-    if single_request:
-        middleware.extend([SingleImageRequestMiddleware(), ModelCallLimitMiddleware(run_limit=1, exit_behavior="error")])
-    return create_deep_agent(
-        model=model,
-        tools=[],
-        system_prompt=system_prompt,
-        backend=backend,
-        skills=[],
-        permissions=permissions,
-        middleware=middleware,
-        name=name,
-    )
+    return create_bounded_agent(model=model, system_prompt=system_prompt, name=name)

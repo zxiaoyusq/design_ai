@@ -1,0 +1,135 @@
+{
+  "comparison_scope": "仅审核实际整板、十张交付尺度截图及用于核对目标身份的N080原图；比较单位为各alias所指的局部表面，不是整张照片或整个产品。",
+  "judgment": "pass",
+  "coherent_visible_family": true,
+  "slots": [
+    {
+      "alias": "N003",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "灯光造成较强明暗变化，但外壳上多条竖向连续起伏仍可辨。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N008",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "盖面展示面积较小，但平行筋纹和盖体边界清楚。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N025",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N001",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N054",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "箱体还有横向结构线，但当前局部以竖向凸棱为主。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N038",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "细肋对比较弱，但在交付尺度仍能读出重复起伏。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N016",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "槽纹随支柱造型变化，并非完全等距；竖向重复关系仍明确。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N062",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "可见次要竖向构造线，但主导关系是灯罩上的环向褶纹。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N036",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "侧边平滑区域占一定面积，但筒身斜向凹槽仍是可读的主要表面特征。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N080",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "新裁片取自锤柄握持面，而非锤头；可见多条有规律的环绕凹槽。其较稀疏的槽距属于允许的尺度差异，未形成新异类。",
+      "specific_fix_if_needed": ""
+    }
+  ],
+  "worst_mismatches": [],
+  "mandatory_changes": [],
+  "reason": "十个当前局部均能定位载体，并在低彩度原色画面中读出至少五条有主导方向的重复表面起伏；整板呈现同一线性浮雕关系。新增N080的裁片目标可由所附原图核对，槽纹在当前显示尺度仍可辨，不需借助原图整场景充当证据。",
+  "claim_limits": [
+    "仅为当前可见关系与整板视觉复核，不代表正式算法六模块通过。",
+    "不据图片确认材料的实际物理成分，也不声称经过真人偏好验证。",
+    "未核验项目独立性、来源总量或原图SHA等不可由所给图片确认的事项。"
+  ]
+}

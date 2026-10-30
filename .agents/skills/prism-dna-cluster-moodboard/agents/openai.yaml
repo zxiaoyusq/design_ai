@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜图片 DNA 聚类情绪板"
+  short_description: "由大模型比较冻结设计卡并看真实图片选组，形成跨品类跨材质的 ID／CMF 板"
+  default_prompt: "使用 $prism-dna-cluster-moodboard 从冻结设计卡发现并归并关系模板，由模型比较真实图片选择配色、廓形、块面和线条协调且有设计感的 ID／CMF 情绪板；聚类不补 DNA，不把选图当独立审阅。"

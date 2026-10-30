@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜有界复核与反馈更新"
+  short_description: "以真实反例校准语义、视觉及交付环节，分开技术复验与审美判断，保留失败和覆盖范围。"
+  default_prompt: "使用 $prism-independent-evaluation-loop 完成当前环节，保留用研依据、原图来源和未决状态。"

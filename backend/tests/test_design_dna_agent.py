@@ -3,22 +3,19 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from deepagents.middleware.filesystem import FilesystemMiddleware, FilesystemPermission
 from langchain_core.utils.function_calling import convert_to_openai_tool
 
 from app.agents.design_dna_extractor import (
     AGENT_SYSTEM_PROMPT,
     BOUND_SKILL_NAME,
-    SKILLS_SOURCE,
     create_design_dna_agent,
-    create_style_semantic_review_agent,
     preloaded_skill_context,
     resolve_applicable_design_fields,
 )
 
 
 class DesignDnaAgentTestCase(unittest.TestCase):
-    @patch("app.agents.design_dna_extractor.create_deep_agent")
+    @patch("app.agents.design_dna_extractor.create_bounded_agent")
     @patch("app.agents.design_dna_extractor.create_chat_model")
     def test_agent_uses_selected_model_and_project_skill(
         self,
@@ -39,7 +36,6 @@ class DesignDnaAgentTestCase(unittest.TestCase):
             max_retries=0,
         )
         self.assertEqual(agent_factory.call_args.kwargs["model"], model)
-        self.assertEqual(agent_factory.call_args.kwargs["skills"], [SKILLS_SOURCE])
         self.assertEqual(
             agent_factory.call_args.kwargs["tools"],
             [resolve_applicable_design_fields],
@@ -56,77 +52,14 @@ class DesignDnaAgentTestCase(unittest.TestCase):
         self.assertIn('name="MODEL_REFERENCE_BUNDLE"', system_prompt)
         self.assertIn('name="MODEL_OUTPUT_SCHEMA"', system_prompt)
         self.assertIn("直接使用该快照完成任务", system_prompt)
-        permissions = agent_factory.call_args.kwargs["permissions"]
-        self.assertTrue(
-            all(isinstance(rule, FilesystemPermission) for rule in permissions)
-        )
-        self.assertEqual([rule.mode for rule in permissions], ["deny", "deny", "deny"])
-        self.assertIn(
-            "/ref/multimodal-design-dna-extractor/**",
-            permissions[0].paths,
-        )
-        filesystem_middleware = agent_factory.call_args.kwargs["middleware"][0]
-        self.assertIsInstance(filesystem_middleware, FilesystemMiddleware)
-        self.assertEqual(
-            [tool.name for tool in filesystem_middleware.tools],
-            ["read_file"],
-        )
 
-    @patch("app.agents.design_dna_extractor.create_deep_agent")
-    @patch("app.agents.design_dna_extractor.create_chat_model")
-    def test_restricted_filesystem_tools_are_provider_independent(
-        self,
-        _model_factory: Mock,
-        agent_factory: Mock,
-    ) -> None:
-        model_ids = (
-            "claude-opus-5-20260820",
-            "gpt-6-sol",
-            "gemini-3.7-flash",
-        )
+    def test_field_tool_properties_have_explicit_schema_types(self) -> None:
+        schema = convert_to_openai_tool(resolve_applicable_design_fields)["function"]["parameters"]
+        for property_name, property_schema in schema["properties"].items():
+            with self.subTest(property=property_name):
+                self.assertIn("type", property_schema)
 
-        for model_id in model_ids:
-            with self.subTest(model_id=model_id):
-                create_design_dna_agent(model_id)
-                middleware = agent_factory.call_args.kwargs["middleware"][0]
-                self.assertEqual(
-                    [tool.name for tool in middleware.tools],
-                    ["read_file"],
-                )
-
-    @patch("app.agents.design_dna_extractor.create_deep_agent")
-    @patch("app.agents.design_dna_extractor.create_chat_model")
-    def test_exposed_tool_properties_have_explicit_schema_types(
-        self,
-        _model_factory: Mock,
-        agent_factory: Mock,
-    ) -> None:
-        create_design_dna_agent("gemini-3.7-flash")
-        filesystem_tools = agent_factory.call_args.kwargs["middleware"][0].tools
-        exposed_tools = [*filesystem_tools, resolve_applicable_design_fields]
-
-        for exposed_tool in exposed_tools:
-            schema = convert_to_openai_tool(exposed_tool)["function"]["parameters"]
-            for property_name, property_schema in schema["properties"].items():
-                with self.subTest(
-                    tool=exposed_tool.name,
-                    property=property_name,
-                ):
-                    self.assertIn("type", property_schema)
-
-    @patch("app.agents.design_dna_extractor.create_deep_agent")
-    @patch("app.agents.design_dna_extractor.create_chat_model")
-    def test_style_review_agent_also_excludes_incompatible_filesystem_tools(
-        self,
-        _model_factory: Mock,
-        agent_factory: Mock,
-    ) -> None:
-        create_style_semantic_review_agent("gemini-3.7-flash")
-
-        middleware = agent_factory.call_args.kwargs["middleware"][0]
-        self.assertEqual([tool.name for tool in middleware.tools], ["read_file"])
-
-    @patch("app.agents.design_dna_extractor.create_deep_agent")
+    @patch("app.agents.design_dna_extractor.create_bounded_agent")
     @patch("app.agents.design_dna_extractor.create_chat_model")
     def test_non_anthropic_model_does_not_set_max_tokens(
         self,

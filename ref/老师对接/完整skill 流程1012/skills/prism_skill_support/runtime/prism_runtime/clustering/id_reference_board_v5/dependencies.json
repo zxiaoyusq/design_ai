@@ -1,0 +1,22 @@
+{
+  "r5_adapter": {
+    "path": "../r5_dual_v2/adapter.py",
+    "sha256": "52e8011a666f0707ed2988454b6a18db826e0e8142d9f3b1a302a02ac8c8fe54"
+  },
+  "r5_common": {
+    "path": "../r5_dual_v2/common.py",
+    "sha256": "56b2f1fdba805c38d02d324dc6fbe472392f2fd7caea5562231cba7e1c6374ed"
+  },
+  "r5_producer_registry": {
+    "path": "../r5_dual_v2/producer.json",
+    "sha256": "923c16ad6924fad235a188b1a06e083d94cfe0dc2d744502ebaaa64ded89ba2d"
+  },
+  "quality_protocol": {
+    "path": "../../../prism_sidecars/quality_selected_target_v2/protocol.py",
+    "sha256": "5f8dda60c5f220ad13b9956497782a304b8eba6bea286fabaeb04e947cf22a68"
+  },
+  "quality_prompt": {
+    "path": "../../../prism_sidecars/quality_selected_target_v2/prompt.txt",
+    "sha256": "2b2dcbd3f558270cadb9f5594bf819248cb0dbe816069046159a9796748718a8"
+  }
+}

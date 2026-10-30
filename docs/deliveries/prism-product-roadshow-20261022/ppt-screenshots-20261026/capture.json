@@ -1,0 +1,127 @@
+{
+  "source": "/root/dev/work/design_ai/docs/deliveries/prism-product-roadshow-20261022/index.html",
+  "source_sha256": "bff30af1d167143108dc84c193de52073b6ccc31fa8765063b4b61b1c64016b3",
+  "captured_at": "2026-10-26T03:28:45.852Z",
+  "slides": [
+    {
+      "number": 1,
+      "id": "slide-1",
+      "title": "棱镜： 让每一次设计选择， 更贴近用户期待",
+      "backup": false,
+      "filename": "slide-01.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "40e50ec9d4fae651f178cd78c09e92c8fa5012f804136ffab4782226ce7cd96b"
+    },
+    {
+      "number": 2,
+      "id": "slide-2",
+      "title": "用户的期待，走完整个设计流程后，还剩多少影响力？",
+      "backup": false,
+      "filename": "slide-02.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "a78dd3f033c0a5353f2cb311881522ff55a5ac78694e6c56c3246fbfdc62f5b1"
+    },
+    {
+      "number": 3,
+      "id": "slide-3",
+      "title": "从用户说的，到产品呈现的，中间需要一座桥。",
+      "backup": false,
+      "filename": "slide-03.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "73fb3b97c89a98d8ad0e534d1e2f60a925cbfb075cde9ac44ad39a602fdae303"
+    },
+    {
+      "number": 4,
+      "id": "slide-4",
+      "title": "认出一件产品，不等于读懂它的设计。",
+      "backup": false,
+      "filename": "slide-04.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "464125085a536230fa80f9c3fb2736ea87eb4f492340dfd3b8633fff3e4a258c"
+    },
+    {
+      "number": 5,
+      "id": "slide-5",
+      "title": "先不看作者，你会怎样判断这两张情绪板？",
+      "backup": false,
+      "filename": "slide-05.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "e14cd35885b08a064607c3c476de76be4c4729a1deed91309052267e6622127d"
+    },
+    {
+      "number": 6,
+      "id": "slide-6",
+      "title": "答案揭晓。下一位评价者，应该是用户。",
+      "backup": false,
+      "filename": "slide-06.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "9dddf0ac1eeed3db6e5489199cd1896fa99fb3f1aa7dd9b486925666d20ed399"
+    },
+    {
+      "number": 7,
+      "id": "slide-7",
+      "title": "从情绪板到最终方案，用户期待怎样继续影响设计？",
+      "backup": false,
+      "filename": "slide-07.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "4ed8651577ecbd57b11f22493f7880ad3c01308cc3722bd20b7bfecc1f19b1ef"
+    },
+    {
+      "number": 8,
+      "id": "slide-8",
+      "title": "成功落地后，用户会得到什么？",
+      "backup": false,
+      "filename": "slide-08.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "ca9aa5a0eeda64d5f0db6771acd8088b2f6ba8e6f2b2680418d4e6feb711e7b7"
+    },
+    {
+      "number": 9,
+      "id": "slide-9",
+      "title": "AI 会不会替设计师决定什么是美？",
+      "backup": true,
+      "filename": "slide-09.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "e23d6dd182a8bef75e38584313acd9744d5a56b18ed04ed8cdba8f67751503bb"
+    },
+    {
+      "number": 10,
+      "id": "slide-10",
+      "title": "什么时候能证明用户真的喜欢这些方向？",
+      "backup": true,
+      "filename": "slide-10.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "735b7ee1513d89607e7dc53c1b9b3fa3205e29f3e10b1e71cc6fdd8ec312408d"
+    },
+    {
+      "number": 11,
+      "id": "slide-11",
+      "title": "怎样算被采用，避免指标好看但实际没用？",
+      "backup": true,
+      "filename": "slide-11.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "16acd23dcc60ef6bfec54d92faf31589a25bf6a0fe5fe1469a22a4e7240d90c4"
+    },
+    {
+      "number": 12,
+      "id": "slide-12",
+      "title": "AI 理解错了，会不会把团队带偏？",
+      "backup": true,
+      "filename": "slide-12.png",
+      "width": 3200,
+      "height": 1800,
+      "sha256": "dad7c342c7010c01920ac81c5d63dd050e5f4a9e76e042830ac0df78b3912b3d"
+    }
+  ]
+}

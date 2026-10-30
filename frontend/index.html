@@ -9,7 +9,13 @@
     />
   </head>
   <body>
+    <section id="app-startup" role="status" aria-live="polite" style="max-width: 440px; margin: 18vh auto; padding: 24px; font-family: sans-serif; color: #514663; line-height: 1.7;">
+      <h1 id="app-startup-title" style="font-size: 20px;">正在加载页面</h1>
+      <p id="app-startup-message">正在读取页面资源，请稍候。</p>
+      <button id="app-startup-reload" type="button" onclick="window.location.reload()" style="padding: 8px 16px; cursor: pointer;">重新加载</button>
+    </section>
     <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <script src="/app-boot.js?v=20261021-dna-preparation-2"></script>
+    <script type="module" src="/src/main.ts?app_revision=20261021-dna-preparation-2"></script>
   </body>
 </html>

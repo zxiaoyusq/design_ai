@@ -21,16 +21,16 @@ def dataset_paths(root, dataset="original"):
     raise ValueError("未知研究数据组合")
 
 
-def prepare(root, request, output, *, dry_run, overhead):
+def prepare(root, request, output, *, dry_run, overhead, source_data=None):
     """预留绑定 Skill 系统文本空间，使实际消息仍在 48,000 字符预算内。"""
     trends, users = dataset_paths(root, request.dataset)
     return lean.prepare(Namespace(
         trends=str(trends), users=str(users),
         project_root=str(root), output=str(output),
-        start_date=None if request.all_dates else request.start_date.isoformat(),
-        end_date=None if request.all_dates else request.end_date.isoformat(),
+        start_date=request.start_date.isoformat() if request.start_date and not request.all_dates else None,
+        end_date=request.end_date.isoformat() if request.end_date and not request.all_dates else None,
         undated="include" if request.all_dates else "exclude", user_limit=request.user_limit, batch_chars=48000-overhead,
         max_calls=request.max_calls, map_output_tokens=None, final_output_tokens=None,
         model=request.model_id, model_parameters='{"temperature":0}',
         dry_run=dry_run, no_cache=True,
-    ))
+    ), source_data=source_data)

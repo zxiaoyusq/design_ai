@@ -1,0 +1,41 @@
+{
+  "pptx": "棱镜-产品路演-截图可放大版-20261026.pptx",
+  "pptx_bytes": 10477491,
+  "pptx_sha256": "980661ffd284b2de79a3377cd6703057f071c8a26228fc72ab78fb1f3dd8517a",
+  "source_sha256": "20abdfbf88afefe7bccf731c846e70396c405706975fce9518387a18ddd6f256",
+  "slide_count": 15,
+  "visible_slide_count": 13,
+  "hidden_zoom_slide_count": 2,
+  "zoom_links": [
+    {
+      "key": "dnaimage",
+      "slide": 14,
+      "bounds_emu": [
+        518160,
+        3474958,
+        1295400,
+        1211580
+      ],
+      "source_sha256": "4edf5dc3849f2d3a6165c43baff019415bd92cafde64c9f64db802cdb7ce7f96"
+    },
+    {
+      "key": "dnarelations",
+      "slide": 15,
+      "bounds_emu": [
+        1927860,
+        3474958,
+        1295400,
+        1211580
+      ],
+      "source_sha256": "af79bdc0aa4a1f1a88b9f59796a5e8dc343a362f62188cb568f1d663626f3a6c"
+    }
+  ],
+  "main_slide_count": 9,
+  "backup_slide_count": 4,
+  "aspect_ratio": "16:9",
+  "screenshot_pixels": [
+    3200,
+    1800
+  ],
+  "checks": "可见页顺序、全幅无裁切、截图原字节、原图字节、放大页隐藏状态、点击位置、双向跳转和 ZIP 完整性通过"
+}

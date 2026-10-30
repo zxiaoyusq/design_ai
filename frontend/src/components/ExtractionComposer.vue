@@ -28,7 +28,13 @@ const props = defineProps<{
   concurrencyLabel?: string
   /** 冻结提取器保持现有布局，但禁止修改模型和提示；历史读取不受影响。 */
   frozenConfiguration?: boolean
+  /** 模型与 Prompt 可分别冻结，供沿用同一 Skill 但允许选择工程模型的页面使用。 */
+  frozenModel?: boolean
+  frozenPrompt?: boolean
   executorLabel?: string
+  configurationTitle?: string
+  configurationDescription?: string
+  frozenPromptPlaceholder?: string
 }>()
 
 const emit = defineEmits<{
@@ -40,6 +46,8 @@ const emit = defineEmits<{
 const canStart = computed(
   () => props.selectedCount > 0 && Boolean(props.selectedModelId) && !props.running,
 )
+const modelFrozen = computed(() => Boolean(props.frozenConfiguration || props.frozenModel))
+const promptFrozen = computed(() => Boolean(props.frozenConfiguration || props.frozenPrompt))
 
 const taskStatusText = computed(() => {
   const labels: Record<string, string> = {
@@ -119,8 +127,8 @@ function errorSummary(item: ExtractionTaskItem) {
     <div class="section-heading compact">
       <div>
         <span class="eyebrow">02 / 描述任务</span>
-        <h2>{{ frozenConfiguration ? '冻结 Sol R5 提取配置' : '告诉 Agent 你关注什么' }}</h2>
-        <p>{{ frozenConfiguration ? '固定 gpt-6-sol / low / default，Fast 关闭；视觉审阅独立执行。' : '可补充品类、业务场景或希望重点观察的区域。' }}</p>
+        <h2>{{ configurationTitle || (promptFrozen ? '冻结 Sol R5 提取配置' : '告诉 Agent 你关注什么') }}</h2>
+        <p>{{ configurationDescription || (promptFrozen ? '固定 gpt-6-sol / low / default，Fast 关闭；视觉审阅独立执行。' : '可补充品类、业务场景或希望重点观察的区域。') }}</p>
       </div>
       <div class="skill-chip">
         <span class="status-dot"></span>
@@ -133,7 +141,7 @@ function errorSummary(item: ExtractionTaskItem) {
       <a-select
         id="model-select"
         :value="selectedModelId"
-        :disabled="frozenConfiguration"
+        :disabled="modelFrozen"
         size="large"
         placeholder="选择模型"
         :options="
@@ -157,14 +165,14 @@ function errorSummary(item: ExtractionTaskItem) {
     <div class="chat-box">
       <div class="agent-avatar"><RobotOutlined /></div>
       <div class="chat-content">
-        <div class="chat-label"><MessageOutlined /> {{ frozenConfiguration ? '原生冻结提示' : '用户具体要求' }}</div>
+        <div class="chat-label"><MessageOutlined /> {{ promptFrozen ? '原生冻结提示' : '用户具体要求' }}</div>
         <a-textarea
           :value="prompt"
-          :disabled="frozenConfiguration"
+          :disabled="promptFrozen"
           :rows="6"
           :maxlength="4000"
           show-count
-          :placeholder="frozenConfiguration ? '提取直接使用同事 Sol R5 原始提示，不注入额外要求；未知和未决项原样保留。' : '例如：这是一组户外运动产品，请重点关注防护结构、材质关系和动感语义；背景道具不要纳入分析。'"
+          :placeholder="promptFrozen ? frozenPromptPlaceholder || '提取直接使用同事 Sol R5 原始提示，不注入额外要求；未知和未决项原样保留。' : '例如：这是一组户外运动产品，请重点关注防护结构、材质关系和动感语义；背景道具不要纳入分析。'"
           @update:value="emit('update:prompt', $event)"
         />
       </div>

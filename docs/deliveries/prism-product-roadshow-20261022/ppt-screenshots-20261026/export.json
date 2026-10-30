@@ -1,0 +1,15 @@
+{
+  "pptx": "棱镜-产品路演-原页面截图版-20261026.pptx",
+  "pptx_bytes": 8672154,
+  "pptx_sha256": "8ce22ff71006a4790e9962ba50a8cbc8d88129872c74da65959f15b31e545b20",
+  "source_sha256": "bff30af1d167143108dc84c193de52073b6ccc31fa8765063b4b61b1c64016b3",
+  "slide_count": 12,
+  "main_slide_count": 8,
+  "backup_slide_count": 4,
+  "aspect_ratio": "16:9",
+  "screenshot_pixels": [
+    3200,
+    1800
+  ],
+  "checks": "页数、顺序、画布、全幅无裁切、图像原字节、ZIP 完整性通过"
+}

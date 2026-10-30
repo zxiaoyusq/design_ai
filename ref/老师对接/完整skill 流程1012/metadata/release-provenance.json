@@ -1,0 +1,58 @@
+{
+  "release": "4.3.0",
+  "basis_date": "2026-10-12",
+  "method_package_not_project_archive": true,
+  "sources": [
+    {
+      "kind": "portable_algorithms_and_tools",
+      "workspace_path": "outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\workflow-skills-handoff-20261006\\package"
+    },
+    {
+      "kind": "optional_DNA_clustering_trial5",
+      "workspace_path": "outputs\\01a0dd0f-c4b6-7ae0-9a61-4bb57a2985de\\prism-evaluation-loop\\dna-pool-20261009\\package\\skills\\prism-dna-clustering"
+    },
+    {
+      "kind": "visual_rules_4_2_and_feedback",
+      "workspace_path": ".agents\\skills\\prism-visual-family"
+    }
+  ],
+  "updated_layers": [
+    "prism-run-contract",
+    "prism-direction-selection",
+    "prism-source-image-selection",
+    "prism-target-view-binding",
+    "prism-target-quality",
+    "prism-id-moodboard",
+    "prism-cmf-moodboard",
+    "prism-crop-enhancement",
+    "prism-board-review",
+    "prism-moodboard-delivery",
+    "prism-independent-evaluation-loop",
+    "prism-dna-clustering",
+    "research_semantic_handoff",
+    "trend_semantic_handoff",
+    "H01_handoff",
+    "visual_family_suite_links",
+    "shared_contracts",
+    "ledger",
+    "editorial_renderer",
+    "mechanical_v4_check"
+  ],
+  "preserved_algorithm_identity": [
+    "research portable core",
+    "H01 portable core",
+    "Sol R5 pins and CLI",
+    "native Quality/ID/CMF runtime",
+    "DNA clustering trial5 script"
+  ],
+  "excluded_inputs": [
+    "private research originals",
+    "complete 8000+ linked-image corpus",
+    "account authentication",
+    "paid execution grants",
+    "background jobs"
+  ],
+  "new_pipeline_model_calls_for_packaging": 0,
+  "independent_review": "Astra read-only review of package instructions and scripts; this is not a new pipeline inference or aesthetic validation run",
+  "style_accuracy_claimed": false
+}

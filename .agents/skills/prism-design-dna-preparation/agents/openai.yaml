@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜设计 DNA 预提取"
+  short_description: "复用旧 DNA，补齐对象级设计关系与同层风格证据，冻结后交给模型聚类"
+  default_prompt: "使用 $prism-design-dna-preparation 复用指定图片的旧 DNA，按授权补齐配色、廓形、块面、线条等关系及同层风格支持与冲突，全部到终态后冻结设计卡，不在聚类内补解析。"

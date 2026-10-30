@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>情绪板对照与逐图标注 · 棱镜</title>
+  <link rel="stylesheet" href="review.css?v=20261012-ranking-1">
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">PRISM / MOODBOARD REVIEW</p>
+      <h1>情绪板对照与逐图标注</h1>
+      <p class="lead">点击图片标记「不通过」，再次点击取消。使用图片旁的「放大」按钮查看原图。</p>
+      <p class="ranking-summary" id="ranking-summary" hidden>按现行 Skill 标准和四张参考版的通用成版规律，由匹配度高到低排列；比较设计情绪与配色、形态、块面、线条的协调，不以颜色像某张参考版为优先依据。排名是相对比较，不代表每板全部通过，也不是独立盲审。</p>
+      <p class="storage-note" id="storage-note">标注保存在当前浏览器，可导出记录。不同板中的同一张图片分别标注；取消标注表示未标注。</p>
+      <div class="stats"><span><b id="board-total">12</b>个情绪板</span><span><b id="image-total">82</b>个图片位置</span><span><b id="rejected-total">0</b>张不通过</span></div>
+    </header>
+    <nav class="toolbar" aria-label="筛选图板">
+      <div class="filters">
+        <button type="button" data-source="all" aria-pressed="true">全部 12</button>
+        <button type="button" data-source="ppt" aria-pressed="false">老师 PPT · 5</button>
+        <button type="button" data-source="reference" aria-pressed="false">参考网页 · 4</button>
+        <button type="button" data-source="bounded" aria-pressed="false">本轮网页 · 3</button>
+      </div>
+      <div class="actions">
+        <button type="button" id="export" class="primary">导出标注</button>
+        <button type="button" id="import">导入标注</button>
+        <button type="button" id="reset">清空标注</button>
+        <input id="import-file" type="file" accept="application/json,.json" hidden>
+      </div>
+    </nav>
+    <p class="progress" id="progress" aria-live="polite"></p>
+    <div id="boards"></div>
+    <footer>各来源的原有取景与判断单独保留；此页记录你的逐图反馈。图片版权归原作者所有。</footer>
+  </main>
+  <dialog id="viewer" aria-labelledby="viewer-title">
+    <header class="viewer-heading"><h2 id="viewer-title"></h2><button type="button" id="close-viewer">关闭</button></header>
+    <div class="viewer-grid">
+      <div class="original-wrap"><img id="original" alt=""></div>
+      <aside class="viewer-details">
+        <p id="viewer-board"></p><p id="viewer-scope" class="muted"></p>
+        <p id="viewer-dimensions" class="muted"></p>
+        <button type="button" id="viewer-reject" aria-pressed="false">标记不通过</button>
+        <label for="reason">不通过原因（可选）</label>
+        <textarea id="reason" rows="4" placeholder="例如：配色不协调、主体不清晰……"></textarea>
+        <p class="muted">标记后填写原因，离开输入框自动保存。</p>
+        <div id="source-links"></div>
+        <a id="open-original" target="_blank" rel="noopener">单独打开完整原图 ↗</a>
+      </aside>
+    </div>
+    <div class="viewer-footer"><button type="button" id="previous">上一张</button><span id="viewer-count"></span><button type="button" id="next">下一张</button></div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <script type="application/json" id="collection-data">__COLLECTION_DATA__</script>
+  <script src="review.js?v=20261012-ranking-1"></script>
+</body>
+</html>

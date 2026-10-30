@@ -1,0 +1,113 @@
+{
+  "title": "棱镜：让每一次设计选择，更贴近用户期待",
+  "date": "2026-10-26",
+  "main_slide_count": 9,
+  "backup_slide_count": 4,
+  "slide_count": 13,
+  "talk_seconds": 720,
+  "qa_seconds": 180,
+  "spoken_character_count": 2406,
+  "interaction_seconds": 15,
+  "prior_version": "history/before-speech-sync-20261026.zip",
+  "updated_scope": "HTML 内嵌讲稿、独立 Markdown／HTML／Word 稿及综合 ZIP 同步为 9 页主讲＋4 页备答；演示视觉未变，截图 PPT 保留旧版且不入包",
+  "images": [
+    {
+      "slot": "A",
+      "role": "AI 情绪板",
+      "filename": "assets/board-a.png",
+      "sha256": "4069702602b48bbf812f0540992a9687124e698d4c2f72e8f8b6c076da121edd",
+      "bytes": 5062753,
+      "origin": "用户提供原图",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "slot": "B",
+      "role": "设计师情绪板",
+      "filename": "assets/board-b.jpg",
+      "sha256": "215abc9074e4a93c3d2f11eeae9d15576642dd44ad91663cff000a961a6e4b5a",
+      "bytes": 620010,
+      "origin": "用户提供原图",
+      "pages": [
+        6,
+        7
+      ]
+    },
+    {
+      "slot": "MVP",
+      "role": "MVP 情绪板示例",
+      "filename": "assets/mvp-moodboard.jpg",
+      "sha256": "e827f70aa9da71a9dae6f03bab6261d6dbc24afac1654e6bd75d533f55b2719c",
+      "bytes": 919683,
+      "origin": "用户提供原图",
+      "pages": [
+        8
+      ]
+    },
+    {
+      "slot": "DNA",
+      "role": "真实 DNA 完整 ID 结果截图",
+      "filename": "assets/dna-10607-result.png",
+      "sha256": "26489ac9707fee5ee75a9f1bb22d353297a6d82ba78bee225e93a49b726a7770",
+      "bytes": 583601,
+      "origin": "https://gamedevcenter.ahagamecenter.com/dna-v2 的现有记录截图，详见 assets/dna-evidence.json",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "slot": "DNAIMAGE",
+      "role": "原图弹层截图",
+      "filename": "assets/dna-10607-original.png",
+      "sha256": "4edf5dc3849f2d3a6165c43baff019415bd92cafde64c9f64db802cdb7ce7f96",
+      "bytes": 543283,
+      "origin": "https://gamedevcenter.ahagamecenter.com/dna-v2 的现有记录截图，详见 assets/dna-evidence.json",
+      "pages": [
+        4
+      ]
+    },
+    {
+      "slot": "DNARELATIONS",
+      "role": "ID 七组关系区块截图",
+      "filename": "assets/dna-10607-relations.png",
+      "sha256": "af79bdc0aa4a1f1a88b9f59796a5e8dc343a362f62188cb568f1d663626f3a6c",
+      "bytes": 165379,
+      "origin": "https://gamedevcenter.ahagamecenter.com/dna-v2 的现有记录截图，详见 assets/dna-evidence.json",
+      "pages": [
+        4
+      ]
+    }
+  ],
+  "files": {
+    "index.html": {
+      "bytes": 18230703,
+      "sha256": "20abdfbf88afefe7bccf731c846e70396c405706975fce9518387a18ddd6f256"
+    },
+    "Untitled.md": {
+      "bytes": 25171,
+      "sha256": "dd71db949a2127b0d4c54646bf75fffd36222ae06f80522d0b8d84e3508bd228"
+    },
+    "PRISM-产品路演演讲稿.docx": {
+      "bytes": 48830,
+      "sha256": "17c872095b085ad584cfded1e1af4f23152287e669e7ece50aca66f45632c365"
+    },
+    "演讲稿.html": {
+      "bytes": 27942,
+      "sha256": "785199657348ef9cc1d7fa4e261c13ea223f5a52558aa7c5fb2833374ef4b987"
+    },
+    "演讲稿.md": {
+      "bytes": 25171,
+      "sha256": "dd71db949a2127b0d4c54646bf75fffd36222ae06f80522d0b8d84e3508bd228"
+    },
+    "README.md": {
+      "bytes": 6201,
+      "sha256": "5616d4936487798374ac8e8206fb8e9b0a7ef95204fc0ce6fe5706eefa5b00a2"
+    },
+    "assets/dna-evidence.json": {
+      "bytes": 1301,
+      "sha256": "7cd4a3b0b6c41211b6d813c3034d460a1373bc7625f67c57672a307cf82b9e94"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "棱镜｜情绪板与原文件交付"
+  short_description: "交付纯图片版、板内说明版、独立原图、可编辑排版与用研来源链，便于同事改版和追溯。"
+  default_prompt: "使用 $prism-moodboard-delivery 完成当前环节，保留用研依据、原图来源和未决状态。"

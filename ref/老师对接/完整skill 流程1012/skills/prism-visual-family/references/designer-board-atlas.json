@@ -1,0 +1,1059 @@
+{
+  "source_type": "user_supplied_cmf_reference",
+  "tile_numbering": "row_major_5_by_2",
+  "designer_theme_names_provided": false,
+  "board_count": 14,
+  "observed_tile_count": 140,
+  "boards": [
+    {
+      "page": 1,
+      "reference_id": "G1",
+      "interpretation_title": "深色细表面与精细边界",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "深灰、蓝灰等克制底色中的细微表面质感，与窄边框、细接缝或精细旋钮共同出现。",
+      "necessary_visible_evidence": "主体表面较细；边界或控制件精细；整体色调克制。",
+      "permitted_variation": "可以深浅变化、曲面或折面变化；不能要求全部黑色或全部同一种材料。",
+      "nearest_direction_difference": "G3更偏中性银灰与软硬搭配；G6强调深底与暖金属的明显搭配。",
+      "ambiguity_and_exceptions": "T08折面形态明显，但细微表面证据较弱；T10偏浅暖灰。",
+      "reference_asset": "assets/designer-reference/page-01.jpg",
+      "tiles": [
+        {
+          "tile_id": "G1-T01",
+          "position": 1,
+          "observed_appearance": "深色细颗粒机身旁有带细齿的圆形旋钮和窄亮边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T02",
+          "position": 2,
+          "observed_appearance": "深色圆角壳体的接缝与螺钉可见，表面反光柔和",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T03",
+          "position": 3,
+          "observed_appearance": "蓝灰柱面有两道窄金属外观环带和细字",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T04",
+          "position": 4,
+          "observed_appearance": "深棕圆形耳罩中有凹面与同心边界",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T05",
+          "position": 5,
+          "observed_appearance": "深色圆角平面边缘有细密套叠槽线",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T06",
+          "position": 6,
+          "observed_appearance": "灰色耳罩搭配银色圆环和细齿边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T07",
+          "position": 7,
+          "observed_appearance": "深灰弯曲机身与细孔网出风口相邻",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T08",
+          "position": 8,
+          "observed_appearance": "蓝灰折面形成明暗面，细纹理不突出",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T09",
+          "position": 9,
+          "observed_appearance": "蓝黑柱体的细表面与深色网状窗口相邻",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G1-T10",
+          "position": 10,
+          "observed_appearance": "浅香槟灰曲面机身旁有细窄控制接缝",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "reference_id": "G2",
+      "interpretation_title": "镜面外观与连续表面",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "抛光镜面外观附着于可辨认的壳体、边缘或折面，呈现清晰映像与连续反射。",
+      "necessary_visible_evidence": "高反射外观有实体边界；映像或高光结构沿表面延续；可辨认表面组织。",
+      "permitted_variation": "银、金、蓝、黑等色相可以变化；曲面与折面都出现；配件可有低反射部分。",
+      "nearest_direction_difference": "G4是有色不透明壳体与宽高光；不能只因画面很亮就归入G2。",
+      "ambiguity_and_exceptions": "T03部分面较柔和；T08含折面；T09同时包含非镜面的深色表面。",
+      "reference_asset": "assets/designer-reference/page-02.jpg",
+      "tiles": [
+        {
+          "tile_id": "G2-T01",
+          "position": 1,
+          "observed_appearance": "玫瑰金外观的弯曲亮面与黑色部件相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T02",
+          "position": 2,
+          "observed_appearance": "蓝色高反射弯曲件带起伏肋线",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T03",
+          "position": 3,
+          "observed_appearance": "金色环带和链状结构各面反射强弱不同",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T04",
+          "position": 4,
+          "observed_appearance": "暖色金属外观杯口内外反射明显",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T05",
+          "position": 5,
+          "observed_appearance": "黑蓝色鼓起曲面产生清晰连续反射",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T06",
+          "position": 6,
+          "observed_appearance": "银色穹顶上能辨认黑色矩形映像",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T07",
+          "position": 7,
+          "observed_appearance": "暖金色细杆与曲面件映像明显",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T08",
+          "position": 8,
+          "observed_appearance": "黑银高反射折面形成锐利边界",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T09",
+          "position": 9,
+          "observed_appearance": "银黑亮面条形部件旁有深色细纹面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G2-T10",
+          "position": 10,
+          "observed_appearance": "青绿色圆角亮面边缘呈现镜面映像",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 3,
+      "reference_id": "G3",
+      "interpretation_title": "中性银灰的细表面与软硬组合",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "银灰、中性灰的细哑光或缎面外观，以精细硬质边界配合局部织物、软垫或网面。",
+      "necessary_visible_evidence": "银灰或中性灰为主要外观；表面细而反射较柔和；精细结构边界可见。",
+      "permitted_variation": "并非每张都有软材；允许局部亮边、纹理或暗色软材；不等于全金属。",
+      "nearest_direction_difference": "G1主色更深；G2镜面反射更强；G5浅暖底色和暖金属边界更突出。",
+      "ambiguity_and_exceptions": "T04与G1-T06相同；T08与G5-T08相同，说明原板并非互斥分类。",
+      "reference_asset": "assets/designer-reference/page-03.jpg",
+      "tiles": [
+        {
+          "tile_id": "G3-T01",
+          "position": 1,
+          "observed_appearance": "银灰相机外观机身带精细圆形控制件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T02",
+          "position": 2,
+          "observed_appearance": "灰织物网面与灰色硬壳边框、底座相邻",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T03",
+          "position": 3,
+          "observed_appearance": "银灰柱面低反射细表面旁有窄亮边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T04",
+          "position": 4,
+          "observed_appearance": "灰耳罩和银色圆环、细齿边共同出现",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T05",
+          "position": 5,
+          "observed_appearance": "灰色细沟槽柱体旁有矩形块面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T06",
+          "position": 6,
+          "observed_appearance": "黑色软座面旁有抛光银色细杆边件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T07",
+          "position": 7,
+          "observed_appearance": "灰色织物软垫耳罩与银色圆环相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T08",
+          "position": 8,
+          "observed_appearance": "银灰圆形面板由三角分区和细纹构成",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T09",
+          "position": 9,
+          "observed_appearance": "银灰曲面手柄的连接边界与开孔可见",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G3-T10",
+          "position": 10,
+          "observed_appearance": "灰色穹顶表面呈柔和反射",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 4,
+      "reference_id": "G4",
+      "interpretation_title": "有色光亮壳体与大曲面",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "有色、不透明的光亮壳体，通过宽而连贯的高光显出平滑大曲面。",
+      "necessary_visible_evidence": "主体颜色附着在壳体上；光亮外观和宽高光可见；平滑曲面有连续边界。",
+      "permitted_variation": "深浅色、不同色相可以变化；允许局部镀亮边件与开孔。",
+      "nearest_direction_difference": "G2更强调镜面映像；G9更偏柔和低反射表面；不能按亮暗照片分组。",
+      "ambiguity_and_exceptions": "T01黑色且含通风细节，不能要求全板都是彩色或无开孔。",
+      "reference_asset": "assets/designer-reference/page-04.jpg",
+      "tiles": [
+        {
+          "tile_id": "G4-T01",
+          "position": 1,
+          "observed_appearance": "黑色汽车后部光亮曲面旁有竖向银条和通风结构",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T02",
+          "position": 2,
+          "observed_appearance": "深红流动曲面与凹部形成宽高光",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T03",
+          "position": 3,
+          "observed_appearance": "灰色光亮穹顶上有宽而平滑的高光",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T04",
+          "position": 4,
+          "observed_appearance": "淡蓝穹顶光亮边缘呈连续曲率",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T05",
+          "position": 5,
+          "observed_appearance": "薄荷色曲面壳体搭配亮边与浅色旋钮",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T06",
+          "position": 6,
+          "observed_appearance": "红色汽车侧面呈现连贯光亮曲面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T07",
+          "position": 7,
+          "observed_appearance": "绿色壳体与细通风槽共同出现",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T08",
+          "position": 8,
+          "observed_appearance": "深蓝鼓起壳体显示平滑光亮表面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T09",
+          "position": 9,
+          "observed_appearance": "橙色折转曲面壳体呈宽白高光",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G4-T10",
+          "position": 10,
+          "observed_appearance": "浅粉曲面壳体呈柔和的光亮高光",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 5,
+      "reference_id": "G5",
+      "interpretation_title": "浅暖主体与暖金属边界",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "部分",
+      "main_relation": "白、象牙、奶油色等浅暖主体，与金、香槟或玫瑰金外观的小边框、环带、按钮相接。",
+      "necessary_visible_evidence": "浅暖主体与暖金属外观搭配同时可见；连接、边界或功能件的关系清楚。",
+      "permitted_variation": "主体可平滑、细纹、开孔或石纹；暖金属可以做环、边、旋钮；不要求全哑光。",
+      "nearest_direction_difference": "G6是深色主体加暖金属；G3为中性银灰；只选白色表面会丢失本板关系。",
+      "ambiguity_and_exceptions": "T04亮面更偏银色；T05金色圆环没有清楚的浅暖主体；T08是较中性的银灰分区面板。因此该关系是主要子方向，不能声称十张都满足浅暖主体＋暖金属的必要条件。",
+      "reference_asset": "assets/designer-reference/page-05.jpg",
+      "tiles": [
+        {
+          "tile_id": "G5-T01",
+          "position": 1,
+          "observed_appearance": "象牙色开孔机身与玫瑰金外观嵌件和圆角按钮相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T02",
+          "position": 2,
+          "observed_appearance": "香槟色窄长边件旁有浅色主体",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T03",
+          "position": 3,
+          "observed_appearance": "奶油色耳罩带密集径向细肋与暖色边圈",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T04",
+          "position": 4,
+          "observed_appearance": "浅色内饰中有亮面操纵件和控制界面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T05",
+          "position": 5,
+          "observed_appearance": "浅金色圆环边件围出细窄边界",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T06",
+          "position": 6,
+          "observed_appearance": "象牙色平面内嵌暖金色圆按钮",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T07",
+          "position": 7,
+          "observed_appearance": "浅石纹外观柱体搭配金色环带",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T08",
+          "position": 8,
+          "observed_appearance": "银灰三角分区圆面板与细边共同出现",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T09",
+          "position": 9,
+          "observed_appearance": "浅米色曲面手柄配暖金属外观细齿环带与按钮",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G5-T10",
+          "position": 10,
+          "observed_appearance": "白色圆面旁有细窄暖金色环边",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 6,
+      "reference_id": "G6",
+      "interpretation_title": "深色主体与暖金属边界",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "黑、深蓝、深绿或深棕主体，以铜金外观的细圈、嵌件、按钮或结构边件建立深浅与冷暖关系。",
+      "necessary_visible_evidence": "深色主体与暖金属外观同时可见；两者的邻接位置和主次关系清晰。",
+      "permitted_variation": "软材、硬壳、肋面或折面均可；不同色相允许变化；不要求全黑或全皮革。",
+      "nearest_direction_difference": "G5是浅暖主体；G1为较克制的深色精细表面，暖色搭配并不突出。",
+      "ambiguity_and_exceptions": "T07暖金色肋柱占比大，不能把暖金属面积固定为极小比例。",
+      "reference_asset": "assets/designer-reference/page-06.jpg",
+      "tiles": [
+        {
+          "tile_id": "G6-T01",
+          "position": 1,
+          "observed_appearance": "深橄榄肋面主体配铜色外观端盖",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T02",
+          "position": 2,
+          "observed_appearance": "深蓝细纹表盘旁有铜色刻度与细齿环",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T03",
+          "position": 3,
+          "observed_appearance": "棕色软垫耳罩与暖金属外观边圈相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T04",
+          "position": 4,
+          "observed_appearance": "深绿圆角机身上有暖铜色圆按钮",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T05",
+          "position": 5,
+          "observed_appearance": "深色弯曲面内有暖金色弧线嵌件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T06",
+          "position": 6,
+          "observed_appearance": "黑色主体内嵌窄长暖金属外观滑动件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T07",
+          "position": 7,
+          "observed_appearance": "金色竖肋柱旁有深铜色条状面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T08",
+          "position": 8,
+          "observed_appearance": "深蓝机身配暖铜色圆角控制件和细纹握面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T09",
+          "position": 9,
+          "observed_appearance": "黑色折面相交处露出暖金属外观边件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G6-T10",
+          "position": 10,
+          "observed_appearance": "黑色瓶体或盖件配暖金色细环",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 7,
+      "reference_id": "G7",
+      "interpretation_title": "织物或木纹与硬质边件的连接",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "织物、皮革外观或木纹等有触感的表面，与硬质边框、金属外观控制件或支撑件在同一物件上相接。",
+      "necessary_visible_evidence": "有触感的纹理可见；硬质边件可见；两者如何连接可见。",
+      "permitted_variation": "可以织物、皮革外观或木纹为主；硬质部分颜色可变化；核心是邻接与连接关系。",
+      "nearest_direction_difference": "G3更强调中性银灰；G12更强调细密硬质装饰；单独布样或单独木纹不足以复现G7。",
+      "ambiguity_and_exceptions": "T08有发光边圈，但主关系仍是网面与硬边；真实材料名称需外部来源验证。",
+      "reference_asset": "assets/designer-reference/page-07.jpg",
+      "tiles": [
+        {
+          "tile_id": "G7-T01",
+          "position": 1,
+          "observed_appearance": "灰色织纹或软座面配硬质深色面板和圆形金属外观按钮",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T02",
+          "position": 2,
+          "observed_appearance": "深灰织物旁有深木纹矩形面板及窄边件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T03",
+          "position": 3,
+          "observed_appearance": "木纹内饰配黑条、金色旋钮与棕色缝线软面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T04",
+          "position": 4,
+          "observed_appearance": "灰织物耳垫配银色硬框和细肋带",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T05",
+          "position": 5,
+          "observed_appearance": "象牙色细织面配铜色底座及木纹支撑",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T06",
+          "position": 6,
+          "observed_appearance": "白色针织外观罩面与黑色圆角硬壳相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T07",
+          "position": 7,
+          "observed_appearance": "浅木纹面旁有织物带与金色柱形件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T08",
+          "position": 8,
+          "observed_appearance": "深色网面柱体围绕有色发光边圈",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T09",
+          "position": 9,
+          "observed_appearance": "深色皮革外观面有接缝、缝线与细暖色边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G7-T10",
+          "position": 10,
+          "observed_appearance": "棕色细织圆面与暖金色镜面圆面相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 8,
+      "reference_id": "G8",
+      "interpretation_title": "局部强色与功能界面",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "明显对比色落在按钮、冠钮、挂环、凹位、端件等局部位置，位置关系使色彩成为设计线索。",
+      "necessary_visible_evidence": "对比色位置明确；与主体或功能件的关系可见；局部色与背景有可辨主次。",
+      "permitted_variation": "色相可变；主色不限白灰；局部形状可变；不规定统一面积百分比。",
+      "nearest_direction_difference": "G10更多由较大有色主体和触感材质建立整体感受；单看红色或橙色无法区分。",
+      "ambiguity_and_exceptions": "T07橙色主体面积大，T01蓝色主体也强；局部强色是主要趋势而非十张全满足的定律。",
+      "reference_asset": "assets/designer-reference/page-08.jpg",
+      "tiles": [
+        {
+          "tile_id": "G8-T01",
+          "position": 1,
+          "observed_appearance": "蓝色车身上有红色尾灯条和小色标",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T02",
+          "position": 2,
+          "observed_appearance": "银灰机身上有小红圆标",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T03",
+          "position": 3,
+          "observed_appearance": "黑框内有荧光黄绿挂环或凹位",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T04",
+          "position": 4,
+          "observed_appearance": "灰色表壳的细齿冠钮带红色细环",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T05",
+          "position": 5,
+          "observed_appearance": "白色主体上有珊瑚色带或绳",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T06",
+          "position": 6,
+          "observed_appearance": "奶油色圆角壳体上有红色按钮群",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T07",
+          "position": 7,
+          "observed_appearance": "较大橙色主体与深蓝圆形嵌件对比",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T08",
+          "position": 8,
+          "observed_appearance": "白色球面或平面体中有深蓝胶囊形凹位",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T09",
+          "position": 9,
+          "observed_appearance": "象牙色盒体上有橙色按钮、凹位和绳件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G8-T10",
+          "position": 10,
+          "observed_appearance": "灰白小件的端部有红色标签或端件",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 9,
+      "reference_id": "G9",
+      "interpretation_title": "柔和色彩与细哑光或缎面",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "较柔和的彩色细表面配合平滑圆角形体，反射通常柔和，部分图有薄环、细肋或软垫。",
+      "necessary_visible_evidence": "颜色及细表面在主体上可见；反射以柔和宽变化为主；圆角或曲面边界清楚。",
+      "permitted_variation": "可深可浅，包含深绿和局部较强青色；允许缎面、小亮边和细纹，不能要求全部粉彩塑料。",
+      "nearest_direction_difference": "G4更光亮，G10整体颜色与触感对比更强；单独圆形无法构成该CMF家族。",
+      "ambiguity_and_exceptions": "T04明显更深；T05有强青色；T06透明感与反射性质不完全明确。",
+      "reference_asset": "assets/designer-reference/page-09.jpg",
+      "tiles": [
+        {
+          "tile_id": "G9-T01",
+          "position": 1,
+          "observed_appearance": "淡紫柱体与紫色织纹握面、香槟色顶盘组合",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T02",
+          "position": 2,
+          "observed_appearance": "浅粉耳塞与盒体有平滑曲面和细金属外观边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T03",
+          "position": 3,
+          "observed_appearance": "蜜桃色细表面曲线瓶体中有窄连接环",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T04",
+          "position": 4,
+          "observed_appearance": "深柔和绿圆角壳体有细颗粒表面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T05",
+          "position": 5,
+          "observed_appearance": "象牙色与较饱和青色柱体相邻",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T06",
+          "position": 6,
+          "observed_appearance": "淡绿色圆柱面带一定透光或亮面外观",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T07",
+          "position": 7,
+          "observed_appearance": "柔和蓝主体上有浅粉圆形控制件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T08",
+          "position": 8,
+          "observed_appearance": "灰绿细平行沟槽圆面配白色边圈",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T09",
+          "position": 9,
+          "observed_appearance": "蜜桃色耳罩硬壳配浅粉软垫",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G9-T10",
+          "position": 10,
+          "observed_appearance": "银蓝折转肋面呈宽而较柔和的反射",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 10,
+      "reference_id": "G10",
+      "interpretation_title": "较强有色主体与触感组合",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "部分",
+      "main_relation": "较强的主体色与织物、细颗粒、皮革外观等触感表面或对比色边界结合，呈较活跃的整体色材关系。",
+      "necessary_visible_evidence": "主体有色与触感或边界的组合可见；需要用选定子方向进一步约束主次。",
+      "permitted_variation": "不同色相、织物或细哑光外观都出现；不要把全板直接定义为蓝色运动风。",
+      "nearest_direction_difference": "G8更偏色彩在局部功能件上的位置；G9通常更柔和；实际交界需要逐图判断。",
+      "ambiguity_and_exceptions": "T06色调偏深且有斑点；T10有强亮面；总体相似感有依据，但不宜直接冻结为单一工艺。",
+      "reference_asset": "assets/designer-reference/page-10.jpg",
+      "tiles": [
+        {
+          "tile_id": "G10-T01",
+          "position": 1,
+          "observed_appearance": "奶油色相机外观主体有黑镜头与黄色矩形件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T02",
+          "position": 2,
+          "observed_appearance": "蓝色皮革外观面有浅青色细边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T03",
+          "position": 3,
+          "observed_appearance": "紫色圆润耳塞呈细哑光外观",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T04",
+          "position": 4,
+          "observed_appearance": "蓝织物或针织鞋面配橙边与青色框",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T05",
+          "position": 5,
+          "observed_appearance": "有色圆角表体以橙色较突出",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T06",
+          "position": 6,
+          "observed_appearance": "深棕黑细颗粒面中有暖色斑点变化",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T07",
+          "position": 7,
+          "observed_appearance": "珊瑚色圆润叠合壳体呈细哑光",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T08",
+          "position": 8,
+          "observed_appearance": "蓝织物圆耳罩与有色硬边相接",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T09",
+          "position": 9,
+          "observed_appearance": "蓝色织纹内饰配铜色边与缝线",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G10-T10",
+          "position": 10,
+          "observed_appearance": "绿色光亮柱体配暖珊瑚色环带",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 11,
+      "reference_id": "G11",
+      "interpretation_title": "光谱色与表面层次",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "多色光谱、虹彩或渐变外观，与薄膜、曲面、折面或透明层的可见边界发生关系。",
+      "necessary_visible_evidence": "多色变化附着于可辨表面或边界；色彩变化具有连续或分区组织；排除单纯背景彩灯。",
+      "permitted_variation": "允许柔和或饱和光谱色，也可起皱、平面、曲面；真实虹彩工艺不能由静态照片确定。",
+      "nearest_direction_difference": "G13强调透视后层、厚度或漫透层；G11强调光谱色；两类可在同图共存。",
+      "ambiguity_and_exceptions": "T04、T06缺少明确物件边界，只支持色彩感受，不能独立证明可迁移的表面工艺。",
+      "reference_asset": "assets/designer-reference/page-11.jpg",
+      "tiles": [
+        {
+          "tile_id": "G11-T01",
+          "position": 1,
+          "observed_appearance": "黑框内的皱褶薄片外观带虹彩色",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T02",
+          "position": 2,
+          "observed_appearance": "黑色条框下的分区面呈光谱色",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T03",
+          "position": 3,
+          "observed_appearance": "金铜色圆顶件上有虹彩反射带",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T04",
+          "position": 4,
+          "observed_appearance": "蓝紫黄连续渐变，物件边界不清",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T05",
+          "position": 5,
+          "observed_appearance": "青紫渐变的细网格平面旁有黑边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T06",
+          "position": 6,
+          "observed_appearance": "柔和彩虹色弧形光带，表面边界不清",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T07",
+          "position": 7,
+          "observed_appearance": "透明淡绿面旁有粉黄层次和边缘",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T08",
+          "position": 8,
+          "observed_appearance": "紫色圆形凹位周围有虹彩线色",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T09",
+          "position": 9,
+          "observed_appearance": "半透明三角折面中有淡色折射外观",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G11-T10",
+          "position": 10,
+          "observed_appearance": "紫蓝渐变柱体的接缝旁有软织面",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 12,
+      "reference_id": "G12",
+      "interpretation_title": "细密硬质装饰与精细边缘",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "较充分",
+      "main_relation": "细密重复凹凸、切面、珠粒或刻纹外观，与精细硬质边缘搭配，形成接近饰品的装饰密度。",
+      "necessary_visible_evidence": "细小重复装饰可辨；它与部件或边缘的组织可见；硬质或闪亮表面外观有依据。",
+      "permitted_variation": "可菱形、金字塔、点状、细刻纹；颜色和局部形状可变；不是统一槽距或全部闪粉。",
+      "nearest_direction_difference": "G7是软织纹、木纹与硬边连接；G12强调硬质细装饰；亮点密集本身不等于同一种材料。",
+      "ambiguity_and_exceptions": "T06颗粒、反光与细肋并存；T09像粒状枝形，不能统一命名为同一种加工。",
+      "reference_asset": "assets/designer-reference/page-12.jpg",
+      "tiles": [
+        {
+          "tile_id": "G12-T01",
+          "position": 1,
+          "observed_appearance": "黑色曲面外观件配银色切面边带",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T02",
+          "position": 2,
+          "observed_appearance": "金色圆边内有细金字塔突起带",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T03",
+          "position": 3,
+          "observed_appearance": "银色密集人字或菱形浮纹配亮边",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T04",
+          "position": 4,
+          "observed_appearance": "黑银曲线外框内有蓝色小面与细珠圈",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T05",
+          "position": 5,
+          "observed_appearance": "铜色曲面有细小凹点或起伏",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T06",
+          "position": 6,
+          "observed_appearance": "紫色细闪粒面旁有金属外观细肋部件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T07",
+          "position": 7,
+          "observed_appearance": "圆表面有细密重复刻纹外观",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T08",
+          "position": 8,
+          "observed_appearance": "金色面由细小矩形拼块状纹理组成",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T09",
+          "position": 9,
+          "observed_appearance": "金色颗粒或晶体外观边缘呈枝状结构",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G12-T10",
+          "position": 10,
+          "observed_appearance": "银色圆环上有密集金字塔状起伏",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 13,
+      "reference_id": "G13",
+      "interpretation_title": "透光层、漫透感与柔和光学表面",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "有限",
+      "main_relation": "部分图明确表现透明或漫透层的厚度与后层关系，部分图更像不透明缎面；目前不能给十张同一透明材料定义。",
+      "necessary_visible_evidence": "透明子方向必须能看见后层、透过纹理或透明边缘；不透明柔反射子方向需要另行定义。",
+      "permitted_variation": "透明、漫透与细肋可以组合，但不应把柔和高光视为透明证据。",
+      "nearest_direction_difference": "G11以光谱色为主；G13中的透光证据来自前后层关系，而非彩光或宽高光。",
+      "ambiguity_and_exceptions": "T07银色曲面与T09紫色壳体缺少明确透光证据；T10层次性质不确定。此板暂不当单一家族验收模板。",
+      "reference_asset": "assets/designer-reference/page-13.jpg",
+      "tiles": [
+        {
+          "tile_id": "G13-T01",
+          "position": 1,
+          "observed_appearance": "竖向透明或漫透肋层前后有蓝背景与瓶体层次",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T02",
+          "position": 2,
+          "observed_appearance": "透明或半透明成形面有柔化后层和边缘",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T03",
+          "position": 3,
+          "observed_appearance": "透明表壳厚度与后方标记可见",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T04",
+          "position": 4,
+          "observed_appearance": "透明网孔状成形件后方背景可见",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T05",
+          "position": 5,
+          "observed_appearance": "细竖肋让橙粉颜色产生模糊层次",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T06",
+          "position": 6,
+          "observed_appearance": "透明纹理面后方有青色物件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T07",
+          "position": 7,
+          "observed_appearance": "银色圆角表面有宽柔反射，透明性未证实",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T08",
+          "position": 8,
+          "observed_appearance": "模糊半透明斜面后方有斜向硬件轮廓",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T09",
+          "position": 9,
+          "observed_appearance": "紫色细缎面外观壳体，透明性未证实",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G13-T10",
+          "position": 10,
+          "observed_appearance": "铜橙点阵与多层壳体关系可见，是否透光不确定",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    },
+    {
+      "page": 14,
+      "reference_id": "G14",
+      "interpretation_title": "多种异质纹理与装饰表面探索",
+      "interpretation_status": "ai_visual_translation_not_designer_label",
+      "interpretation_confidence": "有限",
+      "main_relation": "斑点、层纹、纤维、织网、石纹、裂隙与绒面并存，可确认它在探索表面表达，但不能确认统一触感或统一工艺。",
+      "necessary_visible_evidence": "若生成新板，应先从中选择一条明确可见子关系，再检查素材容量与板间差别。",
+      "permitted_variation": "作为探索参考允许异质材料；作为当前访谈板须按具体子关系重新定义。",
+      "nearest_direction_difference": "不要用自然、环保、高级等词兜住整板；这些不是由全部照片共同支持的视觉事实。",
+      "ambiguity_and_exceptions": "十张的纹理类型和反射不同；按一个纹理词强行通过会掩盖内部差异。",
+      "reference_asset": "assets/designer-reference/page-14.jpg",
+      "tiles": [
+        {
+          "tile_id": "G14-T01",
+          "position": 1,
+          "observed_appearance": "灰白表面有分散黑点，旁有圆角接口或部件",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T02",
+          "position": 2,
+          "observed_appearance": "柔和绿柱体有细斑点和接缝",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T03",
+          "position": 3,
+          "observed_appearance": "奶油色珠光外观面有波浪层纹",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T04",
+          "position": 4,
+          "observed_appearance": "紫色鳞片状重复切面带虹彩色",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T05",
+          "position": 5,
+          "observed_appearance": "青色皱褶纤维外观面有方向变化",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T06",
+          "position": 6,
+          "observed_appearance": "蓝紫虹彩织网外观立方体",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T07",
+          "position": 7,
+          "observed_appearance": "灰紫脉络表面中有细暖金色裂隙线",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T08",
+          "position": 8,
+          "observed_appearance": "灰色织物圆软面配金色边和石纹面",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T09",
+          "position": 9,
+          "observed_appearance": "深绿粗糙面中有金色脉络条",
+          "material_and_process_identity": "not_verified_from_photo"
+        },
+        {
+          "tile_id": "G14-T10",
+          "position": 10,
+          "observed_appearance": "橄榄色绒面软垫随绒向产生明暗变化",
+          "material_and_process_identity": "not_verified_from_photo"
+        }
+      ]
+    }
+  ]
+}

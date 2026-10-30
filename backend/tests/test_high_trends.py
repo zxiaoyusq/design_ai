@@ -15,7 +15,7 @@ from app.main import app
 from app.schemas.high_trends import HighTrendRequest, HighTrendResumeRequest
 from app.services.high_trends.tasks import HighTrendManager, read
 
-MODEL = "gpt-5.6-sol"
+MODEL = "gpt-6-sol"
 
 
 class TextFixtureModel(FakeMessagesListChatModel):
@@ -164,7 +164,8 @@ class HighTrendTests(unittest.TestCase):
         trend_path = self.root / "data/trend_data/trends.json"
         trends = read(trend_path)
         for row in trends["trends"]:
-            row.update(release_time="2026-09-01", summary_zh="柔和触感，兼顾表面耐用。" * 65)
+            # 两篇完整短文合计超过微型上下文，单篇仍可装入；不依赖旧提示词的长度。
+            row.update(release_time="2026-09-01", summary_zh="柔和触感，兼顾表面耐用。" * 100)
         self.write("data/trend_data/trends.json", trends)
 
         def tiny_budget(*args, **kwargs):

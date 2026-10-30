@@ -1,0 +1,138 @@
+{
+  "comparison_scope": "仅审核提供的整板及十张显示尺度截图中指定对象的局部表面；不按整张照片或产品身份比较。",
+  "judgment": "revise",
+  "coherent_visible_family": false,
+  "slots": [
+    {
+      "alias": "N003",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "发光区域改变局部明暗，但灯壳的连续竖向波纹仍可辨。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N008",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "在板上较小，但盖面筋纹及外缘仍可辨。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N025",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N001",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N054",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "周边另有横向结构线，但指定箱体侧面的凸棱以竖向为主。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N038",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "细肋较浅，仍能从重复明暗及墙板接缝读取。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N016",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "槽纹随支柱形态分段变化，但竖向重复关系清楚。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N062",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "可见少量竖向接缝；环向褶纹仍是主导节奏。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N036",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": true,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": true,
+      "specific_issue": "附件遮住部分筒身，但斜向凹槽仍有足够连续可见区域。",
+      "specific_fix_if_needed": ""
+    },
+    {
+      "alias": "N111",
+      "current_target_correct": true,
+      "relief_repetition_clear": true,
+      "direction_consistent_in_unit": true,
+      "neutral_family_fit": false,
+      "crop_quality_sufficient": true,
+      "carrier_boundary_visible": true,
+      "can_remain": false,
+      "specific_issue": "褶面起伏可见，但彩色斑驳与交错细线显著参与视觉读取，偏离本板以低彩度、单一方向表面起伏为主的关系。",
+      "specific_fix_if_needed": "替换为原色低彩度、无显著交错图案的连续褶面；不要通过调色使此图勉强一致。"
+    }
+  ],
+  "worst_mismatches": [
+    "N111：彩色斑驳及交错细线使其不像其他九张那样由单一方向的低彩度起伏主导。"
+  ],
+  "mandatory_changes": [
+    "替换 N111，并在实际整板显示尺度复核替换图的连续起伏、载体边界与原色低彩度条件；未补足合格第十张前不能判定通过。"
+  ],
+  "reason": "九张指定局部可见同一类有方向、连续重复的表面槽筋或褶纹；N111 虽有褶面，却受到明显色彩图案和交错线条干扰，因此十张未全部支持同一主关系。",
+  "claim_limits": [
+    "仅是当前可见关系及整板视觉审阅，不是正式算法六模块验收。",
+    "不推断实际物理成分，也不代表真人设计师偏好或批准。"
+  ]
+}

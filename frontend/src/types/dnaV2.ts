@@ -1,6 +1,6 @@
-import type { ExtractionTask } from './dna'
+import type { ExtractionTask, ModelInfo } from './dna'
 
-/** 同一 V2 页面并列展示冻结 R17 历史结果和新版 Sol R5 平面特征结果。 */
+/** 历史 R17／R5 的兼容摘要；当前 V2 图库使用下方 PreparedResultSummary。 */
 export interface D02ResultSummary {
   id: string
   image_name: string
@@ -169,4 +169,128 @@ export interface D02PptBatch {
     user_names: string[]
     ref_pic_codes: string[]
   }>
+}
+
+/** 设计卡保留模型原生对象和坐标，缺项不会被显示层补成已知事实。 */
+export type PreparedBranch = 'ID' | 'CMF'
+export type PreparedBbox = [number, number, number, number]
+export interface PreparedFileRef { path: string; sha256: string }
+export interface PreparedRelation {
+  observation: string
+  evidence: string[]
+  unknown: boolean
+}
+export interface PreparedStyle {
+  style_id: string
+  main_support: string[]
+  main_conflicts: string[]
+  match_score: number
+  confidence: number
+}
+export interface PreparedDesignCard {
+  card_id: string
+  branch: PreparedBranch
+  image_id: string
+  image_sha256: string
+  category: string
+  subject: { identity: string; role: string; bbox: PreparedBbox; whole_visible: boolean }
+  bbox_format: 'xywh_normalized'
+  display_bbox: PreparedBbox
+  evidence_bbox: PreparedBbox
+  display_scope: 'whole_object' | 'representative_detail'
+  crop_reason: string
+  relations: Record<'palette' | 'silhouette' | 'planes' | 'lines' | 'optics' | 'texture' | 'details', PreparedRelation>
+  style_candidates: PreparedStyle[]
+  design_emotion: { expression: string; coordination_reason: string; counter_signals: string[] }
+  design_quality: { level: 'ordinary' | 'considered' | 'uncertain' | 'strong'; evidence: string[] }
+  limitations: string[]
+  source_kind: string
+  sources: PreparedSource[]
+  provenance: {
+    actual_model: string | null
+    requested_model: string
+    reasoning_effort: string | null
+    prompt_version: string
+    assessed_at: string
+    pointer: string
+    answer_ref: PreparedFileRef
+    prompt_ref: PreparedFileRef
+    receipt_ref: PreparedFileRef
+  }
+}
+export interface PreparedSource {
+  title?: string
+  article_url?: string
+  image_url?: string
+  source_id?: string
+  publisher?: string
+  category?: string
+  subcategory?: string
+  [key: string]: unknown
+}
+export interface PreparedResultSummary extends D02ResultSummary {
+  status: string
+  branches: PreparedBranch[]
+  object_names: string[]
+  style_names: string[]
+  style_ids?: string[]
+  source_kind: string
+  card_count?: number
+  frozen?: boolean
+}
+export interface PreparedCoverage {
+  /** 新请求使用的工程模型目录；历史设计卡仍保留各自的模型与 Prompt。 */
+  available_models?: ModelInfo[]
+  default_model?: string
+  framework?: string
+  transport?: string
+  agent_runtime_version?: string
+  counts: {
+    images: number
+    observed: number
+    failed: number
+    pending: number
+    cards: number
+    cards_by_branch: Record<PreparedBranch, number>
+    images_by_branch: Record<PreparedBranch, number>
+    success_rate: number
+    [key: string]: unknown
+  }
+  created_at: string
+  coverage_limit?: string
+  historical_prompt_version?: string
+  current_prompt_version?: string
+  style_catalog?: Array<{ style_id: string; name: string }>
+  unavailable_new_results?: Array<{ id: string; error: string }>
+  [key: string]: unknown
+}
+export interface PreparedDnaResult {
+  id: string
+  skill: string
+  schema_version: 'prism_prepared_design_cards_v1'
+  image_name: string
+  created_at: string
+  status: string
+  preview_url?: string
+  source: {
+    image_id: string
+    image_sha256: string
+    image_filename: string
+    source_kind?: string
+    sources?: PreparedSource[]
+    [key: string]: unknown
+  }
+  execution: {
+    model_id: string
+    actual_model?: string | null
+    prompt_version?: string
+    reasoning_effort?: string | null
+    started_at?: string
+    [key: string]: unknown
+  }
+  validation: { note?: string; [key: string]: unknown }
+  cards: PreparedDesignCard[]
+  invalid_objects: unknown[]
+  style_catalog: Array<{ style_id: string; name: string }>
+  [key: string]: unknown
 }

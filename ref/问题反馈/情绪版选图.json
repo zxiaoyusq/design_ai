@@ -1,0 +1,1566 @@
+{
+  "schema_version": "prism.image_rejection_feedback.v1",
+  "collection_identity": "0a822b67c1365becfc3b20d19e45749e01839a6084c9442470b5237c604b3f3c",
+  "exported_at": "2026-10-13T01:55:18.675Z",
+  "storage": "this_browser",
+  "records": [
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-1",
+      "instance_id": "ppt-slide-1:shape-25",
+      "image_sha256": "7899780c1e3eef68323ab44fab557a74f64e847c8afbc4f2bf3aa9c6886a299b",
+      "unit_id": null,
+      "ppt_shape_id": "25",
+      "roi": [
+        0,
+        0.05217,
+        1,
+        0.8956599999999999
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-2",
+      "instance_id": "ppt-slide-1:shape-2",
+      "image_sha256": "e01036ce45fac8af548f92d09dba84200da8bcdc3cd40b4e0c56d4cd81b5f53e",
+      "unit_id": null,
+      "ppt_shape_id": "2",
+      "roi": [
+        0,
+        0.1,
+        1,
+        0.9
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:01.453Z"
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-3",
+      "instance_id": "ppt-slide-1:shape-3",
+      "image_sha256": "acb7dd82ae35741784e6d7231289d7eaf25a61b699ac97e3228e94931dc08086",
+      "unit_id": null,
+      "ppt_shape_id": "3",
+      "roi": [
+        0,
+        0.16021,
+        1,
+        0.83979
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-4",
+      "instance_id": "ppt-slide-1:shape-4",
+      "image_sha256": "af7595952b483a8cabdcc7cb68d615c7580d14a0ef753a01451b2c71b43a8d3f",
+      "unit_id": null,
+      "ppt_shape_id": "4",
+      "roi": [
+        0.03545,
+        0.08059,
+        0.93399,
+        0.9194100000000001
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:34:58.691Z"
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-5",
+      "instance_id": "ppt-slide-1:shape-5",
+      "image_sha256": "4fdbccc5d948e1368e58e7936262057b407d8b0763ee8ce41197a3d353028ff8",
+      "unit_id": null,
+      "ppt_shape_id": "5",
+      "roi": [
+        0.06294,
+        0,
+        0.87296,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:34:51.707Z"
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-6",
+      "instance_id": "ppt-slide-1:shape-6",
+      "image_sha256": "d196164eac8829a7835694e20f27a8e04ef0162244f4083561311b0fcf958123",
+      "unit_id": null,
+      "ppt_shape_id": "6",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-7",
+      "instance_id": "ppt-slide-1:shape-7",
+      "image_sha256": "f76f922763ba79e970fb4e9e531de6d4969179e901c4f19ff477bf60be31f6a1",
+      "unit_id": null,
+      "ppt_shape_id": "7",
+      "roi": [
+        0,
+        0.39358,
+        1,
+        0.5238499999999999
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-1",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT1-8",
+      "instance_id": "ppt-slide-1:shape-8",
+      "image_sha256": "a661a5695fd5d65e8a97a00535e80b18c396046bf964d5c5afa1dd63aa609a98",
+      "unit_id": null,
+      "ppt_shape_id": "8",
+      "roi": [
+        0.25,
+        0.25833,
+        0.54167,
+        0.525
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:34:57.017Z"
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-1",
+      "instance_id": "ppt-slide-2:shape-23",
+      "image_sha256": "b95c69076c4c060ee8a4d8941779213fff61818f046f4a8e5541791ee3e6f1ef",
+      "unit_id": null,
+      "ppt_shape_id": "23",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-2",
+      "instance_id": "ppt-slide-2:shape-2",
+      "image_sha256": "a5ceabd0470ae0cec9aca999cadfff134aecd6c954155b815482e8f096c3b275",
+      "unit_id": null,
+      "ppt_shape_id": "2",
+      "roi": [
+        0.20455,
+        0.22414,
+        0.69318,
+        0.55172
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-3",
+      "instance_id": "ppt-slide-2:shape-3",
+      "image_sha256": "495391a913bea28a1addd02b41d5d38e8589999f6ba5e14076e01d693d680535",
+      "unit_id": null,
+      "ppt_shape_id": "3",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:05.229Z"
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-4",
+      "instance_id": "ppt-slide-2:shape-4",
+      "image_sha256": "13c3b55a6c78f5f39df96116a496c033946f85f1edca4a4e19290ce713547b82",
+      "unit_id": null,
+      "ppt_shape_id": "4",
+      "roi": [
+        0.12045,
+        0.27025,
+        0.6795500000000001,
+        0.67007
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-5",
+      "instance_id": "ppt-slide-2:shape-5",
+      "image_sha256": "f390ef2935a84fe4a845de561d32f92ea9f6af448137b13d986444f103a2904b",
+      "unit_id": null,
+      "ppt_shape_id": "5",
+      "roi": [
+        0.45455,
+        0.25554,
+        0.40908999999999995,
+        0.64736
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-6",
+      "instance_id": "ppt-slide-2:shape-6",
+      "image_sha256": "23c05e345e5ea0b0655da7f83917715fc77bd3ffc818f5c0d6df45b8f4a6b138",
+      "unit_id": null,
+      "ppt_shape_id": "6",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-7",
+      "instance_id": "ppt-slide-2:shape-7",
+      "image_sha256": "11ce0b4785a37df25ac8a2f56cf2c1953d69f5514af3e6224198471a6ebe4614",
+      "unit_id": null,
+      "ppt_shape_id": "7",
+      "roi": [
+        0.15,
+        0.03523,
+        0.68977,
+        0.93522
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:59.660Z"
+    },
+    {
+      "board_id": "ppt-slide-2",
+      "board_title": "深色有序",
+      "source": "ppt",
+      "image_id": "PPT2-8",
+      "instance_id": "ppt-slide-2:shape-8",
+      "image_sha256": "93f10934fff367b88a145d4503cded52fb190c234dd53d352d17ac8fdeca8067",
+      "unit_id": null,
+      "ppt_shape_id": "8",
+      "roi": [
+        0.12005,
+        0.03497,
+        0.78011,
+        0.93991
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:53.525Z"
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-1",
+      "instance_id": "ppt-slide-3:shape-23",
+      "image_sha256": "f0d88f527272bc3321246aed7026cf9a89f0bfc041f2ae905f9bd22d7aec839a",
+      "unit_id": null,
+      "ppt_shape_id": "23",
+      "roi": [
+        0.08977,
+        0.15,
+        0.85,
+        0.78977
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-2",
+      "instance_id": "ppt-slide-3:shape-2",
+      "image_sha256": "67a4cba2c8977b06c3b9e3f7a22b7f8a5b1321afde6fc074364f30bcf489a049",
+      "unit_id": null,
+      "ppt_shape_id": "2",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-3",
+      "instance_id": "ppt-slide-3:shape-3",
+      "image_sha256": "f97bcb65314755b69ab795319381427885b2cd7efb5519bccd169a6e42103c36",
+      "unit_id": null,
+      "ppt_shape_id": "3",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-4",
+      "instance_id": "ppt-slide-3:shape-4",
+      "image_sha256": "46b6fcd13148a8a04f22216b52d68bd881534b08e8403ed90cb1afc81c739648",
+      "unit_id": null,
+      "ppt_shape_id": "4",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:13.924Z"
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-5",
+      "instance_id": "ppt-slide-3:shape-5",
+      "image_sha256": "5bd01bb8aba18a0e1250b3f62555708532879a398fab2e368dd32f2ab3554d08",
+      "unit_id": null,
+      "ppt_shape_id": "5",
+      "roi": [
+        0.16023,
+        0.2197,
+        0.51932,
+        0.6606
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:53:45.048Z"
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-6",
+      "instance_id": "ppt-slide-3:shape-6",
+      "image_sha256": "5792b14d97911070f2b4040fa0c341a9fa52efbce9d064b41117c04e140bd72a",
+      "unit_id": null,
+      "ppt_shape_id": "6",
+      "roi": [
+        0.38977,
+        0.01959,
+        0.45000000000000007,
+        0.96082
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:21.995Z"
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-7",
+      "instance_id": "ppt-slide-3:shape-7",
+      "image_sha256": "04be72dd0afca3103d6e49d7e11cfb305f8ce6cd3f7cc83483cd74418a897797",
+      "unit_id": null,
+      "ppt_shape_id": "7",
+      "roi": [
+        0.14059,
+        0.15018,
+        0.8092900000000001,
+        0.74909
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:19.686Z"
+    },
+    {
+      "board_id": "ppt-slide-3",
+      "board_title": "银壳精整",
+      "source": "ppt",
+      "image_id": "PPT3-8",
+      "instance_id": "ppt-slide-3:shape-8",
+      "image_sha256": "51ce03dac6006db6fb8a6531bd95b9aef87b046c16528386784ba1cc46133ec1",
+      "unit_id": null,
+      "ppt_shape_id": "8",
+      "roi": [
+        0.05479,
+        0.34915,
+        0.91532,
+        0.6305099999999999
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-1",
+      "instance_id": "ppt-slide-4:shape-23",
+      "image_sha256": "61a542c23537d3cab6f4c94cca62298e3b70e34450e2af97225ca7ffb4becbc3",
+      "unit_id": null,
+      "ppt_shape_id": "23",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-2",
+      "instance_id": "ppt-slide-4:shape-2",
+      "image_sha256": "e19711b363040e9c17a5e55c32286a173633586506f9af63f17971e9cf5df3f7",
+      "unit_id": null,
+      "ppt_shape_id": "2",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:28.780Z"
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-3",
+      "instance_id": "ppt-slide-4:shape-3",
+      "image_sha256": "cc2cd93341c2feffb179a644b1dd86265af9aaa254ee1d9381a65911a9272bb1",
+      "unit_id": null,
+      "ppt_shape_id": "3",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-4",
+      "instance_id": "ppt-slide-4:shape-4",
+      "image_sha256": "56505c764d4a7b2afb4ba7f63e12364d4becd13915d62903a4c561a6cbb95da6",
+      "unit_id": null,
+      "ppt_shape_id": "4",
+      "roi": [
+        0.04392,
+        0.55067,
+        0.27087000000000006,
+        0.34857
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-5",
+      "instance_id": "ppt-slide-4:shape-5",
+      "image_sha256": "3efa5a6ba99e5c48a7b1877b568d0dcc85c6b2cfd8935de3a6ec6574dd4a9d4f",
+      "unit_id": null,
+      "ppt_shape_id": "5",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-6",
+      "instance_id": "ppt-slide-4:shape-6",
+      "image_sha256": "7eca732f3cc823818940e02c09caec08481204f1adba48e137a3caed33dd9ede",
+      "unit_id": null,
+      "ppt_shape_id": "6",
+      "roi": [
+        0.20008,
+        0,
+        0.79992,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:16.162Z"
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-7",
+      "instance_id": "ppt-slide-4:shape-7",
+      "image_sha256": "11041187f009502d7db07f682e509ded7d36ba649783d3979423e9d76ad09f66",
+      "unit_id": null,
+      "ppt_shape_id": "7",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:22.620Z"
+    },
+    {
+      "board_id": "ppt-slide-4",
+      "board_title": "清浅有序",
+      "source": "ppt",
+      "image_id": "PPT4-8",
+      "instance_id": "ppt-slide-4:shape-8",
+      "image_sha256": "2bff34fc3528d79b13b3efe0bec23c276735ea07dda7017dc2a612fd639c05e3",
+      "unit_id": null,
+      "ppt_shape_id": "8",
+      "roi": [
+        0.04279,
+        0,
+        0.56846,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:35:20.223Z"
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-1",
+      "instance_id": "ppt-slide-5:shape-26",
+      "image_sha256": "7899780c1e3eef68323ab44fab557a74f64e847c8afbc4f2bf3aa9c6886a299b",
+      "unit_id": null,
+      "ppt_shape_id": "26",
+      "roi": [
+        0,
+        0.05217,
+        1,
+        0.8956599999999999
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-2",
+      "instance_id": "ppt-slide-5:shape-2",
+      "image_sha256": "3ebfebc500a62cb50b1ab12e6007589a110e0f49dba6d58f1f8a7c2c31d02c87",
+      "unit_id": null,
+      "ppt_shape_id": "2",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:34:10.369Z"
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-3",
+      "instance_id": "ppt-slide-5:shape-3",
+      "image_sha256": "f73454dc320c8e2821a293f312301cfdb2f0b08f283214eb2219e7fb5b26ccdc",
+      "unit_id": null,
+      "ppt_shape_id": "3",
+      "roi": [
+        0.06,
+        0.08667,
+        0.89333,
+        0.81333
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-4",
+      "instance_id": "ppt-slide-5:shape-4",
+      "image_sha256": "a7c796bd3a25fac8ca8015f3c007aaf8c9125142d5a026f4f8c4c593ecc1d299",
+      "unit_id": null,
+      "ppt_shape_id": "4",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:52:23.961Z"
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-5",
+      "instance_id": "ppt-slide-5:shape-5",
+      "image_sha256": "1c501f6c65dc1cf92ae85bc7aadd2b021442de45dde5643d98d032aa06abb6e0",
+      "unit_id": null,
+      "ppt_shape_id": "5",
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-6",
+      "instance_id": "ppt-slide-5:shape-6",
+      "image_sha256": "00ad17df9ce369178429ee9ee894225cb7289928c652b8d2681b050def52558d",
+      "unit_id": null,
+      "ppt_shape_id": "6",
+      "roi": [
+        0.125,
+        0.13889,
+        0.77778,
+        0.7638900000000001
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-7",
+      "instance_id": "ppt-slide-5:shape-7",
+      "image_sha256": "a7712decee3c24d942b0b6a21a27ddded5028f89718996f6c26f7a152db472c0",
+      "unit_id": null,
+      "ppt_shape_id": "7",
+      "roi": [
+        0.12676,
+        0.11236,
+        0.76056,
+        0.79588
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:34:25.858Z"
+    },
+    {
+      "board_id": "ppt-slide-5",
+      "board_title": "柔塑静物",
+      "source": "ppt",
+      "image_id": "PPT5-8",
+      "instance_id": "ppt-slide-5:shape-8",
+      "image_sha256": "3614a4aa35277d9f8ccb525ccbf33c2686712f93771cf6a2c71d9582e230c6ac",
+      "unit_id": null,
+      "ppt_shape_id": "8",
+      "roi": [
+        0.075,
+        0.23,
+        0.875,
+        0.63
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "20547_001",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:20547_001:CMF:2",
+      "image_sha256": "9b54b392fdf130335fe2b43391dfc34339cd9855d6727335f3ac4819d60593e1",
+      "unit_id": "20547_001:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.032,
+        0.715,
+        0.941,
+        0.259
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "24090_003",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:24090_003:CMF:2",
+      "image_sha256": "06519793afbb13fef5098f145f282a8313c20539ec2f6856c05bdff65c64a690",
+      "unit_id": "24090_003:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.199,
+        0.402,
+        0.548,
+        0.365
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:55:09.528Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "24092_002",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:24092_002:CMF:2",
+      "image_sha256": "6b8ba5a881999ee3a2dbc44552c220f4dd6e1f3fe8cb0c82da9cd7e7c8a4bd22",
+      "unit_id": "24092_002:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0,
+        0.555,
+        0.405,
+        0.445
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "17091_001",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:17091_001:CMF:2",
+      "image_sha256": "9ec3853b9e341976c341673a2a6ee562a3e873ef14d8a119469ca8242bee15ee",
+      "unit_id": "17091_001:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.108,
+        0.267,
+        0.806,
+        0.445
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:55:10.577Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "11786_006",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:11786_006:CMF:2",
+      "image_sha256": "701a5c31508fc8ac407111fdfede64144395657535e5830cd799aeb67bb02618",
+      "unit_id": "11786_006:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.049,
+        0.72,
+        0.612,
+        0.208
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "10400_001",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:10400_001:CMF:3",
+      "image_sha256": "0b40985ef9376a332a9c8a55d996bd0ed7c3e4c85425468b7afd9c3fd8415404",
+      "unit_id": "10400_001:CMF:3",
+      "ppt_shape_id": null,
+      "roi": [
+        0.46,
+        0.495,
+        0.354,
+        0.267
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "13204_005",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:13204_005:CMF:2",
+      "image_sha256": "c67127b5e5a61a32875561e7ebe6500726e4b6adb62abb5ceb97b806aa0ed695",
+      "unit_id": "13204_005:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.115,
+        0.32,
+        0.725,
+        0.67
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:55:12.216Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05",
+      "board_title": "浅中性色柔散宽面、圆缓界面与疏朗层级",
+      "source": "reference",
+      "image_id": "11937_009",
+      "instance_id": "reference-BOARD-LLM-CMF-2dd9bda157c11a05:11937_009:CMF:3",
+      "image_sha256": "db84dcf44e3ace1bf2749137c47b52d564db8ed6f3ef48c60a95de22d73cf609",
+      "unit_id": "11937_009:CMF:3",
+      "ppt_shape_id": null,
+      "roi": [
+        0,
+        0,
+        0.91,
+        0.333
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "9778_011",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:9778_011:CMF:2",
+      "image_sha256": "d968863fc166b3c6a8ab50d3f5d3ad970a1af7d43e57a5614a5aa37151003683",
+      "unit_id": "9778_011:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.08,
+        0.12,
+        0.84,
+        0.78
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "8544_008",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:8544_008:CMF:2",
+      "image_sha256": "65c85db0ea037e429ff227a8a9750786e586ced213a18dda192e8bd3c96356ff",
+      "unit_id": "8544_008:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0,
+        0.237,
+        0.58,
+        0.615
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "17892_007",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:17892_007:CMF:2",
+      "image_sha256": "1ca0e316d15e84463fc785491e34154a31a8e540934c2ca3cb3c2fff42120e80",
+      "unit_id": "17892_007:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0,
+        0.21,
+        0.87,
+        0.55
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "11417_006",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:11417_006:CMF:3",
+      "image_sha256": "c57e3e93b79b76511c160183a18adfa7d876fac5716d1a673ae580ecdff2a167",
+      "unit_id": "11417_006:CMF:3",
+      "ppt_shape_id": null,
+      "roi": [
+        0.648,
+        0.766,
+        0.327,
+        0.162
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "18434_009",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:18434_009:CMF:3",
+      "image_sha256": "f2db8965deccb77e724cabc2305973f9eb09f1267a0997cd3e49196667625e82",
+      "unit_id": "18434_009:CMF:3",
+      "ppt_shape_id": null,
+      "roi": [
+        0.259,
+        0.188,
+        0.489,
+        0.541
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:38:06.500Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "9514_003",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:9514_003:CMF:2",
+      "image_sha256": "cf85695bcb17bfe1981e2d9f8253099c8b25e4d9fa398ef156c8a842dac617a8",
+      "unit_id": "9514_003:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.35,
+        0.426,
+        0.455,
+        0.423
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "11462_011",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:11462_011:CMF:2",
+      "image_sha256": "b90da07cee17dfd3fcb56a82f9576971cfd456bfef9104923adf0b35e0938021",
+      "unit_id": "11462_011:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.305,
+        0.125,
+        0.558,
+        0.85
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-639ed362b900dae5",
+      "board_title": "provisional｜柔散木纹大面与克制的凹入、薄边界面",
+      "source": "reference",
+      "image_id": "11948_003",
+      "instance_id": "reference-BOARD-LLM-CMF-639ed362b900dae5:11948_003:CMF:2",
+      "image_sha256": "4a22bf6186738a7f44d3a3568ee4d840d73f433e2464d08c03e23aca2c0adc4f",
+      "unit_id": "11948_003:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.253,
+        0.599,
+        0.5,
+        0.202
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:38:05.508Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1",
+      "board_title": "provisional｜几何分区中的颗粒与斑驳哑面",
+      "source": "reference",
+      "image_id": "17575_011",
+      "instance_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1:17575_011:CMF:2",
+      "image_sha256": "be0583ecd4f65282edecb46a4b00c5e2866d032bff1a987379f9e891ac8e216c",
+      "unit_id": "17575_011:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.12,
+        0.56,
+        0.615,
+        0.31
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1",
+      "board_title": "provisional｜几何分区中的颗粒与斑驳哑面",
+      "source": "reference",
+      "image_id": "10062_003",
+      "instance_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1:10062_003:CMF:2",
+      "image_sha256": "051ea4f8e17d30a9eeb5436050e86d10058c58c2fd2e4048ed196d8ade16e370",
+      "unit_id": "10062_003:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.287,
+        0.46,
+        0.23,
+        0.16
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:53.020Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1",
+      "board_title": "provisional｜几何分区中的颗粒与斑驳哑面",
+      "source": "reference",
+      "image_id": "9994_011",
+      "instance_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1:9994_011:CMF:2",
+      "image_sha256": "ff25e0e6c83c30fad7e13d35c32bd8d1f429d90767001b8adff1172967016e9a",
+      "unit_id": "9994_011:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.067,
+        0.526,
+        0.867,
+        0.439
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:41.717Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1",
+      "board_title": "provisional｜几何分区中的颗粒与斑驳哑面",
+      "source": "reference",
+      "image_id": "11436_004",
+      "instance_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1:11436_004:CMF:2",
+      "image_sha256": "57c94d13ae6f729588be151ce47c64eb4ac06527bdff19b0b35e840797c96ecf",
+      "unit_id": "11436_004:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1",
+      "board_title": "provisional｜几何分区中的颗粒与斑驳哑面",
+      "source": "reference",
+      "image_id": "11121_002",
+      "instance_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1:11121_002:CMF:2",
+      "image_sha256": "5e1132a8f8d4aacf99697bd2b278805f796cb7b3efcdccdddb83f331ea3b2752",
+      "unit_id": "11121_002:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0,
+        0.346,
+        1,
+        0.654
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:48.586Z"
+    },
+    {
+      "board_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1",
+      "board_title": "provisional｜几何分区中的颗粒与斑驳哑面",
+      "source": "reference",
+      "image_id": "17982_018",
+      "instance_id": "reference-BOARD-LLM-CMF-fb8c3b5ea0d4dce1:17982_018:CMF:2",
+      "image_sha256": "772857de3641a9cd0d8f7258ae535f83e1d3ebd5c78a294f9faab96d12891e03",
+      "unit_id": "17982_018:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.235,
+        0.215,
+        0.755,
+        0.69
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-LLM-CMF-7089686a013f5d05",
+      "board_title": "浅中性色连续面上的细密重复与柔散受光",
+      "source": "reference",
+      "image_id": "22952_002",
+      "instance_id": "reference-LLM-CMF-7089686a013f5d05:22952_002:CMF:3",
+      "image_sha256": "b9fe91ef5f1569dd191170e5f380d9a1317b1bbf0bd0d5f97df6952fbe342854",
+      "unit_id": "22952_002:CMF:3",
+      "ppt_shape_id": null,
+      "roi": [
+        0.714,
+        0.371,
+        0.219,
+        0.208
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:38.795Z"
+    },
+    {
+      "board_id": "reference-LLM-CMF-7089686a013f5d05",
+      "board_title": "浅中性色连续面上的细密重复与柔散受光",
+      "source": "reference",
+      "image_id": "16851_001",
+      "instance_id": "reference-LLM-CMF-7089686a013f5d05:16851_001:CMF:2",
+      "image_sha256": "2c94399ca0e105b94c737e817f4ea51250a063b6443bf0618a63788e75999297",
+      "unit_id": "16851_001:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.28,
+        0.16,
+        0.44,
+        0.38
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:32.645Z"
+    },
+    {
+      "board_id": "reference-LLM-CMF-7089686a013f5d05",
+      "board_title": "浅中性色连续面上的细密重复与柔散受光",
+      "source": "reference",
+      "image_id": "13204_001",
+      "instance_id": "reference-LLM-CMF-7089686a013f5d05:13204_001:CMF:2",
+      "image_sha256": "06dd2cd93e73b89674fb78cda0698809ee5fafe8da0043e91a37887b4ddbd3cc",
+      "unit_id": "13204_001:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.425,
+        0.465,
+        0.405,
+        0.425
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:43.988Z"
+    },
+    {
+      "board_id": "reference-LLM-CMF-7089686a013f5d05",
+      "board_title": "浅中性色连续面上的细密重复与柔散受光",
+      "source": "reference",
+      "image_id": "21681_004",
+      "instance_id": "reference-LLM-CMF-7089686a013f5d05:21681_004:CMF:2",
+      "image_sha256": "84b6897cc225448185dccc0c6653a95fb1ce48635b905a60a78c8a0a3ffd2d3f",
+      "unit_id": "21681_004:CMF:2",
+      "ppt_shape_id": null,
+      "roi": [
+        0.18,
+        0.225,
+        0.635,
+        0.715
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "reference-LLM-CMF-7089686a013f5d05",
+      "board_title": "浅中性色连续面上的细密重复与柔散受光",
+      "source": "reference",
+      "image_id": "12182_013",
+      "instance_id": "reference-LLM-CMF-7089686a013f5d05:12182_013:CMF:1",
+      "image_sha256": "903fa4a6839e254225a00b10d1a3d65632bd57c76d0a35967906f3797a915a5f",
+      "unit_id": "12182_013:CMF:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.24,
+        0.098,
+        0.64,
+        0.329
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:47.724Z"
+    },
+    {
+      "board_id": "bounded-1",
+      "board_title": "深色主块面与有界构造层级",
+      "source": "bounded",
+      "image_id": "16956_005",
+      "instance_id": "bounded-1:16956_005:ID:1",
+      "image_sha256": "4d794d1505497df4e39969c135e005488cd9dfd8ac41b5adcc79fd7f30b49e0c",
+      "unit_id": "16956_005:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.314,
+        0.321,
+        0.375,
+        0.367
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:38:22.845Z"
+    },
+    {
+      "board_id": "bounded-1",
+      "board_title": "深色主块面与有界构造层级",
+      "source": "bounded",
+      "image_id": "19244_012",
+      "instance_id": "bounded-1:19244_012:ID:1",
+      "image_sha256": "ae78f9afdfe51db3d34bf932bc5fa4483a61c78064b5d3e3ae1553fc96caef53",
+      "unit_id": "19244_012:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.19,
+        0.24,
+        0.62,
+        0.52
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "bounded-1",
+      "board_title": "深色主块面与有界构造层级",
+      "source": "bounded",
+      "image_id": "9877_001",
+      "instance_id": "bounded-1:9877_001:ID:1",
+      "image_sha256": "2759ee9685e87492c37419805728cd6eff4222444056874253252d7a173dedb8",
+      "unit_id": "9877_001:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.483,
+        0.13,
+        0.378,
+        0.795
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "bounded-1",
+      "board_title": "深色主块面与有界构造层级",
+      "source": "bounded",
+      "image_id": "9734_002",
+      "instance_id": "bounded-1:9734_002:ID:1",
+      "image_sha256": "984d2979f582d20757639cacc2f20effcdd68490a8f7e26669498b98ab87280f",
+      "unit_id": "9734_002:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.351,
+        0.301,
+        0.296,
+        0.654
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:54:26.344Z"
+    },
+    {
+      "board_id": "bounded-1",
+      "board_title": "深色主块面与有界构造层级",
+      "source": "bounded",
+      "image_id": "18032_002",
+      "instance_id": "bounded-1:18032_002:ID:1",
+      "image_sha256": "e276282d35e1b5c1340fc071683274e289e8004b56479afc318e907eaf7500ad",
+      "unit_id": "18032_002:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.045,
+        0.045,
+        0.955,
+        0.955
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:38:23.900Z"
+    },
+    {
+      "board_id": "bounded-2",
+      "board_title": "浅冷主面与有界结构细节",
+      "source": "bounded",
+      "image_id": "23836_002",
+      "instance_id": "bounded-2:23836_002:ID:1",
+      "image_sha256": "93ac8587f2933453ecff465d467582bc6e13de0d9e2105047fd2030c098176c5",
+      "unit_id": "23836_002:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.398,
+        0.27,
+        0.223,
+        0.585
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "bounded-2",
+      "board_title": "浅冷主面与有界结构细节",
+      "source": "bounded",
+      "image_id": "8554_004",
+      "instance_id": "bounded-2:8554_004:ID:1",
+      "image_sha256": "82d82aa5791b93339c453751ddeda8c98c0e9067445f78b05f79e08115783ab0",
+      "unit_id": "8554_004:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.19,
+        0.27,
+        0.64,
+        0.47
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:11.724Z"
+    },
+    {
+      "board_id": "bounded-2",
+      "board_title": "浅冷主面与有界结构细节",
+      "source": "bounded",
+      "image_id": "24431_001",
+      "instance_id": "bounded-2:24431_001:ID:1",
+      "image_sha256": "660af721fa2d64def7078832c468d66d316e543b2d90798d5735b4ed95c674d6",
+      "unit_id": "24431_001:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.01,
+        0.166,
+        0.98,
+        0.668
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:36:54.141Z"
+    },
+    {
+      "board_id": "bounded-2",
+      "board_title": "浅冷主面与有界结构细节",
+      "source": "bounded",
+      "image_id": "22086_001",
+      "instance_id": "bounded-2:22086_001:ID:1",
+      "image_sha256": "0cd2a72c516c5e9cf0a9901058121ba5e970ada8ae67406c602b45fc987e8e68",
+      "unit_id": "22086_001:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.05,
+        0.325,
+        0.825,
+        0.675
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:01.125Z"
+    },
+    {
+      "board_id": "bounded-2",
+      "board_title": "浅冷主面与有界结构细节",
+      "source": "bounded",
+      "image_id": "19537_008",
+      "instance_id": "bounded-2:19537_008:ID:1",
+      "image_sha256": "abebd9a765de13974acaf2b12556951ccb50b29f47a2ba595f69d018263ebfde",
+      "unit_id": "19537_008:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.247,
+        0.476,
+        0.306,
+        0.38
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "bounded-3",
+      "board_title": "浅亮金属面与圆缓构成",
+      "source": "bounded",
+      "image_id": "10023_001",
+      "instance_id": "bounded-3:10023_001:ID:1",
+      "image_sha256": "841007eaed3fe10caa1e63b7f7a76aab41b1917aa1620acc58e8755a9fd0e4d1",
+      "unit_id": "10023_001:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.049,
+        0.112,
+        0.87,
+        0.765
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:23.868Z"
+    },
+    {
+      "board_id": "bounded-3",
+      "board_title": "浅亮金属面与圆缓构成",
+      "source": "bounded",
+      "image_id": "19244_004",
+      "instance_id": "bounded-3:19244_004:ID:1",
+      "image_sha256": "db6e5408cf6befd5ad9717e39de1f7c73e99a69924f282cfb05ff306e854b0c1",
+      "unit_id": "19244_004:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.15,
+        0.25,
+        0.7,
+        0.51
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    },
+    {
+      "board_id": "bounded-3",
+      "board_title": "浅亮金属面与圆缓构成",
+      "source": "bounded",
+      "image_id": "17187_001",
+      "instance_id": "bounded-3:17187_001:ID:1",
+      "image_sha256": "ea4bb7789cde3f9c55439033b4e5a607ba577db2260b23c2c52a72d3f7d23a70",
+      "unit_id": "17187_001:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.085,
+        0.07,
+        0.35,
+        0.865
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:25.845Z"
+    },
+    {
+      "board_id": "bounded-3",
+      "board_title": "浅亮金属面与圆缓构成",
+      "source": "bounded",
+      "image_id": "18636_002",
+      "instance_id": "bounded-3:18636_002:CMF:3",
+      "image_sha256": "d22bb52ab502ce965877b8c8dbb0a15edc7fb6cd6d20a9f964fb47c8c0ddb806",
+      "unit_id": "18636_002:CMF:3",
+      "ppt_shape_id": null,
+      "roi": [
+        0.429,
+        0.632,
+        0.171,
+        0.347
+      ],
+      "status": "rejected",
+      "reason": "",
+      "updated_at": "2026-10-13T01:37:31.252Z"
+    },
+    {
+      "board_id": "bounded-3",
+      "board_title": "浅亮金属面与圆缓构成",
+      "source": "bounded",
+      "image_id": "9877_009",
+      "instance_id": "bounded-3:9877_009:ID:1",
+      "image_sha256": "4e8b13e1617b2a23797835facab64e000e990df048265bc48d74dc41624c2958",
+      "unit_id": "9877_009:ID:1",
+      "ppt_shape_id": null,
+      "roi": [
+        0.035,
+        0.23,
+        0.935,
+        0.46
+      ],
+      "status": "unmarked",
+      "reason": "",
+      "updated_at": null
+    }
+  ]
+}

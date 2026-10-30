@@ -1,6 +1,11 @@
 import { http } from './http'
 import type { ExtractionRequest } from '@/types/dna'
-import type { D02PptBatch, D02Result, D02ResultSummary, D02Task } from '@/types/dnaV2'
+import type { D02PptBatch, D02Task, PreparedCoverage, PreparedDnaResult, PreparedResultSummary } from '@/types/dnaV2'
+
+export async function fetchDnaPreparation() {
+  const { data } = await http.get<PreparedCoverage>('/dna-v2/preparation')
+  return data
+}
 
 export async function fetchD02PptBatch() {
   const { data } = await http.get<D02PptBatch>('/dna-v2/batches/ppt-enjoy')
@@ -18,12 +23,12 @@ export async function fetchD02Extraction(taskId: string) {
 }
 
 export async function fetchD02Results() {
-  const { data } = await http.get<D02ResultSummary[]>('/dna-v2/results')
+  const { data } = await http.get<PreparedResultSummary[]>('/dna-v2/results')
   return data
 }
 
 export async function fetchD02Result(resultId: string) {
-  const { data } = await http.get<D02Result>(`/dna-v2/results/${resultId}`)
+  const { data } = await http.get<PreparedDnaResult>(`/dna-v2/results/${resultId}`)
   return data
 }
 

@@ -1,0 +1,29 @@
+{
+  "dataset_mode": "synthetic_fixture",
+  "direction_id": "DEMO-CMF",
+  "branch": "CMF",
+  "comparison_unit": "surface",
+  "primary_relation": "合成示例：同一表面有单向重复起伏",
+  "required_evidence": [
+    "能定位当前表面",
+    "重复起伏可见"
+  ],
+  "allowed_variation": [
+    "不同载体但同类关系"
+  ],
+  "confounders": [
+    "平面印花主导"
+  ],
+  "scope_limits": [
+    "不证明实际材质"
+  ],
+  "candidate_pool_policy": {
+    "target": 30
+  },
+  "count_policy": {
+    "target": 10,
+    "minimum": 10,
+    "maximum": 12
+  },
+  "frozen_before_final_selection": true
+}

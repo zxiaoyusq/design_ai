@@ -1,0 +1,53 @@
+{
+  "schema_version": "prism.upfront_material_trial.v1",
+  "direction_id": "NEW-CMF-LINEAR-01",
+  "title": "连续槽纹与线性起伏",
+  "branch": "CMF",
+  "selection_actor": "Root AI designer proxy",
+  "human_designer_approval": false,
+  "scope": "一个新方向的选材与整板视觉试验；不冒充新一轮正式H01或六模块协议验收",
+  "comparison_unit": "一件明确物体上可见、连续的局部表面；不以整个摄影场景或整个物体的ID为比较单位",
+  "primary_signature": "多条近似平行、连续重复的槽/筋/褶在同一表面上形成有方向的起伏节奏；相邻明暗能帮助读取起伏。",
+  "mandatory_conditions": [
+    "能够定位到一个明确对象或其表面",
+    "可见至少五条连续重复线性起伏；不得仅由印花颜色充当起伏",
+    "裁切后该表面是主角，保留一处边界或形态线索帮助理解载体",
+    "整体是低彩度白、灰、黑或暖中性色；原色保留，不靠调色凑一致",
+    "可在当前原像素与交付显示尺度辨认上述关系"
+  ],
+  "allowed_variations": [
+    "金属、石材、纸质、聚合物等仅按可见外观比较，不推断真实成分",
+    "方向可水平、垂直或沿曲面略弯；每张内部必须有单一主导方向",
+    "允许槽距与明暗强度有有限差异，不能靠完全不同的网格、颗粒、花纹加入"
+  ],
+  "confounders": [
+    "平面印花或投影条纹",
+    "孤立结构梁/杆的排列，不是连续表面的槽筋",
+    "随机皱褶、交叉编织、颗粒主导",
+    "槽纹只在很小背景道具上，裁后仍难辨或归属不清",
+    "大面积文字/标志/彩色场景盖过表面",
+    "为凑数把高彩度或不同纹理家族混入"
+  ],
+  "count_policy": {
+    "target": 10,
+    "minimum": 10,
+    "maximum": 10,
+    "one_per_independent_project": true,
+    "insufficient_action": "报告数量不足，不能降低上述条件凑满"
+  },
+  "upfront_treatment": [
+    "先固定当前对象与区域，再审品质；不继承整张图或其他对象的旧结论",
+    "局部适用则提出明确裁切坐标，先看实际裁切再决定",
+    "像素不足单列展示增强可能性；增强不能补造起伏事实",
+    "旧DNA只按原图SHA复用已知项，未覆盖当前区域仍标未覆盖，新增视觉审阅另记"
+  ],
+  "source_limit": "177项来自既有582张原图缓存中的候选；不把本次称为重跑8833篇全库。",
+  "novelty_basis": "排除已交付板及基线种子文章；此前六方向、四追加方向及暖中性随机微纹理，不含本次有方向重复槽筋家族。原图曾解析不等于本方向已做过。",
+  "new_direction_not_old_board_relabel": true,
+  "model_policy": {
+    "model": "gpt-6-sol",
+    "reasoning_effort": "low",
+    "service_tier_requested": "default",
+    "fast_mode": false
+  }
+}

@@ -113,13 +113,16 @@ class ModelCallTelemetry(BaseCallbackHandler):
     def _normalize_usage(usage: Any) -> tuple[int, int, int] | None:
         if not isinstance(usage, dict):
             return None
-        input_tokens = usage.get("input_tokens", usage.get("prompt_tokens", 0))
-        output_tokens = usage.get("output_tokens", usage.get("completion_tokens", 0))
+        # 缺失、部分或畸形用量不能记成“完整的零消耗”；允许真实的零 Token。
+        input_tokens = usage.get("input_tokens", usage.get("prompt_tokens"))
+        output_tokens = usage.get("output_tokens", usage.get("completion_tokens"))
         total_tokens = usage.get("total_tokens")
-        if not isinstance(input_tokens, int) or not isinstance(output_tokens, int):
+        if any(type(value) is not int or value < 0 for value in (input_tokens, output_tokens)):
             return None
-        if not isinstance(total_tokens, int):
+        if total_tokens is None:
             total_tokens = input_tokens + output_tokens
+        if type(total_tokens) is not int or total_tokens < 0:
+            return None
         return input_tokens, output_tokens, total_tokens
 
     def snapshot(self) -> dict[str, int | bool]:

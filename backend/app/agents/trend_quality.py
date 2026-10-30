@@ -9,12 +9,10 @@ from pathlib import Path
 import sys
 from time import monotonic
 
-from deepagents import create_deep_agent
-from deepagents.backends.filesystem import FilesystemBackend
-from deepagents.middleware.filesystem import FilesystemMiddleware, FilesystemPermission
 from langchain_core.messages import HumanMessage
 from PIL import Image, ImageOps
 
+from app.agents.bounded import AGENT_RUNTIME_VERSION, create_bounded_agent
 from app.agents.dna_deep_agent import PROJECT_ROOT, _model_options
 from app.services.dna.prism_r5 import _reply, _safe_exception
 from app.services.llm import create_chat_model
@@ -68,17 +66,6 @@ def model_options(model_id):
     return options
 
 
-class SingleRequestTelemetry(ModelCallTelemetry):
-    """阻止 DeepAgents 内部工具循环造成额外模型调用。"""
-
-    raise_error = True
-
-    def on_chat_model_start(self, *args, **kwargs):
-        if self.request_count:
-            raise RuntimeError('每图仅允许一次模型请求')
-        super().on_chat_model_start(*args, **kwargs)
-
-
 async def classify(image_bytes, metadata, *, image_id, model_id):
     """不重试，不入库；调用方须先持久化 submitted 账本再调用。"""
     prompt = compact.PROMPT_PATH.read_bytes()
@@ -87,20 +74,17 @@ async def classify(image_bytes, metadata, *, image_id, model_id):
         raise ValueError('发送图与预处理记录哈希不一致')
     record = {
         'image_id': image_id, 'version': compact.VERSION, 'model': model_id,
+        'agent_runtime_version': AGENT_RUNTIME_VERSION,
         'parameters': options, 'prompt_sha256': sha256(prompt).hexdigest(),
         **metadata, 'preprocessing_version': metadata['version'],
         'started_at': datetime.now(UTC).isoformat(), 'production_admission': False,
     }
     record['version'] = compact.VERSION
-    telemetry = SingleRequestTelemetry()
+    telemetry = ModelCallTelemetry()
     timer = monotonic()
     try:
-        permissions = [FilesystemPermission(operations=['read', 'write'], paths=['/**'], mode='deny')]
-        backend = FilesystemBackend(root_dir=PROJECT_ROOT)
-        agent = create_deep_agent(
-            model=create_chat_model(model_id, **options), tools=[],
-            system_prompt=prompt.decode(), backend=backend, skills=[], permissions=permissions,
-            middleware=[FilesystemMiddleware(backend=backend, tools=['read_file'], _permissions=permissions)],
+        agent = create_bounded_agent(
+            model=create_chat_model(model_id, **options), system_prompt=prompt.decode(),
             name='prism-trend-quality-compact',
         )
         # SDK timeout 是单次网络操作期限；外层期限覆盖整个流，超时不再自动补查。
