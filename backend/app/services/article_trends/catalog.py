@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import date
 import json
 from pathlib import Path
 from threading import RLock
@@ -18,9 +18,37 @@ PROJECT = Path(__file__).resolve().parents[4]
 def safe_url(value):
     text = str(value or "").strip()
     try:
-        return text if urlsplit(text).scheme in ("http", "https") and urlsplit(text).hostname else None
+        parts = urlsplit(text)
+        if parts.scheme not in ("http", "https") or not parts.hostname or parts.username is not None:
+            return None
+        if "\\" in text or any(char.isspace() or ord(char) < 32 for char in text):
+            return None
+        return text
     except ValueError:
         return None
+
+
+def article_from_excel(raw, row_number):
+    """源表与增量表共用文章字段映射。发布日期只保留日历日期。"""
+    dt = raw.get("release_time")
+    try:
+        published = dt.isoformat()[:10] if isinstance(dt, date) else date.fromisoformat(str(dt)[:10]).isoformat()
+    except ValueError:
+        published = None
+    detail = safe_url(raw.get("detail_url"))
+    site = safe_url(raw.get("source_url"))
+    return {
+        "article_id": str(raw["id"]).strip(),
+        "title": str(raw.get("title_zh") or raw.get("title") or ""),
+        "summary": str(raw.get("summary_zh") or ""),
+        "published_at": published,
+        "source": urlsplit(detail or site or "").hostname or "来源未提供",
+        "source_url": detail or site,
+        "detail_url": detail,
+        "category": str(raw.get("primary_category") or "未分类"),
+        "text_kind": "source_paraphrase",
+        "source_row": row_number,
+    }
 
 
 class ArticleCatalog:
@@ -29,6 +57,8 @@ class ArticleCatalog:
     def __init__(self, root=PROJECT):
         self.root = Path(root)
         self.excel = self.root / "ref/趋势信息0930.xlsx"
+        self.seed_imports = self.root / "ref/trend_article_imports"
+        self.import_dir = self.root / "data/trend_data/article_imports"
         self.image_index = self.root / "data/trend_data/trend_info_0930/trends.json"
         self.images_root = self.root / "data/trend_data/images"
         self._stamp = None
@@ -38,15 +68,25 @@ class ArticleCatalog:
 
     def records(self):
         with self._lock:
-            paths = (self.excel, self.image_index)
-            stamp = tuple((p.stat().st_mtime_ns, p.stat().st_size) if p.exists() else None for p in paths)
+            # 增量批次落盘即进入资料库；其他进程也能按文件版本刷新缓存。
+            imports = sorted(self.seed_imports.glob("*.json")) + sorted(self.import_dir.glob("*.json"))
+            paths = (self.excel, self.image_index, *imports)
+            stamp = tuple(self._file_stamp(p) for p in paths)
             if stamp != self._stamp:
-                self._load()
+                self._load(imports)
                 self._stamp = stamp
             return self._records
 
-    def _load(self):
-        workbook = load_workbook(self.excel, read_only=True, data_only=True)
+    @staticmethod
+    def _file_stamp(path):
+        try:
+            stat = path.stat()
+            return path, stat.st_mtime_ns, stat.st_size, stat.st_ino
+        except FileNotFoundError:
+            return path, None
+
+    def _load(self, imports):
+        workbook = load_workbook(self.excel, read_only=True, data_only=True, keep_links=False)
         records = []
         seen = set()
         try:
@@ -59,32 +99,24 @@ class ArticleCatalog:
                 raw = dict(zip(headers, values))
                 if raw.get("id") is None:
                     continue
-                aid = str(raw["id"]).strip()
+                record = article_from_excel(raw, number)
+                aid = record["article_id"]
                 if aid in seen:
                     raise ValueError("源表文章 ID 重复：" + aid)
                 seen.add(aid)
-                title = str(raw.get("title_zh") or raw.get("title") or "")
-                summary = str(raw.get("summary_zh") or "")
-                dt = raw.get("release_time")
-                if isinstance(dt, (date, datetime)):
-                    published = dt.isoformat()[:10]
-                else:
-                    try:
-                        published = date.fromisoformat(str(dt)[:10]).isoformat()
-                    except ValueError:
-                        published = None
-                detail = safe_url(raw.get("detail_url"))
-                site = safe_url(raw.get("source_url"))
-                source = urlsplit(detail or site or "").hostname or "来源未提供"
-                records.append({
-                    "article_id": aid, "title": title, "summary": summary,
-                    "published_at": published, "source": source,
-                    "source_url": detail or site, "detail_url": detail,
-                    "category": str(raw.get("primary_category") or "未分类"),
-                    "text_kind": "source_paraphrase", "source_row": number,
-                })
+                records.append(record)
         finally:
             workbook.close()
+        for path in imports:
+            batch = json.loads(path.read_text(encoding="utf-8"))
+            if batch.get("schema_version") != 1 or not isinstance(batch.get("articles"), list):
+                raise ValueError("文章导入记录格式不正确")
+            for record in batch["articles"]:
+                aid = record["article_id"]
+                # 若更新后的基准表也收录了同一 ID，保留基准表与原有图片索引。
+                if aid not in seen:
+                    records.append(record)
+                    seen.add(aid)
         images = {}
         if self.image_index.is_file():
             data = json.loads(self.image_index.read_text(encoding="utf-8"))
@@ -126,13 +158,20 @@ class ArticleCatalog:
                 | {"source_url": a.get("detail_url")} for a in selected]
 
     def public(self, article, detail=False):
-        available = self.available_images(article["article_id"], limit=None if detail else 1)
-        refs = self._images.get(article["article_id"], [])
+        aid = article["article_id"]
+        local = self.available_images(aid, limit=None if detail else 1)
+        available = [{"image_id": image["image_id"], "url": image["url"]} for image in local]
+        image_count = len(self._images.get(aid, []))
+        if "image_urls" in article:
+            # 增量表附带原站链接，优先沿用本地索引；只在浏览时由浏览器访问外链。
+            external = article["image_urls"]
+            image_count = max(image_count, len(external))
+            if not available:
+                available = [{"image_id": f"{aid}-external-{index}", "url": url, "external": True}
+                             for index, url in enumerate(external if detail else external[:1], 1)]
         return {k: article.get(k) for k in (
             "article_id", "title", "summary", "published_at", "source", "source_url", "category")
-        } | {"image_count": len(refs), "images": [
-            {key: image[key] for key in ("image_id", "url")} for image in available
-        ]}
+        } | {"image_count": image_count, "images": available}
 
     def available_images(self, aid, limit=None):
         """复用图片路由的本地安全校验；原链接仅供跨文章去重，不作为展示地址。"""

@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-11",
+  "verified_from_isolated_package_directory": true,
+  "offline_import_and_configuration": {
+    "model_calls": 0,
+    "network_requests": 0,
+    "failures": [],
+    "source_files_checked": 70,
+    "default_model": "gemini-3.8-flash",
+    "framework": "DeepAgents",
+    "runtime_version": "bounded-deepagents-v1",
+    "styles": 38,
+    "reference_files": 3,
+    "imports": "passed"
+  },
+  "tests": {
+    "passed": 306,
+    "subtests_passed": 83,
+    "skipped": [
+      {
+        "test": "test_user_feedback_pairs_keep_concrete_differences_when_axes_are_identical",
+        "reason": "local historical feedback fixture not available"
+      },
+      {
+        "test": "test_two_synthetic_boards_in_real_browser",
+        "reason": "显式启用两板离线浏览验证"
+      },
+      {
+        "test": "test_narrow_screen_and_original_modal",
+        "reason": "显式启用极小离线浏览器验证"
+      }
+    ],
+    "failed": 0
+  },
+  "credential_audit": {
+    "findings": [],
+    "original_private_values_compared_in_memory": true,
+    "secret_values_saved_or_printed": false
+  },
+  "production_changed": false,
+  "actual_model_calls": 0,
+  "boundaries": [
+    "未检查接收方 idtrendanalysis 快照",
+    "未发起真实模型调用",
+    "未验证接收方网关、业务输入及完整网页流程",
+    "浏览器截图工具需接收方配置 Playwright"
+  ]
+}

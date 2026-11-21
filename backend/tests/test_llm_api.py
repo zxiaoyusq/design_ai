@@ -2,14 +2,12 @@
 
 import unittest
 
-from fastapi.testclient import TestClient
-
-from app.main import app
+from tests.auth_helpers import authenticated_client
 
 
 class LLMApiTestCase(unittest.TestCase):
     def test_available_models_endpoint(self) -> None:
-        response = TestClient(app).get("/api/v1/llm/models")
+        response = authenticated_client().get("/api/v1/llm/models")
 
         self.assertEqual(response.status_code, 200)
         payload = response.json()
@@ -18,8 +16,8 @@ class LLMApiTestCase(unittest.TestCase):
         self.assertNotIn("llm_key", response.text.lower())
         self.assertNotIn("llm_url", response.text.lower())
 
-    def test_cloudflare_quick_tunnel_origin_is_allowed(self) -> None:
-        response = TestClient(app).options(
+    def test_arbitrary_cloudflare_quick_tunnel_origin_is_not_trusted(self) -> None:
+        response = authenticated_client().options(
             "/api/v1/llm/models",
             headers={
                 "Origin": "https://design-ai-example.trycloudflare.com",
@@ -27,14 +25,11 @@ class LLMApiTestCase(unittest.TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.headers["access-control-allow-origin"],
-            "https://design-ai-example.trycloudflare.com",
-        )
+        self.assertEqual(response.status_code, 400)
+        self.assertNotIn("access-control-allow-origin", response.headers)
 
     def test_fixed_public_domain_http_origin_is_allowed(self) -> None:
-        response = TestClient(app).options(
+        response = authenticated_client().options(
             "/api/v1/llm/models",
             headers={
                 "Origin": "http://gamedevcenter.ahagamecenter.com",

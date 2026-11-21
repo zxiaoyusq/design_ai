@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import MainNavigation from '@/components/MainNavigation.vue'
+import ArticleExcelImport from '@/components/ArticleExcelImport.vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { BulbOutlined, LinkOutlined, SearchOutlined } from '@ant-design/icons-vue'
+import { BulbOutlined, LinkOutlined, SearchOutlined, UploadOutlined } from '@ant-design/icons-vue'
 import { message } from 'ant-design-vue'
 import { isAxiosError } from 'axios'
 
 import { articleTrendsApi } from '@/api/articleTrends'
-import type { TrendArticle, TrendCatalog, TrendClusterTask, TrendFilters, TrendModel, TrendPreview, TrendRelatedImage, TrendSelection } from '@/types/articleTrends'
+import type { ArticleImportResult, TrendArticle, TrendCatalog, TrendClusterTask, TrendFilters, TrendModel, TrendPreview, TrendRelatedImage, TrendSelection } from '@/types/articleTrends'
 
 const catalog = ref<TrendCatalog | null>(null)
 const models = ref<TrendModel[]>([])
@@ -22,11 +23,12 @@ const endDate = ref('')
 const loading = ref(false)
 const listError = ref('')
 const catalogError = ref('')
+const importOpen = ref(false)
+const importNotice = ref('')
 const selectedArticle = ref<TrendArticle | null>(null)
 const detailLoading = ref(false)
 const detailError = ref('')
 const detailPanel = ref<HTMLElement | null>(null)
-const selectedImage = ref(0)
 const tab = ref('library')
 const selectionMode = ref<'filtered' | 'manual'>('filtered')
 const checkedIds = ref<string[]>([])
@@ -53,6 +55,7 @@ const candidatePage = ref(1)
 const taskDetailLoading = ref(false)
 const unavailableImages = ref(new Set<string>())
 let articleRequest = 0
+let articleRevision = 0
 let detailRequest = 0
 let taskRequest = 0
 let filterTimer: ReturnType<typeof setTimeout> | undefined
@@ -76,6 +79,8 @@ const selection = computed<TrendSelection>(() => ({
   limit: limit.value || null, model_id: modelId.value, min_source_groups: minSources.value, max_calls: maxCalls.value,
 }))
 const selectionKey = computed(() => JSON.stringify(selection.value))
+const detailImages = computed(() => (selectedArticle.value?.images ?? []).filter(image => !unavailableImages.value.has(image.url)))
+const featuredImage = computed(() => detailImages.value[0])
 const allPageChecked = computed(() => articles.value.length > 0 && articles.value.every(article => checkedIds.value.includes(article.article_id)))
 const canEstimate = computed(() => Boolean(modelId.value && effectiveCount.value >= 2 && !invalidDates.value && !loading.value && minSources.value >= 2 && maxCalls.value >= 1))
 const result = computed(() => activeTask.value?.result)
@@ -113,6 +118,10 @@ function relatedImages(trend: Record<string, unknown>): TrendRelatedImage[] {
     && typeof image.image_id === 'string' && !unavailableImages.value.has(image.url))
 }
 function hideUnavailableImage(url: string) { unavailableImages.value.add(url) }
+function onArticleImageError(event: Event) {
+  const url = (event.target as HTMLImageElement).getAttribute('src')
+  if (url) hideUnavailableImage(url)
+}
 function progress(task: TrendClusterTask) { return task.status === 'completed' ? 100 : task.total_steps ? Math.min(99, Math.round((task.completed_steps ?? 0) / task.total_steps * 100)) : 0 }
 async function openHistory() {
   if (!historicalTask.value) return
@@ -140,7 +149,6 @@ async function selectArticle(id: string) {
   detailLoading.value = true
   detailError.value = ''
   selectedArticle.value = null
-  selectedImage.value = 0
   try {
     const article = await articleTrendsApi.article(id)
     if (request === detailRequest && !disposed) selectedArticle.value = article
@@ -175,15 +183,31 @@ async function loadCatalog() {
     // 只加载可选目录；用户明确选择模型并确认后才创建任务。
   } else catalogError.value += `${catalogError.value ? '；' : ''}模型目录：${errorMessage(modelResponse.reason)}`
 }
+function onArticlesImported(result: ArticleImportResult) {
+  importNotice.value = `新增 ${result.added_count.toLocaleString()} 篇 · 跳过重复 ${result.duplicate_count.toLocaleString()} 行、异常 ${result.invalid_count.toLocaleString()} 行 · 全库 ${result.total_articles.toLocaleString()} 篇`
+  // 新文章可能改变当前筛选范围，清除已有或正在请求的聚类预估。
+  articleRevision += 1
+  preview.value = null
+  previewRequest.value = null
+  confirmOpen.value = false
+  void loadCatalog()
+  if (page.value !== 1) {
+    page.value = 1
+  } else {
+    clearTimeout(filterTimer)
+    void loadArticles()
+  }
+}
 async function estimate() {
   if (!canEstimate.value || estimating.value) return
   const request = JSON.parse(selectionKey.value) as TrendSelection
   const key = selectionKey.value
+  const revision = articleRevision
   estimating.value = true
   preview.value = null
   try {
     const response = await articleTrendsApi.preview(request)
-    if (key !== selectionKey.value) { message.info('范围或参数已改变，请重新预估。'); return }
+    if (key !== selectionKey.value || revision !== articleRevision) { message.info('范围或参数已改变，请重新预估。'); return }
     previewRequest.value = request
     preview.value = response
   } catch (error) { message.error(errorMessage(error)) }
@@ -324,14 +348,27 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
 
           <section class="article-layout">
             <div class="article-list">
-              <div class="list-heading"><div><h2>文章资料 <span>{{ total.toLocaleString() }} / {{ catalog?.total.toLocaleString() ?? '—' }}</span></h2><p>按发布日期最新优先 · 每页 {{ pageSize }} 篇</p></div><a-checkbox :checked="allPageChecked" :indeterminate="!allPageChecked && articles.some(article => checkedIds.includes(article.article_id))" :disabled="loading || !articles.length" @change="togglePage">勾选本页</a-checkbox></div>
+              <div class="list-heading">
+                <div><h2>文章资料 <span>{{ total.toLocaleString() }} / {{ catalog?.total.toLocaleString() ?? '—' }}</span></h2><p>按发布日期最新优先 · 每页 {{ pageSize }} 篇</p></div>
+                <div class="list-actions">
+                  <a-checkbox :checked="allPageChecked" :indeterminate="!allPageChecked && articles.some(article => checkedIds.includes(article.article_id))" :disabled="loading || !articles.length" @change="togglePage">勾选本页</a-checkbox>
+                  <a-button @click="importOpen = true"><template #icon><UploadOutlined aria-hidden="true" /></template>导入 Excel</a-button>
+                </div>
+              </div>
+              <a-alert v-if="importNotice" type="success" show-icon closable :message="importNotice" class="notice" @close="importNotice = ''" />
               <a-alert v-if="listError" type="error" show-icon :message="listError" class="notice"><template #action><a-button size="small" @click="loadArticles">重试</a-button></template></a-alert>
               <a-spin :spinning="loading">
                 <div v-if="articles.length && !invalidDates" class="article-grid">
                   <article v-for="article in articles" :key="article.article_id" class="article-card" :class="{ selected: selectedArticle?.article_id === article.article_id }">
                     <a-checkbox class="article-check" :checked="checkedIds.includes(article.article_id)" :aria-label="`勾选 ${article.title}`" @change="toggleArticle(article.article_id)" />
                     <button class="card-open" type="button" :aria-label="`查看 ${article.title}`" @click="selectArticle(article.article_id)">
-                      <div class="card-image"><img v-if="article.images[0]" :src="article.images[0].url" :alt="article.title" loading="lazy" /><span v-else>暂无本地图片</span><span class="image-count">{{ article.image_count }} 图</span></div>
+                      <div class="card-image">
+                        <img v-if="article.images[0] && !unavailableImages.has(article.images[0].url)"
+                          referrerpolicy="no-referrer" loading="lazy" :src="article.images[0].url" :alt="article.title"
+                          @error="onArticleImageError" />
+                        <span v-else>{{ article.image_count ? '配图暂不可预览' : '暂无图片' }}</span>
+                        <span class="image-count">{{ article.image_count }} 图</span>
+                      </div>
                       <div class="card-content"><span class="card-category">{{ article.category || '未分类' }}</span><h3>{{ article.title }}</h3><p class="card-summary">{{ article.summary || '未提供摘要' }}</p><div class="card-meta"><span>{{ article.source || '来源未提供' }}</span><time>{{ dateLabel(article.published_at) }}</time></div></div>
                     </button>
                   </article>
@@ -345,10 +382,28 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
               <a-spin :spinning="detailLoading"><div class="detail-content">
                 <a-alert v-if="detailError" type="error" :message="detailError" />
                 <template v-else-if="selectedArticle">
-                  <a-image-preview-group v-if="selectedArticle.images.length"><div class="featured-image"><a-image :src="selectedArticle.images[selectedImage]?.url" :alt="selectedArticle.title" /></div></a-image-preview-group>
+                  <div v-if="featuredImage?.external" class="featured-image">
+                    <a :href="featuredImage.url" target="_blank" rel="noopener noreferrer" aria-label="打开原站配图">
+                      <img referrerpolicy="no-referrer" :src="featuredImage.url" :alt="selectedArticle.title" @error="onArticleImageError" />
+                    </a>
+                  </div>
+                  <a-image-preview-group v-else-if="featuredImage">
+                    <div class="featured-image"><a-image :src="featuredImage.url" :alt="selectedArticle.title" @error="onArticleImageError" /></div>
+                  </a-image-preview-group>
                   <div class="detail-title-block"><p class="detail-overline">{{ selectedArticle.category || '未分类' }} · {{ selectedArticle.source }}</p><h3>{{ selectedArticle.title }}</h3><time>发布于 {{ dateLabel(selectedArticle.published_at) }}</time></div>
                   <div class="detail-section"><h4>文章摘要 · 聚类文字依据</h4><p class="summary">{{ selectedArticle.summary || '源表未提供摘要。' }}</p></div>
-                  <div v-if="selectedArticle.images.length" class="detail-section"><h4>关联原图 {{ selectedArticle.images.length }} 张 · 点击放大</h4><a-image-preview-group><div class="image-grid"><a-image v-for="image in selectedArticle.images" :key="image.image_id" :src="image.url" :alt="selectedArticle.title" loading="lazy" /></div></a-image-preview-group></div>
+                  <div v-if="detailImages.length" class="detail-section">
+                    <h4>关联原图 {{ detailImages.length }} 张 · {{ featuredImage?.external ? '点击前往原站' : '点击放大' }}</h4>
+                    <div v-if="featuredImage?.external" class="image-grid external-images">
+                      <a v-for="(image, index) in detailImages" :key="image.image_id" :href="image.url" target="_blank" rel="noopener noreferrer" :aria-label="`打开原站配图 ${index + 1}`">
+                        <img referrerpolicy="no-referrer" loading="lazy" :src="image.url" :alt="selectedArticle.title" @error="onArticleImageError" />
+                      </a>
+                    </div>
+                    <a-image-preview-group v-else>
+                      <div class="image-grid"><a-image v-for="image in detailImages" :key="image.image_id" :src="image.url" :alt="selectedArticle.title" @error="onArticleImageError" /></div>
+                    </a-image-preview-group>
+                  </div>
+                  <p v-else-if="selectedArticle.image_count" class="muted">配图暂不可预览，可前往原文查看。</p>
                   <p class="source-note">文章 ID {{ selectedArticle.article_id }} · 图片不参与语义聚类</p>
                   <a-button block :type="checkedIds.includes(selectedArticle.article_id) ? 'default' : 'primary'" @click="toggleArticle(selectedArticle.article_id)">{{ checkedIds.includes(selectedArticle.article_id) ? '移出勾选范围' : '加入勾选范围' }}</a-button>
                 </template>
@@ -419,6 +474,7 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
       </a-tabs>
     </main>
     <footer><span>用户审美洞察与趋势捕捉 · AI 审美洞察平台</span><span>本地文章资料库 · Skill {{ catalog?.skill_version || '—' }}</span></footer>
+    <ArticleExcelImport v-model:open="importOpen" @imported="onArticlesImported" />
     <a-modal v-model:open="confirmOpen" title="确认启动纯文本趋势聚类" ok-text="确认并运行模型" cancel-text="返回调整" :confirm-loading="starting" :closable="!starting" :mask-closable="!starting" :cancel-button-props="{ disabled: starting }" @ok="startCluster">
       <template v-if="preview">
         <p>输入趋势日期：{{ dateRangeLabel }}</p>
@@ -465,7 +521,8 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
 .estimate-footer { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-top: 16px; }
 .article-layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 20px; align-items: start; margin: 28px 0 45px; }
 .article-list { min-width: 0; }
-.list-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.list-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.list-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .list-heading h2 { margin: 0; color: #342c47; font-size: 18px; }
 .list-heading h2 span, .result-heading h2 span { margin-left: 7px; color: #9e93ad; font-size: 13px; font-weight: 400; }
 .list-heading p { margin: 5px 0 0; color: #9e93ad; font-size: 11px; }
@@ -508,6 +565,9 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
 .empty-state { padding: 45px 12px; color: #9c91aa; text-align: center; }
 .pagination { margin: 24px 0; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
 .notice { margin-bottom: 16px; }
+.featured-image > a, .external-images a { display: block; overflow: hidden; border-radius: 8px; background: #f1ecf5; }
+.featured-image > a > img { display: block; width: 100%; max-height: 220px; object-fit: contain; }
+.external-images img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
 .tasks-layout { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 24px; margin-bottom: 50px; }
 .task-list { display: grid; align-content: start; gap: 12px; }
 .task-card { width: 100%; text-align: left; padding: 17px; border: 1px solid #e7e1ef; border-radius: 14px; background: white; cursor: pointer; }

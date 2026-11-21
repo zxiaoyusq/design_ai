@@ -5,8 +5,7 @@ from pathlib import Path
 from unittest import TestCase
 from unittest.mock import patch
 
-from fastapi.testclient import TestClient
-from app.main import app
+from tests.auth_helpers import authenticated_client
 
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "run_d02_ppt_enjoy_batch.py"
@@ -37,5 +36,5 @@ class D02PptEnjoyBatchTestCase(TestCase):
         with patch("app.api.dna_v2.read_result", return_value={
             "source": {"research": {"batch_id": batch.BATCH_ID}}
         }):
-            response = TestClient(app).delete("/api/v1/dna-v2/results/" + "a" * 32)
+            response = authenticated_client().delete("/api/v1/dna-v2/results/" + "a" * 32)
         self.assertEqual(response.status_code, 409)

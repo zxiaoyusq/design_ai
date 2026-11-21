@@ -1,6 +1,8 @@
 """后端 API 路由汇总。"""
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+
+from app.api.auth import require_user
 
 from app.api.dna import router as dna_router
 from app.api.article_trends import router as article_trends_router
@@ -13,7 +15,8 @@ from app.api.moodboards import router as moodboards_router
 from app.api.trend_quality_review import router as trend_quality_review_router
 
 
-api_router = APIRouter()
+# 在汇总路由挂载依赖，后续新增业务模块也默认要求登录。
+api_router = APIRouter(dependencies=[Depends(require_user)])
 api_router.include_router(article_trends_router)
 api_router.include_router(llm_router)
 api_router.include_router(dna_router)

@@ -1,9 +1,7 @@
 """只读原生结果路由的登记范围、分页参数与原文件交付验证。"""
 from unittest.mock import Mock, patch
 
-from fastapi.testclient import TestClient
-
-from app.main import app
+from tests.auth_helpers import authenticated_client
 
 BASE = "/api/v1/high-trends/native-results/sol61-native-v2-20261006"
 
@@ -13,7 +11,7 @@ def test_registered_result_and_pagination_contract():
     service.get.return_value = {"id": "sol61-native-v2-20261006", "kind": "native_h01"}
     service.images.return_value = {"items": [], "total": 0, "page": 2, "page_size": 12}
     with patch("app.api.high_trends.native_result", service):
-        client = TestClient(app)
+        client = authenticated_client()
         assert client.get(BASE).json()["kind"] == "native_h01"
         assert client.get("/api/v1/high-trends/native-results/not-registered").status_code == 404
         assert service.get.call_count == 1
@@ -34,7 +32,7 @@ def test_original_image_and_download_are_existing_files(tmp_path):
     service.image.return_value = image
     service.download.return_value = selection
     with patch("app.api.high_trends.native_result", service):
-        client = TestClient(app)
+        client = authenticated_client()
         assert client.get(BASE + "/images/stable-key?thumbnail=true").content == image.read_bytes()
         service.image.assert_called_once_with("stable-key", True)
         response = client.get(BASE + "/download?format=selection")

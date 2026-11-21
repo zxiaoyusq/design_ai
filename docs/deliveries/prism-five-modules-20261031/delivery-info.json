@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-31",
+  "branch": "codex/prism-five-modules-handoff-20261031",
+  "commit": "38e83d0b3405eecf27f41e103206c31607ca3337",
+  "commit_count": 1,
+  "worktree": "/root/dev/work/design_ai-five-modules-20261031",
+  "source_head_unchanged": "0b627cc77ebc119bfe14ffb000df2129f62d6d47",
+  "source_index_unchanged": true,
+  "files": 464,
+  "agent_framework": "DeepAgents",
+  "default_model": "gemini-3.8-flash",
+  "external_agent_execution": false,
+  "credentials_included": false,
+  "private_config_value_scan_passed": true,
+  "bundle_clone_scan_passed": true,
+  "previous_delivery_moved_outside_exports": true,
+  "production_services_changed": false,
+  "model_calls": 0,
+  "artifacts": [
+    {
+      "name": "prism-five-modules-20261031.zip",
+      "bytes": 1992344,
+      "sha256": "9d29e9a8a7b09f0f60ec7a11ebafe99c79ebee60581a3eaf489081960ff44814"
+    },
+    {
+      "name": "prism-five-modules-20261031.bundle",
+      "bytes": 1849676,
+      "sha256": "93a65ae7d52cdc8abb2983544a8e1974fc229da76762aceac216c2d06288b012"
+    }
+  ]
+}

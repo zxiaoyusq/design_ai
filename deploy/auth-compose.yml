@@ -1,0 +1,20 @@
+# 独立平台账号库，凭据由忽略版本控制的 backend/.env 提供。
+services:
+  auth-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: design_ai_auth
+      POSTGRES_USER: design_ai_auth
+      POSTGRES_PASSWORD: ${AUTH_POSTGRES_PASSWORD:?请先在 backend/.env 配置 AUTH_POSTGRES_PASSWORD}
+    ports:
+      - "127.0.0.1:55434:5432"
+    volumes:
+      - auth-postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U design_ai_auth -d design_ai_auth"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  auth-postgres:

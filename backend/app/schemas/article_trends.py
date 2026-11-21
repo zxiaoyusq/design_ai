@@ -34,6 +34,43 @@ class ArticleListQuery(ArticleFilters):
     page_size: int = Field(default=30, ge=1, le=100)
 
 
+class ArticleImportSample(BaseModel):
+    """预览中展示的待新增文章。"""
+
+    article_id: str
+    title: str
+    published_at: date | None
+
+
+class ArticleImportIssue(BaseModel):
+    """跳过的异常行及原表行号。"""
+
+    row: int
+    reason: str
+
+
+class ArticleImportPreview(BaseModel):
+    """导入预览只读，摘要绑定文件原字节与本次可新增的文章。"""
+
+    selection_digest: str
+    total_rows: int
+    new_count: int
+    duplicate_count: int
+    invalid_count: int
+    image_count: int
+    sample_articles: list[ArticleImportSample]
+    issues: list[ArticleImportIssue]
+
+
+class ArticleImportResult(BaseModel):
+    """确认导入后的新增、跳过与资料库总量。"""
+
+    added_count: int
+    duplicate_count: int
+    invalid_count: int
+    total_articles: int
+
+
 class ClusterCreateRequest(ClusterRequest):
     selection_digest: str = Field(pattern=r"^[a-f0-9]{64}$")
     confirm: bool = False

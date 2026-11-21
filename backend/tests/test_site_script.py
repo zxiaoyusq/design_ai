@@ -48,6 +48,18 @@ class SiteScriptTests(TestCase):
         self.assertIn("无需重复启动", result.stdout)
         self.assertEqual(pid_file.read_text(), "999999999\n")
 
+    def test_default_mode_requires_build_before_stopping_existing_services(self):
+        result = self.run_site(DESIGN_AI_FRONTEND_MODE="preview")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("缺少前端构建产物", result.stderr)
+        self.assertNotIn("未运行", result.stdout)
+
+    def test_invalid_frontend_mode_fails_before_runtime_and_stop(self):
+        result = self.run_site(DESIGN_AI_FRONTEND_MODE="unknown")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("只支持 preview 或 dev", result.stderr)
+        self.assertNotIn("未运行", result.stdout)
+
     def test_stale_pid_with_same_command_in_other_project_is_not_stopped(self):
         process = subprocess.Popen(
             [sys.executable, "-c", "import time; time.sleep(30)", "uvicorn app.main:app"],

@@ -246,9 +246,8 @@ class MoodboardClusteringWebTests(unittest.TestCase):
         self.assertEqual(self.prepared.extractions, [])
 
     def test_http_contract_keeps_confirmation_and_new_history_separate(self):
-        from fastapi.testclient import TestClient
-        from app.main import app
-        with patch("app.api.moodboards.moodboard_clustering_manager", self.manager), TestClient(app) as client:
+        from tests.auth_helpers import authenticated_client
+        with patch("app.api.moodboards.moodboard_clustering_manager", self.manager), authenticated_client() as client:
             prefix = "/api/v1/moodboards/clustering"
             self.assertEqual(client.get(prefix + "/catalog").status_code, 200)
             preview = client.post(prefix + "/preview", json={"source_result_id": "source-1", "direction_ids": ["D1"]}).json()

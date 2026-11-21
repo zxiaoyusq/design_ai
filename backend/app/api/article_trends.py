@@ -2,10 +2,14 @@
 
 from typing import Annotated, Callable
 
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Query
+from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse
 
-from app.schemas.article_trends import ArticleFilters, ArticleListQuery, ClusterCreateRequest, ClusterRequest, ClusterResumeRequest
+from app.schemas.article_trends import (
+    ArticleFilters, ArticleImportPreview, ArticleImportResult, ArticleListQuery,
+    ClusterCreateRequest, ClusterRequest, ClusterResumeRequest,
+)
+from app.services.article_trends.imports import import_workbook, preview_workbook
 from app.services.article_trends.tasks import cluster_manager
 from app.services.article_trends.history import HistoricalTrendResults
 
@@ -64,6 +68,21 @@ def article(article_id: str):
 def image(article_id: str, index: int):
     path = checked(lambda: cluster_manager.catalog.image(article_id, index))
     return FileResponse(path, headers={"Cache-Control": "private, max-age=3600", "X-Content-Type-Options": "nosniff"})
+
+
+@router.post("/imports/preview", response_model=ArticleImportPreview)
+def preview_import(file: Annotated[UploadFile, File()]):
+    """核对上传 Excel 和现有文章，预览期间不写入。"""
+    return checked(lambda: preview_workbook(cluster_manager.catalog, file.file, file.filename or ""))
+
+
+@router.post("/imports", response_model=ArticleImportResult)
+def confirm_import(
+    file: Annotated[UploadFile, File()],
+    selection_digest: Annotated[str, Form(pattern=r"^[a-f0-9]{64}$")],
+):
+    """仅确认与预览相符的增量，沿用当前库数据。"""
+    return checked(lambda: import_workbook(cluster_manager.catalog, file.file, file.filename or "", selection_digest))
 
 
 @router.post("/preview")

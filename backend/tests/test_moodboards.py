@@ -6,8 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from fastapi.testclient import TestClient
-from app.main import app
+from tests.auth_helpers import authenticated_client
 from app.agents.moodboard_generator import stage_prompt
 from app.schemas.moodboards import MoodboardRequest
 from app.services.moodboards.tasks import (
@@ -103,7 +102,7 @@ class MoodboardHistoryReadTests(unittest.TestCase):
         patcher = patch("app.api.moodboards.moodboard_manager", self.manager)
         patcher.start()
         self.addCleanup(patcher.stop)
-        self.client = TestClient(app)
+        self.client = authenticated_client()
 
     def saved_task(self, status="completed"):
         folder = self.manager.output / self.task_id

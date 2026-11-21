@@ -8,7 +8,14 @@ export interface TrendArticle {
   source_url: string | null
   category: string | null
   image_count: number
-  images: { image_id: string; url: string }[]
+  images: TrendArticleImage[]
+}
+
+/** 增量表的原站图片可浏览，本地索引图片继续使用本站路由。 */
+export interface TrendArticleImage {
+  image_id: string
+  url: string
+  external?: boolean
 }
 
 /** 趋势展示用的关联文章原图；文章身份用于回查图片来源。 */
@@ -41,6 +48,26 @@ export interface ArticlePage {
   page: number
   page_size: number
   items: TrendArticle[]
+}
+
+/** 待新增范围及异常行；确认时与原 Excel 一起提交摘要。 */
+export interface ArticleImportPreview {
+  selection_digest: string
+  total_rows: number
+  new_count: number
+  duplicate_count: number
+  invalid_count: number
+  image_count: number
+  sample_articles: Pick<TrendArticle, 'article_id' | 'title' | 'published_at'>[]
+  issues: { row: number; reason: string }[]
+}
+
+/** 确认写入后的文章库统计。 */
+export interface ArticleImportResult {
+  added_count: number
+  duplicate_count: number
+  invalid_count: number
+  total_articles: number
 }
 
 /** 范围先预估再凭摘要确认，防止预估后变更条件却执行旧范围。 */

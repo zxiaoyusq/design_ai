@@ -6,12 +6,11 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from fastapi.testclient import TestClient
 from langchain_core.language_models.fake_chat_models import FakeMessagesListChatModel
 from langchain_core.messages import AIMessage
 
 from app.agents.design_trend_synthesizer import create_trend_agent, run_trend_step
-from app.main import app
+from tests.auth_helpers import authenticated_client
 from app.schemas.high_trends import HighTrendRequest, HighTrendResumeRequest
 from app.services.high_trends.tasks import HighTrendManager, read
 
@@ -64,7 +63,7 @@ class HighTrendTests(unittest.TestCase):
         with patch("app.api.high_trends.high_trend_manager", self.manager), patch(
             "app.agents.design_trend_synthesizer.create_chat_model", return_value=self.model()
         ) as factory:
-            client = TestClient(app)
+            client = authenticated_client()
             preview = client.post("/api/v1/high-trends/preview", json=self.request.model_dump(mode="json"))
             self.assertEqual(preview.status_code, 200, preview.text)
             self.assertEqual(preview.json()["counts"]["selected_trends"], 1)
@@ -102,7 +101,7 @@ class HighTrendTests(unittest.TestCase):
         with patch("app.api.high_trends.high_trend_manager", self.manager), patch(
             "app.services.high_trends.tasks.run_trend_step"
         ) as model:
-            client = TestClient(app)
+            client = authenticated_client()
             data = self.request.model_dump(mode="json")
             self.assertEqual(client.post("/api/v1/high-trends/preview", json={**data, "end_date": "2025-01-01"}).status_code, 422)
             self.assertEqual(client.post("/api/v1/high-trends/preview", json={**data, "model_id": "unknown"}).status_code, 400)
@@ -204,7 +203,7 @@ class HighTrendTests(unittest.TestCase):
         with patch("app.api.high_trends.high_trend_manager", self.manager), patch(
             "app.services.high_trends.tasks.run_trend_step", side_effect=fake_step
         ) as model:
-            client = TestClient(app)
+            client = authenticated_client()
             endpoint = f"/api/v1/high-trends/tasks/{task['id']}/resume"
             self.assertEqual(client.post(endpoint, json={"max_calls": 2}).status_code, 400)
             model.assert_not_called()
@@ -228,7 +227,7 @@ class HighTrendTests(unittest.TestCase):
         after = self.manager.preview(self.request)
         self.assertLess(after["settings"]["batch_chars"], before["settings"]["batch_chars"])
         with patch("app.api.high_trends.high_trend_manager", self.manager):
-            response = TestClient(app).post("/api/v1/high-trends/preview", json={
+            response = authenticated_client().post("/api/v1/high-trends/preview", json={
                 **self.request.model_dump(mode="json"), "prompt": "字" * 4001})
         self.assertEqual(response.status_code, 422)
 
@@ -239,7 +238,7 @@ class HighTrendTests(unittest.TestCase):
                 "## 柔和表面\n低反光和触感的结合。[T00001 U000001]"
             )
         ) as model:
-            client = TestClient(app)
+            client = authenticated_client()
             data = self.request.model_dump(mode="json")
             preview = client.post("/api/v1/high-trends/preview", json=data).json()
             self.assertEqual(preview["scope"]["user_limit"], 1)
@@ -279,7 +278,7 @@ class HighTrendTests(unittest.TestCase):
         with patch("app.api.high_trends.high_trend_manager", self.manager), patch(
             "app.services.high_trends.tasks.run_trend_step"
         ) as model:
-            client = TestClient(app)
+            client = authenticated_client()
             for endpoint in ("preview", "tasks"):
                 response = client.post(f"/api/v1/high-trends/{endpoint}", json={
                     **self.request.model_dump(mode="json"), "user_scope": "all", "prompt": "前1位用户"})
@@ -332,7 +331,7 @@ class HighTrendTests(unittest.TestCase):
         }):
             self.manager.run(task["id"])
         with patch("app.api.high_trends.high_trend_manager", self.manager):
-            client = TestClient(app)
+            client = authenticated_client()
             result = client.get(f"/api/v1/high-trends/tasks/{task['id']}").json()
             photo = result["result"]["user_images"][0]
             self.assertTrue(photo["file_exists"])

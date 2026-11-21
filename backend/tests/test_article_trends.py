@@ -1,7 +1,12 @@
-"""七篇 synthetic_fixture + 假模型验证任务，不请求供应商，不回放全量资料。"""
+"""小样文章库、Excel 增量导入与使用假模型的聚类边界。"""
 
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime
+from io import BytesIO
 import json
 from pathlib import Path
+import re
+from zipfile import ZipFile
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
@@ -12,6 +17,7 @@ from app.api import article_trends as api
 from app.schemas.article_trends import ArticleFilters, ClusterCreateRequest, ClusterRequest
 from app.services.article_trends.catalog import ArticleCatalog
 from app.services.article_trends import tasks
+from tests.auth_helpers import authenticated_client
 
 
 @pytest.fixture
@@ -94,6 +100,108 @@ def test_catalog_filters_selection_and_safe_images(library):
     with pytest.raises(ValueError):
         library.selected(request(article_ids=["missing"]))
     assert "local_vl_info" not in json.dumps(library.semantic_records(chosen))
+
+
+def _export(*rows, headers=None):
+    book = Workbook()
+    sheet = book.active
+    sheet.title = "导出结果"
+    sheet.append(headers or [
+        "id", "title_zh", "title", "summary_zh", "release_time", "detail_url",
+        "source_url", "primary_category", "image_url",
+    ])
+    for row in rows:
+        sheet.append(row)
+    generated = BytesIO()
+    book.save(generated)
+    export = BytesIO()
+    # 模拟实际导出器：工作表 dimension 为 A1，真实行列仍完整。
+    with ZipFile(generated) as source, ZipFile(export, "w") as target:
+        for path in source.namelist():
+            data = source.read(path)
+            if path == "xl/worksheets/sheet1.xml":
+                data = re.sub(rb'<dimension ref="[^"]+"', b'<dimension ref="A1"', data)
+            target.writestr(path, data)
+    return {"file": ("趋势导出.xlsx", export.getvalue())}
+
+
+def test_import_preview_then_append_preserves_catalog_and_enables_selection(library, monkeypatch):
+    runner = FixtureRunner()
+    manager = tasks.ClusterManager(library.root, library, runner)
+    monkeypatch.setattr(api, "cluster_manager", manager)
+    workbook = _export(
+        [1, "不能覆盖旧文章"],
+        [8, "新增趋势", None, "一段\n两行摘要", datetime(2026, 11, 16, 10), "https://new.example/article",
+         "https://new.example/", "家具", "https://new.example/a.png || https://new.example/b.png | https://new.example/c.png|file:///tmp/a.png"],
+        [9, "原文链接重复", None, None, None, "https://EXAMPLE.org/1/"],
+        ["8", "本表 ID 重复"],
+        [10, None, "原标题", "不同时间的新增内容", "2026-08-01", None, "https://example.org/"],
+        [11, None, None, "缺失标题"],
+        [12, "日期不正确", None, None, "未识别日期"],
+    )
+    with authenticated_client() as client:
+        base = "/api/v1/article-trends"
+        baseline = library.excel.read_bytes()
+        preview = client.post(base + "/imports/preview", files=workbook)
+        assert preview.is_success, preview.text
+        data = preview.json()
+        assert (data["total_rows"], data["new_count"], data["duplicate_count"], data["invalid_count"], data["image_count"]) == (7, 2, 3, 2, 3)
+        assert [item["row"] for item in data["issues"]] == [7, 8]
+        assert [item["article_id"] for item in data["sample_articles"]] == ["8", "10"]
+        assert not library.import_dir.exists()
+        assert library.facets("test")["total"] == 7
+        assert client.post(base + "/imports", files=workbook).status_code == 422
+
+        response = client.post(base + "/imports", files=workbook, data={"selection_digest": data["selection_digest"]})
+        assert response.is_success, response.text
+        assert response.json() == {"added_count": 2, "duplicate_count": 3, "invalid_count": 2, "total_articles": 9}
+        assert library.excel.read_bytes() == baseline
+        assert library.article("1")["title"] == "合成文章1"
+        assert library.article("1")["images"][0]["url"].startswith("/api/v1/")
+        assert client.get(base + "/catalog").json()["max_date"] == "2026-11-16"
+        article = client.get(base + "/articles", params={"source": "new.example", "category": "家具"}).json()["items"][0]
+        assert article["article_id"] == "8" and article["summary"] == "一段\n两行摘要"
+        assert article["image_count"] == 3 and len(article["images"]) == 1
+        detail = client.get(base + "/articles/8").json()
+        assert [image["url"] for image in detail["images"]] == [f"https://new.example/{name}.png" for name in "abc"]
+        assert all(image["external"] for image in detail["images"])
+        assert ArticleCatalog(library.root).article("10")["title"] == "原标题"
+        assert manager.preview(request(article_ids=["8", "10"]))["article_count"] == 2
+        assert not runner.requests
+
+        repeated = client.post(base + "/imports/preview", files=workbook).json()
+        assert repeated["new_count"] == 0 and repeated["duplicate_count"] == 5
+        assert len(list(library.import_dir.glob("*.json"))) == 1
+
+
+def test_concurrent_imports_recheck_confirmation_against_current_library(library, monkeypatch):
+    monkeypatch.setattr(api, "cluster_manager", tasks.ClusterManager(library.root, library))
+    workbook = _export([8, "同一份上传"])
+    url = "/api/v1/article-trends/imports"
+    with authenticated_client() as client:
+        preview = client.post(url + "/preview", files=workbook).json()
+        fields = {"selection_digest": preview["selection_digest"]}
+        assert client.post(url, files=_export([9, "换了一份表"]), data=fields).status_code == 409
+
+        def submit():
+            return client.post(url, files=workbook, data=fields).status_code
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            statuses = list(pool.map(lambda _: submit(), range(2)))
+        assert sorted(statuses) == [200, 409]
+        assert len(list(library.import_dir.glob("*.json"))) == 1
+        assert ArticleCatalog(library.root).facets("test")["total"] == 8
+
+
+def test_import_handles_invalid_file_and_headers(library, monkeypatch):
+    monkeypatch.setattr(api, "cluster_manager", tasks.ClusterManager(library.root, library))
+    url = "/api/v1/article-trends/imports/preview"
+    with authenticated_client() as client:
+        broken = client.post(url, files={"file": ("坏文件.xlsx", b"not an Excel workbook")})
+        assert broken.status_code == 400 and "无法读取 Excel" in broken.json()["detail"]
+        missing = client.post(url, files=_export(["序号"], headers=["序号"]))
+        assert missing.status_code == 400 and "第一行必须包含 id" in missing.json()["detail"]
+        assert not library.import_dir.exists()
 
 
 def test_preview_confirmation_digest_no_model(library):

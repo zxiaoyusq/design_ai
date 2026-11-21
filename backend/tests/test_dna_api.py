@@ -6,10 +6,9 @@ from io import BytesIO
 from pathlib import Path
 from unittest.mock import patch
 
-from fastapi.testclient import TestClient
 from PIL import Image
 
-from app.main import app
+from tests.auth_helpers import authenticated_client
 from app.services.dna import storage
 
 
@@ -27,7 +26,7 @@ class DnaApiTestCase(unittest.TestCase):
                 patch.object(storage, "UPLOADS_DIR", uploads_dir),
                 patch("app.services.dna.tasks.extraction_task_manager.run"),
             ):
-                client = TestClient(app)
+                client = authenticated_client()
                 response = client.post(
                     "/api/v1/dna/images",
                     files={"files": ("sample.png", png_bytes(), "image/png")},
@@ -66,7 +65,7 @@ class DnaApiTestCase(unittest.TestCase):
                 patch.object(storage, "UPLOADS_DIR", uploads_dir),
                 patch.object(storage, "RESULTS_DIR", results_dir),
             ):
-                client = TestClient(app)
+                client = authenticated_client()
                 uploaded = client.post(
                     "/api/v1/dna/images",
                     files={"files": ("delete-me.png", png_bytes(), "image/png")},
@@ -92,7 +91,7 @@ class DnaApiTestCase(unittest.TestCase):
             source.write_bytes(png_bytes())
             with patch.object(storage, "RESULTS_DIR", results_dir):
                 storage.save_result_image(result_id, source)
-                client = TestClient(app)
+                client = authenticated_client()
                 listed = client.get("/api/v1/dna/results")
                 preview_url = listed.json()[0]["preview_url"]
                 preview = client.get(preview_url)

@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-11",
+  "file": "prism-dna-cluster-moodboard-20261111.zip",
+  "bytes": 443886,
+  "sha256": "7cca14d8caec9dbe04608d4d7406bde912cc6803c90644169e552cfa34a9e3b1",
+  "files": 76,
+  "original_skill_files": 48,
+  "source_files": 70,
+  "zip_crc_passed": true,
+  "extracted_package_checks_passed": true,
+  "extracted_package_credentials_scan_passed": true,
+  "default_model": "gemini-3.8-flash",
+  "framework": "DeepAgents",
+  "actual_model_calls": 0
+}

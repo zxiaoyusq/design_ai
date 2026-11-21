@@ -4,9 +4,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from fastapi.testclient import TestClient
 
-from app.main import app
+from tests.auth_helpers import authenticated_client
 from app.schemas.high_trends import HighTrendRequest
 from app.services.high_trends.tasks import HighTrendManager, read
 from tests.test_high_trend_upstream import upstream, UID, TID, write
@@ -50,7 +49,7 @@ def test_module_api_freezes_sources_serves_images_and_exports_handoff(upstream):
     with patch("app.api.high_trends.high_trend_manager", manager), patch(
         "app.services.high_trends.tasks.run_trend_step", side_effect=local_answer
     ) as runner:
-        client = TestClient(app)
+        client = authenticated_client()
         listing = client.get("/api/v1/high-trends/inputs")
         assert listing.status_code == 200
         assert listing.json()["trend_outputs"][0]["selectable"]

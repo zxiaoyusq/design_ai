@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>登录 · AI 审美洞察平台</title>
+  <style>
+    :root { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif; color: #26243a; background: #f4f3f8; font-synthesis: none; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; min-height: 100vh; min-height: 100svh; display: grid; place-items: center; padding: 36px 20px; background: radial-gradient(ellipse at 80% 12%, #e9e5ff 0, transparent 48%), radial-gradient(ellipse at 10% 85%, #f8eadd 0, transparent 46%), #f7f6fb; }
+    main { width: min(100%, 430px); }
+    .brand { display: flex; justify-content: center; align-items: center; gap: 12px; margin-bottom: 36px; }
+    .brand-mark { display: grid; width: 43px; height: 43px; place-items: center; color: #6257d8; border: 1px solid #b6adec; border-radius: 50% 50% 42% 58%; transform: rotate(-12deg); }
+    .brand strong { display: block; font-size: 19px; letter-spacing: .04em; }
+    .brand small { display: block; margin-top: 5px; color: #7b7890; font-size: 9px; letter-spacing: .16em; }
+    .card { padding: 38px 36px 32px; border: 1px solid rgba(255,255,255,.9); border-radius: 24px; background: rgba(255,255,255,.9); box-shadow: 0 24px 70px rgba(53,44,105,.09); }
+    h1 { margin: 0 0 10px; font-size: 26px; font-weight: 650; letter-spacing: .02em; }
+    .intro { margin: 0 0 30px; color: #7b7890; font-size: 14px; line-height: 1.7; }
+    label { display: block; margin: 20px 0 9px; font-size: 13px; font-weight: 600; }
+    input, button { font: inherit; }
+    input { width: 100%; height: 48px; padding: 0 14px; border: 1px solid #ddd9eb; border-radius: 10px; background: #fcfbff; color: #26243a; font-size: 15px; transition: border-color .15s, box-shadow .15s; }
+    input:focus { outline: none; border-color: #796de1; box-shadow: 0 0 0 3px #efecff; }
+    input::placeholder { color: #aaa5b9; }
+    .password-field { position: relative; }
+    .password-field input { padding-right: 65px; }
+    .visibility { position: absolute; right: 5px; top: 6px; height: 36px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: #645b83; font-size: 12px; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #b9aef7; outline-offset: 3px; }
+    .visibility:hover { background: #eeebfc; }
+    .submit { width: 100%; height: 48px; margin-top: 26px; border: 0; border-radius: 10px; background: #6257d8; color: #fff; font-size: 15px; font-weight: 600; letter-spacing: .1em; cursor: pointer; box-shadow: 0 7px 16px rgba(98,87,216,.18); }
+    .submit:hover { background: #5146c4; }
+    .submit:disabled { opacity: .65; cursor: wait; }
+    .error { margin: 17px 0 0; color: #ac3850; font-size: 13px; line-height: 1.65; }
+    .footer { margin: 25px 0 0; color: #888298; text-align: center; font-size: 12px; line-height: 1.7; }
+    [hidden] { display: none !important; }
+    @media (max-width: 420px) { .card { padding: 30px 24px 26px; } .brand { margin-bottom: 28px; } }
+    @media (prefers-reduced-motion: reduce) { input { transition: none; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"><svg width="27" height="27" viewBox="0 0 27 27" fill="none"><path d="m6 7 14 3-4 12L6 7Z" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="7" r="2" fill="currentColor"/><circle cx="20" cy="10" r="2" fill="currentColor"/><circle cx="16" cy="22" r="2" fill="currentColor"/></svg></span>
+      <div><strong>AI 审美洞察平台</strong><small>AESTHETIC INTELLIGENCE</small></div>
+    </div>
+    <section class="card" aria-labelledby="login-title">
+      <h1 id="login-title">登录工作台</h1>
+      <p class="intro">使用你的账号，继续探索设计灵感。</p>
+      <form id="login-form" action="/api/v1/auth/login" method="post">
+        <label for="username">用户名</label>
+        <input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="请输入用户名" required maxlength="128" autofocus>
+        <label for="password">密码</label>
+        <div class="password-field">
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="请输入密码" required maxlength="512">
+          <button id="visibility" class="visibility" type="button" aria-controls="password" aria-label="显示密码" aria-pressed="false">显示</button>
+        </div>
+        <button id="submit" class="submit" type="submit">登录</button>
+        <p id="error" class="error" role="alert" aria-live="polite" hidden></p>
+      </form>
+    </section>
+    <p class="footer">设计 DNA · 趋势洞察 · 用户研究</p>
+    <noscript><p class="error">请启用浏览器 JavaScript 后登录。</p></noscript>
+  </main>
+  <script>
+    (function () {
+      'use strict';
+      var form = document.getElementById('login-form');
+      var username = document.getElementById('username');
+      var password = document.getElementById('password');
+      var visibility = document.getElementById('visibility');
+      var submit = document.getElementById('submit');
+      var error = document.getElementById('error');
+
+      function returnPath() {
+        var query = window.location.search;
+        var candidate = new URLSearchParams(query).get('next') || '/';
+        // nginx 直接附带原始 URI；Vite 与应用内跳转使用编码参数，两者均保留完整查询条件。
+        if (query.indexOf('?next=/') === 0) candidate = query.slice(6);
+        try {
+          if (candidate.charAt(0) !== '/' || candidate.indexOf('//') === 0 || /[\\\u0000-\u001f\u007f]/.test(candidate)) return '/';
+          var target = new URL(candidate, window.location.origin);
+          var pathname = decodeURIComponent(target.pathname);
+          if (target.origin !== window.location.origin || pathname.indexOf('//') === 0 || /[\\\u0000-\u001f\u007f]/.test(pathname) || /^\/login\/?$/i.test(pathname)) return '/';
+          return target.pathname + target.search + target.hash;
+        } catch (_) { return '/'; }
+      }
+
+      visibility.addEventListener('click', function () {
+        var visible = password.type === 'password';
+        password.type = visible ? 'text' : 'password';
+        visibility.textContent = visible ? '隐藏' : '显示';
+        visibility.setAttribute('aria-label', visible ? '隐藏密码' : '显示密码');
+        visibility.setAttribute('aria-pressed', String(visible));
+      });
+
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        if (submit.disabled || !form.reportValidity()) return;
+        error.hidden = true;
+        submit.disabled = true;
+        submit.textContent = '登录中…';
+        form.setAttribute('aria-busy', 'true');
+        try {
+          var response = await fetch('/api/v1/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify({ username: username.value.trim(), password: password.value })
+          });
+          if (response.ok) {
+            password.value = '';
+            window.location.replace(returnPath());
+            return;
+          }
+          error.textContent = response.status === 401 || response.status === 403 ? '用户名或密码不正确，请重试。' : response.status === 429 ? '登录尝试过于频繁，请稍后重试。' : '暂时无法登录，请稍后重试。';
+        } catch (_) {
+          error.textContent = '暂时无法登录，请检查网络后重试。';
+        }
+        error.hidden = false;
+        submit.disabled = false;
+        submit.textContent = '登录';
+        form.setAttribute('aria-busy', 'false');
+      });
+    })();
+  </script>
+</body>
+</html>
