@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import HomeView from '@/views/HomeView.vue'
+import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -56,6 +57,16 @@ const router = createRouter({
       component: HomeView,
     },
   ],
+})
+
+// 每次进入模块均向后端确认会话，401 由共享请求拦截器跳转独立登录页。
+router.beforeEach(async () => {
+  try {
+    await useAuthStore().checkSession()
+    return true
+  } catch {
+    return false
+  }
 })
 
 // 保留原始导航异常，并把懒加载故障交给独立提示；普通业务错误不会触发自动重载。

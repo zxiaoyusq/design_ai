@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# 固定域名部署入口：前端直连 80 端口，API 仅由 Vite 的 /api 代理访问。
+# 固定域名部署入口：默认提供构建产物，API 由前端同源代理访问。
 set -Eeuo pipefail
 
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -14,6 +14,7 @@ DESIGN_AI_BACKEND_HOST="${DESIGN_AI_BACKEND_HOST:-127.0.0.1}"
 DESIGN_AI_BACKEND_PORT="${DESIGN_AI_BACKEND_PORT:-8000}"
 DESIGN_AI_FRONTEND_HOST="${DESIGN_AI_FRONTEND_HOST:-0.0.0.0}"
 DESIGN_AI_FRONTEND_PORT="${DESIGN_AI_FRONTEND_PORT:-80}"
+DESIGN_AI_FRONTEND_MODE="${DESIGN_AI_FRONTEND_MODE:-preview}"
 
 BACKEND_PID_FILE="${RUNTIME_DIR}/backend.pid"
 FRONTEND_PID_FILE="${RUNTIME_DIR}/frontend.pid"
@@ -42,6 +43,7 @@ usage() {
   DESIGN_AI_DOMAIN          默认 gamedevcenter.ahagamecenter.com
   DESIGN_AI_BACKEND_PORT    默认 8000，仅本机监听
   DESIGN_AI_FRONTEND_PORT   默认 80，对外监听
+  DESIGN_AI_FRONTEND_MODE   默认 preview，提供已构建页面；开发调试可设为 dev
 
 注意：启动会停止上述端口原有的监听进程、对应容器或系统服务，不会自动恢复它们。
 EOF
@@ -183,6 +185,14 @@ activate_runtime() {
   local conda_base
   local conda_profile
 
+  case "${DESIGN_AI_FRONTEND_MODE}" in
+    preview)
+      [[ -f "${FRONTEND_DIR}/dist/index.html" ]] || fail "缺少前端构建产物，请先在 frontend 目录执行 pnpm build"
+      ;;
+    dev) ;;
+    *) fail "DESIGN_AI_FRONTEND_MODE 只支持 preview 或 dev" ;;
+  esac
+
   [[ -d "${FRONTEND_DIR}/node_modules" ]] || fail "请先在 frontend 目录执行 pnpm install"
   [[ -f "${BACKEND_DIR}/.env" ]] || fail "缺少 backend/.env"
   command -v lsof >/dev/null 2>&1 || fail "缺少 lsof"
@@ -222,7 +232,7 @@ activate_runtime() {
 
 wait_for_backend() {
   local attempt
-  local backend_url="http://${DESIGN_AI_BACKEND_HOST}:${DESIGN_AI_BACKEND_PORT}/openapi.json"
+  local backend_url="http://${DESIGN_AI_BACKEND_HOST}:${DESIGN_AI_BACKEND_PORT}/health"
 
   for ((attempt = 1; attempt <= 100; attempt++)); do
     [[ ! -f "${STOP_REQUEST_FILE}" ]] || exit 0
@@ -241,7 +251,7 @@ wait_for_backend() {
 
 wait_for_frontend() {
   local attempt
-  local frontend_url="http://127.0.0.1:${DESIGN_AI_FRONTEND_PORT}/"
+  local frontend_url="http://127.0.0.1:${DESIGN_AI_FRONTEND_PORT}/login"
 
   for ((attempt = 1; attempt <= 100; attempt++)); do
     [[ ! -f "${STOP_REQUEST_FILE}" ]] || exit 0
@@ -272,6 +282,10 @@ start() {
   remove_pid_file "${STOP_REQUEST_FILE}"
   # 先确认依赖可用，再接管端口，避免依赖缺失时先停掉仍可用的旧服务。
   activate_runtime
+  (
+    cd "${BACKEND_DIR}"
+    python -m alembic -c alembic.ini upgrade head
+  ) 9>&- || fail "账号数据库迁移失败，请先配置并启动 PostgreSQL"
   trap cleanup EXIT
   trap 'exit 130' INT TERM HUP
   stop_component "前端服务" "${FRONTEND_PID_FILE}" "pnpm"
@@ -293,7 +307,8 @@ start() {
   (
     cd "${FRONTEND_DIR}"
     export VITE_BACKEND_URL="http://${DESIGN_AI_BACKEND_HOST}:${DESIGN_AI_BACKEND_PORT}"
-    exec setsid pnpm dev \
+    # 公网默认不注入 HMR，也不在用户切换模块时重新优化依赖并刷新页面。
+    exec setsid pnpm "${DESIGN_AI_FRONTEND_MODE}" \
       --host "${DESIGN_AI_FRONTEND_HOST}" \
       --port "${DESIGN_AI_FRONTEND_PORT}" \
       --strictPort
@@ -303,6 +318,7 @@ start() {
   wait_for_frontend
 
   echo "站点已启动：http://${DESIGN_AI_DOMAIN}/"
+  echo "前端运行模式：${DESIGN_AI_FRONTEND_MODE}"
   echo "后端仅监听 ${DESIGN_AI_BACKEND_HOST}:${DESIGN_AI_BACKEND_PORT}；日志目录：${LOG_DIR}"
   echo "按 Ctrl+C 或执行 ./site.sh stop 可停止站点。"
 

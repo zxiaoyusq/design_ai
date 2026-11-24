@@ -17,6 +17,7 @@ from openpyxl import load_workbook
 from openpyxl.utils.exceptions import InvalidFileException
 
 from app.services.article_trends.catalog import ArticleCatalog, article_from_excel, safe_url
+from app.services.article_trends.region_jobs import new_job
 from app.services.dna.storage import _atomic_write
 
 
@@ -160,7 +161,8 @@ def preview_workbook(catalog: ArticleCatalog, file: BinaryIO, filename: str) -> 
     return _plan(catalog.records(), workbook)[0]
 
 
-def import_workbook(catalog: ArticleCatalog, file: BinaryIO, filename: str, selection_digest: str) -> dict:
+def import_workbook(catalog: ArticleCatalog, file: BinaryIO, filename: str, selection_digest: str,
+                    *, region_model_id: str | None = None) -> dict:
     """锁内复核新增范围，再原子写入单个批次，避免并发上传重复文章。"""
     workbook = _parse(file, filename)
     catalog.import_dir.mkdir(parents=True, exist_ok=True)
@@ -170,19 +172,24 @@ def import_workbook(catalog: ArticleCatalog, file: BinaryIO, filename: str, sele
         preview, added = _plan(existing, workbook)
         if preview["selection_digest"] != selection_digest:
             raise RuntimeError("文件或文章库已变化，请重新预览后确认")
+        job = None
         if added:
             now = datetime.now(UTC)
+            import_id = uuid4().hex
             batch = {
                 "schema_version": 1,
                 "imported_at": now.isoformat(),
                 "source": {"filename": workbook.filename, "sha256": workbook.sha256, "sheet": workbook.sheet},
                 "articles": added,
             }
-            path = catalog.import_dir / f"{now:%Y%m%dT%H%M%S%fZ}-{uuid4().hex}.json"
+            if region_model_id:
+                job = new_job(import_id, region_model_id, len(added))
+                batch["region_job"] = job
+            path = catalog.import_dir / f"{now:%Y%m%dT%H%M%S%fZ}-{import_id}.json"
             _atomic_write(path, (json.dumps(batch, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
         return {
             "added_count": len(added),
             "duplicate_count": preview["duplicate_count"],
             "invalid_count": preview["invalid_count"],
             "total_articles": len(existing) + len(added),
-        }
+        } | ({"region_job": job} if job else {})

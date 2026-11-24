@@ -11,6 +11,7 @@ from urllib.parse import urlsplit, quote
 from openpyxl import load_workbook
 
 from app.schemas.article_trends import ArticleFilters, ClusterRequest
+from app.services.article_trends.region_labels import NAMES, input_sha256
 
 PROJECT = Path(__file__).resolve().parents[4]
 
@@ -59,11 +60,15 @@ class ArticleCatalog:
         self.excel = self.root / "ref/趋势信息0930.xlsx"
         self.seed_imports = self.root / "ref/trend_article_imports"
         self.import_dir = self.root / "data/trend_data/article_imports"
+        self.seed_regions = self.root / "ref/trend_article_regions"
+        self.region_dir = self.root / "data/trend_data/article_regions"
         self.image_index = self.root / "data/trend_data/trend_info_0930/trends.json"
         self.images_root = self.root / "data/trend_data/images"
         self._stamp = None
         self._records = []
         self._images = {}
+        self._region_stamp = None
+        self._region_results = {}
         self._lock = RLock()
 
     def records(self):
@@ -125,14 +130,40 @@ class ArticleCatalog:
         records.sort(key=lambda a: a["published_at"] or "", reverse=True)
         self._records, self._images = records, images
 
+    def region_results(self):
+        """独立缓存地区结果，后台每批入库不触发基准 Excel 重新解析。"""
+        with self._lock:
+            paths = sorted(self.seed_regions.glob("*.json")) + sorted(self.region_dir.glob("*.json"))
+            stamp = tuple(self._file_stamp(path) for path in paths)
+            if stamp != self._region_stamp:
+                results = {}
+                for path in paths:
+                    batch = json.loads(path.read_text(encoding="utf-8"))
+                    for result in batch["articles"]:
+                        results[result["article_id"]] = result
+                self._region_results = results
+                self._region_stamp = stamp
+            return self._region_results
+
+    @staticmethod
+    def _region_analysis(article, results):
+        result = results.get(article["article_id"])
+        # 文章文字若在后续数据版本变化，已存标签只保留作历史证据。
+        return result if result and result["input_sha256"] == input_sha256(article) else None
+
     def filtered(self, filters: ArticleFilters):
         query = filters.q.strip().casefold()
         start = filters.date_from.isoformat() if filters.date_from else None
         end = filters.date_to.isoformat() if filters.date_to else None
+        regions = self.region_results() if filters.region else {}
         return [a for a in self.records() if
                 (not query or query in (a["title"] + "\n" + a["summary"]).casefold())
                 and (not filters.source or a["source"] == filters.source)
                 and (not filters.category or a["category"] == filters.category)
+                and (not filters.region or any(
+                    NAMES[tag["code"]] == filters.region
+                    for tag in (self._region_analysis(a, regions) or {}).get("tags", [])
+                ))
                 and (not start or (a["published_at"] and a["published_at"] >= start))
                 and (not end or (a["published_at"] and a["published_at"] <= end))]
 
@@ -157,7 +188,7 @@ class ArticleCatalog:
         return [{k: a[k] for k in ("article_id", "title", "summary", "text_kind", "published_at")}
                 | {"source_url": a.get("detail_url")} for a in selected]
 
-    def public(self, article, detail=False):
+    def public(self, article, detail=False, region_results=None):
         aid = article["article_id"]
         local = self.available_images(aid, limit=None if detail else 1)
         available = [{"image_id": image["image_id"], "url": image["url"]} for image in local]
@@ -169,9 +200,17 @@ class ArticleCatalog:
             if not available:
                 available = [{"image_id": f"{aid}-external-{index}", "url": url, "external": True}
                              for index, url in enumerate(external if detail else external[:1], 1)]
-        return {k: article.get(k) for k in (
+        analysis = self._region_analysis(article, region_results if region_results is not None else self.region_results())
+        tags = [{**tag, "name": NAMES[tag["code"]]} for tag in analysis["tags"]] if analysis else None
+        public = {k: article.get(k) for k in (
             "article_id", "title", "summary", "published_at", "source", "source_url", "category")
-        } | {"image_count": image_count, "images": available}
+        } | {"image_count": image_count, "images": available,
+             "region_tags": [tag["name"] for tag in tags] if tags is not None else None}
+        if detail and analysis:
+            public["region_analysis"] = {key: analysis[key] for key in (
+                "model_id", "response_model", "runtime", "prompt_version", "analyzed_at"
+            )} | {"tags": tags}
+        return public
 
     def available_images(self, aid, limit=None):
         """复用图片路由的本地安全校验；原链接仅供跨文章去重，不作为展示地址。"""
@@ -195,8 +234,9 @@ class ArticleCatalog:
 
     def listing(self, filters, page=1, page_size=30):
         records = self.filtered(filters)
+        regions = self.region_results()
         return {"total": len(records), "page": page, "page_size": page_size,
-                "items": [self.public(a) for a in records[(page - 1)*page_size:page*page_size]]}
+                "items": [self.public(a, region_results=regions) for a in records[(page - 1)*page_size:page*page_size]]}
 
     def article(self, aid):
         item = next((a for a in self.records() if a["article_id"] == aid), None)
@@ -220,6 +260,10 @@ class ArticleCatalog:
     def facets(self, version):
         rows = self.records()
         dates = [a["published_at"] for a in rows if a["published_at"]]
+        regions = self.region_results()
+        region_names = {NAMES[tag["code"]] for article in rows
+                        for tag in (self._region_analysis(article, regions) or {}).get("tags", [])}
         return {"total": len(rows), "sources": sorted({a["source"] for a in rows}),
                 "categories": sorted({a["category"] for a in rows}),
+                "regions": sorted(region_names),
                 "min_date": min(dates, default=None), "max_date": max(dates, default=None), "skill_version": version}

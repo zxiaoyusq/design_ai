@@ -57,6 +57,24 @@ test('缺失资源不允许回退为 SPA HTML', async () => {
   assert.equal(await response.text(), 'Asset not found')
 })
 
+test('构建产物服务同样提供真实脚本，并拒绝缺失脚本的 HTML 兜底', async () => {
+  let middleware
+  devBuildAssets(join(directory, 'assets')).configurePreviewServer({ middlewares: { use(handler) { middleware = handler } } })
+  const preview = createServer((request, response) => middleware(request, response, () => response.end('<html>SPA</html>')))
+  await new Promise(resolve => preview.listen(0, '127.0.0.1', resolve))
+  try {
+    const base = `http://127.0.0.1:${preview.address().port}`
+    const script = await fetch(base + '/assets/index-hash.js')
+    assert.equal(script.status, 200)
+    assert.equal(await script.text(), 'window.legacy = true;')
+    const missing = await fetch(base + '/assets/missing.js')
+    assert.equal(missing.status, 404)
+    assert.doesNotMatch(await missing.text(), /<html>/)
+  } finally {
+    await new Promise(resolve => preview.close(resolve))
+  }
+})
+
 test('路径穿越、符号链接逃逸及非法编码不泄漏其他目录', async () => {
   for (const path of ['..%2fprivate.txt', 'outside.txt', '%E0%A4%A']) {
     const response = await fetch(`${origin}/assets/${path}`)

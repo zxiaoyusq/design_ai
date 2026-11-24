@@ -7,7 +7,7 @@ import { message } from 'ant-design-vue'
 import { isAxiosError } from 'axios'
 
 import { articleTrendsApi } from '@/api/articleTrends'
-import type { ArticleImportResult, TrendArticle, TrendCatalog, TrendClusterTask, TrendFilters, TrendModel, TrendPreview, TrendRelatedImage, TrendSelection } from '@/types/articleTrends'
+import type { ArticleImportResult, ArticleRegionJob, TrendArticle, TrendCatalog, TrendClusterTask, TrendFilters, TrendModel, TrendPreview, TrendRelatedImage, TrendSelection } from '@/types/articleTrends'
 
 const catalog = ref<TrendCatalog | null>(null)
 const models = ref<TrendModel[]>([])
@@ -18,13 +18,17 @@ const pageSize = ref(24)
 const keyword = ref('')
 const source = ref('')
 const category = ref('')
+const region = ref('')
 const startDate = ref('')
 const endDate = ref('')
 const loading = ref(false)
+const refreshingLibrary = ref(false)
 const listError = ref('')
 const catalogError = ref('')
 const importOpen = ref(false)
 const importNotice = ref('')
+const regionJob = ref<ArticleRegionJob | null>(null)
+const retryingRegionJob = ref(false)
 const selectedArticle = ref<TrendArticle | null>(null)
 const detailLoading = ref(false)
 const detailError = ref('')
@@ -56,6 +60,8 @@ const taskDetailLoading = ref(false)
 const unavailableImages = ref(new Set<string>())
 let articleRequest = 0
 let articleRevision = 0
+let regionRequest = 0
+let readingRegionJob = false
 let detailRequest = 0
 let taskRequest = 0
 let filterTimer: ReturnType<typeof setTimeout> | undefined
@@ -63,7 +69,7 @@ let pollTimer: ReturnType<typeof setInterval> | undefined
 let disposed = false
 
 const invalidDates = computed(() => Boolean(startDate.value && endDate.value && startDate.value > endDate.value))
-const filters = computed<TrendFilters>(() => ({ q: keyword.value.trim() || undefined, source: source.value || undefined, category: category.value || undefined, date_from: startDate.value || undefined, date_to: endDate.value || undefined }))
+const filters = computed<TrendFilters>(() => ({ q: keyword.value.trim() || undefined, source: source.value || undefined, category: category.value || undefined, region: region.value || undefined, date_from: startDate.value || undefined, date_to: endDate.value || undefined }))
 const filterKey = computed(() => JSON.stringify(filters.value))
 const eligibleCheckedIds = computed(() => checkedIds.value.filter(id => {
   const date = articleDates.value[id]
@@ -81,8 +87,9 @@ const selection = computed<TrendSelection>(() => ({
 const selectionKey = computed(() => JSON.stringify(selection.value))
 const detailImages = computed(() => (selectedArticle.value?.images ?? []).filter(image => !unavailableImages.value.has(image.url)))
 const featuredImage = computed(() => detailImages.value[0])
+const regionRetryable = computed(() => regionJob.value?.status === 'failed' || regionJob.value?.status === 'interrupted')
 const allPageChecked = computed(() => articles.value.length > 0 && articles.value.every(article => checkedIds.value.includes(article.article_id)))
-const canEstimate = computed(() => Boolean(modelId.value && effectiveCount.value >= 2 && !invalidDates.value && !loading.value && minSources.value >= 2 && maxCalls.value >= 1))
+const canEstimate = computed(() => Boolean(modelId.value && effectiveCount.value >= 2 && !invalidDates.value && !loading.value && !refreshingLibrary.value && minSources.value >= 2 && maxCalls.value >= 1))
 const result = computed(() => activeTask.value?.result)
 const isHistorical = computed(() => activeTask.value?.kind === 'historical')
 const historicalTask = computed(() => taskList.value.find(task => task.kind === 'historical'))
@@ -170,7 +177,8 @@ function togglePage() {
   checkedIds.value = allPageChecked.value ? checkedIds.value.filter(id => !articles.value.some(article => article.article_id === id)) : [...new Set([...checkedIds.value, ...articles.value.map(article => article.article_id)])]
   selectionMode.value = 'manual'
 }
-function resetFilters() { keyword.value = ''; source.value = ''; category.value = ''; startDate.value = ''; endDate.value = '' }
+function resetFilters() { keyword.value = ''; source.value = ''; category.value = ''; region.value = ''; startDate.value = ''; endDate.value = '' }
+function modelLabel(id: string) { return models.value.find(model => model.id === id)?.name || id }
 async function loadCatalog() {
   catalogError.value = ''
   const responses = await Promise.allSettled([articleTrendsApi.catalog(), articleTrendsApi.models()])
@@ -183,8 +191,27 @@ async function loadCatalog() {
     // 只加载可选目录；用户明确选择模型并确认后才创建任务。
   } else catalogError.value += `${catalogError.value ? '；' : ''}模型目录：${errorMessage(modelResponse.reason)}`
 }
+async function refreshLibrary() {
+  if (refreshingLibrary.value) return
+  refreshingLibrary.value = true
+  // 重新读取文章库时也使仍在等待的旧范围预估失效。
+  articleRevision += 1
+  preview.value = null
+  previewRequest.value = null
+  confirmOpen.value = false
+  try {
+    await Promise.all([loadCatalog(), loadArticles()])
+  } finally {
+    refreshingLibrary.value = false
+  }
+}
 function onArticlesImported(result: ArticleImportResult) {
   importNotice.value = `新增 ${result.added_count.toLocaleString()} 篇 · 跳过重复 ${result.duplicate_count.toLocaleString()} 行、异常 ${result.invalid_count.toLocaleString()} 行 · 全库 ${result.total_articles.toLocaleString()} 篇`
+  if (result.region_job) {
+    regionRequest += 1
+    regionJob.value = result.region_job
+    void refreshRegionJob()
+  }
   // 新文章可能改变当前筛选范围，清除已有或正在请求的聚类预估。
   articleRevision += 1
   preview.value = null
@@ -196,6 +223,50 @@ function onArticlesImported(result: ArticleImportResult) {
   } else {
     clearTimeout(filterTimer)
     void loadArticles()
+  }
+}
+async function refreshRegionJob() {
+  if (readingRegionJob) return
+  const request = regionRequest
+  const previous = regionJob.value
+  readingRegionJob = true
+  try {
+    const current = previous ? await articleTrendsApi.regionJob(previous.id) : await articleTrendsApi.latestRegionJob()
+    if (disposed || request !== regionRequest) return
+    regionJob.value = current
+    if (current && previous && current.processed_count !== previous.processed_count) {
+      if (region.value) {
+        articleRevision += 1
+        preview.value = null
+        previewRequest.value = null
+        confirmOpen.value = false
+      }
+      void loadCatalog()
+      void loadArticles()
+      // 只刷新仍在查看的详情，避免覆盖用户在等待期间选中的其他文章。
+      const detail = selectedArticle.value?.article_id
+      if (detail) {
+        const updated = await articleTrendsApi.article(detail)
+        if (!disposed && selectedArticle.value?.article_id === detail) selectedArticle.value = updated
+      }
+    }
+  } catch {
+    // 暂时不能查询进度时保留最后一次状态，下次轮询继续。
+  } finally {
+    readingRegionJob = false
+  }
+}
+async function retryRegionJob() {
+  if (!regionJob.value || !regionRetryable.value || retryingRegionJob.value) return
+  retryingRegionJob.value = true
+  const request = ++regionRequest
+  try {
+    const queued = await articleTrendsApi.retryRegionJob(regionJob.value.id)
+    if (!disposed && request === regionRequest) regionJob.value = queued
+  } catch (error) {
+    message.error(errorMessage(error))
+  } finally {
+    retryingRegionJob.value = false
   }
 }
 async function estimate() {
@@ -282,10 +353,14 @@ watch([filterKey, page, pageSize], (values, previous) => {
   filterTimer = setTimeout(() => void loadArticles(), 250)
 })
 onMounted(() => {
-  void loadCatalog()
-  void loadArticles()
+  void refreshLibrary()
   void refreshTasks()
-  pollTimer = setInterval(() => { if (!document.hidden && (tab.value === 'tasks' || taskList.value.some(task => ['queued', 'running'].includes(task.status)))) void refreshTasks() }, 5000)
+  void refreshRegionJob()
+  pollTimer = setInterval(() => {
+    if (document.hidden) return
+    if (tab.value === 'tasks' || taskList.value.some(task => ['queued', 'running'].includes(task.status))) void refreshTasks()
+    if (regionJob.value && ['queued', 'running'].includes(regionJob.value.status)) void refreshRegionJob()
+  }, 5000)
 })
 onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterval(pollTimer); articleRequest += 1; detailRequest += 1; taskRequest += 1 })
 </script>
@@ -304,15 +379,20 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
         <h1>趋势洞察</h1>
         <p>浏览 {{ catalog?.total.toLocaleString() ?? '全部' }} 篇文章，选择范围，以标题和摘要进行纯文本语义聚类。</p>
         <div class="principles"><span>多篇文章共同支持</span><span>来源去重后排序</span><span>趋势数量无上限</span><span>图片仅供浏览</span></div>
-        <a-button v-if="historicalTask" class="history-entry" @click="openHistory">查看历史 100 个趋势结果</a-button>
+        <div class="library-actions">
+          <p v-if="catalog">库内最新发布日期 <time v-if="catalog.max_date" :datetime="catalog.max_date">{{ catalog.max_date }}</time><span v-else>暂无</span></p>
+          <a-button :loading="refreshingLibrary" :disabled="loading || estimating || starting" @click="refreshLibrary">刷新文章库</a-button>
+          <a-button v-if="historicalTask" @click="openHistory">查看历史 100 个趋势结果</a-button>
+        </div>
       </section>
-      <a-alert v-if="catalogError" type="warning" show-icon :message="catalogError" class="notice"><template #action><a-button size="small" @click="loadCatalog">重试</a-button></template></a-alert>
+      <a-alert v-if="catalogError" type="warning" show-icon :message="catalogError" class="notice"><template #action><a-button size="small" @click="refreshLibrary">重试</a-button></template></a-alert>
       <a-tabs v-model:active-key="tab">
         <a-tab-pane key="library" tab="文章资料库与聚类范围">
           <section class="filter-panel" aria-label="文章筛选">
             <div class="filter-field keyword-field"><label for="article-keyword">关键词</label><div class="search-input"><SearchOutlined /><input id="article-keyword" v-model="keyword" type="search" placeholder="搜索标题与摘要" /></div></div>
             <div class="filter-field"><label for="article-source">来源</label><select id="article-source" v-model="source"><option value="">全部来源</option><option v-for="item in catalog?.sources" :key="item" :value="item">{{ item }}</option></select></div>
             <div class="filter-field"><label for="article-category">分类</label><select id="article-category" v-model="category"><option value="">全部分类</option><option v-for="item in catalog?.categories" :key="item" :value="item">{{ item }}</option></select></div>
+            <div class="filter-field"><label for="article-region">主题地区</label><select id="article-region" v-model="region"><option value="">全部地区</option><option v-for="item in catalog?.regions" :key="item" :value="item">{{ item }}</option></select></div>
             <button class="reset-button" type="button" @click="resetFilters">重置筛选</button>
           </section>
 
@@ -356,6 +436,11 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
                 </div>
               </div>
               <a-alert v-if="importNotice" type="success" show-icon closable :message="importNotice" class="notice" @close="importNotice = ''" />
+              <a-alert v-if="regionJob" :type="regionRetryable ? 'warning' : regionJob.status === 'completed' ? 'success' : 'info'"
+                show-icon class="notice" :message="`主题地区分析${statusNames[regionJob.status]} · ${regionJob.processed_count} / ${regionJob.article_count} 篇`">
+                <template #description>{{ modelLabel(regionJob.model_id) }} · {{ regionJob.tagged_count }} 篇有明确地区<template v-if="regionJob.error">。{{ regionJob.error }}</template></template>
+                <template v-if="regionRetryable" #action><a-button size="small" :loading="retryingRegionJob" @click="retryRegionJob">继续分析</a-button></template>
+              </a-alert>
               <a-alert v-if="listError" type="error" show-icon :message="listError" class="notice"><template #action><a-button size="small" @click="loadArticles">重试</a-button></template></a-alert>
               <a-spin :spinning="loading">
                 <div v-if="articles.length && !invalidDates" class="article-grid">
@@ -369,7 +454,15 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
                         <span v-else>{{ article.image_count ? '配图暂不可预览' : '暂无图片' }}</span>
                         <span class="image-count">{{ article.image_count }} 图</span>
                       </div>
-                      <div class="card-content"><span class="card-category">{{ article.category || '未分类' }}</span><h3>{{ article.title }}</h3><p class="card-summary">{{ article.summary || '未提供摘要' }}</p><div class="card-meta"><span>{{ article.source || '来源未提供' }}</span><time>{{ dateLabel(article.published_at) }}</time></div></div>
+                      <div class="card-content">
+                        <span class="card-category">{{ article.category || '未分类' }}</span><h3>{{ article.title }}</h3>
+                        <p class="card-summary">{{ article.summary || '未提供摘要' }}</p>
+                        <div class="article-region-tags" aria-label="主题地区">
+                          <template v-if="article.region_tags?.length"><a-tag v-for="tag in article.region_tags" :key="tag" color="purple">{{ tag }}</a-tag></template>
+                          <span v-else>{{ article.region_tags ? '无明确地区' : '地区待分析' }}</span>
+                        </div>
+                        <div class="card-meta"><span>{{ article.source || '来源未提供' }}</span><time>{{ dateLabel(article.published_at) }}</time></div>
+                      </div>
                     </button>
                   </article>
                 </div>
@@ -392,6 +485,17 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
                   </a-image-preview-group>
                   <div class="detail-title-block"><p class="detail-overline">{{ selectedArticle.category || '未分类' }} · {{ selectedArticle.source }}</p><h3>{{ selectedArticle.title }}</h3><time>发布于 {{ dateLabel(selectedArticle.published_at) }}</time></div>
                   <div class="detail-section"><h4>文章摘要 · 聚类文字依据</h4><p class="summary">{{ selectedArticle.summary || '源表未提供摘要。' }}</p></div>
+                  <div class="detail-section">
+                    <h4>主题地区</h4>
+                    <template v-if="selectedArticle.region_analysis">
+                      <ul v-if="selectedArticle.region_analysis.tags.length" class="region-evidence">
+                        <li v-for="tag in selectedArticle.region_analysis.tags" :key="tag.code"><a-tag color="purple">{{ tag.name }}</a-tag><q>{{ tag.evidence }}</q></li>
+                      </ul>
+                      <p v-else class="muted">标题和摘要没有足够的地域依据。</p>
+                      <p class="source-note">{{ selectedArticle.region_analysis.runtime === 'codex_session' ? 'Codex · 6.2 Sol' : modelLabel(selectedArticle.region_analysis.model_id) }} · {{ dateLabel(selectedArticle.region_analysis.analyzed_at) }}</p>
+                    </template>
+                    <p v-else class="muted">待分析</p>
+                  </div>
                   <div v-if="detailImages.length" class="detail-section">
                     <h4>关联原图 {{ detailImages.length }} 张 · {{ featuredImage?.external ? '点击前往原站' : '点击放大' }}</h4>
                     <div v-if="featuredImage?.external" class="image-grid external-images">
@@ -474,7 +578,7 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
       </a-tabs>
     </main>
     <footer><span>用户审美洞察与趋势捕捉 · AI 审美洞察平台</span><span>本地文章资料库 · Skill {{ catalog?.skill_version || '—' }}</span></footer>
-    <ArticleExcelImport v-model:open="importOpen" @imported="onArticlesImported" />
+    <ArticleExcelImport v-model:open="importOpen" :models="models" @imported="onArticlesImported" />
     <a-modal v-model:open="confirmOpen" title="确认启动纯文本趋势聚类" ok-text="确认并运行模型" cancel-text="返回调整" :confirm-loading="starting" :closable="!starting" :mask-closable="!starting" :cancel-button-props="{ disabled: starting }" @ok="startCluster">
       <template v-if="preview">
         <p>输入趋势日期：{{ dateRangeLabel }}</p>
@@ -489,13 +593,15 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
 
 <style scoped>
 .article-shell { overflow: clip; }
-.history-entry { margin-top: 16px; }
+.library-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; margin-top: 16px; }
+.article-hero .library-actions p { margin: 0; }
+.library-actions time, .library-actions p span { margin-left: 4px; color: #4b405b; font-weight: 600; }
 .article-hero { padding: 48px 0 24px; }
 .article-hero h1 { margin: 18px 0 10px; font-size: 29px; color: #342c47; }
 .article-hero p, .section-heading p, .result-heading p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
 .principles { display: flex; flex-wrap: wrap; gap: 8px; margin: 17px 0 0; }
 .principles span { padding: 5px 10px; background: #eeebf8; border-radius: 20px; color: #736196; font-size: 11px; }
-.filter-panel { display: grid; grid-template-columns: minmax(190px, 1.4fr) repeat(2, minmax(120px, 1fr)) auto; gap: 12px; align-items: end; padding: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; }
+.filter-panel { display: grid; grid-template-columns: minmax(190px, 1.4fr) repeat(3, minmax(120px, 1fr)) auto; gap: 12px; align-items: end; padding: 20px; background: var(--card); border: 1px solid var(--line); border-radius: 18px; }
 .cluster-date-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) auto; gap: 14px; align-items: end; margin-bottom: 12px; }
 .filter-field { display: grid; gap: 7px; min-width: 0; }
 .filter-field label { color: #867d94; font-size: 11px; }
@@ -538,6 +644,10 @@ onBeforeUnmount(() => { disposed = true; clearTimeout(filterTimer); clearInterva
 .image-count { position: absolute; right: 8px; bottom: 8px; padding: 3px 6px; background: #ffffffdf; color: #6d5e80; border-radius: 4px; font-size: 10px; }
 .card-content { padding: 13px; }
 .card-category { color: #6953a5; font-size: 10px; }
+.article-region-tags { display: flex; flex-wrap: wrap; gap: 4px; color: #8e829d; font-size: 11px; }
+.article-region-tags :deep(.ant-tag), .region-evidence :deep(.ant-tag) { margin-inline-end: 0; }
+.region-evidence { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.region-evidence li { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px; color: #554866; font-size: 12px; overflow-wrap: anywhere; }
 .card-content h3 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; min-height: 40px; margin: 7px 0 10px; color: #342c47; font-size: 13px; line-height: 1.5; }
 .card-summary { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; color: #9a90a4; font-size: 11px; line-height: 1.6; min-height: 35px; }
 .card-meta { display: flex; justify-content: space-between; gap: 5px; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f0edf3; color: #9c93a8; font-size: 10px; }

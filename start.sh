@@ -8,6 +8,7 @@ FRONTEND_DIR="${PROJECT_DIR}/frontend"
 DESIGN_AI_HOST="${DESIGN_AI_HOST:-127.0.0.1}"
 DESIGN_AI_BACKEND_PORT="${DESIGN_AI_BACKEND_PORT:-8000}"
 DESIGN_AI_FRONTEND_PORT="${DESIGN_AI_FRONTEND_PORT:-5173}"
+DESIGN_AI_FRONTEND_MODE="${DESIGN_AI_FRONTEND_MODE:-preview}"
 CLOUDFLARED_BIN="${DESIGN_AI_CLOUDFLARED:-}"
 BACKEND_PID=""
 FRONTEND_PID=""
@@ -47,7 +48,7 @@ wait_for_backend() {
     if ! kill -0 "${BACKEND_PID}" 2>/dev/null; then
       fail "后端服务启动失败，请查看上方 Uvicorn 输出"
     fi
-    if curl --fail --silent --show-error --max-time 1 "${backend_url}/openapi.json" >/dev/null 2>&1; then
+    if curl --fail --silent --show-error --max-time 1 "${backend_url}/health" >/dev/null 2>&1; then
       return
     fi
     sleep 0.1
@@ -58,6 +59,14 @@ wait_for_backend() {
 
 trap cleanup EXIT
 trap 'exit 130' INT TERM
+
+case "${DESIGN_AI_FRONTEND_MODE}" in
+  preview)
+    [[ -f "${FRONTEND_DIR}/dist/index.html" ]] || fail "缺少前端构建产物，请先在 frontend 目录执行 pnpm build"
+    ;;
+  dev) ;;
+  *) fail "DESIGN_AI_FRONTEND_MODE 只支持 preview 或 dev" ;;
+esac
 
 [[ -d "${FRONTEND_DIR}/node_modules" ]] || fail "请先在 frontend 目录执行 pnpm install"
 [[ -f "${BACKEND_DIR}/.env" ]] || fail "缺少 backend/.env"
@@ -94,6 +103,11 @@ fi
 
 (
   cd "${BACKEND_DIR}"
+  python -m alembic -c alembic.ini upgrade head
+) || fail "账号数据库迁移失败，请先配置并启动 PostgreSQL"
+
+(
+  cd "${BACKEND_DIR}"
   exec python -m uvicorn app.main:app \
     --host "${DESIGN_AI_HOST}" \
     --port "${DESIGN_AI_BACKEND_PORT}"
@@ -105,7 +119,7 @@ wait_for_backend
 (
   cd "${FRONTEND_DIR}"
   export VITE_BACKEND_URL="http://127.0.0.1:${DESIGN_AI_BACKEND_PORT}"
-  exec pnpm dev \
+  exec pnpm "${DESIGN_AI_FRONTEND_MODE}" \
     --host "${DESIGN_AI_HOST}" \
     --port "${DESIGN_AI_FRONTEND_PORT}" \
     --strictPort

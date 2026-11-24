@@ -43,17 +43,21 @@ function start({ href = 'https://example.com/dna-v2?filter=ID#results', storageB
 const scriptFailure = { target: { tagName: 'SCRIPT', src: 'https://example.com/src/main.ts' } }
 const dynamicFailure = { reason: new Error('Failed to fetch dynamically imported module: /src/views/DnaV2View.vue') }
 
-test('启动脚本失败只自动刷新一次，保留查询、锚点和其他会话数据', () => {
+test('启动脚本和模块失败仅显示提示，由用户手动重载并保留页面条件', () => {
   const saved = new Map([['user-selection', 'keep']])
   const first = start({ stored: saved })
   first.dispatch('error', scriptFailure)
   first.dispatch('unhandledrejection', dynamicFailure)
+  assert.equal(first.navigation.length, 0)
+  assert.equal(first.elements.get('app-startup-title').textContent, '页面加载失败')
+  assert.equal(first.elements.get('app-startup').attributes.role, 'alert')
+  first.elements.get('app-startup-reload').onclick()
   assert.equal(first.navigation.length, 1)
   const url = new URL(first.navigation[0])
   assert.equal(url.searchParams.get('filter'), 'ID')
   assert.equal(url.hash, '#results')
   assert.ok(url.searchParams.get('__app_cache'))
-  assert.ok(url.searchParams.get('__app_retry'))
+  assert.equal(url.searchParams.has('__app_retry'), false)
   assert.equal(saved.get('user-selection'), 'keep')
 
   const second = start({ href: url.href, stored: saved })
@@ -65,9 +69,11 @@ test('启动脚本失败只自动刷新一次，保留查询、锚点和其他�
   assert.equal(second.navigation.length, 1)
 })
 
-test('拒绝会话存储时仍以 URL 阻断重复自动刷新', () => {
+test('拒绝会话存储时加载失败仍不会自动重载，手动重试不依赖存储', () => {
   const first = start({ storageBlocked: true })
   first.dispatch('unhandledrejection', dynamicFailure)
+  assert.equal(first.navigation.length, 0)
+  first.elements.get('app-startup-reload').onclick()
   assert.equal(first.navigation.length, 1)
   const second = start({ href: first.navigation[0], storageBlocked: true })
   second.dispatch('unhandledrejection', dynamicFailure)
@@ -75,10 +81,11 @@ test('拒绝会话存储时仍以 URL 阻断重复自动刷新', () => {
   assert.equal(second.elements.get('app-startup').hidden, false)
 })
 
-test('会话 guard 在用户回到无重试参数的原链接时仍限制自动刷新', () => {
+test('不同模块初次打开并失败时都不会触发整页自动重载', () => {
   const first = start()
   first.dispatch('error', scriptFailure)
-  const second = start({ stored: first.stored })
+  assert.equal(first.navigation.length, 0)
+  const second = start({ href: 'https://example.com/moodboards', stored: first.stored })
   second.dispatch('error', scriptFailure)
   assert.equal(second.navigation.length, 0)
 })

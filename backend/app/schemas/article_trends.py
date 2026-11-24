@@ -9,6 +9,7 @@ class ArticleFilters(BaseModel):
     q: str = Field(default="", max_length=300)
     source: str = Field(default="", max_length=300)
     category: str = Field(default="", max_length=300)
+    region: str = Field(default="", max_length=100)
     date_from: date | None = None
     date_to: date | None = None
 
@@ -62,6 +63,19 @@ class ArticleImportPreview(BaseModel):
     issues: list[ArticleImportIssue]
 
 
+class ArticleRegionJob(BaseModel):
+    """一份导入的地区分析进度，包含已判断但无地区证据的文章。"""
+
+    id: str
+    model_id: str
+    status: str
+    article_count: int
+    processed_count: int
+    tagged_count: int
+    calls: int
+    error: str | None = None
+
+
 class ArticleImportResult(BaseModel):
     """确认导入后的新增、跳过与资料库总量。"""
 
@@ -69,6 +83,7 @@ class ArticleImportResult(BaseModel):
     duplicate_count: int
     invalid_count: int
     total_articles: int
+    region_job: ArticleRegionJob | None = None
 
 
 class ClusterCreateRequest(ClusterRequest):

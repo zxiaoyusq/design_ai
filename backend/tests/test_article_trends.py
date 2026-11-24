@@ -16,7 +16,7 @@ import pytest
 from app.api import article_trends as api
 from app.schemas.article_trends import ArticleFilters, ClusterCreateRequest, ClusterRequest
 from app.services.article_trends.catalog import ArticleCatalog
-from app.services.article_trends import tasks
+from app.services.article_trends import region_jobs, region_labels, tasks
 from tests.auth_helpers import authenticated_client
 
 
@@ -202,6 +202,82 @@ def test_import_handles_invalid_file_and_headers(library, monkeypatch):
         missing = client.post(url, files=_export(["序号"], headers=["序号"]))
         assert missing.status_code == 400 and "第一行必须包含 id" in missing.json()["detail"]
         assert not library.import_dir.exists()
+
+
+def test_import_region_model_and_retry_publish_only_validated_articles(library, monkeypatch):
+    manager = tasks.ClusterManager(library.root, library)
+    monkeypatch.setattr(api, "cluster_manager", manager)
+    monkeypatch.setattr(region_labels, "BATCH_SIZE", 1)
+    attempts = []
+
+    def fake_model(model_id, system, body):
+        [row] = json.loads(body)
+        aid = row["article_id"]
+        assert model_id == "gemini-3.8-flash"
+        assert set(row) == {"article_id", "title", "summary"} and "词表" in system
+        attempts.append(aid)
+        tags = []
+        if aid == "8":
+            tags = [{"code": code, "evidence": quote} for code, quote in
+                    [("US", "纽约展出"), ("IN", "印度工作室"), ("KR", "韩国品牌")]]
+        elif aid == "9":
+            # 首次返回原文中不存在的引句，保留之前的完整批次，剩余可继续。
+            quote = "编造的引文" if attempts.count(aid) == 1 else "为拉美和中亚市场"
+            tags = [{"code": "R_LATAM", "evidence": quote}, {"code": "R_CENTRAL_ASIA", "evidence": quote}]
+        return {"text": json.dumps({"articles": [{"article_id": aid, "tags": tags}]}),
+                "response_model": "fixture-gemini-3.8-flash"}
+
+    monkeypatch.setattr(region_jobs, "run_text_step", fake_model)
+    file = _export(
+        [8, "跨地设计展", None, "印度工作室和韩国品牌联合创作，在纽约展出。"],
+        [9, "区域市场分析", None, "为拉美和中亚市场调研配色偏好。"],
+        [10, "无明确地区的配色趋势", None, "项目探索红色与绿色的对比关系。"],
+    )
+    with authenticated_client() as client:
+        url = "/api/v1/article-trends"
+        plan = client.post(url + "/imports/preview", files=file).json()
+        assert not attempts
+        form = {"selection_digest": plan["selection_digest"], "region_model_id": "gemini-3.8-flash"}
+        assert client.post(url + "/imports", files=file, data={**form, "region_model_id": "unknown"}).status_code == 400
+        submitted = client.post(url + "/imports", files=file, data=form)
+        assert submitted.is_success, submitted.text
+        task = submitted.json()["region_job"]
+        assert task["status"] == "queued" and "owner_identity" not in task
+        track = url + "/region-jobs/" + task["id"]
+
+        failed = client.get(track).json()
+        assert failed["status"] == "failed" and failed["processed_count"] == 1
+        original = client.get(url + "/articles/8").json()
+        assert original["region_tags"] == ["美国", "印度", "韩国"]
+        assert original["region_analysis"]["tags"][0]["evidence"] == "纽约展出"
+        assert client.get(url + "/articles/9").json()["region_tags"] is None
+        assert attempts == ["8", "9"]
+
+        assert client.post(track + "/retry").status_code == 202
+        completed = client.get(url + "/region-jobs/latest").json()
+        assert (completed["status"], completed["processed_count"], completed["tagged_count"]) == ("completed", 3, 2)
+        assert attempts == ["8", "9", "9", "10"]
+        assert client.post(track + "/retry").status_code == 409
+        assert client.get(url + "/articles/8").json() == original
+        assert client.get(url + "/articles/10").json()["region_tags"] == []
+        assert client.get(url + "/articles/1").json()["region_tags"] is None
+        assert client.get(url + "/articles/9").json()["region_tags"] == ["拉美", "中亚"]
+        assert "印度" in client.get(url + "/catalog").json()["regions"]
+        filtered = client.get(url + "/articles", params={"region": "中亚"}).json()
+        assert [item["article_id"] for item in filtered["items"]] == ["9"]
+        assert "region_tags" not in manager.catalog.semantic_records(manager.catalog.records())[0]
+
+
+@pytest.mark.parametrize("tags", [
+    [{"code": code, "evidence": "设计工作室"} for code in ("IN", "US", "BR", "DE")],
+    [{"code": "IN", "evidence": "设计工作室"}, {"code": "IN", "evidence": "设计工作室"}],
+    [{"code": "UNKNOWN", "evidence": "设计工作室"}],
+])
+def test_region_result_rejects_excess_repeated_or_unknown_codes(tags):
+    with pytest.raises(region_labels.RegionResponseError):
+        region_labels.validate_answer({"articles": [{"article_id": "a1", "tags": tags}]}, [
+            {"article_id": "a1", "title": "设计工作室", "summary": ""},
+        ])
 
 
 def test_preview_confirmation_digest_no_model(library):

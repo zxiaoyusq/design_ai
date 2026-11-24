@@ -1,9 +1,6 @@
 (function () {
   'use strict';
 
-  var revision = '20261021-dna-preparation-2';
-  var retryParameter = '__app_retry';
-  var retryKey = 'design-ai:startup-retry:' + window.location.pathname;
   var startup = document.getElementById('app-startup');
   var title = document.getElementById('app-startup-title');
   var message = document.getElementById('app-startup-message');
@@ -14,20 +11,12 @@
   var recovering = false;
   var moduleFailure = /failed to fetch dynamically imported module|importing a module script failed|error loading dynamically imported module|loading (?:css )?chunk [\w-]+ failed|unable to preload css for|failed to load module script/i;
 
-  function wasRetried() {
-    if (new URL(window.location.href).searchParams.get(retryParameter) === revision) return true;
-    try { return window.sessionStorage.getItem(retryKey) === revision; }
-    catch (_) { return false; }
-  }
-
   function reload() {
     if (recovering) return;
     recovering = true;
     var url = new URL(window.location.href);
-    // URL 标记在禁用会话存储时仍能阻断循环；只写本功能的键，不清理用户数据。
-    url.searchParams.set(retryParameter, revision);
+    // 仅由用户点击触发；保留当前查询、锚点及浏览器工作区数据。
     url.searchParams.set('__app_cache', String(Date.now()));
-    try { window.sessionStorage.setItem(retryKey, revision); } catch (_) {}
     window.location.replace(url.href);
   }
 
@@ -42,8 +31,7 @@
   function recoverModule() {
     if (recovering) return;
     showFailure();
-    // 已正常显示的页面保留现场；仅启动阶段的资源加载失败自动重试一次。
-    if (!ready && !wasRetried()) reload();
+    // 模块加载失败只提示，避免网络波动时擅自重载并丢失未保存的输入。
   }
 
   function moduleMessage(error) {

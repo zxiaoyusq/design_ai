@@ -9,6 +9,18 @@ export interface TrendArticle {
   category: string | null
   image_count: number
   images: TrendArticleImage[]
+  /** null 表示待分析，空数组表示分析完成但暂无明确地区。 */
+  region_tags: string[] | null
+  region_analysis?: ArticleRegionAnalysis
+}
+
+export interface ArticleRegionAnalysis {
+  tags: { code: string; name: string; evidence: string }[]
+  model_id: string
+  response_model: string | null
+  runtime: 'deepagents' | 'codex_session'
+  prompt_version: string
+  analyzed_at: string
 }
 
 /** 增量表的原站图片可浏览，本地索引图片继续使用本站路由。 */
@@ -30,6 +42,7 @@ export interface TrendFilters {
   q?: string
   source?: string
   category?: string
+  region?: string
   date_from?: string
   date_to?: string
 }
@@ -38,6 +51,7 @@ export interface TrendCatalog {
   total: number
   sources: string[]
   categories: string[]
+  regions: string[]
   min_date: string | null
   max_date: string | null
   skill_version: string
@@ -68,6 +82,19 @@ export interface ArticleImportResult {
   duplicate_count: number
   invalid_count: number
   total_articles: number
+  region_job?: ArticleRegionJob
+}
+
+/** 导入附带的后台地区分析任务。 */
+export interface ArticleRegionJob {
+  id: string
+  model_id: string
+  status: 'queued' | 'running' | 'completed' | 'failed' | 'interrupted'
+  article_count: number
+  processed_count: number
+  tagged_count: number
+  calls: number
+  error: string | null
 }
 
 /** 范围先预估再凭摘要确认，防止预估后变更条件却执行旧范围。 */

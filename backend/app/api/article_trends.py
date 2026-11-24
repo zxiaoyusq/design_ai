@@ -6,12 +6,14 @@ from fastapi import APIRouter, BackgroundTasks, File, Form, HTTPException, Query
 from fastapi.responses import FileResponse
 
 from app.schemas.article_trends import (
-    ArticleFilters, ArticleImportPreview, ArticleImportResult, ArticleListQuery,
+    ArticleFilters, ArticleImportPreview, ArticleImportResult, ArticleListQuery, ArticleRegionJob,
     ClusterCreateRequest, ClusterRequest, ClusterResumeRequest,
 )
 from app.services.article_trends.imports import import_workbook, preview_workbook
+from app.services.article_trends.region_jobs import ArticleRegionJobs
 from app.services.article_trends.tasks import cluster_manager
 from app.services.article_trends.history import HistoricalTrendResults
+from app.services.llm.catalog import get_model
 
 router = APIRouter(prefix="/article-trends", tags=["article-trends"])
 # 历史图库与文章库共用同一份缓存及图片路径校验。
@@ -76,13 +78,44 @@ def preview_import(file: Annotated[UploadFile, File()]):
     return checked(lambda: preview_workbook(cluster_manager.catalog, file.file, file.filename or ""))
 
 
-@router.post("/imports", response_model=ArticleImportResult)
+@router.post("/imports", response_model=ArticleImportResult, response_model_exclude_unset=True)
 def confirm_import(
+    background: BackgroundTasks,
     file: Annotated[UploadFile, File()],
     selection_digest: Annotated[str, Form(pattern=r"^[a-f0-9]{64}$")],
+    region_model_id: Annotated[str | None, Form(max_length=120)] = None,
 ):
-    """仅确认与预览相符的增量，沿用当前库数据。"""
-    return checked(lambda: import_workbook(cluster_manager.catalog, file.file, file.filename or "", selection_digest))
+    """确认增量后按所选网关模型处理文章，预览阶段不提交模型请求。"""
+    if region_model_id is not None:
+        try:
+            get_model(region_model_id)
+        except ValueError as exc:
+            raise HTTPException(400, "请选择模型目录中的地区分析模型") from exc
+    catalog = cluster_manager.catalog
+    result = checked(lambda: import_workbook(catalog, file.file, file.filename or "", selection_digest,
+                                             region_model_id=region_model_id))
+    if job := result.get("region_job"):
+        background.add_task(ArticleRegionJobs(catalog).run, job["id"])
+    return result
+
+
+@router.get("/region-jobs/latest", response_model=ArticleRegionJob | None)
+def latest_region_job():
+    return checked(ArticleRegionJobs(cluster_manager.catalog).latest)
+
+
+@router.get("/region-jobs/{job_id}", response_model=ArticleRegionJob)
+def region_job(job_id: str):
+    return checked(lambda: ArticleRegionJobs(cluster_manager.catalog).get(job_id))
+
+
+@router.post("/region-jobs/{job_id}/retry", response_model=ArticleRegionJob, status_code=202)
+def retry_region_job(job_id: str, background: BackgroundTasks):
+    """明确同意后继续未完成文章，已通过校验的标签直接复用。"""
+    jobs = ArticleRegionJobs(cluster_manager.catalog)
+    job = checked(lambda: jobs.retry(job_id))
+    background.add_task(jobs.run, job_id)
+    return job
 
 
 @router.post("/preview")

@@ -1,0 +1,4405 @@
+{
+  "schema_version": 1,
+  "source": {
+    "import_batch": "ref/trend_article_imports/2026-11-18.json",
+    "import_sha256": "5cb7165ee3238e7283603cafbd7981784733d1a09d2e4f11be705d649cd0f07b",
+    "workbook_sha256": "43e8e9aa10dc31bc1490605c361679ae35b127dac05c49a954a0209d91efe8dc"
+  },
+  "articles": [
+    {
+      "article_id": "25090",
+      "input_sha256": "606a062bcf9004975b668331f88a3ae9f078e2ad181e279df4f5f052238b03d9",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25095",
+      "input_sha256": "7bb7ba1c406779ac253e6933faa057be1a8c3e37d42673fb0b7b239ae41c370d",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "定居加州"
+        },
+        {
+          "code": "AT",
+          "evidence": "奥地利建筑师理查德·诺伊特拉"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25096",
+      "input_sha256": "7c36029d5d57fdca4fc08d2fd7b451048f918fe03af511e145e194293ce32cc1",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本文具品牌MUCU"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25099",
+      "input_sha256": "3e9855d77e34bba585b67c6d408187ff60df765b482ef99c49df77507550f5a1",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本艺术家 Akinori Goto"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25102",
+      "input_sha256": "22a03c37172c97f75d8367afab009ccacbb1428f82b1085bb62c2f8985143b8e",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25105",
+      "input_sha256": "c0d2dd98d32356ae350b33e2ef3cef0e24624987a7b5a8c209e9b902f9470a12",
+      "tags": [
+        {
+          "code": "AU",
+          "evidence": "澳大利亚工业设计公司Clandestine Design Group"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25108",
+      "input_sha256": "377b938956d873e3c65231dde8abcecffda816b6ab4779aaed2dd45f71c84350",
+      "tags": [
+        {
+          "code": "DE",
+          "evidence": "德国品牌 Wilhelm Knoll"
+        },
+        {
+          "code": "US",
+          "evidence": "Hans Knoll 移居美国"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25111",
+      "input_sha256": "b92d891e6bfd379111d6ae46e78ac51ab164d1289aeef262dcbca16e543f091a",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度教育玩具品牌Ekoplay"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25114",
+      "input_sha256": "b0924f017c71392c0aadfc374c17f4328c95ebbf1bca2c5bcf8d93be13e34826",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25117",
+      "input_sha256": "f4d93cccbaae0a365adbe0613823d27c6e197ae9ee905a42f1435d9af5b86788",
+      "tags": [
+        {
+          "code": "DE",
+          "evidence": "源自1970年代东德VEB Zweckleuchtenbau制造"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25120",
+      "input_sha256": "440892989f917f2905d952bce242ce6c7d8f72477482f2c48909c11a23528b27",
+      "tags": [
+        {
+          "code": "CH",
+          "evidence": "瑞士家具品牌 Embru"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25121",
+      "input_sha256": "64d98cb229787283a8f31b003711724d01d66b7af5f46feebe909047dc29f280",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25122",
+      "input_sha256": "24cab9765c33e5851663fa0e6bdafcc39fa5486fc94617d2409b79dfce9d0070",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国ENSCI工业设计学生Antonin Odin"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25125",
+      "input_sha256": "7a443b6d5fa532b5aaf7a77e05efd3e2ac60b263b0351154ad93ed29711c8cf4",
+      "tags": [
+        {
+          "code": "AT",
+          "evidence": "奥地利可再生能源从业者 Jonathan Schreiber"
+        },
+        {
+          "code": "DE",
+          "evidence": "在德国和奥地利以德语授课"
+        },
+        {
+          "code": "GB",
+          "evidence": "在英国推出英语课程"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25128",
+      "input_sha256": "a83835d0a0e6c5fbeb782be5e7b1e773eeb842950f21c0357bf39abb2c12d1e1",
+      "tags": [
+        {
+          "code": "NO",
+          "evidence": "挪威建筑事务所 Rever & Drage"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25131",
+      "input_sha256": "69bafbbca3e0b279c2509c7d1635d33369129d8704cc01c745b666399cd69b9d",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "中央圣马丁学院学生Kerry Leprince"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25134",
+      "input_sha256": "cf815781f3ced2f20f4c66688a68058a320f268a084ec7132380c423ba58d104",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25137",
+      "input_sha256": "203d16be02e74c8114d79ef06f1469d36594ed150195f50182e5f3a4e1f27e34",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国婴儿护理品牌Coterie"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25140",
+      "input_sha256": "b1f99be4a475730b0706d393e9ccf2533a1e8cfbf23168a7ae23d90d41d3f652",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25143",
+      "input_sha256": "ff81d309a8df3b18eee5c687f1290d035276b48dd3aa5acc355ee2c474756d9d",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25146",
+      "input_sha256": "183e7807674cd2e4dc6d9d3108d4d4f365975848ef7c65a629341022130d94b4",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本宇宙航空研究开发机构（JAXA）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25149",
+      "input_sha256": "03be0b6ba975942f8f87fef0ed53fef60bef7dcf1ee715f46f64fa2b1cb9bab6",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25152",
+      "input_sha256": "c2322d90a7b6375f365135b088afdd253f6bca9fc308af7c5df678356b855461",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "V&A博物馆举办的《Burberry风衣：铸就经典》展览"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25155",
+      "input_sha256": "a9d36ad2741fdaa970a00bf06ce69547a3a68dc9252587215c5d7f59484eca1f",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25158",
+      "input_sha256": "683cde0d00b08e4885bfd6f52a4d37551db682dab4185e83190ccd3d36e58176",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25161",
+      "input_sha256": "e5f1dd55cafa38408b435ef8785f673d7cf28dd14169ce11fff42ea2ff71d8e5",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25164",
+      "input_sha256": "eddc77ab41fc82ad3fbbd942381f8c7295d85a065bd2ae723428c3e31ec8e9dd",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25167",
+      "input_sha256": "1921b202f473547e539f235f5eda92c4dad43f5bc3e16a3ad1db332ed977f2fa",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "20世纪80年代华尔街“企业核心”"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:19:59.135292+00:00"
+    },
+    {
+      "article_id": "25170",
+      "input_sha256": "1bffedfdb29e993755c54a45bad1965a4584418ce30259af81abab357a76000f",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "新德里街头涌现"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25173",
+      "input_sha256": "a70f03583248a45bc5a515b5785ff9207f603d31c60bfaa64673019313cd31ef",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国婚礼文具设计工作室Goods Gang"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25176",
+      "input_sha256": "f774487384fb7d34d5904de11c00cde538356847a2ec7f19a4bc6112a5df63bd",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25179",
+      "input_sha256": "d97841d51d73e17e57d3b8a8008e908097d9ca4cd3e6993138a1d9e13f63e2f8",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25182",
+      "input_sha256": "ca48431cfa340a46cc0d6a3feffb26e0dfbb70c6a49b3395310290fbfb472507",
+      "tags": [
+        {
+          "code": "CA",
+          "evidence": "加拿大户外品牌始祖鸟"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25185",
+      "input_sha256": "e47610e0e3d1c3661f51f982c567b85dd0a6cb3565458ef314a0f51d685abe37",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25188",
+      "input_sha256": "8f78c61b03e74f5c9b6782810c97658c2d57b6fbe3851d225df1b3c431680a5d",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "意大利品牌Ragno"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25191",
+      "input_sha256": "b49a9034c918f2ec0e7f74742b948459b4a522cd7adf6257c4e596c48f44d2a8",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "米兰著名的奢侈品区 Quadrilatero 街区"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25194",
+      "input_sha256": "97fefd08754826f239630c6da41bd51cd567110a4e29336a76113aa65d5e7600",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "在日本东京开设了名为"
+        },
+        {
+          "code": "SE",
+          "evidence": "瑞典达拉纳地区标志性的法伦红传统木屋元素"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25197",
+      "input_sha256": "c578c16d0c47821d3520061e7bded019aac6eaab82bff294f5eac9d43b02829e",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国奢侈品百货公司Selfridges与东伦敦知名餐饮机构E Pellicci展开合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25200",
+      "input_sha256": "1fa59246d92764483dbb93fa6c5a80952b53a9e27735ba4fc05bafb6f3b1363e",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度营销活动的视觉美学"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25203",
+      "input_sha256": "6bd3fd3e63eeb9c2eb7e74be8d5a0de3f84a93e57fed8e55245784d531466c3d",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国最年长的跑团"
+        },
+        {
+          "code": "US",
+          "evidence": "美国运动品牌Altra"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25206",
+      "input_sha256": "046c2c3ae9bbb03e44630f003bb295ae0e8474cd175cceb5fa5fecf3c0be6d6b",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25209",
+      "input_sha256": "bc7a6984eab933100d6f48cc759feea97f28a73ffa5aee3c88a13a10a5e4597a",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度奢侈品消费者"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25212",
+      "input_sha256": "427f1720184a52e37f3b12091949190c0a9fcfea64af812493dd152a26d72d9e",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "覆盖美国主要城市的可搜索餐饮列表"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25215",
+      "input_sha256": "28c54803a64c2a84248b5984a34f65dce01c1437e4a303d37c78dd03779fc6a9",
+      "tags": [
+        {
+          "code": "TH",
+          "evidence": "亚洲游戏展 x 泰国游戏展"
+        },
+        {
+          "code": "R_APAC",
+          "evidence": "为亚太等区域的本土游戏开发者提供了宝贵的平台"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25218",
+      "input_sha256": "81fcf41d50556b906fba79c5f15c70341649698dac7c7c7d974f44686ecc2e8e",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25221",
+      "input_sha256": "0e931f1ccf9c8f203ca0fe5eb5ed912e6954f890ed61fea3c4dfda61d965a565",
+      "tags": [
+        {
+          "code": "CH",
+          "evidence": "在苏黎世设计博物馆举办“光与色”展览"
+        },
+        {
+          "code": "GB",
+          "evidence": "英国品牌Mathmos"
+        },
+        {
+          "code": "NL",
+          "evidence": "荷兰设计师Sabine Marcelis"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25224",
+      "input_sha256": "8e16ebb1b28c15cdf907fa5ad483a01cad1ca839f2f0633954838f910c1f6b69",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国知名面料与缝纫品牌 Merchant & Mills"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25227",
+      "input_sha256": "6cfdce1d8c2f776ab3d9cb7c16a55b72e1f7591368958597c46b188c81e4d6fd",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25230",
+      "input_sha256": "454e53ae86269b3fbe972cbc6ced7240920c0f62f50704d0a3ac661138e1ba10",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "对经典的美式休闲风格进行了大胆重塑"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25233",
+      "input_sha256": "13d46cac10641bf1405040caa4f28816de8d0d3f397e1c0b047fadd30703d177",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25236",
+      "input_sha256": "88b0cb242453476544642235345ba534eb720875128489e0ace09778c6bfda0d",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "服装品牌Madewell与纽约公共图书馆的最新跨界合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25239",
+      "input_sha256": "a38dd63178a4ae9a280521b51e27b460451abb2bc17861afe1e88853b53687ae",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25242",
+      "input_sha256": "4ead93a01c70f5bedc7f28aee1d4fa70c1c35ce7a4fde77b605b44678d906ad9",
+      "tags": [
+        {
+          "code": "SE",
+          "evidence": "瑞典陶瓷艺术家Fanny Swiatek Schultz"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25245",
+      "input_sha256": "7de6bfdac412b6b542e5610a065b4feab2de4988ed1b902e50b4ffc767464b46",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25248",
+      "input_sha256": "7418a0bdd9be1d2be0e5efcfed5f1218376106c8a4610712075dde0b97f5e47d",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "巴黎的奢华格调"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25251",
+      "input_sha256": "44ca84b826b92136e53e434b6acdb5c968d3f6ac080017a2e8914f4815d4776c",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国设计师 Lucy Aboonour"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25254",
+      "input_sha256": "eb3c1e145398bb4fba8fcdc9153cd05438ca4f0a01a775c498a6698edd221d00",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国品牌Socks Appeal"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25257",
+      "input_sha256": "0d9139b9b93b690b6d3c48f1fa2b67fcad3e58125fc7fe789cc240d2453e3b15",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25260",
+      "input_sha256": "ddc8a8d06ce1114009f8b55e9bfb29fbfc41b22281d6183bcb19d2a9bbfc8f13",
+      "tags": [
+        {
+          "code": "ID",
+          "evidence": "在巴厘岛推出了Good Times General Store"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25263",
+      "input_sha256": "977659969ac8d7df49f6195f76f5bff85ae8eeefe4a69c4ee7b2b51e3792b0d8",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "意大利品牌Qeeboo"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:22:04.390694+00:00"
+    },
+    {
+      "article_id": "25266",
+      "input_sha256": "59efe695e01531d8ba2f5622d576d63035f15cf65ead088996b510ce23782a87",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25269",
+      "input_sha256": "8ee18b12ecded73aa9d75926ccf6d4f9bd3ede15d5d9353f3bef24004c5d8c8c",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度时尚品牌Péro"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25272",
+      "input_sha256": "83eb2b237e01938008820cc7242385fc0062d8400be1b79bb364c3397f7f818c",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "创立于青藏高原的奢华纺织品牌Norlha Atelier"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25275",
+      "input_sha256": "4c8307974d6c0575d2e87e0c43c209344e572f31cac4819f6db6bb2cbd6307b6",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25278",
+      "input_sha256": "52e5f2b588c56c317c24da72a6b57e360a4fb5c08ebeeef6421cb235db1d403a",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国奢侈品牌路易威登"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25283",
+      "input_sha256": "f8c41310e171dcb6975db21970f32aed5e343510e1ec181e507461186a2d6005",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25284",
+      "input_sha256": "c67587acc604db45829539cf3378475d23094df9c3ed8246940baa737b56cdfc",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国知名时尚品牌SKIMS"
+        },
+        {
+          "code": "JP",
+          "evidence": "日本知名工具箱品牌Toyo Steel"
+        },
+        {
+          "code": "FR",
+          "evidence": "法国经典文具品牌Rhodia"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25287",
+      "input_sha256": "38c6c178a6fdfcd4065d7d7b5b83fe0dfa89089680dcff8cda80f5e2966365d7",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "创立于伦敦的手袋品牌DeMellier在斯隆广场"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25290",
+      "input_sha256": "4e01dba9becd50de82af0c8121edc759babb36ec378416e9b374fe10aa8c64a1",
+      "tags": [
+        {
+          "code": "R_NEU",
+          "evidence": "为传统的北欧毛衣注入现代且充满活力的设计语言"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25293",
+      "input_sha256": "3ac23ff5215bed8e9a3af3fc354f34a38fa60dc8209e88cd9d9ca15f7d47f21d",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国品牌TDR"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25296",
+      "input_sha256": "c8d7e1363fb05fc203d2dd429349744e9880ddbb2e9670c3dd8fe115c8f97b33",
+      "tags": [
+        {
+          "code": "HK",
+          "evidence": "香港街头品牌GROCERY"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25299",
+      "input_sha256": "9e04c9d31e4a93965400ea1fdbd2733cd1923996095c65a0950640acc8856ca1",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在阿姆斯特丹的 Kingpins 2028春夏展会上展示"
+        },
+        {
+          "code": "GB",
+          "evidence": "位于伦敦市中心的展厅"
+        },
+        {
+          "code": "US",
+          "evidence": "20世纪初伦敦和纽约新闻工作者的报社新闻室"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25302",
+      "input_sha256": "bc3c194a752058e7d6d84d5e8e25e72ad9b937c4aa4f01eb4c3321a42569a2ec",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "2026年荷兰设计周"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25305",
+      "input_sha256": "3f8da234bc1d99e1b5cc15723d6a9570a0a2fdafeb70f0ddcf31d94e6ca158ae",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25308",
+      "input_sha256": "31ac97d4fca0421b1e460c4d04950d79977f86554ae2634665eb304b3da2f1f2",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25311",
+      "input_sha256": "429bce72d1cf39a7bd1c57b8eb3a8700c9200847443f13d07c66fd3c4d0c66b2",
+      "tags": [
+        {
+          "code": "AU",
+          "evidence": "墨尔本无性别服饰品牌Monphell致力于打造本土制造"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25314",
+      "input_sha256": "3c86a5d01d1e0d02503214da26207cc9991fdd3e3f61ff32fa372c7f68196ab4",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25317",
+      "input_sha256": "82fb018cff759d0e7be8e6fc016d4c3b03dbaa5686e1ad6161c180bb7f474aa0",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25320",
+      "input_sha256": "ceda4c8a3ac7240730fc37af94ca1ee028129eeb77d88ec690c3a68d606de8ae",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国生活方式品牌 Rifle Paper Co."
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25323",
+      "input_sha256": "8deb56f89c6c7aef3a6dd8bdc8841460fe8046b8cb834b829db356933de2b718",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25326",
+      "input_sha256": "291c5acf19a99191c43449510c294e28572b7625f71fdacd6feceb3ddceb0696",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25329",
+      "input_sha256": "9add45a3bb236a1eea436a394f908474593f79b588bba5a399888c1a580c78cb",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "中国艺术家石至莹的《石头》系列作品"
+        },
+        {
+          "code": "HK",
+          "evidence": "在香港、巴塞尔、巴黎和迈阿密举办的四场国际艺术展"
+        },
+        {
+          "code": "CH",
+          "evidence": "在香港、巴塞尔、巴黎和迈阿密举办的四场国际艺术展"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25332",
+      "input_sha256": "e4746a9b02a6ce9855ea038468730be4a366044e2e9968cb7bb8dd6679cd192f",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "大英博物馆的贝叶挂毯展览"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25335",
+      "input_sha256": "a7891ffaae7efab80f9a687e70329bbb288e50dd4986022094d659092b1ac37d",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国知名内衣品牌Agent Provocateur"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25338",
+      "input_sha256": "bcb169bc0900a9bbd4b7d73acc3b99232ca7b97012eef77b34349d6b63b7ddfd",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国宠物品牌BARK"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25341",
+      "input_sha256": "5889a87999b6db8cd683645e8753881eb43fe5eea79b789acc96d847b7f2f86e",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25344",
+      "input_sha256": "db6d7919de7906165ba4a552ba21c7624d21ad73d50208b80324fe2d29dd2bb9",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25347",
+      "input_sha256": "1c372ccb2a0fb53b91c3e358351861eb57758515a64e2d8ab54d7ffb15cc2adc",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25350",
+      "input_sha256": "08edd86af492fb505b886ca494e97f4aca147b1dfae19da89f0117174cca25e0",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25353",
+      "input_sha256": "e6cce3c731c51bbdaaa921bc04e9e453a5127804ff1567866c152c7f98ac8d2b",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "中国品牌MossCode"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25356",
+      "input_sha256": "6e73c58f0ffbf1cc9f96b1205accb1979a31e0c3c19a81660fe9997a4d8ff3dc",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25359",
+      "input_sha256": "b3800a1ad766d3a57682022586bcb1b7e09ac05559dfd38d3f79806ee545e39d",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "在2026年巴黎车展上"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25362",
+      "input_sha256": "7dad5f40bda0cd005346d4682abe6844f6a746d5cb7ea6f5fc8a6eb84d425902",
+      "tags": [
+        {
+          "code": "ES",
+          "evidence": "在巴塞罗那的El Born区正式开业"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25365",
+      "input_sha256": "9e06b6b156c89f58c82cfa931f314d0945809e74ffeabbc06026e67b639dd9d6",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本品牌 Ami Aèra"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25368",
+      "input_sha256": "4092372f19009c54847d5f61afd3999c79788c383ad530fd93d29c4d3d2d4a61",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25371",
+      "input_sha256": "9a319c4b28a46880c4a33fa6bae4bf7322b696e7361a1c03997852d813a38bc5",
+      "tags": [
+        {
+          "code": "R_EU",
+          "evidence": "81%的欧洲消费者更倾向于人类创作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25374",
+      "input_sha256": "81b6a59a501042fc2a503f4778ba66586455985e6ed24931742694c97fa92157",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在阿姆斯特丹举办的Kingpins S/S 28展会上"
+        },
+        {
+          "code": "GB",
+          "evidence": "来自伦敦的毕业生设计师Charlie Arnott"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25377",
+      "input_sha256": "705c39bb42fa9decd8542a99f372250d873406cd35f954e48300abd3d66018b2",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "六支国家队齐聚洛杉矶"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25380",
+      "input_sha256": "441eb30e1c403b282ba6cf228b3e1b20b60421cc92ae0710a6c26f1a3596b7bc",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:23:59.630064+00:00"
+    },
+    {
+      "article_id": "25383",
+      "input_sha256": "6a2e9c30751791f1805eda4c98894b3b4176db9f306524bbb70dad3562469bdb",
+      "tags": [
+        {
+          "code": "AR",
+          "evidence": "阿根廷设计师 Ignacio Martínez Todeschini 和 Ignacio Noel"
+        },
+        {
+          "code": "BR",
+          "evidence": "由巴西石英岩和钢材精心制作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25386",
+      "input_sha256": "c7d5ae1ac4b0b1f3c573ca888b648fe8f92ebe2da4c42b872b39cca7abcf22ee",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25389",
+      "input_sha256": "75ac695d8c6a652967bea2551934b8ac1dee2efa11348075d545278d866fb956",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国工人阶级文化对当代设计的深远影响"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25392",
+      "input_sha256": "b02dcb92bc1f892a4f03bfa4cb8d6a2677bc8efdb2d6d1399c11dcd9474b6463",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25395",
+      "input_sha256": "587b9cedbaec04eaa4196c9d027d6e6a20c97c0e25b409b2e3e4366522cfd3cc",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "将中国传统民间工艺元素融入现代服装设计"
+        },
+        {
+          "code": "JP",
+          "evidence": "东京时尚品牌JIAN YE"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25398",
+      "input_sha256": "2d842f79b91efe84d80030f7120d6c26f4f98182eb7795dc26e3a511518c8a48",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "纽约跑步服饰品牌 Bandit Running"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25401",
+      "input_sha256": "d230e2a05320aa2cd437f48d31ae6fb5c1301e61caaeed321bfcc7e568f2f8a7",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国品牌 Atelier Poupée"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25404",
+      "input_sha256": "f4cade399fefc10eaecb329612949bd1fe0a54cf7e9e059e2a37b2997834aa14",
+      "tags": [
+        {
+          "code": "SG",
+          "evidence": "新加坡时尚品牌 Omighty"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25407",
+      "input_sha256": "bf16fb9bba60e7e4b76aed60a3c359221bb062e51690ce856fc02081fce2f00f",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25410",
+      "input_sha256": "667187f4ee4038c733df5f200a698f62c12aa4ea4d53e32efd9d1a946beeeeae",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国品牌GULGANG"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25413",
+      "input_sha256": "286ce2b8b2adca82c96f3ceadb253cd18bf8b008f0675470617486759097510d",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "引起现代印度消费者的共鸣"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25416",
+      "input_sha256": "def1e7e06ff9362c6a51375cb532c1aab08329e30a1b12672ee8b8714ba37d1e",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "与现代印度奢侈时尚品牌进行授权合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25419",
+      "input_sha256": "5e7a3e3bddc1eeaaa2d4344020cc11dd0cefe82051a6fe86b3534eaf699afefd",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25422",
+      "input_sha256": "619107431da5c8108f0b3b3616799d1b455a18ab094ff417632d7c95898740b3",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在荷兰设计周上，荷兰设计工作室Studio RENS"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25425",
+      "input_sha256": "30d7d957aae026192c66635ec7178da7f427475c8ea3e165874c9fe6e8367b23",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国品牌Rototobebe"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25428",
+      "input_sha256": "fd21ffe9a4ebd1a9b64af652aafec18bd93f4701ed6e96b2cff7c7443c30de7f",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "巴黎巴塞尔艺术展（Art Basel Paris）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25431",
+      "input_sha256": "5591ed54bf5b14a86d6ebdc0f9e907598af9f076d876c2de4e0ed47823ef48ed",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25434",
+      "input_sha256": "27dd66ffd223075e17f8bd3c4bf79d5d3949912cd1c24d469dd3ad541888463a",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "《周六夜现场》的Z世代喜剧三人组"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25437",
+      "input_sha256": "3ba0f4fe34a274f483f9098e36bc0f2b8f33e39bba090007819edc9509b5da76",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25440",
+      "input_sha256": "e9b6a812c748ed214505a0c85a0d265c9f29476958201ae44034404c14607b93",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "意大利面料制造商Pontetorto"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25443",
+      "input_sha256": "641a2062afcdbe7efaff4794816086f0eb3d21209d331c69f0daad0158f75f57",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25446",
+      "input_sha256": "357f5ee5c4688c1dd38d65ef4c58440a69186fe636f0a863c55820bff634e969",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "意大利设计工作室Davide Bozzo Studio"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25449",
+      "input_sha256": "b608f5496fbbf2d21c5173df81ef295edbe55457032c4ab4e418bcd7e6e739c3",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "米兰市中心Galleria（埃马努埃莱二世拱廊街）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25452",
+      "input_sha256": "8b2c288c1945aa38429ff7bc4728b6599f9fc5e6627dd43a763fd43c81cf094c",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25455",
+      "input_sha256": "15f2e4a99bf231ac115f422e6981a6f42d99cb46ad5bc631d14555b57b494e4e",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "意大利品牌Officina 39"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25458",
+      "input_sha256": "c10a6d6d7445b58605ef7bbacef43e789d8dc76f2e811bdcc861bb5a913dace0",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "Apple Music（美国）的品牌重塑"
+        },
+        {
+          "code": "GB",
+          "evidence": "英国音乐制作人Fred again.."
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25461",
+      "input_sha256": "5d0dfcbb47c44f12b67ecf62b1f3688c81db4821d868859ba74d97c887c4f005",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25464",
+      "input_sha256": "d18ec365fcbd411ca59d8611738d78634f1fbe93bb0ec16f5cbe61dd2b444d02",
+      "tags": [
+        {
+          "code": "SE",
+          "evidence": "瑞典户外品牌 Klättermusen"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25467",
+      "input_sha256": "dedb258df01151b4a4fcefddd07a9f184143a54a23cd94aa716dcd837006adbb",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国行李箱品牌Away"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25470",
+      "input_sha256": "77314b7e9d2fae9095f65edb71d873bcdb1320b8843265d638b8412d2974afa7",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "伦敦弗里兹艺术博览会（Frieze London）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25473",
+      "input_sha256": "5052d987cd6d50c709c9cde0b16c67f887d2ad3fa4fb32c3ebdb884fcd0b98f7",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "荷兰设计工作室Raw Color"
+        },
+        {
+          "code": "DK",
+          "evidence": "丹麦品牌Paper Collective"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25474",
+      "input_sha256": "9251c3f4d5224012a517b7fb6ccc5a948fe382ae4fde46e5879922de3bc0352a",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "上海品牌Short Sentence"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25479",
+      "input_sha256": "94b16fe5d7ed67fd0f8efb9a3cb9e3c2d7d20f0d92d374dcb17544fe779dda7f",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "该胶囊系列在日本制造，采用7针针织工艺"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25482",
+      "input_sha256": "ba42097489b81c86689d95029450f262233ecf515a30a0a4f78b9f5dce60f78c",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25485",
+      "input_sha256": "cce6b0decd716fe37caeb4ff08b53015002001b0c031cbd71bb43d08793b725b",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25488",
+      "input_sha256": "4dd40f03c1f0db4df33a870ced1339409eb2663e0eef808291372b2da18adf51",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25491",
+      "input_sha256": "0702f2510204a22fcbee133d6a69b8b0e3ee711454c067cc038c0111afc547f3",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "中央圣马丁学院（Central St. Martins）学生"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25494",
+      "input_sha256": "1ddd17c7386f187edbb93378b1d957f19fc35a5a99c72ad8679aa35e1391c155",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25497",
+      "input_sha256": "fdda97ab7c60259831404335b1fe6e94590a612be038a54b0e563b3156f8a8f1",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25498",
+      "input_sha256": "bf1120f59eab3054b8424246eba5e717e1c9d8068f3716a4852c21dac7c61297",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "与日本宇宙航空研究开发机构（JAXA）展开跨界合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:26:00.439452+00:00"
+    },
+    {
+      "article_id": "25503",
+      "input_sha256": "91850303944c316225f34519881b0a108886728e736a80611c0b6dc2f1eeec68",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国婴儿护理品牌Coterie"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25506",
+      "input_sha256": "2239fd4e5e5f4cef80ce4cf5de9b0c7b86b43ccdb2fec6a4a051a27f3353e634",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25509",
+      "input_sha256": "94867f7321e75fd0dc3ed76c536cbf21222e9f2f4b3c3e36747c01631aa80c5e",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25512",
+      "input_sha256": "a542b958644fae832b9bad38830020d3eb15b7c340af294b830cf4e61f4ac5ae",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "意大利品牌Ragno更新了其Look系列瓷砖"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25515",
+      "input_sha256": "f4187cb6b57eabe05c523e7cc449b2c55b590eaec4784db2205f7208e203351d",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "新德里街头涌现"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25518",
+      "input_sha256": "4604c32bd70ff06be3f9552a409d1ee3aeb1a7a124483d61f88158e1d6ddbd38",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国婚礼文具设计工作室 Goods Gang"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25521",
+      "input_sha256": "e70b6e117798d4379eaa3b48afc7f163cb43488973c5c6227c7c38ad92651613",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25524",
+      "input_sha256": "3e4d495f7353f2054d581c36a7c06501449ea15cf61823d0733a35ca8bb5fed3",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25527",
+      "input_sha256": "164cc9488e8fde4fc5a80c1ae76e794bdbf883e50f76197ec69aa24c8b8749af",
+      "tags": [
+        {
+          "code": "CA",
+          "evidence": "加拿大户外品牌始祖鸟"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25528",
+      "input_sha256": "17cd455e9679337db55e70283f6c443f7f245c1fc8162ef06319545c6cf84f16",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25533",
+      "input_sha256": "44ac277dc8a681892d5ff411d5a9c8721ae51ad2d775d5642d80d4f274d30048",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "V&A博物馆举办《Burberry风衣：塑造经典》"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25536",
+      "input_sha256": "bf24383a6636f6fbe605bd3c891764cce70734b3b3a9f661ecf2b599822ed7d3",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25539",
+      "input_sha256": "f4d26f36d0fd0a9e33b2d00482094d0f7a5b24c350ea26447c0d1e85fe3afa2d",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25542",
+      "input_sha256": "0437cb25c4cca3a052e79d6962a7c457cf436d76b28a16fccb71316cfc50e155",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25545",
+      "input_sha256": "411dc4dcc8ee66cfd1837a0d798be94e8ee181e7e12bb39b9dd9265e4e46a066",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25548",
+      "input_sha256": "d678cf20b995680e861a44dd9339410f51f4dd4138c45fc9de6d1a4575f56eb5",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "20世纪80年代华尔街“企业核心”"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25551",
+      "input_sha256": "1e2011a5942962c28add3abdd30e96efc8911a32d53f43148865a2d86ee92a93",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "在米兰著名的奢侈品区Quadrilatero街区开设了全新门店"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25554",
+      "input_sha256": "57c4de2b9131a4249e3383d8d55c94f79d8701943fbf0c7c1a0208b4e3311f78",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度奢侈品消费者的观念正在发生转变"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25557",
+      "input_sha256": "a3ef902e4b87278a418a3d65fd4b947e4126482da40c962ebb253d72675284e9",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "覆盖美国主要城市的可搜索餐饮列表"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25560",
+      "input_sha256": "1aa66babf6d0f8dbb91d0e0764fc00a65ee2d1c059c8efd72eaf2a848b761c41",
+      "tags": [
+        {
+          "code": "TH",
+          "evidence": "Gamescom Asia与泰国游戏展（Thailand Game Show）的合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25563",
+      "input_sha256": "20429cfcd9db10e7f01b96bb5df5bb6c07482e8719bc26bc2c25dd27d9dfd0ab",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25566",
+      "input_sha256": "ef756614516e07230f0e9af90d21665ea3bb9cba9d45b0695f9aa843ec754fdd",
+      "tags": [
+        {
+          "code": "CH",
+          "evidence": "在苏黎世设计博物馆举办“光与色”展览"
+        },
+        {
+          "code": "GB",
+          "evidence": "英国照明品牌Mathmos"
+        },
+        {
+          "code": "NL",
+          "evidence": "荷兰设计师Sabine Marcelis"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25569",
+      "input_sha256": "49ad5019b6d9ebc3f833db2a574a595a7c5de7ee136f0a532010ca36c387feec",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25572",
+      "input_sha256": "df6f4daa2f50dc406a980769e88aa4efc17df977a2dbc06cb4c7cdb96d5796fc",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "在东京开设了名为“A Midwinter’s Tale Café”的冬季限定咖啡馆"
+        },
+        {
+          "code": "SE",
+          "evidence": "瑞典达拉纳（Dalarna）地区传统的法伦红木屋"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25575",
+      "input_sha256": "743fb7f5e02708f7ea7bd746cc5756cc12150e8f35745afc124a2e03e6364cf7",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "与东伦敦知名餐饮机构E Pellicci合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25578",
+      "input_sha256": "cb6f92a04777cc2da437dfb20d2f8807be97b4f5b491c17688ed220e1aead215",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度营销活动的视觉美学"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25581",
+      "input_sha256": "070990e59eea37d2d80e6ab27fb52ebc0c297ec0a9ee058445ca62f16ac98336",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国最年长的跑团"
+        },
+        {
+          "code": "US",
+          "evidence": "美国跑鞋品牌Altra"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25584",
+      "input_sha256": "41b63b53fc42fe67824f128561ada9341eab1cfca887ce2a3e7e67da24d1f86d",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25587",
+      "input_sha256": "d90164c146b75ae646835d147a1ddfddd2b9e6598fb9f453e84eb49b72974af1",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25590",
+      "input_sha256": "5372a442e8b430227e3f6e359f5b10be42c147c3b3afc23c233a758de2813df1",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "高山滑雪性能与巴黎的奢华时尚完美结合"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25593",
+      "input_sha256": "865b2a83dd26ab26b24a0e3ebfec9800e412ac5cd88fc0b7449b4aee6d3e44cc",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25596",
+      "input_sha256": "948af8d60bf60f7888ab2fccc46b9c7217efbc258523aeaa055af849b2481f4b",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "对经典的美式休闲风格进行了重新诠释"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25599",
+      "input_sha256": "710e825184747c984e3219b349b9f698233ecd82ee792db95e730947b46f80d7",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25602",
+      "input_sha256": "70cc2ce29eb191d7fee3beaf2496992a43ffafdcb12f414502873304076751c5",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "与纽约公共图书馆（New York Public Library）推出全新联名系列"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25605",
+      "input_sha256": "9a2dcdc7e04ab8b00764dca75243b3e9e119738c6a14a369bacab26d417c3101",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25608",
+      "input_sha256": "bc6053c63192ace4e9f22506ecd6e84323aa6c5194c8aecfe365449da69560fa",
+      "tags": [
+        {
+          "code": "SE",
+          "evidence": "瑞典陶瓷艺术家Fanny Swiatek Schultz"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25611",
+      "input_sha256": "e09bb73bec2307452fc5816385a3dc4c707c0eda5e3c00094ca50166bf79eaea",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国明尼阿波利斯沃克艺术中心"
+        },
+        {
+          "code": "GB",
+          "evidence": "位于伦敦的推测设计工作室Superflux"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25614",
+      "input_sha256": "95a33513f83e85ffe32d9c3998d884fc89c2d087b4d5599ef205ce12548738fa",
+      "tags": [
+        {
+          "code": "GR",
+          "evidence": "希腊品牌PNOĒ"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25617",
+      "input_sha256": "7067df291edd19668f3f2bbf98326bee9e4dfd8616c823de6ab7b8b0683fc3bb",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国Classic Football Shirts品牌"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25620",
+      "input_sha256": "ef542b9d1a65223e04210f1af3b4cf419d966ea5c57c51a6a0da46c5d052c1d7",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:09.049673+00:00"
+    },
+    {
+      "article_id": "25623",
+      "input_sha256": "edb7151e95ae973e40f79f35ce7891fde88873c4334ec630b4c492293f74c14b",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25626",
+      "input_sha256": "19070da5c9ade30145a562677259028c8f3aed39e9ae68e8b1d8542f2f556d33",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国服装品牌Leje"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25629",
+      "input_sha256": "746d489130c7137c8bbf2596847fce150a96271948f96b8a48be90a1440011a8",
+      "tags": [
+        {
+          "code": "AU",
+          "evidence": "澳大利亚运动服饰品牌ATTAQUER"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25632",
+      "input_sha256": "fd3c828b96d0e8cd1aa4ebf01af31a9d0db848dc48d245e3951f69e6a158e905",
+      "tags": [
+        {
+          "code": "AE",
+          "evidence": "获奖的荒诞作品在迪拜的Secta Collective展出"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25635",
+      "input_sha256": "a2ed6f31692553df7fc70000070bec6461e16f2733b8c12b9c1925b602eef6b7",
+      "tags": [
+        {
+          "code": "BR",
+          "evidence": "在巴西圣保罗利用废弃车辆重现"
+        },
+        {
+          "code": "US",
+          "evidence": "派拉蒙影业（美国）"
+        },
+        {
+          "code": "FR",
+          "evidence": "Leo机构（法国）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25638",
+      "input_sha256": "69bf9efa9b438d0d179f24bf80327bbdd1a5f07475bfda0a8a7011ab996b8fcb",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "重新构想了中国传统虎头帽的象征意义"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25641",
+      "input_sha256": "87fcec5d1555e28f65156345fb12d7fd80abddf1171cc2a71827bcff5787419d",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "苹果公司（美国）与洛杉矶艺术家兼设计师Bailey Hikawa合作"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25644",
+      "input_sha256": "1fe8fd7ae4c5882df0a58094ccdafe1c1b767fd3b2b22e35a8b6957b7a8016b6",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25647",
+      "input_sha256": "5197a5a2e43d20f3f91baf3b88193ee4888e4ce08d940d9435d5cd19a107ba4b",
+      "tags": [
+        {
+          "code": "MA",
+          "evidence": "在马拉喀什历史悠久的 La Mamounia 酒店内开设了首家独立零售店"
+        },
+        {
+          "code": "R_EU",
+          "evidence": "世纪中叶的欧洲复古设计风格"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25650",
+      "input_sha256": "459f01d34a3264c543ccf05dce58f97815dde5b26e32f88dff8c9f95c9c62fd8",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25653",
+      "input_sha256": "6bc43d412c8edee2bf2353130db2d95f989e6073b7d5fb524b215849446b8769",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国品牌Concrete Bread"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25656",
+      "input_sha256": "f5bf08170419249417e8bdcefdca2da93aa3bd5c6967307d021c329ccc307ee2",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "重塑了一家经典的意大利小餐馆"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25659",
+      "input_sha256": "dd6b68607bc857a331e4fd9a2ce3f7f6fccbbf795c827f7fcb28333bde563c7b",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25662",
+      "input_sha256": "c89454b14a56140081ea10ac95bbd9f63f929301da4a5dc3b7de4f1e7a2ce845",
+      "tags": [
+        {
+          "code": "DE",
+          "evidence": "德国健身赛事品牌HYROX达成战略合作"
+        },
+        {
+          "code": "GB",
+          "evidence": "英国/美国健身品牌XENOM"
+        },
+        {
+          "code": "US",
+          "evidence": "英国/美国健身品牌XENOM"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25665",
+      "input_sha256": "988080cb0f8659ea5f5404bf9ebfca608ca6d376814a5337f50287b33750ea83",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "39%的美国全职员工计划请假玩游戏"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25668",
+      "input_sha256": "79eaee06fd960b9f3f50e6f9036c4235e6e4128c9f7b188d5fe8536c4c37f651",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "深入探索夏威夷群岛的原住民历史"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25671",
+      "input_sha256": "d834818d04266b20bdb89cfc00eff031016b2a76c550217b63a5569942ae0f84",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25674",
+      "input_sha256": "e4e07a816417020c62ded61af2162442e7e1c50ffa852f4163b397e02a945c48",
+      "tags": [
+        {
+          "code": "CO",
+          "evidence": "哥伦比亚设计工作室Estudio Gris"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25677",
+      "input_sha256": "7af959bd180c6e9dcdf25e63549ebf1d008f0256bc4e3b4e2d92914fb076dd7b",
+      "tags": [
+        {
+          "code": "BR",
+          "evidence": "巴西电信运营商Vivo"
+        },
+        {
+          "code": "US",
+          "evidence": "美国Starlink合作推出的Vivo Satélite服务"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25680",
+      "input_sha256": "11603bae626fb33d8dd3c4a847230dc8147af515d98993ff947a6e023d40e44a",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25683",
+      "input_sha256": "8674fee6570b5b569b443fb1d0aa19a1b988359dcfbaa63a58be7e8b76fc7849",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25686",
+      "input_sha256": "0804bf95a5bc3955b30210781767f5509c74202dd7b2c6ca84617ada1cf2a303",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25689",
+      "input_sha256": "25b415d12c74106ca506bbc72b2f51ddbf9692cd8eb908d5a259f11c88faae95",
+      "tags": [
+        {
+          "code": "BR",
+          "evidence": "巴西咖啡连锁品牌We Coffee"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25692",
+      "input_sha256": "dc539517cc957b86d3842439cb7b24f0974386a0f9ec039f81feb11e3d4e5a44",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本K-Car（轻型汽车）的经典比例"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25695",
+      "input_sha256": "8bec9048bfea5dc12f778d29453f390fdd791573e182ae47357f9026f33a838b",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25698",
+      "input_sha256": "999a0efddb4d625171eb50e2a56c1fb1cdbb398f714b603bb34d79a90d0d9da7",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "纽约市的“Trick-or-Streets”倡议"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25701",
+      "input_sha256": "7209aa4506adf600234ddb31321e42ae0d1cca79f48f368d654b17102818a4f6",
+      "tags": [
+        {
+          "code": "DE",
+          "evidence": "位于柏林米特区（Mitte）KW当代艺术学院庭院内"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25704",
+      "input_sha256": "9e89c5d33286788f065b91503fc27e7a754fce4993cdbfc22bbe13adb503716b",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国苹果公司（Apple）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25707",
+      "input_sha256": "70c85797dd69133e696234bd77762467f61b6aa90b6dc0e1ed8a709b7f7d73d0",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "以美国Instagram为例"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25710",
+      "input_sha256": "3567439ffaa3c8b0f3cac724e739756292ea879a4534fa5e46b48d6cb675879a",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25713",
+      "input_sha256": "b684067943f4e04ff3ff8605adb6ee62f3e4aea9ba0d1c580445ac486340a55b",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国户外品牌Salomon（萨洛蒙）"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25714",
+      "input_sha256": "da9226396c8e746446f4dd52b99931a3e41f3211678e316bfd2a88a38792bfae",
+      "tags": [
+        {
+          "code": "IT",
+          "evidence": "在意大利罗马的 Experimental Roma 酒店项目中"
+        },
+        {
+          "code": "FR",
+          "evidence": "法国设计师 Rodolphe Parente"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25715",
+      "input_sha256": "342d0c30d2c50a58f4718be0912968a6896fcc7b181355d533de5743eecb17ab",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国时尚品牌AMYETAILEEN"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25718",
+      "input_sha256": "0faa0e703a171e8cbfe7fb15f0b12c113bfcb4220c5e371f193e8c6b9f4b3a57",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25721",
+      "input_sha256": "beebec47e0d6c901001804572efd07c95487be25a351eeb6e4489c40b7afd15a",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国运动品牌Satisfy"
+        },
+        {
+          "code": "JP",
+          "evidence": "日本高韧性帆布面料"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25724",
+      "input_sha256": "a425ce5436abec9f38c21fec242ca325480890bc5d85308d60cbaf5d6addfbf2",
+      "tags": [
+        {
+          "code": "SE",
+          "evidence": "瑞典数字玩具工作室Toca Boca"
+        },
+        {
+          "code": "KR",
+          "evidence": "将“K-pop恶魔猎手”IP整合至《Toca Boca World》游戏中"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25727",
+      "input_sha256": "eabdfc7ae73c0cf0cd79060e02ecb8a2a12e4a4aff82c79b4182fc5f7200a693",
+      "tags": [
+        {
+          "code": "ID",
+          "evidence": "在巴厘岛共同打造了全新的Good Times General Store"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25730",
+      "input_sha256": "9bb490bb793a04a6b1a1cb28fa69370e86a012e851b7e23d357d173a9887d54a",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国设计师Lucy Aboonour"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25733",
+      "input_sha256": "bb0d9621e84b98376e43ddfb41d6adc51dacdc40e6edf84d5d8f7792cce9bb36",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国品牌 socks appeal"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25736",
+      "input_sha256": "fdb7fff4e3e7d5c22fe156b31a388c1cb0b00135c2174f9407bd032ede66a546",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:27:59.345834+00:00"
+    },
+    {
+      "article_id": "25739",
+      "input_sha256": "6ca5ecf77b813c61e6a567db41cd00c2afa9db5ec74bfaba17c2a43da0e2ec74",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25742",
+      "input_sha256": "6412838d7f2dc891425ae093640056e68ac7396812266d850bc9005bf7835dd3",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国宠物品牌BARK"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25745",
+      "input_sha256": "8974deafe6cf1ee1a114a63dcf0bb07be794c82ff4e5a3cd6f551619c9872234",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "在2026年巴黎车展上"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25748",
+      "input_sha256": "69416544b66f86e965a5d68a924da0552f5077f1403b1e3d413799aa01fbedc7",
+      "tags": [
+        {
+          "code": "ES",
+          "evidence": "位于巴塞罗那El Born区的MOØDE时尚中心"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25751",
+      "input_sha256": "5d1c1b0509bc3bc3e7c626d12c9d8ffcc64b41e69b8ee51ff9580d77e3e464d7",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本品牌Ami Aèra的最新设计"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25754",
+      "input_sha256": "c63396cf5cb77e350c8b43d06a3dcf8ec1db1f9cbb7475d960c5ac4435b3f44c",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25757",
+      "input_sha256": "9fcae76b50504e51e9b1b66bd0059b462dde44b72e7d51f00fbe5396857259c9",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "大英博物馆的贝叶挂毯展览"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25760",
+      "input_sha256": "41b215795517130736573663299abc576925f7b57eb3465dcff449253a44acd4",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25763",
+      "input_sha256": "465bda75a84b285b1ad380decbcf54ed565c63c6d9246a090dd1826aa4ef7a70",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25766",
+      "input_sha256": "4c7b90bb723fa2ab85173cf7a5b475332de339deaf370d9f6fc73d49bbb528dd",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25769",
+      "input_sha256": "ee0dc274f9c2f5adabce30339a6088696975489c42925de10bb9315ef72620d4",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "中国品牌MossCode"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25770",
+      "input_sha256": "82a5cd902111350c614cb4db482b0846416d2b0f39d7be8effc98e4518ac3836",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25771",
+      "input_sha256": "9e8419e97d26825dfbd59a70747704543b4785ef59241323d92147452d9aa63f",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国品牌TDR对经典棒球衬衫"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25778",
+      "input_sha256": "c0808af499c3630392fa007ee370ba15048d20234d961da0d2b3225aa15370d8",
+      "tags": [
+        {
+          "code": "HK",
+          "evidence": "香港街头服饰品牌GROCERY"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25781",
+      "input_sha256": "47c30ad53f05515b01686f3092820ecc88d47d009ec119a928ca9285f28c0a1f",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在阿姆斯特丹举办的 Kingpins 2028 春夏展会上"
+        },
+        {
+          "code": "GB",
+          "evidence": "位于伦敦市中心的展厅"
+        },
+        {
+          "code": "US",
+          "evidence": "20世纪初伦敦和纽约报业男女记者的编辑室穿搭"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25784",
+      "input_sha256": "3819b38b5d1b84bd1957bd3633c6b33650027ea58b7046f16d72c2e9f17d8e22",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在2026年荷兰设计周（Dutch Design Week）上"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25785",
+      "input_sha256": "2f55fc9d371df672dcb3dacd05185bdd7779cffdc75bff7ab7f934337f95c730",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25788",
+      "input_sha256": "2da73448b4d44a67ad109478fdc15182e2bb27bef91b716af3d6ae471fa4e060",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25793",
+      "input_sha256": "6226aaa383eda74adbeba51bae6274fe14564f1f50f0dc5c80739be2ded967da",
+      "tags": [
+        {
+          "code": "AU",
+          "evidence": "墨尔本无性别时尚品牌Monphell致力于打造本土制造"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25796",
+      "input_sha256": "266df4d20db25398056dfd7c333c152c7410cf7f6d01a55ea61833d9e5ae8561",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国知名内衣品牌Agent Provocateur"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25799",
+      "input_sha256": "ba37e7a82ca270ad224bc160abc98799b6ab0e3c525b2bd30f1c5ce384fe08d0",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "超级碗周期间在洛杉矶举行"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25802",
+      "input_sha256": "28a78a6cf09b0bf05d6e15f165b697ff70f0884c1fec9f282286f82227958191",
+      "tags": [
+        {
+          "code": "R_EU",
+          "evidence": "高达81%的欧洲人更倾向于人类创作的内容"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25805",
+      "input_sha256": "9f335cc4f229cf150a28793f5cb8d1127f1be839044ebbc2ef36a7eca6e56b8f",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在阿姆斯特丹举办的Kingpins 28春夏展会上"
+        },
+        {
+          "code": "GB",
+          "evidence": "来自伦敦的毕业生Charlie Arnott"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25806",
+      "input_sha256": "94a20db115c4ca76a5f75d1d579352c1f1cc7cccee6f1ef8adcc788395b4ad8c",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25809",
+      "input_sha256": "2fccea5d6340e3e1b431cb518f0073e689b43cb533e2be0f302c5d7153ac36c6",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25814",
+      "input_sha256": "dd2f07da09db638dafb52359ef6c60f28d5b6a00f2e1c281080f22ad0d5d9fef",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国知名生活方式品牌 Rifle Paper Co."
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25817",
+      "input_sha256": "72e19e351c916f6bebcec12aa401da22856d459d62f1ae0fc7bc2cebefbff957",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25820",
+      "input_sha256": "395759c9ea41507fe4cb79bc656b182a420360a2b4b088562262850d60627b79",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25823",
+      "input_sha256": "01c2c15787bb1d8406b331106c5208167be548a1a2c477b83b7935d97f7ffd4c",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "中国当代艺术家史至莹的“石头”系列作品"
+        },
+        {
+          "code": "HK",
+          "evidence": "在香港、巴塞尔、巴黎和迈阿密举办的四场国际艺术博览会"
+        },
+        {
+          "code": "CH",
+          "evidence": "在香港、巴塞尔、巴黎和迈阿密举办的四场国际艺术博览会"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25826",
+      "input_sha256": "fd2dd39a8efe13347f5c5df804f294704e712175bd7ddc1d8b6856baf8cc1b08",
+      "tags": [
+        {
+          "code": "R_NEU",
+          "evidence": "为传统的北欧毛衣赋予了全新且现代的设计语言"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25829",
+      "input_sha256": "bf08f6ee73d6b4ddb06283f4ee56e5097e411d5a90437fa957fa3f83973a0cdf",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国时尚品牌SKIMS"
+        },
+        {
+          "code": "JP",
+          "evidence": "日本Toyo Steel"
+        },
+        {
+          "code": "FR",
+          "evidence": "法国Rhodia"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25832",
+      "input_sha256": "156c4f77f444c9d89fab0bd7b3272dd582c656243ec2e579a72c3c8f96901ae0",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "密苏里州陶瓷艺术家兼珠宝设计师Kate Schroeder"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25835",
+      "input_sha256": "e17c9186bd199f434a1c84b8efe109300d129a4c537070702e918aac84222542",
+      "tags": [
+        {
+          "code": "PL",
+          "evidence": "波兰初创家具品牌 Bauhausly"
+        },
+        {
+          "code": "VN",
+          "evidence": "产品是在越南代工制造的"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25838",
+      "input_sha256": "19456e96d6813fce348cc7c4d9598fe476595bc3b5a41d614a4e6e2d0df18ec6",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国建筑与环境服务公司Cormac的工人"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25839",
+      "input_sha256": "8d4bbafa7587d82000e6dbdd0e2ff86239e514032515ac1bc533c08d313615e9",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25842",
+      "input_sha256": "0423cb0bdbc167958b11494ad779b54b4de7fad530709636f1802922d1962f86",
+      "tags": [
+        {
+          "code": "CH",
+          "evidence": "瑞士FHNW艺术与设计学院学生Lara Ozansoy"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25845",
+      "input_sha256": "698a9242bdbd6f28fc62034d6e8459d4a0b17066163b9ca2a8d34fefed48c50b",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25846",
+      "input_sha256": "c7c7a689971d98802db70182f4cf0b3dca4267eecc8209622496fa617a63b852",
+      "tags": [
+        {
+          "code": "BR",
+          "evidence": "巴西珠宝设计师 Nathalie Edenburg"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:29:10.379063+00:00"
+    },
+    {
+      "article_id": "25849",
+      "input_sha256": "ecd054c71ad2a63404e594f9af525a0891079215d70ca825464844932f2c7cf0",
+      "tags": [
+        {
+          "code": "R_ASIA",
+          "evidence": "传统亚洲服饰的经典轮廓与东方韵味"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25852",
+      "input_sha256": "4319b162243b404a5b4120a6e24a0a9df1659c82fad2fd87302b75ccb464c6de",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本品牌Pamm为庆祝节日季"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25853",
+      "input_sha256": "014880f414148eb3bf9e4e49cf3fd8e5ec7f0df7b377f6db3eedffb75e15bd36",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25856",
+      "input_sha256": "6447751cb0b2d9513d83d2fc5344dc6afdc7f6329a6861624e096e87fcd0e6de",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "在纽约中央公园船屋举办了一场新娘午餐会"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25859",
+      "input_sha256": "b70a5c0e6873892cde251af7ac7c5315f88e24c53b5d47648b3bb2d4adcd636d",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25862",
+      "input_sha256": "0a3dcc6325e10cc2e645dd671b64a7914e5071bd416370d8d7d6c70f68cb970e",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25865",
+      "input_sha256": "17fbb61f27ce0c8592a7d29f2c389e94af8477b77ffedcb403fdd60093571102",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25868",
+      "input_sha256": "f7bcb8f189a93c80906482d67f4a189c6ca4ced6e1150eb52cec1df6e03bb31b",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国小企业管理局（SBA）首次宣布"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25871",
+      "input_sha256": "8835c02eeee929b4289e6ecf7146265da99c238949f19ee2b306e9e6cd1eb68c",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "美国护肤品牌MERIT"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25874",
+      "input_sha256": "4374771546ff0b03e93635e066018c04864e94c0d31b8ea668a1400d5ce6d283",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "11月初美国选民以压倒性优势拒绝了硅谷在乡村社区建设数据中心的计划"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25877",
+      "input_sha256": "0517daab5af65808d993a63b507952476b4b66c02bfd6ce3de737dfecafa22c2",
+      "tags": [
+        {
+          "code": "KR",
+          "evidence": "韩国时尚品牌Low Classic"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25880",
+      "input_sha256": "85104c389f696f45cacd35a16ee33bf968e19a6eb8f0fb54ba92f2dec874b0b0",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "伦敦知名餐厅Sketch为迎接圣诞节"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25883",
+      "input_sha256": "3ced3c0664e84bed3826ba1da3b165cc914e7e15a69fbd64eca41e57bbcbd139",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "以印度品牌Sheth London为例"
+        },
+        {
+          "code": "GB",
+          "evidence": "利用国内制造资本招募英国设计人才"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25886",
+      "input_sha256": "02a857d74957f7b4c2cf519f7e727efce2dcae6530d82c0a2036c68f437d3a0f",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "荷兰与苏格兰混血配饰品牌Clòimh"
+        },
+        {
+          "code": "NL",
+          "evidence": "荷兰与苏格兰混血配饰品牌Clòimh"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25889",
+      "input_sha256": "68c92800a0547b7b969d581ae3ad5a9d50cdf64c72ec95b85cd349fb880fecc1",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "中国生活方式品牌Tagi"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25892",
+      "input_sha256": "4427bf6116542573c7379c1506f5f0d4b5b8a77ef0b0783dbb0764e15accebce",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25895",
+      "input_sha256": "1ae317cfdccd4accb81375e817a9de86bfeef262f352b454621078c92125ee9d",
+      "tags": [
+        {
+          "code": "IN",
+          "evidence": "印度孟买的尼塔·穆克什·安巴尼文化中心"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25898",
+      "input_sha256": "54e0c97a21e654730312c3667ec34d2a7e8a9b831a79c7e39d63cfc0f7a65ca8",
+      "tags": [
+        {
+          "code": "NL",
+          "evidence": "在2026年阿姆斯特丹ISPO展会上"
+        },
+        {
+          "code": "US",
+          "evidence": "美国品牌Pack Animals"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25901",
+      "input_sha256": "9438801efce46817fd8552b69ff37a04ee7d7c8e2ed186b58d8592cc221c646a",
+      "tags": [
+        {
+          "code": "US",
+          "evidence": "以美国社交平台X（原Twitter）为例"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25904",
+      "input_sha256": "8e269e4f28e60b9450785c6fb7d5ad51403d19b67d662017da2503c7e1a81edd",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25907",
+      "input_sha256": "04f194efa041532821120695c76e168f5ab6f38fcb799580d039e32597d03608",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国传统香水品牌Caron位于巴黎的精品店"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25910",
+      "input_sha256": "40dbfbe3a603dbe21cdc414ba06adc453917f7ae0c90ee3d944ec1a2f4cb4eb0",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25913",
+      "input_sha256": "523f5616a96a1637291f1b81e936c18f22ff8e93234b5252bef98eb5b6eb35b9",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "英国男装品牌Wax London"
+        },
+        {
+          "code": "IT",
+          "evidence": "意大利知名鞋履制造商Fracap"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25914",
+      "input_sha256": "93df0f43a8e27b7bf51cbda53194211663930bca21316cb00129fa52d9bfab60",
+      "tags": [
+        {
+          "code": "TW",
+          "evidence": "台湾时尚品牌Namesake的最新设计"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25915",
+      "input_sha256": "4445b460603becabc2ae36d85010778bec5b4275056be36faa69cb92b53192bf",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25928",
+      "input_sha256": "e1ad091ba7cb11de960220362614623da4c19fd86f44c021142e8dadc52da222",
+      "tags": [
+        {
+          "code": "FR",
+          "evidence": "法国品牌Hastko"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25931",
+      "input_sha256": "671e6ec95ac5af162cf12f78e96abc24d7bce628f1c217642545ee4587d3e016",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本时尚品牌Doublet"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25934",
+      "input_sha256": "3df613d0f2400ff0cb85273dde50fb53252a83fd7aa214ac040c4be02bd19a94",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "日本设计工作室Studio Omi Tahara"
+        },
+        {
+          "code": "IT",
+          "evidence": "意大利品牌Potocco"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25937",
+      "input_sha256": "0da9d606d0905ee476b3616f60f8d5054fd84e587097f30159961e550b00a259",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "产品在英国设计并于土耳其生产"
+        },
+        {
+          "code": "TR",
+          "evidence": "在英国设计并于土耳其生产"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25940",
+      "input_sha256": "0cb7975db4516ccbe06e95070e6125d7d6107266d851dcc86eb534a9d0a267ca",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25943",
+      "input_sha256": "013ec73b94f59c8d57e56a4c154141083606ec02ed67d9a30596e35855e8c50e",
+      "tags": [
+        {
+          "code": "HK",
+          "evidence": "在香港柏傲庄（Pavilia Farm）打造了名为Sky House的多层会所"
+        },
+        {
+          "code": "NO",
+          "evidence": "挪威知名建筑事务所Snøhetta"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25946",
+      "input_sha256": "ef0d1d70345ab302220edacc3c29d7bfeb174194557730be4f7ab68a3d9839e0",
+      "tags": [
+        {
+          "code": "JP",
+          "evidence": "近期频繁亮相于东京街头"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25949",
+      "input_sha256": "8973700123ded3c81c8c3080c8fb2292a288dd58710fb9479c3d4359f649c681",
+      "tags": [],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25952",
+      "input_sha256": "308b71824a4d60f4b0fe5c9de10cba50020c800aafd3acee511b121915dfb19f",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "将其标志性的“罪恶都市”场景复刻至伦敦门店内"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25955",
+      "input_sha256": "7432df216edf94659f94b312a1841c62d8ebeeed98d76ed76974e9c58002c00a",
+      "tags": [
+        {
+          "code": "CN",
+          "evidence": "乐高在上海举办名为BLOOM的沉浸式展览"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25958",
+      "input_sha256": "a324e8a3a1c915771dead6b7b3e12efb1c7f1a8c5068bda098a1793355afc52e",
+      "tags": [
+        {
+          "code": "ES",
+          "evidence": "与标志性的西班牙橄榄元素完美结合"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25961",
+      "input_sha256": "84069efe16a9fa30195a3572b30b5ad7e60bcae1fcb9a2148cb5bc39c05aa8d4",
+      "tags": [
+        {
+          "code": "GB",
+          "evidence": "在伦敦考文特花园广场（Covent Garden Piazza）推出了一家沉浸式快闪店"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    },
+    {
+      "article_id": "25964",
+      "input_sha256": "a94c63feb12305dbf5ef7d580583c00aadb43520f7fc29b5b989625703b30710",
+      "tags": [
+        {
+          "code": "DE",
+          "evidence": "德国运动品牌阿迪达斯（adidas）"
+        },
+        {
+          "code": "US",
+          "evidence": "美国街头品牌Brain Dead"
+        }
+      ],
+      "model_id": "gpt-6.2-sol",
+      "response_model": null,
+      "runtime": "codex_session",
+      "prompt_version": "article-topic-region-v1",
+      "prompt_sha256": "81f4c8de720a38f8fc77e849c70d3f55c0d75f218406f4269f4e68b2b050e5e0",
+      "analyzed_at": "2026-11-21T08:30:12.115261+00:00"
+    }
+  ]
+}

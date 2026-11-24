@@ -3,16 +3,26 @@ import { computed, ref, watch } from 'vue'
 import { isAxiosError } from 'axios'
 
 import { articleTrendsApi } from '@/api/articleTrends'
-import type { ArticleImportPreview, ArticleImportResult } from '@/types/articleTrends'
+import type { ArticleImportPreview, ArticleImportResult, TrendModel } from '@/types/articleTrends'
 
 const open = defineModel<boolean>('open', { required: true })
+const props = defineProps<{ models: TrendModel[] }>()
 const emit = defineEmits<{ imported: [result: ArticleImportResult] }>()
 const file = ref<File | null>(null)
 const preview = ref<ArticleImportPreview | null>(null)
 const busy = ref(false)
 const error = ref('')
+const regionModel = ref('')
+const modelOptions = computed(() => props.models.map(model => ({ value: model.id, label: model.name })))
 const okText = computed(() => preview.value?.new_count
-  ? `确认导入 ${preview.value.new_count.toLocaleString()} 篇` : '预览增量')
+  ? `导入并分析 ${preview.value.new_count.toLocaleString()} 篇` : '预览增量')
+const canSubmit = computed(() => file.value && (!preview.value || (preview.value.new_count > 0 && regionModel.value)))
+
+watch(() => props.models, models => {
+  if (!models.some(model => model.id === regionModel.value)) {
+    regionModel.value = models.find(model => model.id === 'gemini-3.8-flash')?.id || ''
+  }
+}, { immediate: true })
 
 watch(open, visible => {
   if (!visible) {
@@ -39,12 +49,12 @@ function chooseFile(event: Event) {
 }
 
 async function submit() {
-  if (!file.value || busy.value || preview.value?.new_count === 0) return
+  if (!file.value || busy.value || !canSubmit.value) return
   busy.value = true
   error.value = ''
   try {
     if (preview.value) {
-      const result = await articleTrendsApi.importWorkbook(file.value, preview.value.selection_digest)
+      const result = await articleTrendsApi.importWorkbook(file.value, preview.value.selection_digest, regionModel.value)
       open.value = false
       emit('imported', result)
     } else {
@@ -71,7 +81,7 @@ async function submit() {
     :ok-text="okText"
     :cancel-text="preview?.new_count === 0 ? '关闭' : '取消'"
     :confirm-loading="busy"
-    :ok-button-props="{ disabled: !file || preview?.new_count === 0 }"
+    :ok-button-props="{ disabled: !canSubmit }"
     :cancel-button-props="{ disabled: busy }"
     :closable="!busy"
     :mask-closable="!busy"
@@ -92,6 +102,13 @@ async function submit() {
           <div><dt>异常</dt><dd>{{ preview.invalid_count.toLocaleString() }}</dd></div>
         </dl>
         <a-alert v-if="preview.new_count === 0" type="info" show-icon message="这份表没有可新增的文章。" />
+        <div v-else class="region-model-picker">
+          <label for="region-model">主题地区分析模型</label>
+          <a-select id="region-model" v-model:value="regionModel" :options="modelOptions" :disabled="busy"
+            placeholder="选择 API Key 已开通的模型" />
+          <p v-if="modelOptions.length" class="hint">入库后用所选模型分析本次新增文章的标题和摘要，每篇最多 3 个标签。</p>
+          <p v-else class="hint">模型目录暂不可用，请重试页面上的模型目录加载。</p>
+        </div>
         <ul v-if="preview.sample_articles.length" class="import-sample" aria-label="待新增文章示例">
           <li v-for="article in preview.sample_articles" :key="article.article_id">
             <time v-if="article.published_at">{{ article.published_at }}</time>
@@ -120,4 +137,5 @@ async function submit() {
 .import-sample time { color: #6c627c; font-size: 12px; white-space: nowrap; }
 .import-issues { color: #785c35; font-size: 13px; }
 .import-issues ul { margin: 6px 0 0; padding-left: 20px; }
+.region-model-picker { display: grid; gap: 6px; }
 </style>
